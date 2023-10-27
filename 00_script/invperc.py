@@ -62,11 +62,11 @@ def choose_cell(grid):
 # Is (x, y) adjacent to a filled cell?
 def adjacent(grid, x, y):
     x_1, y_1 = x + 1, y + 1
-    if (x > 0) and (grid[x-1][y] == 0):
+    if (x > 0) and (grid[x - 1][y] == 0):
         return True
     if (x_1 < len(grid)) and (grid[x_1][y] == 0):
         return True
-    if (y > 0) and (grid[x][y-1] == 0):
+    if (y > 0) and (grid[x][y - 1] == 0):
         return True
     if (y_1 < len(grid[x])) and (grid[x][y_1] == 0):
         return True

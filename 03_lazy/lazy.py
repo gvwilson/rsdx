@@ -33,9 +33,9 @@ class GridLazy(GridNestedList):
 
     def add_candidates(self, x, y):
         """Add candidates around (x, y)."""
-        for ix in (x-1, x+1):
+        for ix in (x - 1, x + 1):
             self._add_candidate(ix, y)
-        for iy in (y-1, y+1):
+        for iy in (y - 1, y + 1):
             self._add_candidate(x, iy)
 
     def _add_candidate(self, x, y):

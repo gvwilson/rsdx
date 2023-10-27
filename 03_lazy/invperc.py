@@ -17,6 +17,7 @@ KINDS = {
     "lazy": GridLazy,
 }
 
+
 def main():
     """Main driver."""
     args = setup()
@@ -31,7 +32,9 @@ def setup():
     """Get parameters."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--depth", type=int, default=2, help="depth")
-    parser.add_argument("--details", action="store_true", default=False, help="show details")
+    parser.add_argument(
+        "--details", action="store_true", default=False, help="show details"
+    )
     parser.add_argument("--height", type=int, default=3, help="height")
     parser.add_argument("--reps", type=int, default=1, help="repetitions")
     parser.add_argument("--seed", type=int, default=None, help="RNG seed")
@@ -55,7 +58,14 @@ def run_all(args, all_seeds):
             t_start = time.time()
             fill_grid(grid)
             t_elapsed = time.time() - t_start
-            results.loc[len(results)] = (kind, args.width, args.height, args.depth, seed, t_elapsed)
+            results.loc[len(results)] = (
+                kind,
+                args.width,
+                args.height,
+                args.depth,
+                seed,
+                t_elapsed,
+            )
             all_grids[kind] = grid
         check_equal(all_grids)
     return results
@@ -88,7 +98,7 @@ def check_equal(all_grids):
 def print_grid(grid, seed, details="full"):
     """Show the result."""
     print(grid.width(), grid.height(), grid.depth(), seed)
-    if (details == "brief"):
+    if details == "brief":
         return
     for y in range(grid.height() - 1, -1, -1):
         for x in range(grid.width()):

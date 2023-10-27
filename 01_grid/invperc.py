@@ -48,6 +48,7 @@ def fill_grid(grid):
         if grid.on_border(x, y):
             break
 
+
 def choose_cell(grid):
     """Choose the next cell to fill."""
     least, cx, cy = None, None, None
@@ -64,7 +65,7 @@ def choose_cell(grid):
 def print_grid(grid, seed, details="full"):
     """Show the result."""
     print(grid.width(), grid.height(), grid.depth(), seed)
-    if (details == "brief"):
+    if details == "brief":
         return
     for y in range(grid.height() - 1, -1, -1):
         for x in range(grid.width()):

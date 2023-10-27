@@ -5,6 +5,7 @@ import random
 
 import numpy as np
 
+
 class GridGeneric(ABC):
     """Represent a generic grid."""
 
@@ -49,11 +50,11 @@ class GridGeneric(ABC):
     def adjacent(self, x, y):
         """Is (x, y) adjacent to a filled cell?"""
         x_1, y_1 = x + 1, y + 1
-        if (x > 0) and (self[x-1, y] == 0):
+        if (x > 0) and (self[x - 1, y] == 0):
             return True
         if (x_1 < self.width()) and (self[x_1, y] == 0):
             return True
-        if (y > 0) and (self[x, y-1] == 0):
+        if (y > 0) and (self[x, y - 1] == 0):
             return True
         if (y_1 < self.height()) and (self[x, y_1] == 0):
             return True
@@ -70,6 +71,7 @@ class GridGeneric(ABC):
 
 class GridNestedList(GridGeneric):
     """Represent grid as list of lists."""
+
     def __init__(self, width, height, depth):
         """Construct and fill."""
         super().__init__(width, height, depth)
@@ -93,6 +95,7 @@ class GridNestedList(GridGeneric):
 
 class GridArray(GridGeneric):
     """Represent grid as NumPy array."""
+
     def __init__(self, width, height, depth):
         """Construct and fill."""
         super().__init__(width, height, depth)
