@@ -31,7 +31,7 @@ def main():
             break
 
     # Show result.
-    print_grid(width, height, depth, seed, grid)
+    print_grid(grid, width, height, depth, seed)
 
 
 # Create a width X height grid.
@@ -83,7 +83,7 @@ def on_border(width, height, x, y):
 
 
 # Show the result.
-def print_grid(width, height, depth, seed, grid, as_numbers=False):
+def print_grid(grid, width, height, depth, seed, as_numbers=False):
     print(width, height, depth, seed)
     height = len(grid[0])
     for y in range(height - 1, -1, -1):
