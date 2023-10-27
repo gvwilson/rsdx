@@ -67,6 +67,30 @@ class GridGeneric(ABC):
             return True
         return False
 
+    def fill_first_cell(self):
+        """Fill the initial cell."""
+        x = self.width() // 2
+        y = self.height() // 2
+        self[x, y] = 0
+        return x, y
+
+    def choose_cell(self):
+        """Choose the next cell to fill."""
+        least, candidates = None, None
+        for x in range(self.width()):
+            for y in range(self.height()):
+                if self[x, y] == 0:
+                    continue
+                if not self.adjacent(x, y):
+                    continue
+                if (least is None) or (self[x, y] < least):
+                    least = self[x, y]
+                    candidates = [(x, y)]
+                elif self[x, y] == least:
+                    candidates.append((x, y))
+        candidates.sort()
+        return random.choice(candidates)
+
 
 class GridNestedList(GridGeneric):
     """Represent grid as list of lists."""

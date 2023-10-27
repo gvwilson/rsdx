@@ -8,24 +8,6 @@ import numpy as np
 class GridGeneric(ABC):
     """Represent a generic grid."""
 
-    def __init__(self, width, height, depth):
-        """Record shared state."""
-        self._width = width
-        self._height = height
-        self._depth = depth
-
-    @abstractmethod
-    def width(self):
-        """Get width of grid."""
-
-    @abstractmethod
-    def height(self):
-        """Get height of grid."""
-
-    @abstractmethod
-    def depth(self):
-        """Get depth of grid."""
-
     @abstractmethod
     def __getitem__(self, key):
         """Get value at location."""
@@ -33,6 +15,24 @@ class GridGeneric(ABC):
     @abstractmethod
     def __setitem__(self, key, value):
         """Set value at location."""
+
+    def __init__(self, width, height, depth):
+        """Record shared state."""
+        self._width = width
+        self._height = height
+        self._depth = depth
+
+    def width(self):
+        """Get width of grid."""
+        return self._width
+
+    def height(self):
+        """Get height of grid."""
+        return self._height
+
+    def depth(self):
+        """Get depth of grid."""
+        return self._depth
 
     def adjacent(self, x, y):
         """Is (x, y) adjacent to a filled cell?"""
@@ -67,18 +67,6 @@ class GridNestedList(GridGeneric):
                 row.append(random.randint(1, depth))
             self._grid.append(row)
 
-    def width(self):
-        """Get width of grid."""
-        return self._width
-
-    def height(self):
-        """Get height of grid."""
-        return self._height
-
-    def depth(self):
-        """Get depth of grid."""
-        return self._depth
-
     def __getitem__(self, key):
         """Get value at location."""
         x, y = key
@@ -99,18 +87,6 @@ class GridArray(GridGeneric):
         for x in range(self.width()):
             for y in range(self.height()):
                 self[x, y] = random.randint(1, depth)
-
-    def width(self):
-        """Get width of grid."""
-        return self._width
-
-    def height(self):
-        """Get height of grid."""
-        return self._height
-
-    def depth(self):
-        """Get depth of grid."""
-        return self._depth
 
     def __getitem__(self, key):
         """Get value at location."""

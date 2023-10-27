@@ -32,11 +32,11 @@ def setup():
 
 def initialize_grid(kind, width, height, depth):
     """Prepare grid for simulation."""
-    if kind == "list":
-        grid = GridNestedList(width, height, depth)
-    elif kind == "array":
-        grid = GridArray(width, height, depth)
-    return grid
+    lookup = {
+        "list": GridNestedList,
+        "array": GridArray,
+    }
+    return lookup[kind](width, height, depth)
 
 
 def fill_grid(grid):

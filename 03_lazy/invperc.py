@@ -7,14 +7,15 @@ import sys
 import time
 
 from grid import GridNestedList, GridArray
+from lazy import GridLazy
 
 
 # Known kinds of grids.
 KINDS = {
     "list": GridNestedList,
-    "array": GridArray
+    "array": GridArray,
+    "lazy": GridLazy,
 }
-
 
 def main():
     """Main driver."""
@@ -67,26 +68,12 @@ def initialize_grid(kind, width, height, depth):
 
 def fill_grid(grid):
     """Fill grid one cell at a time."""
-    grid[grid.width() // 2, grid.height() // 2] = 0
+    grid.fill_first_cell()
     while True:
-        x, y = choose_cell(grid)
+        x, y = grid.choose_cell()
         grid[x, y] = 0
         if grid.on_border(x, y):
             break
-
-def choose_cell(grid):
-    """Choose the next cell to fill."""
-    least, cx, cy = None, None, None
-    for x in range(grid.width()):
-        for y in range(grid.height()):
-            temp = grid[x, y]
-            if temp == 0:
-                continue
-            if not grid.adjacent(x, y):
-                continue
-            if (least is None) or (temp < least):
-                least, cx, cy = temp, x, y
-    return cx, cy
 
 
 def check_equal(all_grids):
