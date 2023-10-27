@@ -1,0 +1,121 @@
+"""Represent 2D grid."""
+
+from abc import ABC, abstractmethod
+import random
+
+import numpy as np
+
+class GridGeneric(ABC):
+    """Represent a generic grid."""
+
+    def __init__(self, width, height, depth):
+        """Record shared state."""
+        self._width = width
+        self._height = height
+        self._depth = depth
+
+    @abstractmethod
+    def width(self):
+        """Get width of grid."""
+
+    @abstractmethod
+    def height(self):
+        """Get height of grid."""
+
+    @abstractmethod
+    def depth(self):
+        """Get depth of grid."""
+
+    @abstractmethod
+    def __getitem__(self, key):
+        """Get value at location."""
+
+    @abstractmethod
+    def __setitem__(self, key, value):
+        """Set value at location."""
+
+    def adjacent(self, x, y):
+        """Is (x, y) adjacent to a filled cell?"""
+        x_1, y_1 = x + 1, y + 1
+        if (x > 0) and (self[x-1, y] == 0):
+            return True
+        if (x_1 < self.width()) and (self[x_1, y] == 0):
+            return True
+        if (y > 0) and (self[x, y-1] == 0):
+            return True
+        if (y_1 < self.height()) and (self[x, y_1] == 0):
+            return True
+        return False
+
+    def on_border(self, x, y):
+        """Is this cell on the border of the grid?"""
+        if (x == 0) or (x == self.width() - 1):
+            return True
+        if (y == 0) or (y == self.height() - 1):
+            return True
+        return False
+
+class GridNestedList(GridGeneric):
+    """Represent grid as list of lists."""
+    def __init__(self, width, height, depth):
+        """Construct and fill."""
+        super().__init__(width, height, depth)
+        self._grid = []
+        for x in range(self._width):
+            row = []
+            for y in range(self._height):
+                row.append(random.randint(1, depth))
+            self._grid.append(row)
+
+    def width(self):
+        """Get width of grid."""
+        return self._width
+
+    def height(self):
+        """Get height of grid."""
+        return self._height
+
+    def depth(self):
+        """Get depth of grid."""
+        return self._depth
+
+    def __getitem__(self, key):
+        """Get value at location."""
+        x, y = key
+        return self._grid[x][y]
+
+    def __setitem__(self, key, value):
+        """Set value at location."""
+        x, y = key
+        self._grid[x][y] = value
+
+
+class GridArray(GridGeneric):
+    """Represent grid as NumPy array."""
+    def __init__(self, width, height, depth):
+        """Construct and fill."""
+        super().__init__(width, height, depth)
+        self._grid = np.zeros((width, height), dtype=int)
+        for x in range(self.width()):
+            for y in range(self.height()):
+                self[x, y] = random.randint(1, depth)
+
+    def width(self):
+        """Get width of grid."""
+        return self._width
+
+    def height(self):
+        """Get height of grid."""
+        return self._height
+
+    def depth(self):
+        """Get depth of grid."""
+        return self._depth
+
+    def __getitem__(self, key):
+        """Get value at location."""
+        return self._grid[*key]
+
+    def __setitem__(self, key, value):
+        """Set value at location."""
+        self._grid[*key] = value

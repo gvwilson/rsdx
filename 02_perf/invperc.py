@@ -1,22 +1,39 @@
 """Invasion percolation in Python."""
 
 import random
+import pandas as pd
 import sys
+import time
 
 from grid import GridNestedList, GridArray
 
 
+KINDS = ("list", "array")
+
 def main():
     """Main driver."""
-    kind, width, height, depth, seed = setup()
-    grid = initialize_grid(kind, width, height, depth)
-    fill_grid(grid)
-    print_grid(grid, seed, details="brief")
+    reps, width, height, depth, _ = setup()
+    all_seeds = [random.randrange(sys.maxsize) for _ in range(reps)]
+
+    results = []
+    for seed in all_seeds:
+        for kind in KINDS:
+            random.seed(seed)
+            t_start = time.time()
+            grid = initialize_grid(kind, width, height, depth)
+            fill_grid(grid)
+            t_elapsed = time.time() - t_start
+            record = (kind, width, height, depth, seed, t_elapsed)
+            results.append(record)
+            print(record)
+
+    df = pd.DataFrame(results, columns=("kind", "width", "height", "depth", "seed", "time"))
+    print(df[["kind", "time"]].groupby("kind").agg(func="mean"))
 
 
 def setup():
     """Get parameters."""
-    kind = sys.argv[1]
+    reps = int(sys.argv[1])
     width = int(sys.argv[2])
     height = int(sys.argv[3])
     depth = int(sys.argv[4])
@@ -27,7 +44,7 @@ def setup():
         seed = random.randrange(sys.maxsize)
     random.seed(seed)
 
-    return kind, width, height, depth, seed
+    return reps, width, height, depth, seed
 
 
 def initialize_grid(kind, width, height, depth):
