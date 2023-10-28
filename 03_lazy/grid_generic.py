@@ -3,8 +3,6 @@
 from abc import ABC, abstractmethod
 import random
 
-import numpy as np
-
 
 class GridGeneric(ABC):
     """Represent a generic grid."""
@@ -35,6 +33,18 @@ class GridGeneric(ABC):
         """Get depth of grid."""
         return self._depth
 
+    def __eq__(self, other):
+        """Compare to another grid."""
+        if self.width() != other.width():
+            return False
+        if self.height() != other.height():
+            return False
+        for x in range(self.width()):
+            for y in range(self.height()):
+                if self[x, y] != other[x, y]:
+                    return False
+        return True
+
     def adjacent(self, x, y):
         """Is (x, y) adjacent to a filled cell?"""
         x_1, y_1 = x + 1, y + 1
@@ -56,46 +66,26 @@ class GridGeneric(ABC):
             return True
         return False
 
+    def fill_first_cell(self):
+        """Fill the initial cell."""
+        x = self.width() // 2
+        y = self.height() // 2
+        self[x, y] = 0
+        return x, y
 
-class GridNestedList(GridGeneric):
-    """Represent grid as list of lists."""
-
-    def __init__(self, width, height, depth):
-        """Construct and fill."""
-        super().__init__(width, height, depth)
-        self._grid = []
-        for x in range(self._width):
-            row = []
-            for y in range(self._height):
-                row.append(random.randint(1, depth))
-            self._grid.append(row)
-
-    def __getitem__(self, key):
-        """Get value at location."""
-        x, y = key
-        return self._grid[x][y]
-
-    def __setitem__(self, key, value):
-        """Set value at location."""
-        x, y = key
-        self._grid[x][y] = value
-
-
-class GridArray(GridGeneric):
-    """Represent grid as NumPy array."""
-
-    def __init__(self, width, height, depth):
-        """Construct and fill."""
-        super().__init__(width, height, depth)
-        self._grid = np.zeros((width, height), dtype=int)
+    def choose_cell(self):
+        """Choose the next cell to fill."""
+        least, candidates = None, None
         for x in range(self.width()):
             for y in range(self.height()):
-                self[x, y] = random.randint(1, depth)
-
-    def __getitem__(self, key):
-        """Get value at location."""
-        return self._grid[*key]
-
-    def __setitem__(self, key, value):
-        """Set value at location."""
-        self._grid[*key] = value
+                if self[x, y] == 0:
+                    continue
+                if not self.adjacent(x, y):
+                    continue
+                if (least is None) or (self[x, y] < least):
+                    least = self[x, y]
+                    candidates = [(x, y)]
+                elif self[x, y] == least:
+                    candidates.append((x, y))
+        candidates.sort()
+        return random.choice(candidates)

@@ -3,7 +3,8 @@
 import random
 import sys
 
-from grid import GridNestedList, GridArray
+from grid_list import GridList
+from grid_array import GridArray
 
 
 def main():
@@ -33,7 +34,7 @@ def setup():
 def initialize_grid(kind, width, height, depth):
     """Prepare grid for simulation."""
     lookup = {
-        "list": GridNestedList,
+        "list": GridList,
         "array": GridArray,
     }
     return lookup[kind](width, height, depth)

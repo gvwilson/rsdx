@@ -6,13 +6,14 @@ import pandas as pd
 import sys
 import time
 
-from grid import GridNestedList, GridArray
-from lazy import GridLazy
+from grid_list import GridList
+from grid_array import GridArray
+from grid_lazy import GridLazy
 
 
 # Known kinds of grids.
 KINDS = {
-    "list": GridNestedList,
+    "list": GridList,
     "array": GridArray,
     "lazy": GridLazy,
 }

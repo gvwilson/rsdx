@@ -1,9 +1,9 @@
 import random
 
-from grid import GridNestedList
+from grid_list import GridList
 
 
-class GridLazy(GridNestedList):
+class GridLazy(GridList):
     """Only look at cells that might actually be filled next time."""
 
     def __init__(self, width, height, depth):
