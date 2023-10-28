@@ -39,13 +39,7 @@ def setup():
     parser.add_argument("--reps", type=int, default=1, help="repetitions")
     parser.add_argument("--seed", type=int, default=None, help="RNG seed")
     parser.add_argument("--width", type=int, default=3, help="width")
-    args = parser.parse_args()
-
-    if args.seed is None:
-        args.seed = random.randrange(sys.maxsize)
-    random.seed(args.seed)
-
-    return args
+    return parser.parse_args()
 
 
 def initialize_random(seed, reps):
