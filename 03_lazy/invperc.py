@@ -24,7 +24,8 @@ def main():
     all_seeds = [random.randrange(sys.maxsize) for _ in range(args.reps)]
     results = run_all(args, all_seeds)
     if args.details:
-        print(results)
+        with open(args.details, "w") as writer:
+            print(results.to_csv(index=False), file=writer)
     print(results[["kind", "time"]].groupby("kind").agg(func="mean").to_csv())
 
 
@@ -32,9 +33,7 @@ def setup():
     """Get parameters."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--depth", type=int, default=2, help="depth")
-    parser.add_argument(
-        "--details", action="store_true", default=False, help="show details"
-    )
+    parser.add_argument("--details", type=str, default=None, help="output file")
     parser.add_argument("--height", type=int, default=3, help="height")
     parser.add_argument("--reps", type=int, default=1, help="repetitions")
     parser.add_argument("--seed", type=int, default=None, help="RNG seed")
