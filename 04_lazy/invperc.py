@@ -22,8 +22,8 @@ KINDS = {
 def main():
     """Main driver."""
     args = setup()
-    all_seeds = [random.randrange(sys.maxsize) for _ in range(args.reps)]
-    results = run_all(args, all_seeds)
+    all_seeds = initialize_random(args.seed, args.reps)
+    results = percolate(args, all_seeds)
     if args.details:
         with open(args.details, "w") as writer:
             print(results.to_csv(index=False), file=writer)
@@ -48,7 +48,14 @@ def setup():
     return args
 
 
-def run_all(args, all_seeds):
+def initialize_random(seed, reps):
+    if seed is None:
+        seed = random.randrange(sys.maxsize)
+    random.seed(seed)
+    return [random.randrange(sys.maxsize) for _ in range(reps)]
+
+
+def percolate(args, all_seeds):
     results = pd.DataFrame(columns=("kind", "width", "height", "depth", "seed", "time"))
     for seed in all_seeds:
         all_grids = {}
