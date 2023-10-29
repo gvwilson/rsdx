@@ -74,19 +74,5 @@ def measure_dimension(grid):
     return counts
 
 
-def print_grid(grid, seed, details="full"):
-    """Show the result."""
-    print(grid.width(), grid.height(), grid.depth(), seed)
-    if details == "brief":
-        return
-    for y in range(grid.height() - 1, -1, -1):
-        for x in range(grid.width()):
-            if details == "numbers":
-                sys.stdout.write(f"{grid[x, y]:02d} ")
-            else:
-                sys.stdout.write("X" if grid[x, y] == 0 else ".")
-        sys.stdout.write("\n")
-
-
 if __name__ == "__main__":
     main()

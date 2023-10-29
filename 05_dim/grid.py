@@ -1,6 +1,7 @@
 """Represent 2D grid."""
 
 import random
+import sys
 
 
 class Grid:
@@ -107,6 +108,19 @@ class Grid:
             self._add_candidate(ix, y)
         for iy in (y - 1, y + 1):
             self._add_candidate(x, iy)
+
+    def print(self, stream=sys.stdout, details="full"):
+        """Show the result."""
+        print(self.width(), self.height(), self.depth(), file=stream)
+        if details == "brief":
+            return
+        for y in range(self.height() - 1, -1, -1):
+            for x in range(self.width()):
+                if details == "numbers":
+                    stream.write(f"{self[x, y]:02d} ")
+                else:
+                    stream.write("X" if self[x, y] == 0 else ".")
+            stream.write("\n")
 
     def _add_candidate(self, x, y):
         """Add (x, y) if suitable."""
