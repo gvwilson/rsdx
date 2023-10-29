@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import sys
 
-from grid_lazy import GridLazy
+from grid import Grid
 
 
 def main():
@@ -45,21 +45,11 @@ def percolate(args):
     result = []
     for _ in range(args.reps):
         seed = initialize_random()
-        grid = GridLazy(args.width, args.height, args.depth)
-        fill_grid(grid)
+        grid = Grid(args.width, args.height, args.depth)
+        grid.fill()
         dims = measure_dimension(grid)
         result.extend([(args.size, args.depth, seed, *d) for d in dims])
     return pd.DataFrame(result, columns=("size", "depth", "seed", "ruler", "count"))
-
-
-def fill_grid(grid):
-    """Fill grid one cell at a time."""
-    grid.fill_first_cell()
-    while True:
-        x, y = grid.choose_cell()
-        grid[x, y] = 0
-        if grid.on_border(x, y):
-            break
 
 
 def measure_dimension(grid):
