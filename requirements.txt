@@ -1,3 +1,4 @@
+dvc
 numpy
 pandas
 plotly.express
