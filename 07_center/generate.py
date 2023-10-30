@@ -47,12 +47,14 @@ def main():
     all_samples = pd.concat(
         [make_samples(s) for s in all_settings.to_dict(orient="records")]
     )
-    create_db(args.dbfile, SITES, SURVEYS, all_samples)
+    create_db(args, SITES, SURVEYS, all_samples)
 
 
-def create_db(filename, sites, surveys, samples):
+def create_db(args, sites, surveys, samples):
     """Create database file with all sites and samples."""
-    con = sqlite3.connect(filename)
+    con = sqlite3.connect(args.dbfile)
+    params = pd.DataFrame([{"seed": args.seed}])
+    params.to_sql("params", con, index=False, if_exists="replace")
     sites.to_sql("sites", con, index=False, if_exists="replace")
     surveys[["label", "site", "date"]].to_sql("surveys", con, index=False, if_exists="replace")
     samples.to_sql("samples", con, index=False, if_exists="replace")
