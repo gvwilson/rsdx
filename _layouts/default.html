@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include head.html %}
+    <link rel="stylesheet" href="{{'/assets/site.css' | relative_url}}" type="text/css">
+    <link rel="stylesheet" href="{{'/assets/tango.css' | relative_url}}" type="text/css">
+  </head>
+  <body>
+    <main>
+      <h1>{% if page.title %}{{page.title}}{% else %}{{site.title}}{% endif %}</h1>
+      {{ content }}
+    </main>
+    {% include foot.html %}
+  </body>
+</html>

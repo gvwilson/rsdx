@@ -1,0 +1,25 @@
+title: Research Software Design by Example
+repository: gvwilson/invperc
+author:
+  name: Greg Wilson
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
+
+markdown: kramdown
+highlighter: rouge
+
+exclude:
+  - CODE_OF_CONDUCT.md
+  - LICENSE.md
+  - README.md
+  - pyproject.toml
+  - requirements.txt
+  - '.#*'
+  - '*~'
+
+permalink: pretty

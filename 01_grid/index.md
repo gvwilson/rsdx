@@ -1,4 +1,6 @@
-# 01: grid abstraction
+---
+title: "01: grid abstraction"
+---
 
 - Introduce abstract base class for grid.
   - Implement nested list and test.

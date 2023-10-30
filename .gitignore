@@ -1,3 +1,5 @@
 *~
+.jekyll-cache
 .metaflow
 __pycache__
+_site

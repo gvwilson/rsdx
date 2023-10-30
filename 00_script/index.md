@@ -1,4 +1,6 @@
-# 00: initial script
+---
+title: "00: initial script"
+---
 
 - Is broken into functions (yay).
 - Had to modify `print_grid` to show numeric values for debugging
