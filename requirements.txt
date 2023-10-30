@@ -1,5 +1,6 @@
 dvc
 geopy
+kaleido
 numpy
 pandas
 plotly.express
