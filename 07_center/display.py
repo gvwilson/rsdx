@@ -37,13 +37,17 @@ def main():
         fig.add_vline(x=center_lon)
         fig.add_hline(y=center_lat)
         fig.update_layout(width=FIG_SIZE, height=FIG_SIZE)
-        fig.show()
+        if args.figdir:
+            fig.write_image(f"{args.figdir}/{site}.svg")
+        else:
+            fig.show()
 
 
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--dbfile", type=str, help="database file")
+    parser.add_argument("--figdir", type=str, help="figure directory")
     return parser.parse_args()
 
 
