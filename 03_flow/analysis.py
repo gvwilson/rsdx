@@ -8,7 +8,11 @@ def main():
     """Main driver."""
     args = parse_args()
     df = pd.read_csv(args.infile) if args.infile else pd.read_csv(sys.stdin)
-    summary = df[["kind", "width", "time"]].groupby(["kind", "width"], as_index=False).agg(func="mean")
+    summary = (
+        df[["kind", "width", "time"]]
+        .groupby(["kind", "width"], as_index=False)
+        .agg(func="mean")
+    )
     print(summary)
     fig = px.line(summary, x="width", y="time", color="kind")
     fig.show()

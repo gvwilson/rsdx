@@ -64,10 +64,12 @@ def measure_dimension(grid):
         count = 0
         for x in range(width // ruler):
             for y in range(height // ruler):
-                count = count + grid[
-                    (x * ruler):((x + 1) * ruler),
-                    (y * ruler):((y + 1) * ruler)
-                ].any()
+                count = (
+                    count
+                    + grid[
+                        (x * ruler) : ((x + 1) * ruler), (y * ruler) : ((y + 1) * ruler)
+                    ].any()
+                )
         counts.append((ruler, count))
         ruler *= 2
 

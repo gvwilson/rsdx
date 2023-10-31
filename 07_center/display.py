@@ -43,9 +43,7 @@ def main():
 def read_csv(args):
     """Read CSV files directly into dataframes."""
     assert args.csvdir, "read_csv requires --csvdir"
-    raw = {
-        name: pd.read_csv(f"{args.csvdir}/{name}.csv") for name in NAMES
-    }
+    raw = {name: pd.read_csv(f"{args.csvdir}/{name}.csv") for name in NAMES}
     return combine_with_pandas(args, **raw)
 
 
@@ -53,9 +51,7 @@ def read_db_pandas(args):
     """Read database tables into Pandas dataframes and manipulate."""
     assert args.dbfile, "read_db_pandas requires --dbfile"
     con = sqlite3.connect(args.dbfile)
-    raw = {
-        name: pd.read_sql(f"select * from {name}", con) for name in NAMES
-    }
+    raw = {name: pd.read_sql(f"select * from {name}", con) for name in NAMES}
     return combine_with_pandas(args, **raw)
 
 
@@ -65,40 +61,37 @@ def read_db_sql(args):
     con = sqlite3.connect(args.dbfile)
     return {
         "combined": pd.read_sql(Q_SAMPLES, con),
-        "centers": pd.read_sql(Q_CENTERS, con)
+        "centers": pd.read_sql(Q_CENTERS, con),
     }
 
 
-METHODS = {
-    "csv": read_csv,
-    "pandas": read_db_pandas,
-    "sql": read_db_sql
-}
+METHODS = {"csv": read_csv, "pandas": read_db_pandas, "sql": read_db_sql}
 
 
 def combine_with_pandas(args, sites, surveys, samples):
     """Combine tables using Pandas."""
     combined = surveys.merge(samples, how="inner", on="label")
-    temp = pd.DataFrame({
-        "site": combined["site"],
-        "weighted_lon": combined["lon"] * combined["reading"],
-        "weighted_lat": combined["lat"] * combined["reading"],
-        "reading": combined["reading"]
-    })
-    temp = temp.groupby(["site"]).agg({
-        "weighted_lon": "mean",
-        "weighted_lat": "mean",
-        "reading": "mean"
-    }).reset_index()
-    centers = pd.DataFrame({
-        "site": temp["site"],
-        "lon": temp["weighted_lon"] / temp["reading"],
-        "lat": temp["weighted_lat"] / temp["reading"]
-    })
-    return {
-        "combined": combined,
-        "centers": centers
-    }
+    temp = pd.DataFrame(
+        {
+            "site": combined["site"],
+            "weighted_lon": combined["lon"] * combined["reading"],
+            "weighted_lat": combined["lat"] * combined["reading"],
+            "reading": combined["reading"],
+        }
+    )
+    temp = (
+        temp.groupby(["site"])
+        .agg({"weighted_lon": "mean", "weighted_lat": "mean", "reading": "mean"})
+        .reset_index()
+    )
+    centers = pd.DataFrame(
+        {
+            "site": temp["site"],
+            "lon": temp["weighted_lon"] / temp["reading"],
+            "lat": temp["weighted_lat"] / temp["reading"],
+        }
+    )
+    return {"combined": combined, "centers": centers}
 
 
 def check(args, tables):
@@ -109,16 +102,23 @@ def check(args, tables):
     reference = tables[reference_key]
     for other_key in remaining_keys:
         other = tables[other_key]
-        assert set(reference.keys()) == set(other.keys()), f"Key mis-match {reference_key} {other_key}"
+        assert set(reference.keys()) == set(
+            other.keys()
+        ), f"Key mis-match {reference_key} {other_key}"
         for name in reference:
-            assert len(reference[name]) == len(other[name]), f"Length mis-match {reference_key} {other_key} {name}"
+            assert len(reference[name]) == len(
+                other[name]
+            ), f"Length mis-match {reference_key} {other_key} {name}"
+
 
 def make_figures(args, combined, centers):
     """Create figures showing calculated results."""
-    for (i, row) in centers.iterrows():
+    for i, row in centers.iterrows():
         temp = combined[combined["site"] == row["site"]]
         title = f"{row['site']}: lon={row['lon']:.5f} lat={row['lat']:.5f}"
-        fig = px.scatter(x=temp["lon"], y=temp["lat"], size=temp["reading"], title=title)
+        fig = px.scatter(
+            x=temp["lon"], y=temp["lat"], size=temp["reading"], title=title
+        )
         fig.add_vline(x=row["lon"])
         fig.add_hline(y=row["lat"])
         fig.update_layout(width=FIG_SIZE, height=FIG_SIZE)
@@ -134,7 +134,13 @@ def parse_args():
     parser.add_argument("--csvdir", type=str, help="CSV directory")
     parser.add_argument("--dbfile", type=str, help="database file")
     parser.add_argument("--figdir", type=str, help="figure directory")
-    parser.add_argument("--methods", nargs="+", type=str, help="methods to use", choices=list(METHODS.keys()))
+    parser.add_argument(
+        "--methods",
+        nargs="+",
+        type=str,
+        help="methods to use",
+        choices=list(METHODS.keys()),
+    )
     return parser.parse_args()
 
 

@@ -9,7 +9,11 @@ def main():
     """Main driver."""
     args = parse_args()
     df = pd.read_csv(args.infile) if args.infile else pd.read_csv(sys.stdin)
-    summary = df[["distance_2", "fraction"]].groupby(["distance_2"], as_index=False).agg(func="mean")
+    summary = (
+        df[["distance_2", "fraction"]]
+        .groupby(["distance_2"], as_index=False)
+        .agg(func="mean")
+    )
     summary["distance"] = np.sqrt(summary["distance_2"])
     print(summary)
     fig = px.line(summary, x="distance", y="fraction")

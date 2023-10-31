@@ -30,9 +30,13 @@ def setup():
     parser.add_argument("--depth", type=int, default=2, help="depth")
     parser.add_argument("--size", type=int, default=3, help="size")
     parser.add_argument("--reps", type=int, default=1, help="repetitions")
-    parser.add_argument("--save", action="store_true", default=False, help="save to file")
+    parser.add_argument(
+        "--save", action="store_true", default=False, help="save to file"
+    )
     parser.add_argument("--seed", type=int, default=None, help="RNG seed")
-    parser.add_argument("--verbose", action="store_true", default=False, help="report progress")
+    parser.add_argument(
+        "--verbose", action="store_true", default=False, help="report progress"
+    )
     args = parser.parse_args()
     args.width = args.height = args.size
     return args

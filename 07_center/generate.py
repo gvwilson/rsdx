@@ -21,7 +21,7 @@ SITES = pd.DataFrame(
         ("HMB", -124.17555, 48.81673),
         ("GBY", -124.45930, 48.92090),
     ),
-    columns=("site", "lon", "lat")
+    columns=("site", "lon", "lat"),
 )
 
 # Survey dates and parameters.
@@ -30,11 +30,11 @@ SURVEYS = pd.DataFrame(
         (1748, "COT", "2023-04-27", 23, 100.0, 0.10, 0.10),
         (1749, "COT", "2023-04-28", 11, 100.0, 0.10, 0.10),
         (1755, "COT", "2023-05-13", 15, 101.0, 0.11, 0.10),
-        (1781, "YOU", "2023-05-01", 12,  90.0, 0.15, 0.15),
+        (1781, "YOU", "2023-05-01", 12, 90.0, 0.15, 0.15),
         (1790, "HMB", "2023-05-02", 19, 107.0, 0.22, 0.11),
-        (1803, "GBY", "2023-05-08",  8,  95.0, 0.10, 0.14),
+        (1803, "GBY", "2023-05-08", 8, 95.0, 0.10, 0.14),
     ),
-    columns=("label", "site", "date", "num", "peak", "relative_sd", "radius")
+    columns=("label", "site", "date", "num", "peak", "relative_sd", "radius"),
 )
 
 
@@ -42,9 +42,7 @@ def main():
     """Main driver."""
     args = parse_args()
     params = pd.DataFrame([{"seed": args.seed}])
-    all_settings = SITES\
-        .set_index("site")\
-        .join(SURVEYS.set_index("site"), how="inner")
+    all_settings = SITES.set_index("site").join(SURVEYS.set_index("site"), how="inner")
     all_samples = pd.concat(
         [make_samples(s) for s in all_settings.to_dict(orient="records")]
     )
@@ -56,11 +54,11 @@ def create_csv(args, params, sites, surveys, samples):
     """Create CSV files."""
     if not args.csvdir:
         return
-    for (name, data) in (
-            ("params", params),
-            ("sites", sites),
-            ("surveys", surveys),
-            ("samples", samples)
+    for name, data in (
+        ("params", params),
+        ("sites", sites),
+        ("surveys", surveys),
+        ("samples", samples),
     ):
         with open(f"{args.csvdir}/{name}.csv", "w") as writer:
             writer.write(data.to_csv(index=False))
@@ -73,7 +71,9 @@ def create_db(args, params, sites, surveys, samples):
     con = sqlite3.connect(args.dbfile)
     params.to_sql("params", con, index=False, if_exists="replace")
     sites.to_sql("sites", con, index=False, if_exists="replace")
-    surveys[["label", "site", "date"]].to_sql("surveys", con, index=False, if_exists="replace")
+    surveys[["label", "site", "date"]].to_sql(
+        "surveys", con, index=False, if_exists="replace"
+    )
     samples.to_sql("samples", con, index=False, if_exists="replace")
 
 
