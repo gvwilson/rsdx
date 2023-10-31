@@ -5,8 +5,8 @@
 - [01_grid]({{'/01_grid/' | relative_url}})
 - [02_perf]({{'/02_perf/' | relative_url}})
 - [03_flow]({{'/03_flow/' | relative_url}})
-- [03_lazy]({{'/03_lazy/' | relative_url}})
 - [04_lazy]({{'/04_lazy/' | relative_url}})
 - [05_dim]({{'/05_dim/' | relative_url}})
 - [06_density]({{'/06_density/' | relative_url}})
 - [07_center]({{'/07_center/' | relative_url}})
+
