@@ -41,19 +41,36 @@ SURVEYS = pd.DataFrame(
 def main():
     """Main driver."""
     args = parse_args()
+    params = pd.DataFrame([{"seed": args.seed}])
     all_settings = SITES\
         .set_index("site")\
         .join(SURVEYS.set_index("site"), how="inner")
     all_samples = pd.concat(
         [make_samples(s) for s in all_settings.to_dict(orient="records")]
     )
-    create_db(args, SITES, SURVEYS, all_samples)
+    create_csv(args, params, SITES, SURVEYS, all_samples)
+    create_db(args, params, SITES, SURVEYS, all_samples)
 
 
-def create_db(args, sites, surveys, samples):
+def create_csv(args, params, sites, surveys, samples):
+    """Create CSV files."""
+    if not args.csvdir:
+        return
+    for (name, data) in (
+            ("params", params),
+            ("sites", sites),
+            ("surveys", surveys),
+            ("samples", samples)
+    ):
+        with open(f"{args.csvdir}/{name}.csv", "w") as writer:
+            writer.write(data.to_csv(index=False))
+
+
+def create_db(args, params, sites, surveys, samples):
     """Create database file with all sites and samples."""
+    if not args.dbfile:
+        return
     con = sqlite3.connect(args.dbfile)
-    params = pd.DataFrame([{"seed": args.seed}])
     params.to_sql("params", con, index=False, if_exists="replace")
     sites.to_sql("sites", con, index=False, if_exists="replace")
     surveys[["label", "site", "date"]].to_sql("surveys", con, index=False, if_exists="replace")
@@ -88,6 +105,7 @@ def make_point(settings):
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
+    parser.add_argument("--csvdir", type=str, default=None, help="CSV directory")
     parser.add_argument("--dbfile", type=str, default=None, help="database file")
     parser.add_argument("--seed", type=int, help="RNG seed")
     args = parser.parse_args()
