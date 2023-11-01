@@ -1,5 +1,5 @@
 ---
-title: "03: task runner"
+title: "task runner"
 ---
 
 - Use Metaflow to run multiple jobs.

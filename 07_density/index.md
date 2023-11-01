@@ -1,5 +1,5 @@
 ---
-title: "06: estimate density vs. distance from center"
+title: "estimate density vs. distance"
 ---
 
 - Code is simple, but output CSV files quickly run into hundreds of megabytes

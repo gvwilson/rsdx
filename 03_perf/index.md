@@ -1,5 +1,5 @@
 ---
-title: "02: performance"
+title: "measure performance"
 ---
 
 - Modify main driver to run both grid options *with the same seed*.

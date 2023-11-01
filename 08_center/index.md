@@ -1,5 +1,5 @@
 ---
-title: "07: generate geocoded readings"
+title: "geocoded readings"
 ---
 
 - Generate readings randomly oriented around center point.

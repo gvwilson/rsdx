@@ -1,12 +1,12 @@
 ---
 ---
 
-- [00_script]({{'/00_script/' | relative_url}})
-- [01_grid]({{'/01_grid/' | relative_url}})
-- [02_perf]({{'/02_perf/' | relative_url}})
-- [03_flow]({{'/03_flow/' | relative_url}})
-- [04_lazy]({{'/04_lazy/' | relative_url}})
-- [05_dim]({{'/05_dim/' | relative_url}})
-- [06_density]({{'/06_density/' | relative_url}})
-- [07_center]({{'/07_center/' | relative_url}})
+1. [initial script]({{'/01_script/' | relative_url}})
+1. [grid abstraction]({{'/02_grid/' | relative_url}})
+1. [measure performance]({{'/03_perf/' | relative_url}})
+1. [task runner]({{'/04_flow/' | relative_url}})
+1. [lazy algorithm]({{'/05_lazy/' | relative_url}})
+1. [measure fractal dimension]({{'/06_dim/' | relative_url}})
+1. [estimate density vs. distance]({{'/07_density/' | relative_url}})
+1. [geocoded readings]({{'/08_center/' | relative_url}})
 

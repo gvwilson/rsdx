@@ -1,5 +1,5 @@
 ---
-title: "05: measure fractal dimension"
+title: "measure fractal dimension"
 ---
 
 - Use box-counting to estimate fractal dimension.

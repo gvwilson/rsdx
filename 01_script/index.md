@@ -1,5 +1,5 @@
 ---
-title: "00: initial script"
+title: "initial script"
 ---
 
 - Is broken into functions (yay).
