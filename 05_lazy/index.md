@@ -1,5 +1,4 @@
 ---
-title: "lazy algorithm"
 ---
 
 - Fill grid (because we want exactly the same random numbers).

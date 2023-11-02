@@ -1,5 +1,4 @@
 ---
-title: "grid abstraction"
 ---
 
 - Introduce abstract base class for grid.

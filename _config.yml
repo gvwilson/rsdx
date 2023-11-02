@@ -24,11 +24,10 @@ chapters:
   path: "09_center"
 
 defaults:
-  -
-    scope:
-      path: ""
-    values:
-      layout: "default"
+- scope:
+    path: ""
+  values:
+    layout: "default"
 
 markdown: kramdown
 highlighter: rouge
