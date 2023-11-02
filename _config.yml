@@ -3,6 +3,26 @@ repository: gvwilson/rsdx
 author:
   name: Greg Wilson
 
+chapters:
+- title: "Initial Script"
+  path: "01_script"
+- title: "Grid Abstraction"
+  path: "02_grid"
+- title: "Measure Performance"
+  path: "03_perf"
+- title: "Task Runner"
+  path: "04_flow"
+- title: "Lazy Algorithm"
+  path: "05_lazy"
+- title: "Measure Fractal Dimension"
+  path: "06_dim"
+- title: "Estimate Density vs. Distance"
+  path: "07_density"
+- title: "Parse Raw Data"
+  path: "08_parse"
+- title: "Geocoded Readings"
+  path: "09_center"
+
 defaults:
   -
     scope:
