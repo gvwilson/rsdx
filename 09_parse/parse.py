@@ -38,7 +38,9 @@ def is_empty(row):
 
 def is_start_of_body(row):
     """Is this row the start of the body section?"""
-    return (len(row) > 0 and row[0].lower() == "site") or (len(row) > 1 and row[1].lower() == "site")
+    return (len(row) > 0 and row[0].lower() == "site") or (
+        len(row) > 1 and row[1].lower() == "site"
+    )
 
 
 def load(reader):
