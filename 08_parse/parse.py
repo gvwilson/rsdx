@@ -20,7 +20,7 @@ def main():
 
     if args.infile:
         with open(args.infile, "r") as reader:
-            df = load(infile)
+            df = load(reader)
     else:
         df = load(sys.stdin)
 
