@@ -1,7 +1,10 @@
+duckdb
 dvc
 geopy
 kaleido
+metaflow
 numpy
 pandas
 plotly.express
+polars
 ruff
