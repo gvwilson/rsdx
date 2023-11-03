@@ -1,2 +1,12 @@
+[project]
+name = "rsdx"
+authors = [
+    {name = "Greg Wilson", email = "gvwilson@third-bit.com"},
+]
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = ["License :: OSI Approved :: MIT License"]
+version = "0.1"
+
 [tool.ruff]
 target-version = "py311"
