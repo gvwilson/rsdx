@@ -1,3 +1,3 @@
-# Invasion Percolation
+# Research Software Design by Example
 
-An example for research software engineers.
+Examples of software design in research software engineering.

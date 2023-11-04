@@ -5,23 +5,25 @@ author:
 
 chapters:
 - title: "Initial Script"
-  path: "script"
+  key: script
 - title: "Parse Raw Data"
-  path: "parse"
+  key: parse
 - title: "Geocoded Readings"
-  path: "center"
+  key: center
 - title: "Grid Abstraction"
-  path: "grid"
+  key: grid
 - title: "Measure Performance"
-  path: "perf"
+  key: perf
 - title: "Task Runner"
-  path: "flow"
+  key: flow
 - title: "Lazy Algorithm"
-  path: "lazy"
+  key: lazy
 - title: "Measure Fractal Dimension"
-  path: "dim"
+  key: dim
 - title: "Estimate Density vs. Distance"
-  path: "density"
+  key: density
+- title: "Testing"
+  key: test
 
 defaults:
 - scope:
