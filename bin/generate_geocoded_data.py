@@ -1,7 +1,6 @@
 """Generate measurement data."""
 
 import argparse
-from collections import namedtuple
 import pandas as pd
 import random
 import sqlite3
@@ -98,7 +97,7 @@ def make_point(settings):
         "label": settings["label"],
         "lon": point.longitude,
         "lat": point.latitude,
-        "reading": expected,
+        "reading": reading,
     }
 
 

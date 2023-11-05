@@ -5,4 +5,5 @@ metaflow
 numpy
 pandas
 plotly.express
+pytest
 ruff

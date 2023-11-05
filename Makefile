@@ -25,6 +25,13 @@ HTML := $(patsubst ${SRC_DIR}/%.md,${HTML_DIR}/%.html,${MARKDOWN})
 commands:
 	@grep -h -E '^##' ${MAKEFILE_LIST} | sed -e 's/## //g' | column -t -s ':'
 
+## examples: rebuild examples
+.PHONY: examples
+examples:
+	@for d in ${EXAMPLE_DIRS}; do echo ""; echo $$d; make -C $$d; done
+
+## --------------------
+
 ## build: rebuild the site
 .PHONY: build
 build:
@@ -35,15 +42,24 @@ build:
 serve:
 	${JEKYLL} serve
 
-## examples: rebuild examples
-.PHONY: examples
-examples:
-	@for d in ${EXAMPLE_DIRS}; do echo ""; echo $$d; make -C $$d; done
+## --------------------
+
+## style: check code style
+.PHONY: style
+style:
+	@ruff check .
+
+## reformat: reformat unstylish code
+.PHONY: reformat
+reformat:
+	@ruff format .
 
 ## lint: check project organization
 .PHONY: lint
 lint:
 	@${PYTHON} bin/lint.py --config _config.yml --src src
+
+## --------------------
 
 ## clean: tidy up
 .PHONY: clean
@@ -55,6 +71,8 @@ clean:
 .PHONY: sterile
 sterile: clean
 	@rm -rf ${OUT_DIR}
+
+## --------------------
 
 ## settings: show variables
 .PHONY: settings

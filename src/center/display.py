@@ -4,7 +4,6 @@ import argparse
 import pandas as pd
 import plotly.express as px
 import sqlite3
-import sys
 
 
 FIG_SIZE = 800

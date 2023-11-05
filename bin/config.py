@@ -1,7 +1,6 @@
 """Get values from configuration file."""
 
 import argparse
-import sys
 import yaml
 
 
