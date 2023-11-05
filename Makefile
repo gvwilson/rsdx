@@ -71,6 +71,8 @@ clean:
 .PHONY: sterile
 sterile: clean
 	@rm -rf ${OUT_DIR}
+	@find . -name __pycache__ -exec rm -r {} +
+	@find . -name .pytest_cache -exec rm -r {} +
 
 ## --------------------
 
