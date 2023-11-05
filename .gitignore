@@ -1,5 +1,7 @@
 *~
+.coverage
 .jekyll-cache
 .metaflow
+.pytest_cache
 __pycache__
 _site

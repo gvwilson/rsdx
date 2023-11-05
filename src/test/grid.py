@@ -66,19 +66,6 @@ class Grid:
             for y in range(self._height):
                 yield (x, y, self._grid[x][y])
 
-    def adjacent(self, x, y):
-        """Is (x, y) adjacent to a filled cell?"""
-        x_1, y_1 = x + 1, y + 1
-        if (x > 0) and (self[x - 1, y] == self.FILLED):
-            return True
-        if (x_1 < self._width) and (self[x_1, y] == self.FILLED):
-            return True
-        if (y > 0) and (self[x, y - 1] == self.FILLED):
-            return True
-        if (y_1 < self._height) and (self[x, y_1] == self.FILLED):
-            return True
-        return False
-
     def on_border(self, x, y):
         """Is this cell on the border of the grid?"""
         if (x == 0) or (x == self._width - 1):

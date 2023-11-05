@@ -32,11 +32,13 @@ exclude = copy + [
     "*.py",
     "*~",
     ".#*",
+    ".coverage",
     ".pytest_cache",
     "CODE_OF_CONDUCT.md",
     "LICENSE.md",
     "README.md",
     "__pycache__",
+    "htmlcov",
     "pyproject.toml",
     "requirements.txt",
 ]

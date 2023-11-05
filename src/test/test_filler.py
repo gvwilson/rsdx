@@ -37,3 +37,15 @@ def test_choose_correct_cell_with_distractors(small):
     small.fill_first_cell()
     with patch("random.choice", lambda x: x[-1]) as mock:
         assert small.choose_cell() == (3, 2)
+
+def test_fill_to_edge(small):
+    small.grid()[3, 2] = 1
+    small.grid()[4, 2] = 1
+    small.fill(randomize=False)
+    assert small.grid() == Grid(5, 5, 2, [
+        [2, 2, 2, 2, 2],
+        [2, 2, 2, 2, 2],
+        [2, 2, 0, 2, 2],
+        [2, 2, 0, 2, 2],
+        [2, 2, 0, 2, 2]
+    ])
