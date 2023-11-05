@@ -14,10 +14,7 @@ class Grid:
         self._width = width
         self._height = height
         self._depth = depth
-        self._grid = [
-            [self.UNINIT] * self._height
-            for _ in range(self._width)
-        ]
+        self._grid = [[self.UNINIT] * self._height for _ in range(self._width)]
         if values is not None:
             self.overwrite(values)
 
@@ -55,7 +52,7 @@ class Grid:
             return False
         if self._height != other.height():
             return False
-        for (x, y, val) in self.sweep():
+        for x, y, val in self.sweep():
             if val != other[x, y]:
                 return False
         return True

@@ -42,11 +42,12 @@ def rootpage(pargs, kwargs, node):
 def toc(pargs, kwargs, node):
     """Handle [% toc %] table of contents shortcode."""
     util.require(
-        (not pargs) and (not kwargs),
-        f"Bad 'toc' shortcode with {pargs} and {kwargs}"
+        (not pargs) and (not kwargs), f"Bad 'toc' shortcode with {pargs} and {kwargs}"
     )
-    items = "\n".join([
-        f'<li><a href="@root/{slug}/">{title}</a></li>'
-        for slug, title in ark.site.config["chapters"].items()
-    ])
+    items = "\n".join(
+        [
+            f'<li><a href="@root/{slug}/">{title}</a></li>'
+            for slug, title in ark.site.config["chapters"].items()
+        ]
+    )
     return f'<ol class="toc">\n{items}\n</ol>'

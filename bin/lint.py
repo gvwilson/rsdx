@@ -37,9 +37,9 @@ def parse_args():
 
 def report_diff(title, expected, actual):
     """Report mis-matches."""
-    if (diff := expected - actual):
+    if diff := expected - actual:
         print(f"{title} missing: {', '.join(diff)}")
-    if (diff := actual - expected):
+    if diff := actual - expected:
         print(f"{title} extra: {', '.join(diff)}")
 
 

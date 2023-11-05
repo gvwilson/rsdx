@@ -2,6 +2,7 @@
 
 import random
 
+
 class Filler:
     """Manage grid filling."""
 
@@ -24,7 +25,7 @@ class Filler:
             self._grid[x, y] = self._grid.FILLED
             if self._grid.on_border(x, y):
                 break
-            
+
     def fill_first_cell(self):
         """Fill the initial cell."""
         x = self._grid.width() // 2
@@ -57,7 +58,12 @@ class Filler:
 
     def _add_candidate(self, x, y):
         """Add (x, y) if suitable."""
-        if (x < 0) or (x >= self._grid.width()) or (y < 0) or (y >= self._grid.height()):
+        if (
+            (x < 0)
+            or (x >= self._grid.width())
+            or (y < 0)
+            or (y >= self._grid.height())
+        ):
             return
 
         if self._grid[x, y] == self._grid.FILLED:
@@ -70,5 +76,5 @@ class Filler:
 
     def _randomize(self):
         """Randomize grid contents."""
-        for (x, y, _) in self._grid.sweep():
+        for x, y, _ in self._grid.sweep():
             self._grid[x, y] = random.randint(1, self._grid.depth())

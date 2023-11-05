@@ -13,6 +13,7 @@ DIRECTIVES_FILE = ".ark"
 
 def with_cache(original):
     """Make sure cache has been built before function runs."""
+
     def wrapped(*args, **kwargs):
         global CACHE
         if CACHE is None:
@@ -22,6 +23,7 @@ def with_cache(original):
                 }
             }
         return original(*args, **kwargs)
+
     return wrapped
 
 

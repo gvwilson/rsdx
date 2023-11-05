@@ -8,10 +8,7 @@ def main():
     """Main driver."""
     args = parse_args()
     config = load_config(args.config)
-    handlers = {
-        name.replace("_get_", ""): func
-        for name, func in globals().items()
-    }
+    handlers = {name.replace("_get_", ""): func for name, func in globals().items()}
     handlers[args.get](config)
 
 
