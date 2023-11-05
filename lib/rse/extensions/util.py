@@ -1,6 +1,7 @@
 """Utilities for building site."""
 
 from pathlib import Path
+import sys
 import yaml
 
 import ark
@@ -10,23 +11,24 @@ CACHE = None
 DIRECTIVES_FILE = ".ark"
 
 
-def _make_cache():
-    """Build the configuration cache."""
-    global CACHE
-    CACHE = {
-        "titles": {
-            slug: title for (slug, title) in ark.site.config["chapters"].items()
-        }
-    }
-
-
 def with_cache(original):
     """Make sure cache has been built before function runs."""
     def wrapped(*args, **kwargs):
+        global CACHE
         if CACHE is None:
-            _make_cache()
+            CACHE = {
+                "titles": {
+                    slug: title for (slug, title) in ark.site.config["chapters"].items()
+                }
+            }
         return original(*args, **kwargs)
     return wrapped
+
+
+def fail(msg):
+    """Fail unilaterally."""
+    print(msg, file="sys.stderr")
+    raise AssertionError(msg)
 
 
 def get_slug(node):
@@ -47,3 +49,9 @@ def read_directives(dirname):
         return {}
     with open(filepath, "r") as reader:
         return yaml.safe_load(reader) or {}
+
+
+def require(cond, msg):
+    """Fail if condition untrue."""
+    if not cond:
+        fail(msg)
