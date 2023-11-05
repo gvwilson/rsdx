@@ -72,12 +72,11 @@ def calculate_density(grid):
     cx, cy = grid.width() // 2, grid.height() // 2
     count_cells = defaultdict(int)
     count_filled = defaultdict(int)
-    for x in range(grid.width()):
-        for y in range(grid.height()):
-            dist_2 = (x - cx) ** 2 + (y - cy) ** 2
-            count_cells[dist_2] += 1
-            if grid[x, y] == grid.FILLED:
-                count_filled[dist_2] += 1
+    for (x, y, val) in grid.sweep():
+        dist_2 = (x - cx) ** 2 + (y - cy) ** 2
+        count_cells[dist_2] += 1
+        if val == grid.FILLED:
+            count_filled[dist_2] += 1
 
     result = [
         (dist_2, count_filled[dist_2] / count_cells[dist_2])

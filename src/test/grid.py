@@ -55,11 +55,16 @@ class Grid:
             return False
         if self._height != other.height():
             return False
+        for (x, y, val) in self.sweep():
+            if val != other[x, y]:
+                return False
+        return True
+
+    def sweep(self):
+        """Return indices and values in order."""
         for x in range(self._width):
             for y in range(self._height):
-                if self[x, y] != other[x, y]:
-                    return False
-        return True
+                yield (x, y, self._grid[x][y])
 
     def adjacent(self, x, y):
         """Is (x, y) adjacent to a filled cell?"""

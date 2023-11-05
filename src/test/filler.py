@@ -8,15 +8,16 @@ class Filler:
     def __init__(self, grid):
         """Construct."""
         self._grid = grid
-        self._randomize()
         self._candidates = {}
 
     def grid(self):
         """Get the grid object."""
         return self._grid
 
-    def fill(self):
+    def fill(self, randomize=True):
         """Fill grid one cell at a time."""
+        if randomize:
+            self._randomize()
         self.fill_first_cell()
         while True:
             x, y = self.choose_cell()
@@ -69,6 +70,5 @@ class Filler:
 
     def _randomize(self):
         """Randomize grid contents."""
-        for x in range(self._grid.width()):
-            for y in range(self._grid.height()):
-                self._grid[x, y] = random.randint(1, self._grid.depth())
+        for (x, y, _) in self._grid.sweep():
+            self._grid[x, y] = random.randint(1, self._grid.depth())

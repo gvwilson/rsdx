@@ -9,16 +9,14 @@ def test_initially_uninitialized():
     assert g.width() == 2
     assert g.height() == 3
     assert g.depth() == 4
-    for x in range(g.width()):
-        for y in range(g.height()):
-            with pytest.raises(AssertionError):
-                g[x, y]
+    for (x, y, _) in g.sweep():
+        with pytest.raises(AssertionError):
+            g[x, y]
 
 def test_set_individual_values():
     g = Grid(2, 3, 4)
-    for x in range(g.width()):
-        for y in range(g.height()):
-            g[x, y] = 1 + ((x + y) % 4)
+    for (x, y, _) in g.sweep():
+        g[x, y] = 1 + ((x + y) % 4)
     for y in range(g.height()):
         for x in range(g.width()):
             assert g[x, y] == 1 + ((x + y) % 4)
