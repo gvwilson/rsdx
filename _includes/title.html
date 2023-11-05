@@ -1,3 +1,0 @@
-{% assign page_key = page.url | replace: "/", "" %}
-{% assign page_details = site.chapters | find: "key", page_key %}
-<h1>{{site.title}}{% if page_details %}: {{page_details.title}}{% endif %}</h1>

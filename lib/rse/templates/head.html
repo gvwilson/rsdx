@@ -1,0 +1,22 @@
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="repo" content="{{site.repo}}">
+  <link rel="icon" type="image/x-icon" href="@root/favicon.ico">
+  <link rel="stylesheet" href="@root/style.css">
+  <link rel="stylesheet" href="@root/tango.css">
+  {% if site.plausible %}<script defer data-domain="{{site.domain}}" src="https://plausible.io/js/plausible.js"></script>{% endif %}
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script
+    type="text/javascript"
+    id="MathJax-script"
+    async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <title>{{ site.title }}{% if node | not_root %}: {{ node | part_title }}{% endif %}</title>
+</head>

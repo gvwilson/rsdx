@@ -2,7 +2,7 @@
 .DEFAULT: commands
 
 # Tools
-JEKYLL := jekyll
+ARK := ark
 PYTHON := python
 
 # Directories.
@@ -35,12 +35,12 @@ examples:
 ## build: rebuild the site
 .PHONY: build
 build:
-	${JEKYLL} build
+	${ARK} build
 
 ## serve: rebuild and serve the site
 .PHONY: serve
 serve:
-	${JEKYLL} serve
+	${ARK} serve
 
 ## --------------------
 
@@ -77,9 +77,9 @@ sterile: clean
 ## settings: show variables
 .PHONY: settings
 settings:
+	@echo "ARK" ${ARK}
 	@echo "EXAMPLE_MAKEFILES" ${EXAMPLE_MAKEFILES}
 	@echo "HTML" ${HTML}
 	@echo "HTML_DIR" ${HTML_DIR}
-	@echo "JEKYLL" ${JEKYLL}
 	@echo "MARKDOWN" ${MARKDOWN}
 	@echo "SRC_DIR" ${SRC_DIR}

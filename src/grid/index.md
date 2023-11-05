@@ -1,6 +1,3 @@
----
----
-
 - Introduce abstract base class for grid.
   - Implement nested list and test.
   - Implement NumPy array and test.

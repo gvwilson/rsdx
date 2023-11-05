@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="repo" content="https://github.com/gvwilson/rsdx">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../tango.css">
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script
+    type="text/javascript"
+    id="MathJax-script"
+    async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <title>Research Software Design by Example: Initial Script</title>
+</head>
+
+  </head>
+  <body>
+    <main>
+      <h1>Initial Script</h1>
+
+      <ul>
+<li>Is broken into functions (yay).</li>
+<li>Had to modify <code>print_grid</code> to show numeric values for debugging
+  and to show settings (esp. <code>seed</code>) for reproducibility.</li>
+<li>Had to modify <code>main</code> to allow seed to be set from command line.</li>
+<li>No way to get the random seed back from <code>random</code>, so use a trick to make reproducible.</li>
+</ul>
+    </main>
+    <footer>
+  <a href="../license/">License</a> &middot; <a href="https://github.com/gvwilson/rsdx">Repository</a>
+</footer>
+
+  </body>
+</html>

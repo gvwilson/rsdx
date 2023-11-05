@@ -1,0 +1,1 @@
+[% rootpage LICENSE.md %]

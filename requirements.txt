@@ -1,3 +1,4 @@
+ark
 dvc
 geopy
 kaleido
@@ -5,5 +6,6 @@ metaflow
 numpy
 pandas
 plotly.express
+pymdown-extensions
 pytest
 ruff
