@@ -5,9 +5,9 @@ repo = "https://github.com/gvwilson/rsdx"
 author = "Greg Wilson"
 
 chapters = {
-    "script": "Initial Script",
     "parse": "Parse Raw Data",
     "center": "Geocoded Readings",
+    "script": "Initial Script",
     "grid": "Grid Abstraction",
     "perf": "Measure Performance",
     "flow": "Task Runner",
