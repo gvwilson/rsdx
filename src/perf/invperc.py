@@ -47,6 +47,7 @@ def setup():
 
 
 def run_all(args, all_seeds):
+    """Run all variations."""
     results = pd.DataFrame(columns=("kind", "width", "height", "depth", "seed", "time"))
     for seed in all_seeds:
         all_grids = {}

@@ -1,3 +1,5 @@
+"""Lazy-filling grid."""
+
 import random
 
 from grid_list import GridList

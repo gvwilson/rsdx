@@ -1,3 +1,5 @@
+"""Analyze data from runs."""
+
 import argparse
 import pandas as pd
 import plotly.express as px

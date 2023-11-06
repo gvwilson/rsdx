@@ -35,7 +35,13 @@ examples:
 ## docs: rebuild code documentation
 docs: DOCS.md
 DOCS.md: ${EXAMPLE_PY} bin/make_docs.py
-	python bin/make_docs.py --config ${CONFIG} --src ${SRC_DIR} --title "Documentation" --exclude conduct docs license > $@
+	@python bin/make_docs.py \
+		--config ${CONFIG} \
+		--src ${SRC_DIR} \
+		--title "Documentation" \
+		--notdirs conduct docs license \
+		--notfiles '*/test_*.py' \
+		> $@
 
 ## --------------------
 

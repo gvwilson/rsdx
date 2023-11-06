@@ -2,6 +2,7 @@
 
 import argparse
 import ast
+from fnmatch import fnmatch
 from pathlib import Path
 import sys
 
@@ -13,9 +14,11 @@ def main():
     args = parse_args()
     config = util.load_config(args.config)
     print(f"# {args.title}\n")
-    for dirname in util.source_dirs(args.src, config, args.exclude):
+    for dirname in util.source_dirs(args.src, config, args.notdirs):
         print(f"## {dirname}\n")
         for filename in Path(dirname).glob("*.py"):
+            if any(fnmatch(filename, pat) for pat in args.notfiles):
+                continue
             format_file(filename)
 
 
@@ -28,15 +31,18 @@ def add_parents(root):
 
 def format_entry(filename, thing):
     """Format entry for something."""
+    name = filename if isinstance(thing, ast.Module) else thing.name
     ds = ast.get_docstring(thing)
+    if ds is None:
+        print(f"…{name}", file=sys.stderr)
     if isinstance(thing, ast.Module):
-        return f"### `{filename}`: {ds}\n"
+        return f"### `{name}`: {ds}\n"
     if isinstance(thing, ast.ClassDef):
-        return f"-   class `{thing.name}`: {ds}"
+        return f"-   class `{name}`: {ds}"
     assert isinstance(thing, ast.FunctionDef)
     if isinstance(thing.parent, ast.ClassDef):
-        return f"    -   method `{thing.name}`: {ds}"
-    return f"-   function `{thing.name}`: {ds}"
+        return f"    -   method `{name}`: {ds}"
+    return f"-   function `{name}`: {ds}"
 
 
 def format_file(filename):
@@ -59,7 +65,8 @@ def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, required=True, help="config file")
-    parser.add_argument("--exclude", type=str, nargs="+", help="directories to ignore")
+    parser.add_argument("--notdirs", type=str, nargs="+", default=[], help="directories to ignore")
+    parser.add_argument("--notfiles", type=str, nargs="+", default=[], help="file patterns to ignore")
     parser.add_argument("--src", type=str, required=True, help="source directory")
     parser.add_argument("--title", type=str, required=True, help="page title")
     return parser.parse_args()

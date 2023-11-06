@@ -43,6 +43,7 @@ def setup():
 
 
 def initialize_random(seed, reps):
+    """Initialize RNG in reproducible way."""
     if seed is None:
         seed = random.randrange(sys.maxsize)
     random.seed(seed)
@@ -50,6 +51,7 @@ def initialize_random(seed, reps):
 
 
 def percolate(args, all_seeds):
+    """Run all simulations."""
     results = pd.DataFrame(columns=("kind", "width", "height", "depth", "seed", "time"))
     for seed in all_seeds:
         all_grids = {}

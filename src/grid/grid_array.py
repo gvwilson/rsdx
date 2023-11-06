@@ -1,3 +1,5 @@
+"""NumPy array grid."""
+
 import random
 import numpy as np
 from grid_generic import GridGeneric

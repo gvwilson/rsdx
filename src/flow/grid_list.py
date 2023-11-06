@@ -1,3 +1,5 @@
+"""List-of-lists grid."""
+
 import random
 from grid_generic import GridGeneric
 

@@ -8,6 +8,7 @@ import pandas as pd
 
 
 class State(Enum):
+    """Enumerate possible parser states."""
     HEADER = "header"
     SEARCHING = "searching"
     BODY = "body"

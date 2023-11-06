@@ -44,6 +44,7 @@ def setup():
 
 
 def initialize_random(seed=None):
+    """Initialize RNG in reproducible way."""
     if seed is None:
         seed = random.randrange(sys.maxsize)
     random.seed(seed)
@@ -51,6 +52,7 @@ def initialize_random(seed=None):
 
 
 def percolate(args):
+    """Run all simulations."""
     runs = []
     results = []
     for i in range(args.reps):

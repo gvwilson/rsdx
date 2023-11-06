@@ -13,6 +13,8 @@ REPS = 20
 
 
 class InvPercFlow(FlowSpec):
+    """Metaflow for invasion percolation."""
+
     sizes = Parameter("sizes", help="grid sizes", type=JSONType, default=SIZES)
     depth = Parameter("depth", help="grid depth", type=int, default=DEPTH)
     reps = Parameter("reps", help="repetitions", type=int, default=REPS)
