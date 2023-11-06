@@ -2,13 +2,14 @@
 
 import argparse
 from pathlib import Path
-import yaml
+
+import util
 
 
 def main():
     """Main driver."""
     args = parse_args()
-    config = load_config(args.config)
+    config = util.load_config(args.config)
     for name, func in globals().items():
         if name.startswith("_lint_"):
             func(args, config)
@@ -16,15 +17,9 @@ def main():
 
 def _lint_chapters_again_keys(args, config):
     """Get chapter keys."""
-    expected = {f"{args.src}/{ch['path']}" for ch in config["chapters"]}
+    expected = set(util.source_dirs(args.src, config))
     actual = {str(p) for p in Path(args.src).glob("*") if p.is_dir()}
     report_diff("chapter keys vs. directories", expected, actual)
-
-
-def load_config(filename):
-    """Load configuration."""
-    with open(filename, "r") as reader:
-        return yaml.load(reader, Loader=yaml.FullLoader)
 
 
 def parse_args():

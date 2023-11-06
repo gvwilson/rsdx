@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="repo" content="https://github.com/gvwilson/rsdx">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../tango.css">
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script
+    type="text/javascript"
+    id="MathJax-script"
+    async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <title>Research Software Design by Example: Documentation</title>
+</head>
+
+  </head>
+  <body>
+    <main>
+      <h1>Documentation</h1>
+
+      <h2>src/script</h2>
+<h3><code>src/script/invperc.py</code>: Invasion percolation in Python.</h3>
+<ul>
+<li>function <code>main</code>: None</li>
+<li>function <code>make_grid</code>: None</li>
+<li>function <code>choose_cell</code>: None</li>
+<li>function <code>adjacent</code>: None</li>
+<li>function <code>on_border</code>: None</li>
+<li>function <code>print_grid</code>: None</li>
+</ul>
+<h2>src/parse</h2>
+<h3><code>src/parse/parse.py</code>: Parse messy data files.</h3>
+<ul>
+<li>class <code>State</code>: None</li>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>is_empty</code>: Is this row effectively empty?</li>
+<li>function <code>is_start_of_body</code>: Is this row the start of the body section?</li>
+<li>function <code>load</code>: Load messy data.</li>
+<li>function <code>normalize</code>: Remove leading spaces from rows if necessary.</li>
+<li>function <code>parse_args</code>: Parse command-line arguments.</li>
+<li>function <code>split</code>: Split header from body.</li>
+</ul>
+<h2>src/center</h2>
+<h3><code>src/center/display.py</code>: Analyze pollution readings.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>read_csv</code>: Read CSV files directly into dataframes.</li>
+<li>function <code>read_db_pandas</code>: Read database tables into Pandas dataframes and manipulate.</li>
+<li>function <code>read_db_sql</code>: Read tables and do calculations directly in SQL.</li>
+<li>function <code>combine_with_pandas</code>: Combine tables using Pandas.</li>
+<li>function <code>check</code>: Check all tables against each other.</li>
+<li>function <code>make_figures</code>: Create figures showing calculated results.</li>
+<li>function <code>parse_args</code>: Parse command-line arguments.</li>
+</ul>
+<h2>src/grid</h2>
+<h3><code>src/grid/invperc.py</code>: Invasion percolation in Python.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>setup</code>: Get parameters.</li>
+<li>function <code>initialize_grid</code>: Prepare grid for simulation.</li>
+<li>function <code>fill_grid</code>: Fill grid one cell at a time.</li>
+<li>function <code>choose_cell</code>: Choose the next cell to fill.</li>
+<li>function <code>print_grid</code>: Show the result.</li>
+</ul>
+<h3><code>src/grid/grid_list.py</code>: None</h3>
+<ul>
+<li>class <code>GridList</code>: Represent grid as list of lists.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/grid/grid_array.py</code>: None</h3>
+<ul>
+<li>class <code>GridArray</code>: Represent grid as NumPy array.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/grid/grid_generic.py</code>: Represent 2D grid.</h3>
+<ul>
+<li>class <code>GridGeneric</code>: Represent a generic grid.<ul>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+<li>method <code>__init__</code>: Record shared state.</li>
+<li>method <code>width</code>: Get width of grid.</li>
+<li>method <code>height</code>: Get height of grid.</li>
+<li>method <code>depth</code>: Get depth of grid.</li>
+<li>method <code>adjacent</code>: Is (x, y) adjacent to a filled cell?</li>
+<li>method <code>on_border</code>: Is this cell on the border of the grid?</li>
+</ul>
+</li>
+</ul>
+<h2>src/perf</h2>
+<h3><code>src/perf/invperc.py</code>: Invasion percolation in Python.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>setup</code>: Get parameters.</li>
+<li>function <code>run_all</code>: None</li>
+<li>function <code>initialize_grid</code>: Prepare grid for simulation.</li>
+<li>function <code>fill_grid</code>: Fill grid one cell at a time.</li>
+<li>function <code>choose_cell</code>: Choose the next cell to fill.</li>
+<li>function <code>check_equal</code>: Check that all grids got the same answer.</li>
+<li>function <code>print_grid</code>: Show the result.</li>
+</ul>
+<h3><code>src/perf/grid_list.py</code>: None</h3>
+<ul>
+<li>class <code>GridList</code>: Represent grid as list of lists.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/perf/grid_array.py</code>: None</h3>
+<ul>
+<li>class <code>GridArray</code>: Represent grid as NumPy array.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/perf/grid_generic.py</code>: Represent 2D grid.</h3>
+<ul>
+<li>class <code>GridGeneric</code>: Represent a generic grid.<ul>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+<li>method <code>__init__</code>: Record shared state.</li>
+<li>method <code>width</code>: Get width of grid.</li>
+<li>method <code>height</code>: Get height of grid.</li>
+<li>method <code>depth</code>: Get depth of grid.</li>
+<li>method <code>__eq__</code>: Compare to another grid.</li>
+<li>method <code>adjacent</code>: Is (x, y) adjacent to a filled cell?</li>
+<li>method <code>on_border</code>: Is this cell on the border of the grid?</li>
+</ul>
+</li>
+</ul>
+<h2>src/flow</h2>
+<h3><code>src/flow/analysis.py</code>: None</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>parse_args</code>: Parse command-line arguments.</li>
+</ul>
+<h3><code>src/flow/invperc.py</code>: Invasion percolation in Python.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>parse_args</code>: Get parameters.</li>
+<li>function <code>initialize_random</code>: None</li>
+<li>function <code>percolate</code>: None</li>
+<li>function <code>initialize_grid</code>: Prepare grid for simulation.</li>
+<li>function <code>fill_grid</code>: Fill grid one cell at a time.</li>
+<li>function <code>choose_cell</code>: Choose the next cell to fill.</li>
+<li>function <code>check_equal</code>: Check that all grids got the same answer.</li>
+<li>function <code>print_grid</code>: Show the result.</li>
+</ul>
+<h3><code>src/flow/flow.py</code>: Re-run everything.</h3>
+<ul>
+<li>class <code>InvPercFlow</code>: None<ul>
+<li>method <code>start</code>: Collect parameters and run jobs.</li>
+<li>method <code>run_job</code>: Run a sweep with one set of parameters.</li>
+<li>method <code>join</code>: Combine results from all sweeps.</li>
+<li>method <code>end</code>: Save results.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/flow/grid_list.py</code>: None</h3>
+<ul>
+<li>class <code>GridList</code>: Represent grid as list of lists.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/flow/grid_array.py</code>: None</h3>
+<ul>
+<li>class <code>GridArray</code>: Represent grid as NumPy array.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/flow/grid_generic.py</code>: Represent 2D grid.</h3>
+<ul>
+<li>class <code>GridGeneric</code>: Represent a generic grid.<ul>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+<li>method <code>__init__</code>: Record shared state.</li>
+<li>method <code>width</code>: Get width of grid.</li>
+<li>method <code>height</code>: Get height of grid.</li>
+<li>method <code>depth</code>: Get depth of grid.</li>
+<li>method <code>__eq__</code>: Compare to another grid.</li>
+<li>method <code>adjacent</code>: Is (x, y) adjacent to a filled cell?</li>
+<li>method <code>on_border</code>: Is this cell on the border of the grid?</li>
+</ul>
+</li>
+</ul>
+<h2>src/lazy</h2>
+<h3><code>src/lazy/analysis.py</code>: None</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>parse_args</code>: Parse command-line arguments.</li>
+</ul>
+<h3><code>src/lazy/invperc.py</code>: Invasion percolation in Python.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>setup</code>: Get parameters.</li>
+<li>function <code>initialize_random</code>: None</li>
+<li>function <code>percolate</code>: None</li>
+<li>function <code>initialize_grid</code>: Prepare grid for simulation.</li>
+<li>function <code>fill_grid</code>: Fill grid one cell at a time.</li>
+<li>function <code>check_equal</code>: Check that all grids got the same answer.</li>
+<li>function <code>print_grid</code>: Show the result.</li>
+</ul>
+<h3><code>src/lazy/flow.py</code>: Re-run everything.</h3>
+<ul>
+<li>class <code>InvPercFlow</code>: None<ul>
+<li>method <code>start</code>: Collect parameters and run jobs.</li>
+<li>method <code>run_job</code>: Run a sweep with one set of parameters.</li>
+<li>method <code>join</code>: Combine results from all sweeps.</li>
+<li>method <code>end</code>: Save results.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/lazy/grid_lazy.py</code>: None</h3>
+<ul>
+<li>class <code>GridLazy</code>: Only look at cells that might actually be filled next time.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>fill_first_cell</code>: Fill the initial cell.</li>
+<li>method <code>choose_cell</code>: Choose the next cell to fill.</li>
+<li>method <code>add_candidates</code>: Add candidates around (x, y).</li>
+<li>method <code>_add_candidate</code>: Add (x, y) if suitable.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/lazy/grid_list.py</code>: None</h3>
+<ul>
+<li>class <code>GridList</code>: Represent grid as list of lists.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/lazy/grid_array.py</code>: None</h3>
+<ul>
+<li>class <code>GridArray</code>: Represent grid as NumPy array.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/lazy/grid_generic.py</code>: Represent 2D grid.</h3>
+<ul>
+<li>class <code>GridGeneric</code>: Represent a generic grid.<ul>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+<li>method <code>__init__</code>: Record shared state.</li>
+<li>method <code>width</code>: Get width of grid.</li>
+<li>method <code>height</code>: Get height of grid.</li>
+<li>method <code>depth</code>: Get depth of grid.</li>
+<li>method <code>__eq__</code>: Compare to another grid.</li>
+<li>method <code>adjacent</code>: Is (x, y) adjacent to a filled cell?</li>
+<li>method <code>on_border</code>: Is this cell on the border of the grid?</li>
+<li>method <code>fill_first_cell</code>: Fill the initial cell.</li>
+<li>method <code>choose_cell</code>: Choose the next cell to fill.</li>
+</ul>
+</li>
+</ul>
+<h2>src/dim</h2>
+<h3><code>src/dim/grid.py</code>: Represent 2D grid.</h3>
+<ul>
+<li>class <code>Grid</code>: Represent a grid.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>width</code>: Get width of grid.</li>
+<li>method <code>height</code>: Get height of grid.</li>
+<li>method <code>depth</code>: Get depth of grid.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+<li>method <code>__eq__</code>: Compare to another grid.</li>
+<li>method <code>fill</code>: Fill grid one cell at a time.</li>
+<li>method <code>adjacent</code>: Is (x, y) adjacent to a filled cell?</li>
+<li>method <code>on_border</code>: Is this cell on the border of the grid?</li>
+<li>method <code>fill_first_cell</code>: Fill the initial cell.</li>
+<li>method <code>choose_cell</code>: Choose the next cell to fill.</li>
+<li>method <code>add_candidates</code>: Add candidates around (x, y).</li>
+<li>method <code>print</code>: Show the result.</li>
+<li>method <code>_add_candidate</code>: Add (x, y) if suitable.</li>
+<li>method <code>_init_grid</code>: Initialize grid contents.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/dim/invperc.py</code>: Invasion percolation in Python.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>setup</code>: Get parameters.</li>
+<li>function <code>initialize_random</code>: None</li>
+<li>function <code>percolate</code>: None</li>
+<li>function <code>measure_dimension</code>: Measure fractal dimension of grid.</li>
+</ul>
+<h3><code>src/dim/flow.py</code>: Re-run everything.</h3>
+<ul>
+<li>class <code>InvPercFlow</code>: None<ul>
+<li>method <code>start</code>: Collect parameters and run jobs.</li>
+<li>method <code>run_job</code>: Run a sweep with one set of parameters.</li>
+<li>method <code>join</code>: Combine results from all sweeps.</li>
+<li>method <code>end</code>: Save results.</li>
+</ul>
+</li>
+</ul>
+<h2>src/density</h2>
+<h3><code>src/density/grid.py</code>: Represent 2D grid.</h3>
+<ul>
+<li>class <code>Grid</code>: Represent a grid.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>width</code>: Get width of grid.</li>
+<li>method <code>height</code>: Get height of grid.</li>
+<li>method <code>depth</code>: Get depth of grid.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+<li>method <code>__eq__</code>: Compare to another grid.</li>
+<li>method <code>fill</code>: Fill grid one cell at a time.</li>
+<li>method <code>adjacent</code>: Is (x, y) adjacent to a filled cell?</li>
+<li>method <code>on_border</code>: Is this cell on the border of the grid?</li>
+<li>method <code>fill_first_cell</code>: Fill the initial cell.</li>
+<li>method <code>choose_cell</code>: Choose the next cell to fill.</li>
+<li>method <code>add_candidates</code>: Add candidates around (x, y).</li>
+<li>method <code>print</code>: Show the result.</li>
+<li>method <code>_add_candidate</code>: Add (x, y) if suitable.</li>
+<li>method <code>_init_grid</code>: Initialize grid contents.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/density/analysis.py</code>: None</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>parse_args</code>: Parse command-line arguments.</li>
+</ul>
+<h3><code>src/density/invperc.py</code>: Invasion percolation in Python.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>setup</code>: Get parameters.</li>
+<li>function <code>initialize_random</code>: None</li>
+<li>function <code>percolate</code>: None</li>
+<li>function <code>calculate_density</code>: Calculate density versus distance from center of grid.</li>
+</ul>
+<h3><code>src/density/flow.py</code>: Re-run everything.</h3>
+<ul>
+<li>class <code>InvPercFlow</code>: None<ul>
+<li>method <code>start</code>: Collect parameters and run jobs.</li>
+<li>method <code>run_job</code>: Run a sweep with one set of parameters.</li>
+<li>method <code>join</code>: Combine results from all sweeps.</li>
+<li>method <code>end</code>: Save results.</li>
+</ul>
+</li>
+</ul>
+<h2>src/test</h2>
+<h3><code>src/test/grid.py</code>: Represent 2D grid.</h3>
+<ul>
+<li>class <code>Grid</code>: Represent a grid.<ul>
+<li>method <code>__init__</code>: Construct and fill.</li>
+<li>method <code>width</code>: Get width of grid.</li>
+<li>method <code>height</code>: Get height of grid.</li>
+<li>method <code>depth</code>: Get depth of grid.</li>
+<li>method <code>__getitem__</code>: Get value at location.</li>
+<li>method <code>__setitem__</code>: Set value at location.</li>
+<li>method <code>__eq__</code>: Compare to another grid.</li>
+<li>method <code>sweep</code>: Return indices and values in order.</li>
+<li>method <code>on_border</code>: Is this cell on the border of the grid?</li>
+<li>method <code>print</code>: Show the result.</li>
+<li>method <code>overwrite</code>: Overwrite with values.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/test/test_filler.py</code>: Test grid operations.</h3>
+<ul>
+<li>function <code>small</code>: None</li>
+<li>function <code>test_fill_first_cell</code>: None</li>
+<li>function <code>test_choose_correct_cell_only_one</code>: None</li>
+<li>function <code>test_choose_correct_cell_among_two</code>: None</li>
+<li>function <code>test_choose_correct_cell_with_distractors</code>: None</li>
+<li>function <code>test_fill_to_edge</code>: None</li>
+</ul>
+<h3><code>src/test/test_grid.py</code>: Test grid operations.</h3>
+<ul>
+<li>function <code>test_initially_uninitialized</code>: None</li>
+<li>function <code>test_set_individual_values</code>: None</li>
+<li>function <code>test_set_all_values_when_constructing</code>: None</li>
+</ul>
+<h3><code>src/test/invperc.py</code>: Invasion percolation in Python.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>setup</code>: Get parameters.</li>
+<li>function <code>initialize_random</code>: None</li>
+<li>function <code>percolate</code>: None</li>
+<li>function <code>calculate_density</code>: Calculate density versus distance from center of grid.</li>
+</ul>
+<h3><code>src/test/filler.py</code>: Manage filling.</h3>
+<ul>
+<li>class <code>Filler</code>: Manage grid filling.<ul>
+<li>method <code>__init__</code>: Construct.</li>
+<li>method <code>grid</code>: Get the grid object.</li>
+<li>method <code>fill</code>: Fill grid one cell at a time.</li>
+<li>method <code>fill_first_cell</code>: Fill the initial cell.</li>
+<li>method <code>choose_cell</code>: Choose the next cell to fill.</li>
+<li>method <code>add_candidates</code>: Add candidates around (x, y).</li>
+<li>method <code>_add_candidate</code>: Add (x, y) if suitable.</li>
+<li>method <code>_randomize</code>: Randomize grid contents.</li>
+</ul>
+</li>
+</ul>
+    </main>
+    <footer>
+  <a href="../license/">License</a> &middot; <a href="https://github.com/gvwilson/rsdx">Repository</a>
+</footer>
+
+  </body>
+</html>

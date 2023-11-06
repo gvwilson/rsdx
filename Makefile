@@ -12,8 +12,10 @@ HTML_DIR := _site
 
 # Files.
 ASSETS := $(wildcard ${ASSETS}/*.*)
+CONFIG := config.py
 MARKDOWN := ${SRC_DIR}/index.md $(wildcard src/*/index.md)
 EXAMPLE_DIRS := $(dir $(patsubst %/Makefile,%,$(wildcard src/*/Makefile)))
+EXAMPLE_PY := $(wildcard ${SRC_DIR}/*/*.py)
 
 # Generated output.
 HTML := $(patsubst ${SRC_DIR}/%.md,${HTML_DIR}/%.html,${MARKDOWN})
@@ -30,16 +32,21 @@ commands:
 examples:
 	@for d in ${EXAMPLE_DIRS}; do echo ""; echo $$d; make -C $$d; done
 
+## docs: rebuild code documentation
+docs: DOCS.md
+DOCS.md: ${EXAMPLE_PY} bin/make_docs.py
+	python bin/make_docs.py --config ${CONFIG} --src ${SRC_DIR} --title "Documentation" --exclude conduct docs license > $@
+
 ## --------------------
 
 ## build: rebuild the site
 .PHONY: build
-build:
+build: DOCS.md
 	${ARK} build
 
 ## serve: rebuild and serve the site
 .PHONY: serve
-serve:
+serve: DOCS.md
 	${ARK} serve
 
 ## --------------------
@@ -57,7 +64,7 @@ reformat:
 ## lint: check project organization
 .PHONY: lint
 lint:
-	@${PYTHON} bin/lint.py --config _config.yml --src src
+	@${PYTHON} bin/lint.py --config ${CONFIG} --src src
 
 ## --------------------
 
@@ -81,6 +88,7 @@ sterile: clean
 settings:
 	@echo "ARK" ${ARK}
 	@echo "EXAMPLE_MAKEFILES" ${EXAMPLE_MAKEFILES}
+	@echo "EXAMPLE_PY" ${EXAMPLE_PY}
 	@echo "HTML" ${HTML}
 	@echo "HTML_DIR" ${HTML_DIR}
 	@echo "MARKDOWN" ${MARKDOWN}

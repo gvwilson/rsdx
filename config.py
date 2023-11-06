@@ -17,6 +17,7 @@ chapters = {
     "test": "Testing",
     "license": "License",
     "conduct": "Code of Conduct",
+    "docs": "Documentation",
 }
 
 theme = "rse"
@@ -52,6 +53,6 @@ markdown_settings = {
 }
 
 src_dir = "src"
-out_dir = "docs"
+out_dir = "site"
 
 extension = "/"
