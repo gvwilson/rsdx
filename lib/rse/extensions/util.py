@@ -1,5 +1,6 @@
 """Utilities for building site."""
 
+from datetime import datetime
 from pathlib import Path
 import sys
 import yaml
@@ -18,9 +19,10 @@ def with_cache(original):
         global CACHE
         if CACHE is None:
             CACHE = {
+                "date": datetime.utcnow().replace(microsecond=0).isoformat(" "),
                 "titles": {
                     slug: title for (slug, title) in ark.site.config["chapters"].items()
-                }
+                },
             }
         return original(*args, **kwargs)
 
@@ -37,6 +39,11 @@ def get_slug(node):
     """Get chapter-level slug of file."""
     return node.path[-1] if len(node.path) > 0 else "@root"
 
+
+@with_cache
+def get_date():
+    """Get date/time."""
+    return CACHE["date"]
 
 @with_cache
 def get_title(node):

@@ -1,6 +1,5 @@
 """Ark shortcodes."""
 
-from datetime import datetime
 from pathlib import Path
 import re
 
@@ -20,7 +19,7 @@ def date(pargs, kwargs, node):
         (not pargs) and (not kwargs),
         f"Bad 'date' shortcode with {pargs} and {kwargs}",
     )
-    return datetime.utcnow().replace(microsecond=0).isoformat(" ")
+    return util.get_date()
 
 
 @shortcodes.register("rootpage")

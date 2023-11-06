@@ -53,6 +53,6 @@ markdown_settings = {
 }
 
 src_dir = "src"
-out_dir = "site"
+out_dir = "docs"
 
 extension = "/"
