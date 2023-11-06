@@ -1,2 +1,5 @@
-copy:
-  "analysis.py": "flow/analysis.py"
+copied:
+  - "flow/analysis.py"
+  - "flow/flow.py"
+  - "flow/grid_array.py"
+  - "flow/grid_list.py"

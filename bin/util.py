@@ -1,6 +1,21 @@
 """Utilities."""
 
 import importlib.util
+from pathlib import Path
+import yaml
+
+
+ARK_FILE = ".ark"
+
+
+def load_ark_data(dir_path, section=None, default=None):
+    """Load .ark file if there, possibly slicing section."""
+    path = Path(dir_path, ARK_FILE)
+    if not path.exists():
+        return default
+    with open(path, "r") as reader:
+        data = yaml.safe_load(reader)
+        return data.get(section, default) if section else data
 
 
 def load_config(filename):

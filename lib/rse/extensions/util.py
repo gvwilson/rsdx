@@ -45,6 +45,7 @@ def get_date():
     """Get date/time."""
     return CACHE["date"]
 
+
 @with_cache
 def get_title(node):
     """Get chapter/appendix title from configuration."""

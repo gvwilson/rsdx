@@ -58,15 +58,23 @@ def format_file(filename):
 
 def is_definition(node):
     """Does this node define something interesting?"""
-    return isinstance(node, ast.Module) or isinstance(node, ast.FunctionDef) or isinstance(node, ast.ClassDef)
+    return (
+        isinstance(node, ast.Module)
+        or isinstance(node, ast.FunctionDef)
+        or isinstance(node, ast.ClassDef)
+    )
 
 
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, required=True, help="config file")
-    parser.add_argument("--notdirs", type=str, nargs="+", default=[], help="directories to ignore")
-    parser.add_argument("--notfiles", type=str, nargs="+", default=[], help="file patterns to ignore")
+    parser.add_argument(
+        "--notdirs", type=str, nargs="+", default=[], help="directories to ignore"
+    )
+    parser.add_argument(
+        "--notfiles", type=str, nargs="+", default=[], help="file patterns to ignore"
+    )
     parser.add_argument("--src", type=str, required=True, help="source directory")
     parser.add_argument("--title", type=str, required=True, help="page title")
     return parser.parse_args()
