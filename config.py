@@ -30,6 +30,7 @@ copy = [
 exclude = copy + [
     "*.db",
     "*.dvc",
+    "*.mk",
     "*.py",
     "*~",
     ".#*",
@@ -37,6 +38,7 @@ exclude = copy + [
     ".pytest_cache",
     "CODE_OF_CONDUCT.md",
     "LICENSE.md",
+    "Makefile",
     "README.md",
     "__pycache__",
     "htmlcov",
