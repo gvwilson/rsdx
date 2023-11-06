@@ -2,6 +2,7 @@
 
 import argparse
 from pathlib import Path
+import yaml
 
 import util
 
@@ -16,10 +17,25 @@ def main():
 
 
 def _lint_chapters_again_keys(args, config):
-    """Get chapter keys."""
+    """Check chapters against chapter keys."""
     expected = set(util.source_dirs(args.src, config))
     actual = {str(p) for p in Path(args.src).glob("*") if p.is_dir()}
     report_diff("chapter keys vs. directories", expected, actual)
+
+
+def _lint_copied_files(args, config):
+    """Check carry-forward files."""
+    for src_dir in util.source_dirs(args.src, config):
+        ark_file = Path(src_dir, ".ark")
+        if not ark_file.exists():
+            continue
+        with open(ark_file, "r") as reader:
+            ark_data = yaml.safe_load(reader)
+        for (local, original) in ark_data.get("copy", {}).items():
+            local_path = Path(src_dir, local)
+            original_path = Path(args.src, original)
+            if local_path.read_text() != original_path.read_text():
+                print(f"{local_path} != {original_path}")
 
 
 def parse_args():
