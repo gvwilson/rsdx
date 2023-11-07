@@ -31,8 +31,7 @@ def rootpage(pargs, kwargs, node):
     )
     path = Path(ark.site.home(), pargs[0])
     try:
-        with open(path, "r") as reader:
-            return FIRST_H1.sub("", reader.read())
+        return FIRST_H1.sub("", path.read_text())
     except OSError:
         util.fail(f"cannot read .ark file {str(path)}")
 

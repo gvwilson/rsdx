@@ -126,8 +126,7 @@ def save_params(args, params, sites, surveys):
         ("sites", sites),
         ("surveys", surveys),
     ):
-        with open(f"{args.paramsdir}/{name}.csv", "w") as writer:
-            writer.write(data.to_csv(index=False))
+        Path(f"{args.paramsdir}/{name}.csv").write_text(data.to_csv(index=False))
 
 
 if __name__ == "__main__":

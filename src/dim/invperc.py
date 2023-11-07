@@ -4,6 +4,7 @@ import argparse
 import random
 import numpy as np
 import pandas as pd
+from pathlib import Path
 import sys
 
 from grid import Grid
@@ -17,8 +18,7 @@ def main():
     dim = -np.polyfit(np.log(results["ruler"]), np.log(results["count"]), 1)[0]
     print(dim)
     if args.details:
-        with open(args.details, "w") as writer:
-            print(results.to_csv(index=False), file=writer)
+        Path(args.details).write_text(results.to_csv(index=False))
 
 
 def setup():

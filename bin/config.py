@@ -20,7 +20,7 @@ def _get_keys(config):
 def load_config(filename):
     """Load configuration."""
     with open(filename, "r") as reader:
-        return yaml.load(reader, Loader=yaml.FullLoader)
+        return yaml.safe_load(reader)
 
 
 def parse_args():

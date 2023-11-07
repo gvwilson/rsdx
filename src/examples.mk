@@ -12,3 +12,11 @@ commands:
 	@grep -h -E '^##' ${MAKEFILE_LIST} \
 	| sed -e 's/## //g' \
 	| column -t -s ':'
+
+# The including file must define a variable TARGETS with the names of everything
+# to be created.
+examples: ${TARGETS}
+
+# Show the targets defined by the including file.
+targets:
+	@echo "TARGETS:" ${TARGETS}

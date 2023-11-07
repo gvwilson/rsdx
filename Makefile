@@ -15,7 +15,7 @@ HTML_DIR := _site
 ASSETS := $(wildcard ${ASSETS}/*.*)
 CONFIG := config.py
 MARKDOWN := ${SRC_DIR}/index.md $(wildcard src/*/index.md)
-EXAMPLE_DIRS := $(dir $(patsubst %/Makefile,%,$(wildcard src/*/Makefile)))
+EXAMPLE_DIRS := $(patsubst %/Makefile,%,$(wildcard src/*/Makefile))
 EXAMPLE_PY := $(wildcard ${SRC_DIR}/*/*.py)
 
 # Generated output.
@@ -32,10 +32,15 @@ SITES_STEMS := COT GBY HMB YOU
 commands:
 	@grep -h -E '^##' ${MAKEFILE_LIST} | sed -e 's/## //g' | column -t -s ':'
 
+## demos: re-run all demos
+.PHONY: demos
+demos:
+	@for d in ${EXAMPLE_DIRS}; do echo ""; echo $$d; make -C $$d demo; done
+
 ## examples: rebuild examples
 .PHONY: examples
 examples:
-	@for d in ${EXAMPLE_DIRS}; do echo ""; echo $$d; make -C $$d; done
+	@for d in ${EXAMPLE_DIRS}; do echo ""; echo $$d; make -C $$d examples; done
 
 ## docs: rebuild code documentation
 docs: DOCS.md
@@ -103,7 +108,7 @@ ${GENOME_FILE}: bin/generate_genomes.py
 ${SNAILS_FILE}: ${PARAMS_FILES} ${GENOME_FILE} bin/generate_snail_samples.py
 	@mkdir -p ${DATA_DIR}
 	python bin/generate_snail_samples.py \
-		--genomes data/genomes.json \
+		--genomes ${GENOME_FILE} \
 		--site YOU \
 		--paramsdir data/survey_params/ \
 		--probs 0.9 0.1 \
@@ -149,7 +154,7 @@ sterile: clean
 settings:
 	@echo "ARK:" ${ARK}
 	@echo "DATA_DIR:" ${DATA_DIR}
-	@echo "EXAMPLE_MAKEFILES:" ${EXAMPLE_MAKEFILES}
+	@echo "EXAMPLE_DIRS:" ${EXAMPLE_DIRS}
 	@echo "EXAMPLE_PY:" ${EXAMPLE_PY}
 	@echo "HTML:" ${HTML}
 	@echo "HTML_DIR:" ${HTML_DIR}

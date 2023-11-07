@@ -3,6 +3,7 @@
 import argparse
 from dataclasses import dataclass, asdict
 import json
+from pathlib import Path
 import random
 
 import util
@@ -121,8 +122,7 @@ def save(outfile, genomes):
     """Save or report generated."""
     as_text = json.dumps(asdict(genomes), indent=4)
     if outfile:
-        with open(outfile, "w") as writer:
-            print(as_text, file=writer)
+        Path(outfile).write_text(as_text)
     else:
         print(as_text)
 

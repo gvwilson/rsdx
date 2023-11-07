@@ -2,8 +2,9 @@
 
 import argparse
 from collections import defaultdict
-import random
 import pandas as pd
+from pathlib import Path
+import random
 import sys
 
 from grid import Grid
@@ -16,10 +17,8 @@ def main():
     runs, results = percolate(args)
     if args.save:
         stem = f"{args.size}_{args.depth}_{args.reps}_{seed}"
-        with open(f"runs_{stem}.csv", "w") as writer:
-            writer.write(runs.to_csv(index=False))
-        with open(f"results_{stem}.csv", "w") as writer:
-            writer.write(results.to_csv(index=False))
+        Path(f"runs_{stem}.csv").write_text(runs.to_csv(index=False))
+        Path(f"results_{stem}.csv").write_text(results.to_csv(index=False))
     else:
         print(results.to_csv(index=False))
 
