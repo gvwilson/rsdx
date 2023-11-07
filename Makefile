@@ -149,10 +149,16 @@ sterile: clean
 
 ## --------------------
 
+## order: show chapter order
+.PHONY: order
+order:
+	@python bin/show_order.py ${CONFIG}
+
 ## settings: show variables
 .PHONY: settings
 settings:
 	@echo "ARK:" ${ARK}
+	@echo "CONFIG:" ${CONFIG}
 	@echo "DATA_DIR:" ${DATA_DIR}
 	@echo "EXAMPLE_DIRS:" ${EXAMPLE_DIRS}
 	@echo "EXAMPLE_PY:" ${EXAMPLE_PY}
