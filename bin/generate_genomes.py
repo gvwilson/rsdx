@@ -4,7 +4,6 @@ import argparse
 from dataclasses import dataclass, asdict
 import json
 import random
-import sys
 
 
 # Bases.

@@ -119,7 +119,9 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--csvdir", type=str, default=None, help="CSV directory")
     parser.add_argument("--dbfile", type=str, default=None, help="database file")
-    parser.add_argument("--paramsdir", type=str, default=None, help="parameters directory")
+    parser.add_argument(
+        "--paramsdir", type=str, default=None, help="parameters directory"
+    )
     parser.add_argument("--seed", type=int, help="RNG seed")
     args = parser.parse_args()
     args.seed = initialize_random(args.seed)

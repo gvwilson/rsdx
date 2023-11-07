@@ -2,7 +2,6 @@
 
 from datetime import datetime
 from pathlib import Path
-import sys
 import yaml
 
 import ark

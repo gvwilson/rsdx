@@ -31,7 +31,7 @@ def test_choose_correct_cell_among_two(small):
     small.grid()[1, 2] = 1
     small.grid()[3, 2] = 1
     small.fill_first_cell()
-    with patch("random.choice", lambda x: x[-1]) as mock:
+    with patch("random.choice", lambda x: x[-1]):
         assert small.choose_cell() == (3, 2)
 
 
@@ -40,7 +40,7 @@ def test_choose_correct_cell_with_distractors(small):
     small.grid()[3, 2] = 1
     small.grid()[3, 3] = 1
     small.fill_first_cell()
-    with patch("random.choice", lambda x: x[-1]) as mock:
+    with patch("random.choice", lambda x: x[-1]):
         assert small.choose_cell() == (3, 2)
 
 
