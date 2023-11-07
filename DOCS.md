@@ -1,16 +1,5 @@
 # Documentation
 
-## src/script
-
-### `src/script/invperc.py`: Invasion percolation in Python.
-
--   function `main`: Main driver.
--   function `make_grid`: Create a width X height grid.
--   function `choose_cell`: Choose the next cell to fill in.
--   function `adjacent`: Is (x, y) adjacent to a filled cell?
--   function `on_border`: Is this cell on the border of the grid?
--   function `print_grid`: Show the result.
-
 ## src/parse
 
 ### `src/parse/parse.py`: Parse messy data files.
@@ -36,6 +25,17 @@
 -   function `check`: Check all tables against each other.
 -   function `make_figures`: Create figures showing calculated results.
 -   function `parse_args`: Parse command-line arguments.
+
+## src/script
+
+### `src/script/invperc.py`: Invasion percolation in Python.
+
+-   function `main`: Main driver.
+-   function `make_grid`: Create a width X height grid.
+-   function `choose_cell`: Choose the next cell to fill in.
+-   function `adjacent`: Is (x, y) adjacent to a filled cell?
+-   function `on_border`: Is this cell on the border of the grid?
+-   function `print_grid`: Show the result.
 
 ## src/grid
 
