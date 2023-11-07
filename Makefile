@@ -36,6 +36,7 @@ datafiles:
 		--dbfile ${DATA_DIR}/survey.db \
 		--paramsdir ${DATA_DIR}/survey_params \
 		--seed 12345
+	sqlite3 ${DATA_DIR}/survey.db .dump > ${DATA_DIR}/survey.sql
 	python bin/randomize_geocoded_data.py \
 		--tidydir ${DATA_DIR}/survey_tidy \
 		--rawdir ${DATA_DIR}/survey_raw
