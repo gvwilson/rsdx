@@ -68,10 +68,11 @@ RAW_FILES := $(patsubst %,${DATA_DIR}/survey_raw/%.csv,${SITES_STEMS})
 DB_FILE := ${DATA_DIR}/survey.db
 DB_DUMP := ${DATA_DIR}/survey.sql
 GENOME_FILE := ${DATA_DIR}/genomes.json
+SNAILS_FILE := ${DATA_DIR}/snails.csv
 
 ## datafiles: recreate data files
 .PHONY: datafiles
-datafiles: ${PARAMS_FILES} ${TIDY_FILES} ${DB_DUMP} ${DB_FILE} ${RAW_FILES} ${GENOME_FILE}
+datafiles: ${PARAMS_FILES} ${TIDY_FILES} ${DB_DUMP} ${DB_FILE} ${RAW_FILES} ${GENOME_FILE} ${SNAILS_FILE}
 
 ${PARAMS_FILES} ${TIDY_FILES} ${DB_FILE}: bin/generate_geocoded_data.py
 	@mkdir -p ${DATA_DIR}/survey_params ${DATA_DIR}/survey_tidy
@@ -97,7 +98,17 @@ ${GENOME_FILE}: bin/generate_genomes.py
 		--num_genomes 90 \
 		--num_mutations 3 5 \
 		--seed 67890 \
-		--outfile ${DATA_DIR}/genomes.json
+		--outfile $@
+
+${SNAILS_FILE}: ${PARAMS_FILES} ${GENOME_FILE} bin/generate_snail_samples.py
+	@mkdir -p ${DATA_DIR}
+	python bin/generate_snail_samples.py \
+		--genomes data/genomes.json \
+		--site YOU \
+		--paramsdir data/survey_params/ \
+		--probs 0.9 0.1 \
+		--seed 1738 \
+		--outfile $@
 
 ## --------------------
 

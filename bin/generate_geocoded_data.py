@@ -6,10 +6,10 @@ from pathlib import Path
 import random
 import sqlite3
 import sys
-from geopy.distance import lonlat, distance
+
+import util
 
 
-CIRCLE = 360.0
 LON_LAT_PRECISION = 5
 READING_PRECISION = 1
 
@@ -81,14 +81,6 @@ def create_db(args, params, sites, surveys, samples):
     samples.to_sql("samples", con, index=False, if_exists="replace")
 
 
-def initialize_random(seed=None):
-    """Initialize random number generator reproducibly."""
-    if seed is None:
-        seed = random.randrange(sys.maxsize)
-    random.seed(seed)
-    return seed
-
-
 def make_samples(settings):
     """Generate a set of random points."""
     points = [make_point(settings) for _ in range(settings["num"])]
@@ -99,10 +91,7 @@ def make_samples(settings):
 
 def make_point(settings):
     """Make a single sample point."""
-    center = lonlat(settings["lon"], settings["lat"])
-    bearing = random.random() * CIRCLE
-    dist = random.random() * settings["radius"]
-    point = distance(kilometers=dist).destination((center), bearing=bearing)
+    point, dist = util.random_geo_point(settings["lon"], settings["lat"], settings["radius"])
     expected = settings["peak"] * ((settings["radius"] - dist) / settings["radius"])
     sd = expected * settings["relative_sd"]
     reading = abs(random.normalvariate(mu=expected, sigma=sd))
@@ -124,7 +113,7 @@ def parse_args():
     )
     parser.add_argument("--seed", type=int, help="RNG seed")
     args = parser.parse_args()
-    args.seed = initialize_random(args.seed)
+    args.seed = util.initialize_random(args.seed)
     return args
 
 

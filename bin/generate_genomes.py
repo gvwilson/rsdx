@@ -5,6 +5,7 @@ from dataclasses import dataclass, asdict
 import json
 import random
 
+import util
 
 # Bases.
 DNA = "ACGT"
@@ -68,23 +69,15 @@ def parse_args():
     )
     parser.add_argument("--seed", type=int, default=None, help="RNG seed")
 
-    options = parser.parse_args()
+    args = parser.parse_args()
 
-    assert options.length > 0, f"Require --length > 0 not {options.length}"
-    assert options.num_genomes > 0, f"Require --genomes > 0 not {options.num_genomes}"
-    assert options.seed is not None, "Require --seed [integer]"
+    assert args.length > 0, f"Require --length > 0 not {args.length}"
+    assert args.num_genomes > 0, f"Require --genomes > 0 not {args.num_genomes}"
+    assert args.seed is not None, "Require --seed [integer]"
 
-    assert (
-        len(options.num_mutations) == 2
-    ), f"Require two arguments to --mutations not {options.num_mutations}"
-    setattr(options, "num_snps", int(options.num_mutations[0]))
-    setattr(options, "num_other", int(options.num_mutations[1]))
-    assert options.num_snps >= 0, f"Require snps mutations >= 0 not {options.num_snps}"
-    assert (
-        options.num_other >= 0
-    ), f"Require other mutations >= 0 not {options.num_other}"
+    util.unpack_args(args, "num_mutations", ("num_snps", int, lambda x: x >= 0), ("num_other", int, lambda x: x >= 0),)
 
-    return options
+    return args
 
 
 def random_bases(length):
