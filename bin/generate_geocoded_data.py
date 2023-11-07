@@ -1,7 +1,8 @@
-"""Generate measurement data."""
+"""Generate geocoded measurement data."""
 
 import argparse
 import pandas as pd
+from pathlib import Path
 import random
 import sqlite3
 import sys
@@ -36,35 +37,39 @@ SURVEYS = pd.DataFrame(
     columns=("label", "site", "date", "num", "peak", "relative_sd", "radius"),
 )
 
+CSV_QUERY = """\
+select site, date, lon, lat, reading
+from samples inner join surveys
+on samples.label = surveys.label
+"""
+
 
 def main():
     """Main driver."""
     args = parse_args()
     params = pd.DataFrame([{"seed": args.seed}])
+    save_params(args, params, SITES, SURVEYS)
     all_settings = SITES.set_index("site").join(SURVEYS.set_index("site"), how="inner")
     all_samples = pd.concat(
         [make_samples(s) for s in all_settings.to_dict(orient="records")]
     )
-    create_csv(args, params, SITES, SURVEYS, all_samples)
     create_db(args, params, SITES, SURVEYS, all_samples)
+    create_csv(args)
 
 
-def create_csv(args, params, sites, surveys, samples):
-    """Create CSV files."""
-    if not args.csvdir:
+def create_csv(args):
+    """Create CSV files from database."""
+    if (not args.dbfile) or (not args.csvdir):
         return
-    for name, data in (
-        ("params", params),
-        ("sites", sites),
-        ("surveys", surveys),
-        ("samples", samples),
-    ):
-        with open(f"{args.csvdir}/{name}.csv", "w") as writer:
-            writer.write(data.to_csv(index=False))
+    con = sqlite3.connect(args.dbfile)
+    df = pd.read_sql(CSV_QUERY, con)
+    for site in SITES["site"]:
+        subset = df[df["site"] == site]
+        subset.to_csv(Path(args.csvdir, f"{site}.csv"), index=False)
 
 
 def create_db(args, params, sites, surveys, samples):
-    """Create database file with all sites and samples."""
+    """Create database file with all data."""
     if not args.dbfile:
         return
     con = sqlite3.connect(args.dbfile)
@@ -74,6 +79,14 @@ def create_db(args, params, sites, surveys, samples):
         "surveys", con, index=False, if_exists="replace"
     )
     samples.to_sql("samples", con, index=False, if_exists="replace")
+
+
+def initialize_random(seed=None):
+    """Initialize random number generator reproducibly."""
+    if seed is None:
+        seed = random.randrange(sys.maxsize)
+    random.seed(seed)
+    return seed
 
 
 def make_samples(settings):
@@ -106,17 +119,24 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--csvdir", type=str, default=None, help="CSV directory")
     parser.add_argument("--dbfile", type=str, default=None, help="database file")
+    parser.add_argument("--paramsdir", type=str, default=None, help="parameters directory")
     parser.add_argument("--seed", type=int, help="RNG seed")
     args = parser.parse_args()
     args.seed = initialize_random(args.seed)
     return args
 
 
-def initialize_random(seed=None):
-    if seed is None:
-        seed = random.randrange(sys.maxsize)
-    random.seed(seed)
-    return seed
+def save_params(args, params, sites, surveys):
+    """Create CSV files."""
+    if not args.paramsdir:
+        return
+    for name, data in (
+        ("params", params),
+        ("sites", sites),
+        ("surveys", surveys),
+    ):
+        with open(f"{args.paramsdir}/{name}.csv", "w") as writer:
+            writer.write(data.to_csv(index=False))
 
 
 if __name__ == "__main__":

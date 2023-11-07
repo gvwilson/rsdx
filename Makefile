@@ -7,6 +7,7 @@ PYTHON := python
 
 # Directories.
 ASSETS := assets
+DATA_DIR := data
 SRC_DIR := src
 HTML_DIR := _site
 
@@ -26,6 +27,15 @@ HTML := $(patsubst ${SRC_DIR}/%.md,${HTML_DIR}/%.html,${MARKDOWN})
 .PHONY: commands
 commands:
 	@grep -h -E '^##' ${MAKEFILE_LIST} | sed -e 's/## //g' | column -t -s ':'
+
+## datafiles: recreate data files
+.PHONY: datafiles
+datafiles:
+	python bin/generate_geocoded_data.py \
+		--csvdir ${DATA_DIR}/survey_tidy \
+		--dbfile ${DATA_DIR}/survey.db \
+		--paramsdir ${DATA_DIR}/survey_params \
+		--seed 12345
 
 ## examples: rebuild examples
 .PHONY: examples
@@ -93,6 +103,7 @@ sterile: clean
 .PHONY: settings
 settings:
 	@echo "ARK" ${ARK}
+	@echo "DATA_DIR" ${DATA_DIR}
 	@echo "EXAMPLE_MAKEFILES" ${EXAMPLE_MAKEFILES}
 	@echo "EXAMPLE_PY" ${EXAMPLE_PY}
 	@echo "HTML" ${HTML}
