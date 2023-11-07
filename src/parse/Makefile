@@ -17,9 +17,9 @@ tidy: ${TIDY_FILES}
 ## settings: show settings
 .PHONY: settings
 settings:
-	@echo "DATA_DIR" ${DATA_DIR}
-	@echo "RAW_FILES" ${RAW_FILES}
-	@echo "TIDY_FILES" ${TIDY_FILES}
+	@echo "DATA_DIR:" ${DATA_DIR}
+	@echo "RAW_FILES:" ${RAW_FILES}
+	@echo "TIDY_FILES:" ${TIDY_FILES}
 
 # Rule to make tidy CSV from raw CSV using parse.py
 ${DATA_DIR}/survey_tidy/%.csv: ${DATA_DIR}/survey_raw/%.csv parse.py

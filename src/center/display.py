@@ -2,16 +2,15 @@
 
 import argparse
 import pandas as pd
+from pathlib import Path
 import plotly.express as px
 import sqlite3
 
 
 FIG_SIZE = 800
-NAMES = ["sites", "surveys", "samples"]
 Q_SAMPLES = """
 select
     surveys.site,
-    surveys.date,
     samples.lon,
     samples.lat,
     samples.reading
@@ -42,16 +41,16 @@ def main():
 def read_csv(args):
     """Read CSV files directly into dataframes."""
     assert args.csvdir, "read_csv requires --csvdir"
-    raw = {name: pd.read_csv(f"{args.csvdir}/{name}.csv") for name in NAMES}
-    return combine_with_pandas(args, **raw)
+    raw = [pd.read_csv(filename) for filename in Path(args.csvdir).glob("*.csv")]
+    return combine_with_pandas(args, *raw)
 
 
 def read_db_pandas(args):
     """Read database tables into Pandas dataframes and manipulate."""
     assert args.dbfile, "read_db_pandas requires --dbfile"
     con = sqlite3.connect(args.dbfile)
-    raw = {name: pd.read_sql(f"select * from {name}", con) for name in NAMES}
-    return combine_with_pandas(args, **raw)
+    raw = pd.read_sql(Q_SAMPLES, con)
+    return combine_with_pandas(args, raw)
 
 
 def read_db_sql(args):
@@ -67,9 +66,9 @@ def read_db_sql(args):
 METHODS = {"csv": read_csv, "pandas": read_db_pandas, "sql": read_db_sql}
 
 
-def combine_with_pandas(args, sites, surveys, samples):
+def combine_with_pandas(args, *tables):
     """Combine tables using Pandas."""
-    combined = surveys.merge(samples, how="inner", on="label")
+    combined = pd.concat(tables)
     temp = pd.DataFrame(
         {
             "site": combined["site"],
