@@ -21,25 +21,16 @@ EXAMPLE_PY := $(wildcard ${SRC_DIR}/*/*.py)
 # Generated output.
 HTML := $(patsubst ${SRC_DIR}/%.md,${HTML_DIR}/%.html,${MARKDOWN})
 
+# Parameters.
+PARAMS_STEMS := params sites surveys
+SITES_STEMS := COT GBY HMB YOU
+
 # ----------------------------------------------------------------------
 
 ## commands: show available commands
 .PHONY: commands
 commands:
 	@grep -h -E '^##' ${MAKEFILE_LIST} | sed -e 's/## //g' | column -t -s ':'
-
-## datafiles: recreate data files
-.PHONY: datafiles
-datafiles:
-	python bin/generate_geocoded_data.py \
-		--csvdir ${DATA_DIR}/survey_tidy \
-		--dbfile ${DATA_DIR}/survey.db \
-		--paramsdir ${DATA_DIR}/survey_params \
-		--seed 12345
-	sqlite3 ${DATA_DIR}/survey.db .dump > ${DATA_DIR}/survey.sql
-	python bin/randomize_geocoded_data.py \
-		--tidydir ${DATA_DIR}/survey_tidy \
-		--rawdir ${DATA_DIR}/survey_raw
 
 ## examples: rebuild examples
 .PHONY: examples
@@ -68,6 +59,45 @@ build: DOCS.md
 .PHONY: serve
 serve: DOCS.md
 	${ARK} serve
+
+## --------------------
+
+PARAMS_FILES := $(patsubst %,${DATA_DIR}/survey_params/%.csv,${PARAMS_STEMS})
+TIDY_FILES := $(patsubst %,${DATA_DIR}/survey_tidy/%.csv,${SITES_STEMS})
+RAW_FILES := $(patsubst %,${DATA_DIR}/survey_raw/%.csv,${SITES_STEMS})
+DB_FILE := ${DATA_DIR}/survey.db
+DB_DUMP := ${DATA_DIR}/survey.sql
+GENOME_FILE := ${DATA_DIR}/genomes.json
+
+## datafiles: recreate data files
+.PHONY: datafiles
+datafiles: ${PARAMS_FILES} ${TIDY_FILES} ${DB_DUMP} ${DB_FILE} ${RAW_FILES} ${GENOME_FILE}
+
+${PARAMS_FILES} ${TIDY_FILES} ${DB_FILE}: bin/generate_geocoded_data.py
+	@mkdir -p ${DATA_DIR}/survey_params ${DATA_DIR}/survey_tidy
+	python bin/generate_geocoded_data.py \
+		--csvdir ${DATA_DIR}/survey_tidy \
+		--dbfile ${DATA_DIR}/survey.db \
+		--paramsdir ${DATA_DIR}/survey_params \
+		--seed 12345
+
+${DB_DUMP}: ${DB_FILE}
+	sqlite3 ${DATA_DIR}/survey.db .dump > ${DATA_DIR}/survey.sql
+
+${RAW_FILES}: ${TIDY_FILES} bin/randomize_geocoded_data.py
+	@mkdir -p ${DATA_DIR}/survey_raw
+	python bin/randomize_geocoded_data.py \
+		--tidydir ${DATA_DIR}/survey_tidy \
+		--rawdir ${DATA_DIR}/survey_raw
+
+${GENOME_FILE}: bin/generate_genomes.py
+	@mkdir -p ${DATA_DIR}
+	python bin/generate_genomes.py \
+		--length 30 \
+		--num_genomes 90 \
+		--num_mutations 3 5 \
+		--seed 67890 \
+		--outfile ${DATA_DIR}/genomes.json
 
 ## --------------------
 
@@ -106,11 +136,12 @@ sterile: clean
 ## settings: show variables
 .PHONY: settings
 settings:
-	@echo "ARK" ${ARK}
-	@echo "DATA_DIR" ${DATA_DIR}
-	@echo "EXAMPLE_MAKEFILES" ${EXAMPLE_MAKEFILES}
-	@echo "EXAMPLE_PY" ${EXAMPLE_PY}
-	@echo "HTML" ${HTML}
-	@echo "HTML_DIR" ${HTML_DIR}
-	@echo "MARKDOWN" ${MARKDOWN}
-	@echo "SRC_DIR" ${SRC_DIR}
+	@echo "ARK:" ${ARK}
+	@echo "DATA_DIR:" ${DATA_DIR}
+	@echo "EXAMPLE_MAKEFILES:" ${EXAMPLE_MAKEFILES}
+	@echo "EXAMPLE_PY:" ${EXAMPLE_PY}
+	@echo "HTML:" ${HTML}
+	@echo "HTML_DIR:" ${HTML_DIR}
+	@echo "MARKDOWN:" ${MARKDOWN}
+	@echo "SITES:" ${SITES}
+	@echo "SRC_DIR:" ${SRC_DIR}

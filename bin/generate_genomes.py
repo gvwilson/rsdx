@@ -117,6 +117,8 @@ def random_genomes(length, num_genomes, num_snps, num_other):
     ]
 
     # Return structure.
+    individuals.sort()
+    locations.sort()
     return GenePool(
         length=length, reference=reference, individuals=individuals, locations=locations
     )
