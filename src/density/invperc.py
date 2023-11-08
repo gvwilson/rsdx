@@ -37,7 +37,6 @@ def setup():
         "--verbose", action="store_true", default=False, help="report progress"
     )
     args = parser.parse_args()
-    args.width = args.height = args.size
     return args
 
 
@@ -57,7 +56,7 @@ def percolate(args):
         if args.verbose:
             print(f"...{i}")
         seed = initialize_random()
-        grid = Grid(args.width, args.height, args.depth)
+        grid = Grid(args.size, args.size, args.depth)
         grid.fill()
         density = calculate_density(grid)
         runs.append((i, args.size, args.depth, seed))

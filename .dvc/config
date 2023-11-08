@@ -1,4 +1,1 @@
-[core]
-    remote = datastore
-['remote "datastore"']
-    url = /opt/datastore
+

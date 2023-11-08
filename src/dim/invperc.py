@@ -30,7 +30,6 @@ def setup():
     parser.add_argument("--reps", type=int, default=1, help="repetitions")
     parser.add_argument("--seed", type=int, default=None, help="RNG seed")
     args = parser.parse_args()
-    args.width = args.height = args.size
     return args
 
 

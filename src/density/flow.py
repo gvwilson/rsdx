@@ -8,7 +8,7 @@ from pathlib import Path
 from invperc import initialize_random, percolate
 
 
-Args = namedtuple("Args", ["width", "height", "depth", "reps"])
+Args = namedtuple("Args", ["size", "depth", "reps", "verbose"])
 SIZES = [15, 25, 35]
 DEPTH = 10
 REPS = 20
@@ -21,7 +21,7 @@ class InvPercFlow(FlowSpec):
     depth = Parameter("depth", help="grid depth", type=int, default=DEPTH)
     reps = Parameter("reps", help="repetitions", type=int, default=REPS)
     seed = Parameter("seed", help="RNG seed", type=int, required=True)
-    save = Parameter("save", help="save as file?", type=bool, default=False)
+    verbose = Parameter("verbose", help="report progress?", type=bool, default=False)
 
     @step
     def start(self):
@@ -29,7 +29,7 @@ class InvPercFlow(FlowSpec):
         initialize_random(self.seed)
         self.args = [
             {
-                "args": Args(width=size, height=size, depth=self.depth, reps=self.reps),
+                "args": Args(size=size, depth=self.depth, reps=self.reps, verbose=self.verbose),
                 "seed": initialize_random(),
             }
             for size in self.sizes
@@ -39,24 +39,23 @@ class InvPercFlow(FlowSpec):
     @step
     def run_job(self):
         """Run a sweep with one set of parameters."""
-        self.stats = percolate(self.input["args"])
+        self.runs, self.results = percolate(self.input["args"])
         self.next(self.join)
 
     @step
     def join(self, inputs):
         """Combine results from all sweeps."""
-        self.results = pd.concat([input.stats for input in inputs])
+        self.all_runs = pd.concat([input.runs for input in inputs])
+        self.all_results = pd.concat([input.results for input in inputs])
         self.next(self.end)
 
     @step
     def end(self):
         """Save results."""
-        if self.save:
-            sizes = "+".join(str(s) for s in self.sizes)
-            filename = f"invperc_{sizes}_{self.depth}_{self.seed}.csv"
-            Path(filename).write_text(self.results.to_csv(index=False))
-        else:
-            print(self.results.to_csv(index=False))
+        stem = f"{'+'.join(str(s) for s in self.sizes)}_{self.depth}_{self.reps}_{self.seed}"
+        Path(f"results_{stem}.csv").write_text(self.all_results.to_csv(index=False))
+        Path(f"runs_{stem}.csv").write_text(self.all_runs.to_csv(index=False))
+        print(self.all_runs)
 
 
 if __name__ == "__main__":

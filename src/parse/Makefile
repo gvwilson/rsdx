@@ -1,6 +1,6 @@
 TARGETS :=
 
-include ../examples.mk
+include ../../examples.mk
 
 DATA_DIR := ../../data
 RAW_FILES := $(wildcard ${DATA_DIR}/survey_raw/*.csv)

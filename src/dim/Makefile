@@ -1,6 +1,6 @@
 TARGETS :=
 
-include ../examples.mk
+include ../../examples.mk
 
 ## demo: run demo of program
 .PHONY: demo

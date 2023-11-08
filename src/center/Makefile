@@ -1,6 +1,6 @@
 TARGETS :=
 
-include ../examples.mk
+include ../../examples.mk
 
 DATA_DIR := ../../data
 CSV_DIR := ${DATA_DIR}/survey_tidy
