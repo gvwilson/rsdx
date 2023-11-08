@@ -44,7 +44,8 @@ def lint_duplicate_files(args, config):
             previous = str(group[i - 1])
             if previous not in ark_lookup[current.parent]:
                 print(f"{current} not listed as duplicate of {previous}")
-            ark_lookup[current.parent].remove(previous)
+            else:
+                ark_lookup[current.parent].remove(previous)
     for src_dir, values in ark_lookup.items():
         if values:
             print(

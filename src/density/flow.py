@@ -29,7 +29,9 @@ class InvPercFlow(FlowSpec):
         initialize_random(self.seed)
         self.args = [
             {
-                "args": Args(size=size, depth=self.depth, reps=self.reps, verbose=self.verbose),
+                "args": Args(
+                    size=size, depth=self.depth, reps=self.reps, verbose=self.verbose
+                ),
                 "seed": initialize_random(),
             }
             for size in self.sizes

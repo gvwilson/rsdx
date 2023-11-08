@@ -2,7 +2,6 @@
 
 import argparse
 import pandas as pd
-from pathlib import Path
 import plotly.express as px
 
 
@@ -10,7 +9,9 @@ def main():
     """Main driver."""
     args = parse_args()
     raw = pd.read_csv(args.infile)[["sequence", "reading"]]
-    assert len({len(s) for s in raw["sequence"]}) == 1, "Sequences have different lengths"
+    assert (
+        len({len(s) for s in raw["sequence"]}) == 1
+    ), "Sequences have different lengths"
 
     pivoted = pivot_dataframe(raw)
     plot(args, pivoted, "all data")
@@ -32,7 +33,7 @@ def pivot_dataframe(raw):
     """Turn (sequence, reading) into (loc, base, reading)."""
     pivoted = []
     for _, row in raw.iterrows():
-        for (i, ch) in enumerate(row["sequence"]):
+        for i, ch in enumerate(row["sequence"]):
             pivoted.append((i, ch, row["reading"]))
     return pd.DataFrame(pivoted, columns=["loc", "base", "reading"])
 
@@ -52,12 +53,23 @@ def plot(args, df, title):
     if not args.plot:
         return
     summarized = df.groupby(["loc", "base"], as_index=False).agg(func="mean")
-    fig = px.scatter(summarized, x="base", y="loc", size="reading", title=f"{title}: mean by loc and base")
+    fig = px.scatter(
+        summarized,
+        x="base",
+        y="loc",
+        size="reading",
+        title=f"{title}: mean by loc and base",
+    )
     fig.show()
 
     sorted = summarized.sort_values("reading", ascending=False)
     sorted["rank"] = sorted.reset_index().index
-    fig = px.line(sorted, x="rank", y="reading", title=f"{title}: mean by loc and base sorted by rank")
+    fig = px.line(
+        sorted,
+        x="rank",
+        y="reading",
+        title=f"{title}: mean by loc and base sorted by rank",
+    )
     fig.show()
 
 

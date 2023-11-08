@@ -5,7 +5,6 @@ import pandas as pd
 from pathlib import Path
 import random
 import sqlite3
-import sys
 
 import util
 
@@ -20,9 +19,7 @@ def main():
     util.initialize_random(args.seed)
 
     settings = sites.set_index("site").join(surveys.set_index("site"), how="inner")
-    samples = pd.concat(
-        [make_samples(s) for s in settings.to_dict(orient="records")]
-    )
+    samples = pd.concat([make_samples(s) for s in settings.to_dict(orient="records")])
     samples["lon"] = samples["lon"].round(util.LON_LAT_PRECISION)
     samples["lat"] = samples["lat"].round(util.LON_LAT_PRECISION)
 
@@ -62,7 +59,9 @@ def make_samples(settings):
 
 def make_point(settings):
     """Make a single sample point."""
-    point, dist = util.random_geo_point(settings["lon"], settings["lat"], settings["radius"])
+    point, dist = util.random_geo_point(
+        settings["lon"], settings["lat"], settings["radius"]
+    )
     expected = settings["peak"] * ((settings["radius"] - dist) / settings["radius"])
     sd = expected * settings["relative_sd"]
     reading = abs(random.normalvariate(mu=expected, sigma=sd))

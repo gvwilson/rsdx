@@ -6,8 +6,6 @@ import json
 from pathlib import Path
 import random
 
-import util
-
 # Bases.
 DNA = "ACGT"
 
@@ -62,7 +60,9 @@ def parse_args():
         "--num_genomes", type=int, required=True, help="number of genomes"
     )
     parser.add_argument("--num_snp", type=int, required=True, help="number of SNPs")
-    parser.add_argument("--prob_other", type=float, required=True, help="probability of other mutation")
+    parser.add_argument(
+        "--prob_other", type=float, required=True, help="probability of other mutation"
+    )
     parser.add_argument("--seed", type=int, default=None, help="RNG seed")
 
     args = parser.parse_args()
