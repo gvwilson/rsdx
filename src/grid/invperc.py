@@ -12,7 +12,7 @@ def main():
     kind, width, height, depth, seed = setup()
     grid = initialize_grid(kind, width, height, depth)
     fill_grid(grid)
-    print_grid(grid, seed, details="brief")
+    print_grid(kind, grid, seed)
 
 
 def setup():
@@ -63,9 +63,9 @@ def choose_cell(grid):
     return cx, cy
 
 
-def print_grid(grid, seed, details="full"):
+def print_grid(kind, grid, seed, details="full"):
     """Show the result."""
-    print(grid.width(), grid.height(), grid.depth(), seed)
+    print(kind, grid.width(), grid.height(), grid.depth(), seed)
     if details == "brief":
         return
     for y in range(grid.height() - 1, -1, -1):
