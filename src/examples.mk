@@ -7,6 +7,8 @@
 # See https://stackoverflow.com/questions/18136918/how-to-get-current-relative-directory-of-your-makefile
 EXAMPLES_MK := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 
+## --------------------
+
 ## commands: show available commands
 commands:
 	@grep -h -E '^##' ${MAKEFILE_LIST} \
@@ -17,6 +19,6 @@ commands:
 # to be created.
 examples: ${TARGETS}
 
-# Show the targets defined by the including file.
+## targets: Show the targets defined by the including file.
 targets:
 	@echo "TARGETS:" ${TARGETS}
