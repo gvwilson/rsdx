@@ -36,8 +36,8 @@ def main():
     genomes = random_genomes(
         args.length,
         args.num_genomes,
-        args.num_snps,
-        args.num_other,
+        args.num_snp,
+        args.prob_other,
     )
     add_susceptibility(genomes)
     save(args.outfile, genomes)
@@ -61,22 +61,17 @@ def parse_args():
     parser.add_argument(
         "--num_genomes", type=int, required=True, help="number of genomes"
     )
-    parser.add_argument(
-        "--num_mutations",
-        type=int,
-        nargs="+",
-        default=None,
-        help="number of significant and other mutations",
-    )
+    parser.add_argument("--num_snp", type=int, required=True, help="number of SNPs")
+    parser.add_argument("--prob_other", type=float, required=True, help="probability of other mutation")
     parser.add_argument("--seed", type=int, default=None, help="RNG seed")
 
     args = parser.parse_args()
 
     assert args.length > 0, f"Require --length > 0 not {args.length}"
     assert args.num_genomes > 0, f"Require --genomes > 0 not {args.num_genomes}"
+    assert args.num_snp >= 0, f"Require --num_snp >= 0 not {args.num_snp}"
+    assert args.prob_other >= 0.0, f"Require --prob_other >= 0.0 not {args.prob_other}"
     assert args.seed is not None, "Require --seed [integer]"
-
-    util.unpack_args(args, "num_mutations", ("num_snps", int, lambda x: x >= 0), ("num_other", int, lambda x: x >= 0),)
 
     return args
 
@@ -87,16 +82,16 @@ def random_bases(length):
     return "".join(random.choices(DNA, k=length))
 
 
-def random_genomes(length, num_genomes, num_snps, num_other):
+def random_genomes(length, num_genomes, num_snp, prob_other):
     """Generate a set of genomes with specified number of point mutations."""
-    assert 0 <= num_snps <= length
+    assert 0 <= num_snp <= length
 
     # Reference genomes and specific genomes to modify.
     reference = random_bases(length)
     individuals = [reference] * num_genomes
 
     # Locations for SNPs.
-    locations = random.sample(list(range(length)), num_snps)
+    locations = random.sample(list(range(length)), num_snp)
 
     # Introduce significant mutations.
     for loc in locations:
@@ -107,7 +102,7 @@ def random_genomes(length, num_genomes, num_snps, num_other):
     # Introduce other random mutations.
     other_locations = list(set(range(length)) - set(locations))
     individuals = [
-        _mutate_other(ind, num_other, other_locations) for ind in individuals
+        _mutate_other(ind, prob_other, other_locations) for ind in individuals
     ]
 
     # Return structure.
@@ -133,12 +128,13 @@ def _mutate_snps(reference, genome, loc, bases):
     return genome[:loc] + choice + genome[loc + 1 :]
 
 
-def _mutate_other(genome, max_num_mutations, locations):
+def _mutate_other(genome, prob, locations):
     """Introduce up to `max_num_mutations` at specified locations."""
-    num = min(max_num_mutations, len(genome))
-    for loc in random.sample(locations, k=num):
-        base = random.choice(_other_bases(genome, loc))
-        genome = genome[:loc] + base + genome[loc + 1 :]
+    if random.random() > prob:
+        return genome
+    loc = random.sample(locations, k=1)[0]
+    base = random.choice(_other_bases(genome, loc))
+    genome = genome[:loc] + base + genome[loc + 1 :]
     return genome
 
 

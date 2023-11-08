@@ -99,8 +99,9 @@ ${GENOME_FILE}: bin/generate_genomes.py
 	@mkdir -p ${DATA_DIR}
 	python bin/generate_genomes.py \
 		--length 30 \
-		--num_genomes 90 \
-		--num_mutations 3 5 \
+		--num_genomes 200 \
+		--num_snp 3 \
+		--prob_other 0.05 \
 		--seed 67890 \
 		--outfile $@
 
@@ -110,7 +111,7 @@ ${SNAILS_FILE}: ${PARAMS_FILES} ${GENOME_FILE} bin/generate_snail_samples.py
 		--genomes ${GENOME_FILE} \
 		--site YOU \
 		--paramsdir data/survey_params/ \
-		--probs 0.9 0.1 \
+		--scales 1.0 0.1 \
 		--seed 1738 \
 		--outfile $@
 

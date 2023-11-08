@@ -64,14 +64,14 @@ def parse_args():
     parser.add_argument("--genomes", type=str, required=True, help="genome file")
     parser.add_argument("--outfile", type=str, help="output file")
     parser.add_argument("--paramsdir", type=str, required=True, help="parameters directory")
-    parser.add_argument("--probs", nargs="+", type=float, help="parameters directory")
+    parser.add_argument("--scales", nargs="+", type=float, help="scaling factors")
     parser.add_argument("--site", type=str, required=True, help="site identifier")
     parser.add_argument("--seed", type=int, required=True, help="RNG seed")
     args = parser.parse_args()
 
     args.seed = util.initialize_random(args.seed)
 
-    util.unpack_args(args, "probs",
+    util.unpack_args(args, "scales",
         ("positive", float, lambda x: 0 <= x <= 1.0),
         ("negative", float, lambda x: 0 <= x <= 1.0),
     )

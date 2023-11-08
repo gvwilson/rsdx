@@ -15,6 +15,7 @@ chapters = {
     "dim": "Measure Fractal Dimension",
     "density": "Estimate Density vs. Distance",
     "test": "Testing",
+    "mut": "Mutation",
     "license": "License",
     "conduct": "Code of Conduct",
     "docs": "Documentation",
