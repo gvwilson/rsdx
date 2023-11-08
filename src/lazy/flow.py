@@ -3,6 +3,8 @@
 from collections import namedtuple
 from metaflow import FlowSpec, Parameter, JSONType, step
 import pandas as pd
+from pathlib import Path
+
 from invperc import initialize_random, percolate
 
 
@@ -52,8 +54,7 @@ class InvPercFlow(FlowSpec):
         if self.save:
             sizes = "+".join(str(s) for s in self.sizes)
             filename = f"invperc_{sizes}_{self.depth}_{self.seed}.csv"
-            with open(filename, "w") as writer:
-                print(self.results.to_csv(index=False), file=writer)
+            Path(filename).write_text(self.results.to_csv(index=False))
         else:
             print(self.results.to_csv(index=False))
 

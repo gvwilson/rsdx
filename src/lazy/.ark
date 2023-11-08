@@ -1,4 +1,6 @@
 copied:
+  - "flow/.gitignore"
+  - "flow/Makefile"
   - "flow/analysis.py"
   - "flow/flow.py"
   - "flow/grid_array.py"
