@@ -36,7 +36,13 @@ def generate_samples(args, genomes, geo_params):
         scale = limit * distance / geo_params["radius"]
         reading = random.uniform(MIN_SNAIL_SIZE, MIN_SNAIL_SIZE + MAX_SNAIL_SIZE * scale)
         samples.append((point.longitude, point.latitude, sequence, reading))
-    return pd.DataFrame(samples, columns=("lon", "lat", "sequence", "reading"))
+
+    df = pd.DataFrame(samples, columns=("lon", "lat", "sequence", "reading"))
+    df["lon"] = df["lon"].round(util.LON_LAT_PRECISION)
+    df["lat"] = df["lat"].round(util.LON_LAT_PRECISION)
+    df["reading"] = df["reading"].round(util.SNAIL_PRECISION)
+
+    return df
 
 
 def get_geo_params(args):

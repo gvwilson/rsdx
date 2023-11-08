@@ -9,6 +9,9 @@ import yaml
 
 ARK_FILE = ".ark"
 CIRCLE = 360.0
+LON_LAT_PRECISION = 5
+READING_PRECISION = 1
+SNAIL_PRECISION = 2
 
 
 def initialize_random(seed=None):

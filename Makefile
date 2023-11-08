@@ -21,10 +21,6 @@ EXAMPLE_PY := $(wildcard ${SRC_DIR}/*/*.py)
 # Generated output.
 HTML := $(patsubst ${SRC_DIR}/%.md,${HTML_DIR}/%.html,${MARKDOWN})
 
-# Parameters.
-PARAMS_STEMS := params sites surveys
-SITES_STEMS := COT GBY HMB YOU
-
 # ----------------------------------------------------------------------
 
 ## commands: show available commands
@@ -67,6 +63,9 @@ serve: DOCS.md
 
 ## --------------------
 
+PARAMS_STEMS := sites surveys
+SITES_STEMS := COT GBY HMB YOU
+
 PARAMS_FILES := $(patsubst %,${DATA_DIR}/survey_params/%.csv,${PARAMS_STEMS})
 TIDY_FILES := $(patsubst %,${DATA_DIR}/survey_tidy/%.csv,${SITES_STEMS})
 RAW_FILES := $(patsubst %,${DATA_DIR}/survey_raw/%.csv,${SITES_STEMS})
@@ -79,7 +78,7 @@ SNAILS_FILE := ${DATA_DIR}/snails.csv
 .PHONY: datafiles
 datafiles: ${PARAMS_FILES} ${TIDY_FILES} ${DB_DUMP} ${DB_FILE} ${RAW_FILES} ${GENOME_FILE} ${SNAILS_FILE}
 
-${PARAMS_FILES} ${TIDY_FILES} ${DB_FILE}: bin/generate_geocoded_data.py
+${TIDY_FILES} ${DB_FILE}: bin/generate_geocoded_data.py ${PARAMS_FILES}
 	@mkdir -p ${DATA_DIR}/survey_params ${DATA_DIR}/survey_tidy
 	python bin/generate_geocoded_data.py \
 		--csvdir ${DATA_DIR}/survey_tidy \
