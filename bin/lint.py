@@ -73,7 +73,7 @@ def _find_duplicate_files(source_dirs):
     groups = defaultdict(set)
     for src_dir in source_dirs:
         for path in src_dir.glob("*"):
-            if not path.is_file():
+            if (not path.is_file()) or (str(path).endswith("~")):
                 continue
             hash_code = hashlib.sha256(path.read_bytes()).hexdigest()
             groups[hash_code].add(path)
