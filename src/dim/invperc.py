@@ -47,7 +47,7 @@ def percolate(args):
     result = []
     for _ in range(args.reps):
         seed = initialize_random()
-        grid = Grid(args.width, args.height, args.depth)
+        grid = Grid(args.size, args.size, args.depth)
         grid.fill()
         dims = measure_dimension(grid)
         result.extend([(args.size, args.depth, seed, *d) for d in dims])

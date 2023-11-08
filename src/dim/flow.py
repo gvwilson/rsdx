@@ -8,7 +8,7 @@ from pathlib import Path
 from invperc import initialize_random, percolate
 
 
-Args = namedtuple("Args", ["width", "height", "depth", "reps"])
+Args = namedtuple("Args", ["size", "depth", "reps"])
 SIZES = [15, 25, 35]
 DEPTH = 10
 REPS = 20
@@ -29,7 +29,7 @@ class InvPercFlow(FlowSpec):
         initialize_random(self.seed)
         self.args = [
             {
-                "args": Args(width=size, height=size, depth=self.depth, reps=self.reps),
+                "args": Args(size=size, depth=self.depth, reps=self.reps),
                 "seed": initialize_random(),
             }
             for size in self.sizes
