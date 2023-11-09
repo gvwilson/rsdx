@@ -10,7 +10,6 @@ import shortcodes
 import util
 
 
-BIB_STYLE = "unsrt"
 FIRST_H1 = re.compile(r"^#\s+.+$", re.MULTILINE)
 
 
@@ -39,12 +38,9 @@ def bibliography(pargs, kwargs, node):
         f"Bad 'bibliography' shortcode with {pargs} and {kwargs} in {node}",
     )
 
-    style_name = ark.site.config.get(BIB_STYLE, None)
-    style = pybtex.plugin.find_plugin("pybtex.style.formatting", style_name)()
-    styled = style.format_bibliography(util.CACHE["bib"])
+    styled_bib = util.CACHE["bib"]
     html = pybtex.plugin.find_plugin("pybtex.backends", "html")()
-
-    entries = [_fmt(entry.key, entry.text.render(html)) for entry in styled]
+    entries = [_fmt(entry.key, entry.text.render(html)) for entry in styled_bib]
     return '<dl class="bib-list">\n\n' + "\n\n".join(entries) + "\n\n</dl>"
 
 

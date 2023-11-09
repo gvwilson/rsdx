@@ -12,7 +12,24 @@ import ark
 import regex
 
 
+BIB_STYLE = "unsrt"
+CACHE = None
 DIRECTIVES_FILE = ".ark"
+
+
+def with_cache(original):
+    """Fill cache if not already filled."""
+    def wrapped(*args, **kwargs):
+        global CACHE
+        if CACHE is None:
+            CACHE = {
+                "bib": read_bibliography(),
+                "date": datetime.utcnow().replace(microsecond=0).isoformat(" "),
+                "links": {lnk["key"]: lnk for lnk in read_info("links.yml")},
+                "titles": {slug: title for (slug, title) in ark.site.config["chapters"].items()},
+            }
+        return original(*args, **kwargs)
+    return wrapped
 
 
 def fail(msg):
@@ -26,16 +43,19 @@ def get_slug(node):
     return node.path[-1] if len(node.path) > 0 else "@root"
 
 
+@with_cache
 def get_date():
     """Get date/time."""
     return CACHE["date"]
 
 
+@with_cache
 def get_title(node):
     """Get chapter/appendix title from configuration."""
     return CACHE["titles"][get_slug(node)]
 
 
+@with_cache
 def make_links_table(text):
     """Make a table of links for inclusion in Markdown."""
     used = {m.group(1) for m in regex.MARKDOWN_FOOTER_LINK.finditer(text)}
@@ -47,7 +67,11 @@ def read_bibliography():
     """Load bibliography."""
     filename = Path(ark.site.home(), "info", "bibliography.bib")
     try:
-        return pybtex.database.parse_file(filename)
+        raw = pybtex.database.parse_file(filename)
+        style_name = ark.site.config.get(BIB_STYLE, None)
+        style = pybtex.plugin.find_plugin("pybtex.style.formatting", style_name)()
+        styled_bib = style.format_bibliography(raw)
+        return styled_bib
     except FileNotFoundError:
         fail(f"Unable to read bibliography {filename}")
     except pybtex.exceptions.PybtexError:
@@ -72,11 +96,3 @@ def require(cond, msg):
     """Fail if condition untrue."""
     if not cond:
         fail(msg)
-
-
-CACHE = {
-    "bib": read_bibliography(),
-    "date": datetime.utcnow().replace(microsecond=0).isoformat(" "),
-    "links": {lnk["key"]: lnk for lnk in read_info("links.yml")},
-    "titles": {slug: title for (slug, title) in ark.site.config["chapters"].items()},
-}

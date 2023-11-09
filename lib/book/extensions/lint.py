@@ -4,8 +4,10 @@ import argparse
 from collections import defaultdict
 import hashlib
 from pathlib import Path
+import shortcodes
 
 import bin_util
+import util
 
 
 def main():
@@ -53,6 +55,22 @@ def lint_duplicate_files(args, config):
             )
 
 
+def lint_check_shortcodes(args, config):
+    """Check shortcode usage in a single pass."""
+    parser = shortcodes.Parser(inherit_globals=False, ignore_unknown=True)
+    parser.register(_collect_b, "b")
+    collector = {
+        "b": set()
+    }
+    for filename in bin_util.source_files(args.src, config):
+        collector["filename"] = filename
+        try:
+            parser.parse(Path(filename).read_text(), collector)
+        except shortcodes.ShortcodeSyntaxError as exc:
+            util.fail(f"%b shortcode parsing error in {filename}: {exc}")
+    _check_bibliography(collector["b"])
+
+
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
@@ -64,9 +82,24 @@ def parse_args():
 def report_diff(title, expected, actual):
     """Report mis-matches."""
     if diff := expected - actual:
-        print(f"{title} missing: {', '.join(diff)}")
+        print(f"{title} missing: {', '.join(sorted(diff))}")
     if diff := actual - expected:
-        print(f"{title} extra: {', '.join(diff)}")
+        print(f"{title} extra: {', '.join(sorted(diff))}")
+
+
+def _check_bibliography(seen):
+    """Check that citations exists and are used."""
+    exists = {entry.key for entry in util.read_bibliography()}
+    report_diff("bibliography keys", seen, exists)
+
+
+def _collect_b(pargs, kwargs, extra):
+    """Gather information from a single bibliography shortcode."""
+    util.require(
+        (len(pargs) > 0) and (not kwargs),
+        f"Bad 'b' shortcode with {pargs} and {kwargs} in {extra['filename']}",
+    )
+    extra["b"].update(pargs)
 
 
 def _find_duplicate_files(source_dirs):
