@@ -6,6 +6,8 @@ ARK := ark
 PYTHON := python
 
 # Directories.
+ARK_BIN := lib/gvw/extensions
+BIN := bin
 DATA_DIR := data
 SRC_DIR := src
 HTML_DIR := docs
@@ -128,7 +130,7 @@ reformat:
 ## lint: check project organization
 .PHONY: lint
 lint:
-	@${PYTHON} bin/lint.py --config ${CONFIG} --src src
+	@${PYTHON} ${ARK_BIN}/lint.py --config ${CONFIG} --src src
 
 ## --------------------
 
@@ -150,12 +152,14 @@ sterile: clean
 ## order: show chapter order
 .PHONY: order
 order:
-	@python bin/show_order.py ${CONFIG}
+	@python ${ARK_BIN}/show_order.py ${CONFIG}
 
 ## settings: show variables
 .PHONY: settings
 settings:
 	@echo "ARK:" ${ARK}
+	@echo "ARK_BIN:" ${ARK_BIN}
+	@echo "BIN:" ${BIN}
 	@echo "CONFIG:" ${CONFIG}
 	@echo "DATA_DIR:" ${DATA_DIR}
 	@echo "EXAMPLE_DIRS:" ${EXAMPLE_DIRS}

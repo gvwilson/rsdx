@@ -5,13 +5,13 @@ from collections import defaultdict
 import hashlib
 from pathlib import Path
 
-import util
+import bin_util
 
 
 def main():
     """Main driver."""
     args = parse_args()
-    config = util.load_config(args.config)
+    config = bin_util.load_config(args.config)
     for name, func in globals().items():
         if name.startswith("lint_"):
             func(args, config)
@@ -19,7 +19,7 @@ def main():
 
 def lint_chapters_again_keys(args, config):
     """Check chapters against chapter keys."""
-    expected = set(util.source_dirs(args.src, config))
+    expected = set(bin_util.source_dirs(args.src, config))
     actual = {str(p) for p in Path(args.src).glob("*") if p.is_dir()}
     report_diff("chapter keys vs. directories", expected, actual)
 
@@ -27,10 +27,10 @@ def lint_chapters_again_keys(args, config):
 def lint_duplicate_files(args, config):
     """Check for duplicated files."""
     source_dirs = {
-        Path(d): i for (i, d) in enumerate(util.source_dirs(args.src, config))
+        Path(d): i for (i, d) in enumerate(bin_util.source_dirs(args.src, config))
     }
     ark_data = {
-        src_dir: util.load_ark_data(Path(src_dir), "copied", [])
+        src_dir: bin_util.load_ark_data(Path(src_dir), "copied", [])
         for src_dir in source_dirs
     }
     ark_lookup = {
@@ -49,7 +49,7 @@ def lint_duplicate_files(args, config):
     for src_dir, values in ark_lookup.items():
         if values:
             print(
-                f"{src_dir}/{util.ARK_FILE} contains unused {', '.join(sorted(values))}"
+                f"{src_dir}/{bin_util.ARK_FILE} contains unused {', '.join(sorted(values))}"
             )
 
 

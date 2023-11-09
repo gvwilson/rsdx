@@ -2,7 +2,7 @@
 
 import sys
 
-import util
+import bin_util
 
-config = util.load_config(sys.argv[1])
+config = bin_util.load_config(sys.argv[1])
 print("\n".join(config.chapters.keys()))
