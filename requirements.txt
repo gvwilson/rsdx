@@ -1,4 +1,4 @@
-ark
+-r lib/gvw/requirements.txt
 coverage
 dvc
 geopy
@@ -7,7 +7,4 @@ metaflow
 numpy
 pandas
 plotly.express
-pybtex
-pymdown-extensions
 pytest
-ruff
