@@ -26,7 +26,7 @@ chapters = {
     "docs": "Documentation",
 }
 
-theme = "gvw"
+theme = "book"
 
 copy = [
     "*.csv",

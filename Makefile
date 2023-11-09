@@ -6,7 +6,7 @@ ARK := ark
 PYTHON := python
 
 # Directories.
-ARK_BIN := lib/gvw/extensions
+ARK_BIN := lib/book/extensions
 BIN := bin
 DATA_DIR := data
 SRC_DIR := src
