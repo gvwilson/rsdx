@@ -1,32 +1,14 @@
-# By default, show available commands
-.DEFAULT: commands
+include lib/book/book.mk
 
-# Tools
-ARK := ark
-PYTHON := python
-
-# Directories.
-ARK_BIN := lib/book/extensions
+# Directories
 BIN := bin
 DATA_DIR := data
-SRC_DIR := src
-HTML_DIR := docs
 
 # Files.
-CONFIG := config.py
-MARKDOWN := ${SRC_DIR}/index.md $(wildcard src/*/index.md)
 EXAMPLE_DIRS := $(patsubst %/Makefile,%,$(wildcard src/*/Makefile))
 EXAMPLE_PY := $(wildcard ${SRC_DIR}/*/*.py)
 
-# Generated output.
-HTML := $(patsubst ${SRC_DIR}/%.md,${HTML_DIR}/%.html,${MARKDOWN})
-
 # ----------------------------------------------------------------------
-
-## commands: show available commands
-.PHONY: commands
-commands:
-	@grep -h -E '^##' ${MAKEFILE_LIST} | sed -e 's/## //g' | column -t -s ':'
 
 ## demos: re-run all demos
 .PHONY: demos
@@ -48,18 +30,6 @@ DOCS.md: ${EXAMPLE_PY} bin/make_docs.py
 		--notdirs conduct docs license \
 		--notfiles '*/test_*.py' \
 		> $@
-
-## --------------------
-
-## build: rebuild the site
-.PHONY: build
-build: DOCS.md
-	${ARK} build
-
-## serve: rebuild and serve the site
-.PHONY: serve
-serve: DOCS.md
-	${ARK} serve
 
 ## --------------------
 
@@ -117,54 +87,11 @@ ${SNAILS_FILE}: ${PARAMS_FILES} ${GENOME_FILE} bin/generate_snail_samples.py
 
 ## --------------------
 
-## style: check code style
-.PHONY: style
-style:
-	@ruff check .
-
-## reformat: reformat unstylish code
-.PHONY: reformat
-reformat:
-	@ruff format .
-
-## lint: check project organization
-.PHONY: lint
-lint:
-	@${PYTHON} ${ARK_BIN}/lint.py --config ${CONFIG} --src src
-
-## --------------------
-
-## clean: tidy up
-.PHONY: clean
-clean:
-	@rm -rf ${HTML_DIR}
-	@find . -name '*~' -exec rm {} \;
-
-## sterile: really tidy up
-.PHONY: sterile
-sterile: clean
-	@rm -rf ${OUT_DIR}
-	@find . -name __pycache__ -exec rm -r {} +
-	@find . -name .pytest_cache -exec rm -r {} +
-
-## --------------------
-
-## order: show chapter order
-.PHONY: order
-order:
-	@python ${ARK_BIN}/show_order.py ${CONFIG}
-
 ## settings: show variables
 .PHONY: settings
-settings:
-	@echo "ARK:" ${ARK}
-	@echo "ARK_BIN:" ${ARK_BIN}
+settings: book_settings
+	@echo "--------------------"
 	@echo "BIN:" ${BIN}
-	@echo "CONFIG:" ${CONFIG}
 	@echo "DATA_DIR:" ${DATA_DIR}
 	@echo "EXAMPLE_DIRS:" ${EXAMPLE_DIRS}
 	@echo "EXAMPLE_PY:" ${EXAMPLE_PY}
-	@echo "HTML:" ${HTML}
-	@echo "HTML_DIR:" ${HTML_DIR}
-	@echo "MARKDOWN:" ${MARKDOWN}
-	@echo "SRC_DIR:" ${SRC_DIR}

@@ -40,10 +40,7 @@ def make_links_table(text):
     """Make a table of links for inclusion in Markdown."""
     used = {m.group(1) for m in regex.MARKDOWN_FOOTER_LINK.finditer(text)}
     table = CACHE["links"]
-    return "\n".join([
-        f"[{key}]: {table[key]['url']}" for key in table
-        if key in used
-    ])
+    return "\n".join([f"[{key}]: {table[key]['url']}" for key in table if key in used])
 
 
 def read_bibliography():
@@ -81,7 +78,5 @@ CACHE = {
     "bib": read_bibliography(),
     "date": datetime.utcnow().replace(microsecond=0).isoformat(" "),
     "links": {lnk["key"]: lnk for lnk in read_info("links.yml")},
-    "titles": {
-        slug: title for (slug, title) in ark.site.config["chapters"].items()
-    },
+    "titles": {slug: title for (slug, title) in ark.site.config["chapters"].items()},
 }

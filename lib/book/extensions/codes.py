@@ -30,6 +30,7 @@ def bibliography_ref(pargs, kwargs, node):
 @shortcodes.register("bibliography")
 def bibliography(pargs, kwargs, node):
     """Handle [% bibliography %] shortcode."""
+
     def _fmt(key, body):
         return f'<dt id="{key}" class="bib-def">{key}</dt>\n<dd>{body}</dd>'
 

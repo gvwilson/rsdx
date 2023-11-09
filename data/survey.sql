@@ -1,9 +1,5 @@
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
-CREATE TABLE IF NOT EXISTS "params" (
-"seed" INTEGER
-);
-INSERT INTO params VALUES(12345);
 CREATE TABLE IF NOT EXISTS "sites" (
 "site" TEXT,
   "lon" REAL,
