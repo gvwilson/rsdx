@@ -74,10 +74,14 @@ def toc(pargs, kwargs, node):
     util.require(
         (not pargs) and (not kwargs), f"Bad 'toc' shortcode with {pargs} and {kwargs}"
     )
-    items = "\n".join(
-        [
-            f'<li><a href="@root/{slug}/">{title}</a></li>'
-            for slug, title in ark.site.config["chapters"].items()
-        ]
-    )
-    return f'<ol class="toc">\n{items}\n</ol>'
+    chapters = []
+    appendices = []
+    for slug, data in util.get_frontmatter().items():
+        entry = f'<li><a href="@root/{slug}/">{data["title"]}</a></li>'
+        if "tag" in data:
+            chapters.append(entry)
+        else:
+            appendices.append(entry)
+    chapters = '<ol class="toc" type="1">\n' + "\n".join(chapters) + "\n</ol>\n"
+    appendices = '<ol class="toc" type="A">\n' + "\n".join(appendices) + "\n</ol>\n"
+    return f"{chapters}{appendices}"

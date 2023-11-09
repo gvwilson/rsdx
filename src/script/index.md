@@ -1,3 +1,8 @@
+---
+title: "Initial Invasion Percolation Script"
+tag: "A walk through the kind of code most scientists write."
+---
+
 - Initial version of invasion percolation.
   - At least it's broken into functions.
 - Had to modify `print_grid` to show numeric values for debugging

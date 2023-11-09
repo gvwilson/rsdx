@@ -1,4 +1,5 @@
 ark
 pybtex
 pymdown-extensions
+python-frontmatter
 ruff

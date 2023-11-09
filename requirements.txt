@@ -1,4 +1,4 @@
--r lib/gvw/requirements.txt
+-r lib/book/requirements.txt
 coverage
 dvc
 geopy

@@ -1,3 +1,8 @@
+---
+title: "A Grid Abstraction"
+tag: "Reorganizing our initial script to create something maintainable."
+---
+
 - Introduce abstract base class for grid.
   - Implement nested list and test.
   - Implement NumPy array and test.

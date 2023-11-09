@@ -120,6 +120,15 @@ div.card img:last-child {
 }
 
 /*
+ * Chapter taglines
+ */
+
+div.tagline {
+    text-align: center;
+    font-style: italic;
+}
+
+/*
  * Top navigation
  */
 

@@ -4,27 +4,27 @@ title = "Research Software Design by Example"
 repo = "https://github.com/gvwilson/rsdx"
 author = "Greg Wilson"
 
-chapters = {
-    "intro": "Introduction",
-    "parse": "Parse Raw Data",
-    "center": "Geocoded Readings",
-    "script": "Initial Script",
-    "grid": "Grid Abstraction",
-    "perf": "Measure Performance",
-    "flow": "Task Runner",
-    "lazy": "Lazy Algorithm",
-    "dim": "Measure Fractal Dimension",
-    "density": "Estimate Density vs. Distance",
-    "test": "Testing",
-    "mut": "Mutation",
-    "walk": "Random Walk",
-    "finale": "Conclusion",
-    "license": "License",
-    "bib": "Bibliography",
-    "conduct": "Code of Conduct",
-    "credits": "Credits",
-    "docs": "Documentation",
-}
+chapters = [
+    "intro",
+    "parse",
+    "center",
+    "script",
+    "grid",
+    "perf",
+    "flow",
+    "lazy",
+    "dim",
+    "density",
+    "test",
+    "mut",
+    "walk",
+    "finale",
+    "license",
+    "bib",
+    "conduct",
+    "credits",
+    "docs",
+]
 
 theme = "book"
 

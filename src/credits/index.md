@@ -1,3 +1,7 @@
+---
+title: "Credits"
+---
+
 **[Greg Wilson][gvwilson]** has worked in industry and academia for over 40 years,
 and is the author, co-author, or editor of over a dozen books,
 including *Beautiful Code*,

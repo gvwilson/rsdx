@@ -27,11 +27,13 @@ commands:
 ## build: rebuild the site
 .PHONY: build
 build: ${BUILD_EXTRAS}
+	@mkdir -p ${HTML_DIR}
 	${ARK} build
 
 ## serve: rebuild and serve the site
 .PHONY: serve
 serve: ${BUILD_EXTRAS}
+	@mkdir -p ${HTML_DIR}
 	${ARK} serve
 
 ## --------------------
@@ -71,7 +73,7 @@ sterile: clean
 ## order: show chapter order
 .PHONY: order
 order:
-	@python ${ARK_BIN}/show_order.py ${CONFIG}
+	@python ${ARK_BIN}/order.py ${CONFIG}
 
 # book_settings: show common settings
 .PHONY: book_settings

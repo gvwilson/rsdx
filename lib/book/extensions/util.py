@@ -10,6 +10,7 @@ import yaml
 import ark
 
 import regex
+import util
 
 
 BIB_STYLE = "unsrt"
@@ -25,8 +26,8 @@ def with_cache(original):
             CACHE = {
                 "bib": read_bibliography(),
                 "date": datetime.utcnow().replace(microsecond=0).isoformat(" "),
+                "frontmatter": _build_frontmatter(),
                 "links": {lnk["key"]: lnk for lnk in read_info("links.yml")},
-                "titles": {slug: title for (slug, title) in ark.site.config["chapters"].items()},
             }
         return original(*args, **kwargs)
     return wrapped
@@ -50,9 +51,24 @@ def get_date():
 
 
 @with_cache
+def get_frontmatter():
+    """Get all titles from collected frontmatter."""
+    return CACHE["frontmatter"]
+
+
+@with_cache
+def get_tag(node):
+    """Get chapter tag from collected frontmatter."""
+    util.require((node.slug in CACHE["frontmatter"]), f"{node} not known")
+    cached = CACHE["frontmatter"][node.slug]
+    return cached.get("tag", None)
+
+
+@with_cache
 def get_title(node):
-    """Get chapter/appendix title from configuration."""
-    return CACHE["titles"][get_slug(node)]
+    """Get chapter/appendix title from collected frontmatter."""
+    util.require((node.slug in CACHE["frontmatter"]), f"{node} not known")
+    return CACHE["frontmatter"][node.slug]["title"]
 
 
 @with_cache
@@ -96,3 +112,9 @@ def require(cond, msg):
     """Fail if condition untrue."""
     if not cond:
         fail(msg)
+
+
+def _build_frontmatter():
+    """Build (slug, frontmatter) lookup table."""
+    frontmatter = ark.site.config["frontmatter"]
+    return {slug: frontmatter[slug] for slug in ark.site.config["chapters"]}
