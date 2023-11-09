@@ -5,6 +5,7 @@ BIN := bin
 DATA_DIR := data
 
 # Files.
+BUILD_EXTRAS := DOCS.md
 EXAMPLE_DIRS := $(patsubst %/Makefile,%,$(wildcard src/*/Makefile))
 EXAMPLE_PY := $(wildcard ${SRC_DIR}/*/*.py)
 
@@ -23,7 +24,7 @@ examples:
 ## docs: rebuild code documentation
 docs: DOCS.md
 DOCS.md: ${EXAMPLE_PY} bin/make_docs.py
-	@python bin/make_docs.py \
+	python bin/make_docs.py \
 		--config ${CONFIG} \
 		--src ${SRC_DIR} \
 		--title "Documentation" \
@@ -92,6 +93,7 @@ ${SNAILS_FILE}: ${PARAMS_FILES} ${GENOME_FILE} bin/generate_snail_samples.py
 settings: book_settings
 	@echo "--------------------"
 	@echo "BIN:" ${BIN}
+	@echo "BUILD_EXTRAS:" ${BUILD_EXTRAS}
 	@echo "DATA_DIR:" ${DATA_DIR}
 	@echo "EXAMPLE_DIRS:" ${EXAMPLE_DIRS}
 	@echo "EXAMPLE_PY:" ${EXAMPLE_PY}

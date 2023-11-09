@@ -1,5 +1,7 @@
 # Documentation
 
+## src/intro
+
 ## src/parse
 
 ### `src/parse/parse.py`: Parse messy data files.
@@ -382,6 +384,10 @@
 
 -   function `main`: Main driver.
 -   function `parse_args`: Parse command-line arguments.
+
+## src/finale
+
+## src/bib
 
 ## src/credits
 

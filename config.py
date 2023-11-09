@@ -43,6 +43,7 @@ exclude = copy + [
     ".coverage",
     ".pytest_cache",
     "CODE_OF_CONDUCT.md",
+    "DOCS.md",
     "LICENSE.md",
     "Makefile",
     "README.md",

@@ -26,12 +26,12 @@ commands:
 
 ## build: rebuild the site
 .PHONY: build
-build: DOCS.md
+build: ${BUILD_EXTRAS}
 	${ARK} build
 
 ## serve: rebuild and serve the site
 .PHONY: serve
-serve: DOCS.md
+serve: ${BUILD_EXTRAS}
 	${ARK} serve
 
 ## --------------------
