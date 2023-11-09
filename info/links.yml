@@ -1,0 +1,15 @@
+- key: aosa
+  url: https://aosabook.org/
+  en: "The Architecture of Open Source Applications"
+
+- key: carpentries
+  url: https://carpentries.org/
+  en: "Software Carpentry"
+
+- key: gvwilson
+  url: https://third-bit.com/
+  en: "Greg Wilson"
+
+- key: t3
+  url: https://teachtogether.tech/
+  en: "Teaching Tech Together"

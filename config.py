@@ -5,6 +5,7 @@ repo = "https://github.com/gvwilson/rsdx"
 author = "Greg Wilson"
 
 chapters = {
+    "intro": "Introduction",
     "parse": "Parse Raw Data",
     "center": "Geocoded Readings",
     "script": "Initial Script",
@@ -17,12 +18,15 @@ chapters = {
     "test": "Testing",
     "mut": "Mutation",
     "walk": "Random Walk",
+    "finale": "Conclusion",
     "license": "License",
+    "bib": "Bibliography",
     "conduct": "Code of Conduct",
+    "credits": "Credits",
     "docs": "Documentation",
 }
 
-theme = "rse"
+theme = "gvw"
 
 copy = [
     "*.csv",

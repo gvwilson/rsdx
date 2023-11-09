@@ -4,12 +4,47 @@ from pathlib import Path
 import re
 
 import ark
+import pybtex.plugin
 import shortcodes
 
 import util
 
 
+BIB_STYLE = "unsrt"
 FIRST_H1 = re.compile(r"^#\s+.+$", re.MULTILINE)
+
+
+@shortcodes.register("b")
+def bibliography_ref(pargs, kwargs, node):
+    """Handle [%b key1 key2 %] biblography references."""
+    util.require(
+        (len(pargs) > 0) and (not kwargs),
+        f"Bad 'b' shortcode with {pargs} and {kwargs} in {node}",
+    )
+    base = "@root/bib"
+    links = [f'<a class="bib-ref" href="{base}/#{k}">{k}</a>' for k in pargs]
+    links = ", ".join(links)
+    return f'<span class="bib-ref">[{links}]</span>'
+
+
+@shortcodes.register("bibliography")
+def bibliography(pargs, kwargs, node):
+    """Handle [% bibliography %] shortcode."""
+    def _fmt(key, body):
+        return f'<dt id="{key}" class="bib-def">{key}</dt>\n<dd>{body}</dd>'
+
+    util.require(
+        (not pargs) and (not kwargs),
+        f"Bad 'bibliography' shortcode with {pargs} and {kwargs} in {node}",
+    )
+
+    style_name = ark.site.config.get(BIB_STYLE, None)
+    style = pybtex.plugin.find_plugin("pybtex.style.formatting", style_name)()
+    styled = style.format_bibliography(util.CACHE["bib"])
+    html = pybtex.plugin.find_plugin("pybtex.backends", "html")()
+
+    entries = [_fmt(entry.key, entry.text.render(html)) for entry in styled]
+    return '<dl class="bib-list">\n\n' + "\n\n".join(entries) + "\n\n</dl>"
 
 
 @shortcodes.register("date")

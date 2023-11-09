@@ -421,6 +421,28 @@
 <li>function <code>select_candidate_locs</code>: Select locations with more than one base.</li>
 <li>function <code>plot</code>: Show standard plots of (subset of) data.</li>
 </ul>
+<h2>src/walk</h2>
+<h3><code>src/walk/walk.py</code>: Random walk with dosage accumulation.</h3>
+<ul>
+<li>class <code>Snail</code>: Simulate a single snail&rsquo;s movement.</li>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>escape</code>: Has this snail escaped?</li>
+<li>function <code>parse_args</code>: Parse command-line arguments.</li>
+<li>function <code>random_point</code>: Pick a random point.</li>
+<li>function <code>walk</code>: Simulate a single walker.<ul>
+<li>method <code>__init__</code>: Create snail.</li>
+<li>method <code>dose</code>: Accumulate dose at current position.</li>
+<li>method <code>move</code>: Move the snail randomly.</li>
+<li>method <code>__str__</code>: Printable representation.</li>
+</ul>
+</li>
+</ul>
+<h3><code>src/walk/analyze.py</code>: Analyze random snail walks.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>parse_args</code>: Parse command-line arguments.</li>
+</ul>
+<h2>src/credits</h2>
     </main>
     <footer>
   <a href="../license/">License</a> &middot; <a href="https://github.com/gvwilson/rsdx">Repository</a>

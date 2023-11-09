@@ -10,6 +10,16 @@ import util
 
 
 @ark.events.register(ark.events.Event.INIT)
+def append_links_to_pages():
+    """Add Markdown links table to Markdown files."""
+    def _visitor(node):
+        if node.ext == "md":
+            node.text += "\n\n" + util.make_links_table(node.text)
+
+    ark.nodes.root().walk(_visitor)
+
+
+@ark.events.register(ark.events.Event.INIT)
 def copy_files():
     """Copy files."""
     for pat in ark.site.config["copy"]:

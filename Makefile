@@ -6,13 +6,11 @@ ARK := ark
 PYTHON := python
 
 # Directories.
-ASSETS := assets
 DATA_DIR := data
 SRC_DIR := src
-HTML_DIR := _site
+HTML_DIR := docs
 
 # Files.
-ASSETS := $(wildcard ${ASSETS}/*.*)
 CONFIG := config.py
 MARKDOWN := ${SRC_DIR}/index.md $(wildcard src/*/index.md)
 EXAMPLE_DIRS := $(patsubst %/Makefile,%,$(wildcard src/*/Makefile))
@@ -165,5 +163,4 @@ settings:
 	@echo "HTML:" ${HTML}
 	@echo "HTML_DIR:" ${HTML_DIR}
 	@echo "MARKDOWN:" ${MARKDOWN}
-	@echo "SITES:" ${SITES}
 	@echo "SRC_DIR:" ${SRC_DIR}

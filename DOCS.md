@@ -363,3 +363,25 @@
 -   function `select_candidate_locs`: Select locations with more than one base.
 -   function `plot`: Show standard plots of (subset of) data.
 
+## src/walk
+
+### `src/walk/walk.py`: Random walk with dosage accumulation.
+
+-   class `Snail`: Simulate a single snail's movement.
+-   function `main`: Main driver.
+-   function `escape`: Has this snail escaped?
+-   function `parse_args`: Parse command-line arguments.
+-   function `random_point`: Pick a random point.
+-   function `walk`: Simulate a single walker.
+    -   method `__init__`: Create snail.
+    -   method `dose`: Accumulate dose at current position.
+    -   method `move`: Move the snail randomly.
+    -   method `__str__`: Printable representation.
+
+### `src/walk/analyze.py`: Analyze random snail walks.
+
+-   function `main`: Main driver.
+-   function `parse_args`: Parse command-line arguments.
+
+## src/credits
+
