@@ -29,17 +29,7 @@
     <main>
       <h1>Documentation</h1>
 
-      <h2>src/script</h2>
-<h3><code>src/script/invperc.py</code>: Invasion percolation in Python.</h3>
-<ul>
-<li>function <code>main</code>: Main driver.</li>
-<li>function <code>make_grid</code>: Create a width X height grid.</li>
-<li>function <code>choose_cell</code>: Choose the next cell to fill in.</li>
-<li>function <code>adjacent</code>: Is (x, y) adjacent to a filled cell?</li>
-<li>function <code>on_border</code>: Is this cell on the border of the grid?</li>
-<li>function <code>print_grid</code>: Show the result.</li>
-</ul>
-<h2>src/parse</h2>
+      <h2>src/parse</h2>
 <h3><code>src/parse/parse.py</code>: Parse messy data files.</h3>
 <ul>
 <li>class <code>State</code>: Enumerate possible parser states.</li>
@@ -62,6 +52,16 @@
 <li>function <code>check</code>: Check all tables against each other.</li>
 <li>function <code>make_figures</code>: Create figures showing calculated results.</li>
 <li>function <code>parse_args</code>: Parse command-line arguments.</li>
+</ul>
+<h2>src/script</h2>
+<h3><code>src/script/invperc.py</code>: Invasion percolation in Python.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>make_grid</code>: Create a width X height grid.</li>
+<li>function <code>choose_cell</code>: Choose the next cell to fill in.</li>
+<li>function <code>adjacent</code>: Is (x, y) adjacent to a filled cell?</li>
+<li>function <code>on_border</code>: Is this cell on the border of the grid?</li>
+<li>function <code>print_grid</code>: Show the result.</li>
 </ul>
 <h2>src/grid</h2>
 <h3><code>src/grid/invperc.py</code>: Invasion percolation in Python.</h3>
@@ -348,6 +348,7 @@
 </ul>
 </li>
 </ul>
+<h3><code>src/density/find_matching_files.py</code>: Check that generated files match saved files.</h3>
 <h3><code>src/density/analysis.py</code>: Analyze data from runs.</h3>
 <ul>
 <li>function <code>main</code>: Main driver.</li>
@@ -410,6 +411,15 @@
 <li>method <code>_randomize</code>: Randomize grid contents.</li>
 </ul>
 </li>
+</ul>
+<h2>src/mut</h2>
+<h3><code>src/mut/correlate.py</code>: Look for correlation between SNPs and snail size.</h3>
+<ul>
+<li>function <code>main</code>: Main driver.</li>
+<li>function <code>parse_args</code>: Parse command-line arguments.</li>
+<li>function <code>pivot_dataframe</code>: Turn (sequence, reading) into (loc, base, reading).</li>
+<li>function <code>select_candidate_locs</code>: Select locations with more than one base.</li>
+<li>function <code>plot</code>: Show standard plots of (subset of) data.</li>
 </ul>
     </main>
     <footer>

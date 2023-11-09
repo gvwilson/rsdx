@@ -16,6 +16,7 @@ chapters = {
     "density": "Estimate Density vs. Distance",
     "test": "Testing",
     "mut": "Mutation",
+    "walk": "Random Walk",
     "license": "License",
     "conduct": "Code of Conduct",
     "docs": "Documentation",

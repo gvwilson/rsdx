@@ -292,6 +292,9 @@
     -   method `_add_candidate`: Add (x, y) if suitable.
     -   method `_init_grid`: Initialize grid contents.
 
+### `src/density/find_matching_files.py`: Check that generated files match saved files.
+
+
 ### `src/density/analysis.py`: Analyze data from runs.
 
 -   function `main`: Main driver.
@@ -349,4 +352,14 @@
     -   method `add_candidates`: Add candidates around (x, y).
     -   method `_add_candidate`: Add (x, y) if suitable.
     -   method `_randomize`: Randomize grid contents.
+
+## src/mut
+
+### `src/mut/correlate.py`: Look for correlation between SNPs and snail size.
+
+-   function `main`: Main driver.
+-   function `parse_args`: Parse command-line arguments.
+-   function `pivot_dataframe`: Turn (sequence, reading) into (loc, base, reading).
+-   function `select_candidate_locs`: Select locations with more than one base.
+-   function `plot`: Show standard plots of (subset of) data.
 

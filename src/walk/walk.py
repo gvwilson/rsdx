@@ -36,6 +36,7 @@ class Snail:
         """Printable representation."""
         return f"S(u={self._uid}, x={self._pos[0]}, y={self._pos[1]}, s={self._stepsize}, d={self._dosage})"
 
+
 def main():
     """Main driver."""
     args = parse_args()
@@ -56,11 +57,15 @@ def escape(snail, radius):
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--maxsteps", type=int, default=None, help="maximum number of steps")
+    parser.add_argument(
+        "--maxsteps", type=int, default=None, help="maximum number of steps"
+    )
     parser.add_argument("--outfile", type=str, default=None, help="output file")
     parser.add_argument("--radius", type=float, default=None, help="radius")
     parser.add_argument("--reps", type=int, default=None, help="repetitions")
-    parser.add_argument("--stepsize", type=float, default=None, help="maximum step size")
+    parser.add_argument(
+        "--stepsize", type=float, default=None, help="maximum step size"
+    )
     parser.add_argument("--seed", type=int, default=None, help="RNG seed")
     return parser.parse_args()
 
