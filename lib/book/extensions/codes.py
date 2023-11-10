@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import re
+from textwrap import dedent
 
 import ark
 import pybtex.plugin
@@ -52,6 +53,50 @@ def date(pargs, kwargs, node):
         f"Bad 'date' shortcode with {pargs} and {kwargs}",
     )
     return ark.site.config["_date_"]
+
+
+@shortcodes.register("f")
+def figure_ref(pargs, kwargs, node):
+    """Handle [% f slug %] figure reference shortcodes."""
+    util.require((len(pargs) == 1) and (not kwargs), f"Bad 'f' shortcode in {node}")
+    slug = pargs[0]
+    known = ark.site.config["_figures_"]
+    util.require(slug in known, f"Unknown figure slug {slug} in {node}")
+    return f'<a class="fig-ref" href="#{slug}">Figure&nbsp;{known[slug]}</a>'
+
+
+@shortcodes.register("figure")
+def figure_def(pargs, kwargs, node):
+    """Handle figure definition."""
+    allowed = {"cls", "scale", "slug", "img", "alt", "caption"}
+    util.require(
+        (not pargs) and allowed.issuperset(kwargs.keys()),
+        f"Bad 'figure' shortcode {pargs} and {kwargs} in {node}",
+    )
+
+    cls = kwargs.get("cls", None)
+    cls = f' class="{cls}"' if cls is not None else ""
+
+    scale = kwargs.get("scale", None)
+    scale = f' width="{scale}"' if scale is not None else ""
+
+    slug = kwargs["slug"]
+    img = kwargs["img"]
+    alt = util.markdownify(kwargs["alt"], True)
+    caption = util.markdownify(kwargs["caption"], True)
+
+    util.require_file(node, img, "figure")
+    known = ark.site.config["_figures_"]
+
+    label = f"Figure&nbsp;{known[slug]}"
+    return dedent(
+        f"""\
+        <figure id="{slug}"{cls}>
+        <img src="./{img}" alt="{alt}"{scale}/>
+        <figcaption markdown="1">{label}: {caption}</figcaption>
+        </figure>
+        """
+    )
 
 
 @shortcodes.register("rootpage")

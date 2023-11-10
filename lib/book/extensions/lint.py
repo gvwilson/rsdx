@@ -57,6 +57,14 @@ def lint_duplicate_files(args, config):
 
 def lint_check_shortcodes(args, config):
     """Check shortcode usage in a single pass."""
+
+    def _collect_b(pargs, kwargs, extra):
+        util.require(
+            (len(pargs) > 0) and (not kwargs),
+            f"Bad 'b' shortcode with {pargs} and {kwargs} in {extra['filename']}",
+        )
+        extra["b"].update(pargs)
+
     parser = shortcodes.Parser(inherit_globals=False, ignore_unknown=True)
     parser.register(_collect_b, "b")
     collector = {"b": set()}
@@ -89,15 +97,6 @@ def _check_bibliography(seen):
     """Check that citations exists and are used."""
     exists = {entry.key for entry in util.read_bibliography()}
     report_diff("bibliography keys", seen, exists)
-
-
-def _collect_b(pargs, kwargs, extra):
-    """Gather information from a single bibliography shortcode."""
-    util.require(
-        (len(pargs) > 0) and (not kwargs),
-        f"Bad 'b' shortcode with {pargs} and {kwargs} in {extra['filename']}",
-    )
-    extra["b"].update(pargs)
 
 
 def _find_duplicate_files(source_dirs):

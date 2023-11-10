@@ -1,5 +1,6 @@
 """Utilities for building site."""
 
+import markdown
 from pathlib import Path
 import pybtex.database
 import pybtex.plugin
@@ -46,6 +47,15 @@ def make_links_table(text):
     return "\n".join([f"[{key}]: {table[key]['url']}" for key in table if key in used])
 
 
+def markdownify(text, strip_paragraph=False):
+    """Convert to Markdown."""
+    extensions = ["markdown.extensions.extra", "markdown.extensions.smarty"]
+    result = markdown.markdown(text, extensions=extensions)
+    if strip_paragraph and result.startswith("<p>"):
+        result = result[3:-4]  # remove trailing '</p>' as well
+    return result
+
+
 def read_bibliography():
     """Load bibliography."""
     filename = Path(ark.site.home(), "info", "bibliography.bib")
@@ -79,3 +89,9 @@ def require(cond, msg):
     """Fail if condition untrue."""
     if not cond:
         fail(msg)
+
+
+def require_file(node, filename, kind):
+    """Require that a file exists."""
+    filepath = Path(Path(node.filepath).parent, filename)
+    require(filepath.exists(), f"Missing {kind} file {filename} from {node}")
