@@ -53,6 +53,13 @@ reformat:
 lint:
 	@${PYTHON} ${ARK_BIN}/lint.py --config ${CONFIG} --src src
 
+## valid: run html5validator on generated files
+.PHONY: valid
+valid:
+	@html5validator --root ${HTML_DIR} ${HTML} \
+	--ignore \
+	'Attribute "markdown" not allowed on element'
+
 ## --------------------
 
 ## clean: tidy up
