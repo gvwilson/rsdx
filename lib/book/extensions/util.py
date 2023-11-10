@@ -1,6 +1,5 @@
 """Utilities for building site."""
 
-from datetime import datetime
 from pathlib import Path
 import pybtex.database
 import pybtex.plugin
@@ -14,25 +13,7 @@ import util
 
 
 BIB_STYLE = "unsrt"
-CACHE = None
 DIRECTIVES_FILE = ".ark"
-
-
-def with_cache(original):
-    """Fill cache if not already filled."""
-
-    def wrapped(*args, **kwargs):
-        global CACHE
-        if CACHE is None:
-            CACHE = {
-                "bib": read_bibliography(),
-                "date": datetime.utcnow().replace(microsecond=0).isoformat(" "),
-                "meta": _build_meta(),
-                "links": {lnk["key"]: lnk for lnk in read_info("links.yml")},
-            }
-        return original(*args, **kwargs)
-
-    return wrapped
 
 
 def fail(msg):
@@ -46,38 +27,22 @@ def get_slug(node):
     return node.path[-1] if len(node.path) > 0 else "@root"
 
 
-@with_cache
-def get_date():
-    """Get date/time."""
-    return CACHE["date"]
-
-
-@with_cache
-def get_meta():
-    """Get all titles from collected page metadata."""
-    return CACHE["meta"]
-
-
-@with_cache
 def get_tag(node):
     """Get chapter tag from collected page metadata."""
-    util.require((node.slug in CACHE["meta"]), f"{node} not known")
-    cached = CACHE["meta"][node.slug]
-    return cached.get("tag", None)
+    util.require((node.slug in ark.site.config["_meta_"]), f"{node} not known")
+    return ark.site.config["_meta_"][node.slug].get("tag", None)
 
 
-@with_cache
 def get_title(node):
     """Get chapter/appendix title from collected page metadata."""
-    util.require((node.slug in CACHE["meta"]), f"{node} not known")
-    return CACHE["meta"][node.slug]["title"]
+    util.require((node.slug in ark.site.config["_meta_"]), f"{node} not known")
+    return ark.site.config["_meta_"][node.slug]["title"]
 
 
-@with_cache
 def make_links_table(text):
     """Make a table of links for inclusion in Markdown."""
     used = {m.group(1) for m in regex.MARKDOWN_FOOTER_LINK.finditer(text)}
-    table = CACHE["links"]
+    table = ark.site.config["_links_"]
     return "\n".join([f"[{key}]: {table[key]['url']}" for key in table if key in used])
 
 
@@ -114,8 +79,3 @@ def require(cond, msg):
     """Fail if condition untrue."""
     if not cond:
         fail(msg)
-
-
-def _build_meta():
-    """Build (slug, metadata) lookup table."""
-    return {slug: ark.site.config["meta"][slug] for slug in ark.site.config["chapters"]}

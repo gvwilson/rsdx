@@ -38,7 +38,7 @@ def bibliography(pargs, kwargs, node):
         f"Bad 'bibliography' shortcode with {pargs} and {kwargs} in {node}",
     )
 
-    styled_bib = util.CACHE["bib"]
+    styled_bib = ark.site.config["_bib_"]
     html = pybtex.plugin.find_plugin("pybtex.backends", "html")()
     entries = [_fmt(entry.key, entry.text.render(html)) for entry in styled_bib]
     return '<dl class="bib-list">\n\n' + "\n\n".join(entries) + "\n\n</dl>"
@@ -51,7 +51,7 @@ def date(pargs, kwargs, node):
         (not pargs) and (not kwargs),
         f"Bad 'date' shortcode with {pargs} and {kwargs}",
     )
-    return util.get_date()
+    return ark.site.config["_date_"]
 
 
 @shortcodes.register("rootpage")
@@ -76,12 +76,29 @@ def toc(pargs, kwargs, node):
     )
     chapters = []
     appendices = []
-    for slug, data in util.get_meta().items():
-        entry = f'<li><a href="@root/{slug}/">{data["title"]}</a></li>'
-        if "tag" in data:
+    for slug in ark.site.config["chapters"]:
+        title = ark.site.config["_meta_"][slug]["title"]
+        entry = f'<li><a href="@root/{slug}/">{title}</a></li>'
+        if "tag" in ark.site.config["_meta_"][slug]:
             chapters.append(entry)
         else:
             appendices.append(entry)
-    chapters = '<ol class="toc" type="1">\n' + "\n".join(chapters) + "\n</ol>\n"
-    appendices = '<ol class="toc" type="A">\n' + "\n".join(appendices) + "\n</ol>\n"
-    return f"{chapters}{appendices}"
+    chapters = '<ol class="toc" type="1">\n' + "\n".join(chapters) + "\n</ol>"
+    appendices = '<ol class="toc" type="A">\n' + "\n".join(appendices) + "\n</ol>"
+    return f"{chapters}\n{appendices}"
+
+
+@shortcodes.register("x")
+def x_reference(pargs, kwargs, node):
+    """Handle [%x slug %] cross-reference shortcode."""
+    util.require(
+        (len(pargs) == 1) and (not kwargs),
+        f"Bad 'x' shortcode with {pargs} and {kwargs}",
+    )
+    slug = pargs[0]
+    util.require(
+        slug in ark.site.config["_number_"], f"Unknown key in 'x' shortcode {slug}"
+    )
+    kind = ark.site.config["_number_"][slug]["kind"]
+    number = ark.site.config["_number_"][slug]["number"]
+    return f"{kind}&nbsp;{number}"
