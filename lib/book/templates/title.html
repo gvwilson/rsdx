@@ -1,2 +1,5 @@
 <h1>{% if node | is_root %}{{ site.title }}{% else %}{{ node | part_title }}{% endif %}</h1>
-{% if node | is_chapter %}<div class="tagline"><p>{{ node | part_tag }}</p></div>{% endif %}
+{% if node | is_chapter %}
+  <div class="tagline"><p>{{ node | part_tag }}</p></div>
+  {{ node | syllabus }}
+{% endif %}

@@ -1,6 +1,8 @@
 ---
 title: "A Lazy Algorithm"
 tag: "Doing only as much work as we have to makes our simulation faster."
+syllabus:
+- FIXME
 ---
 
 - Fill grid (because we want exactly the same random numbers).

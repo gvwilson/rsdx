@@ -1,6 +1,8 @@
 ---
 title: "Random Walk"
 tag: "Simulate snail movement as a random walk and calculate overall dosage"
+syllabus:
+- FIXME
 ---
 
 - Start in random location and walk

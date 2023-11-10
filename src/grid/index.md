@@ -1,6 +1,8 @@
 ---
 title: "A Grid Abstraction"
 tag: "Reorganizing our initial script to create something maintainable."
+syllabus:
+- FIXME
 ---
 
 - Introduce abstract base class for grid.

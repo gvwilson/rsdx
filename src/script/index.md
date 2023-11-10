@@ -1,6 +1,8 @@
 ---
 title: "Initial Invasion Percolation Script"
 tag: "A walk through the kind of code most scientists write."
+syllabus:
+- FIXME
 ---
 
 - Initial version of invasion percolation.

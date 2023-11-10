@@ -51,6 +51,10 @@ html {
     font-size: var(--body-size);
 }
 
+body {
+    max-width: var(--page-width);
+}
+
 /*
  * Flex grid
  */
@@ -158,8 +162,17 @@ footer {
  * Table of contents
  */
 
-ol#toc {
-    clear: both;
+ol.toc {}
+
+/*
+ * Syllabus listing at chapter start.
+ */
+ul.syllabus {
+    background-color: var(--lightgray);
+    padding-left: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border: var(--mediumborder) var(--darkgray) solid;
 }
 
 /*

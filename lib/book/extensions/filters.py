@@ -1,5 +1,6 @@
 """Filters for use in template expansion."""
 
+import ark
 import ibis
 import util
 
@@ -34,3 +35,12 @@ def part_tag(node):
 def part_title(node):
     """Insert chapter title."""
     return util.get_title(node)
+
+
+@ibis.filters.register("syllabus")
+def syllabus(node):
+    """Format syllabus of chapter."""
+    meta = ark.site.config["_meta_"][node.slug]
+    util.require("syllabus" in meta, f"No syllabus for {node.slug}")
+    items = "\n".join([f"<li>{util.markdownify(s, True)}</li>" for s in meta["syllabus"]])
+    return f'<ul class="syllabus">\n{items}\n</ul>'

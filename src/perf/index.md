@@ -1,6 +1,8 @@
 ---
 title: "Measure Performance"
 tag: "Using experiments to compare the performance of alternative implementations."
+syllabus:
+- FIXME
 ---
 
 - Modify main driver to run both grid options *with the same seed*.
