@@ -76,7 +76,7 @@ def toc(pargs, kwargs, node):
     )
     chapters = []
     appendices = []
-    for slug, data in util.get_frontmatter().items():
+    for slug, data in util.get_meta().items():
         entry = f'<li><a href="@root/{slug}/">{data["title"]}</a></li>'
         if "tag" in data:
             chapters.append(entry)

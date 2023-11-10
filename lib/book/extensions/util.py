@@ -20,16 +20,18 @@ DIRECTIVES_FILE = ".ark"
 
 def with_cache(original):
     """Fill cache if not already filled."""
+
     def wrapped(*args, **kwargs):
         global CACHE
         if CACHE is None:
             CACHE = {
                 "bib": read_bibliography(),
                 "date": datetime.utcnow().replace(microsecond=0).isoformat(" "),
-                "frontmatter": _build_frontmatter(),
+                "meta": _build_meta(),
                 "links": {lnk["key"]: lnk for lnk in read_info("links.yml")},
             }
         return original(*args, **kwargs)
+
     return wrapped
 
 
@@ -51,24 +53,24 @@ def get_date():
 
 
 @with_cache
-def get_frontmatter():
-    """Get all titles from collected frontmatter."""
-    return CACHE["frontmatter"]
+def get_meta():
+    """Get all titles from collected page metadata."""
+    return CACHE["meta"]
 
 
 @with_cache
 def get_tag(node):
-    """Get chapter tag from collected frontmatter."""
-    util.require((node.slug in CACHE["frontmatter"]), f"{node} not known")
-    cached = CACHE["frontmatter"][node.slug]
+    """Get chapter tag from collected page metadata."""
+    util.require((node.slug in CACHE["meta"]), f"{node} not known")
+    cached = CACHE["meta"][node.slug]
     return cached.get("tag", None)
 
 
 @with_cache
 def get_title(node):
-    """Get chapter/appendix title from collected frontmatter."""
-    util.require((node.slug in CACHE["frontmatter"]), f"{node} not known")
-    return CACHE["frontmatter"][node.slug]["title"]
+    """Get chapter/appendix title from collected page metadata."""
+    util.require((node.slug in CACHE["meta"]), f"{node} not known")
+    return CACHE["meta"][node.slug]["title"]
 
 
 @with_cache
@@ -114,7 +116,6 @@ def require(cond, msg):
         fail(msg)
 
 
-def _build_frontmatter():
-    """Build (slug, frontmatter) lookup table."""
-    frontmatter = ark.site.config["frontmatter"]
-    return {slug: frontmatter[slug] for slug in ark.site.config["chapters"]}
+def _build_meta():
+    """Build (slug, metadata) lookup table."""
+    return {slug: ark.site.config["meta"][slug] for slug in ark.site.config["chapters"]}

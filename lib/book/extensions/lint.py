@@ -59,9 +59,7 @@ def lint_check_shortcodes(args, config):
     """Check shortcode usage in a single pass."""
     parser = shortcodes.Parser(inherit_globals=False, ignore_unknown=True)
     parser.register(_collect_b, "b")
-    collector = {
-        "b": set()
-    }
+    collector = {"b": set()}
     for filename in bin_util.source_files(args.src, config):
         collector["filename"] = filename
         try:

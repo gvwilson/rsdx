@@ -1,7 +1,6 @@
 """Ark hooks."""
 
 from fnmatch import fnmatch
-import frontmatter
 from glob import iglob
 from pathlib import Path
 from shutil import copyfile
@@ -10,10 +9,10 @@ import ark
 import util
 
 
-@ark.events.register(ark.events.Event.INIT)
+@ark.events.register(ark.events.Event.INIT_BUILD)
 def startup():
     """Launch startup tasks in order."""
-    _startup_collect_frontmatter()
+    _startup_collect_meta()
     _startup_append_links_to_pages()
     _startup_copy_files()
 
@@ -40,6 +39,7 @@ def _ignore(path):
 
 def _startup_append_links_to_pages():
     """Add Markdown links table to Markdown files."""
+
     def _visitor(node):
         if node.ext == "md":
             node.text += "\n\n" + util.make_links_table(node.text)
@@ -47,17 +47,16 @@ def _startup_append_links_to_pages():
     ark.nodes.root().walk(_visitor)
 
 
-def _startup_collect_frontmatter():
-    """Collect frontmatter from all Markdown files."""
+def _startup_collect_meta():
+    """Collect metadata from all Markdown files."""
 
-    collected = {}
     def _visitor(node):
         if (node.ext != "md") or (not node.slug):
             return
-        collected[node.slug] = frontmatter.loads(Path(node.filepath).read_text()).metadata
+        ark.site.config["meta"][node.slug] = node.meta
 
+    ark.site.config["meta"] = {}
     ark.nodes.root().walk(_visitor)
-    ark.site.config["frontmatter"] = collected
 
 
 def _startup_copy_files():
