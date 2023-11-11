@@ -5,4 +5,5 @@ syllabus:
 - FIXME
 ---
 
-- Use Metaflow to run multiple jobs.
+-   Expect to have to run thousands of simulations
+-   Can do this with [Make][gnu-make], but most people use a pipeline runner like [Metaflow][metaflow]

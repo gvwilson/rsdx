@@ -5,10 +5,6 @@ syllabus:
 - FIXME
 ---
 
-- Initial version of invasion percolation.
-  - At least it's broken into functions.
-- Had to modify `print_grid` to show numeric values for debugging
-  and to show settings (esp. `seed`) for reproducibility.
-- Had to modify `main` to allow seed to be set from command line.
-- No way to get the random seed back from `random`, so use a trick to make reproducible.
-- Use `make demo` to run program.
+-   Inherit a script that models pollutant spread using invasion percolation
+-   Discuss how it works and how details of implementation affect or change the process being simulated
+-   And how to make programs like this reproducible despite pseudo-randomness

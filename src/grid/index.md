@@ -5,8 +5,6 @@ syllabus:
 - FIXME
 ---
 
-- Introduce abstract base class for grid.
-  - Implement nested list and test.
-  - Implement NumPy array and test.
-- Reorganize code in main script.
-- Getting ready to compare performance (collect run stats).
+-   Refactor invasion percolation script of [%x script %] so that future work will be easier
+-   Introduce abstract base class for grid and provide two interchangeable implementations
+-   Discuss how to distribute features among classes

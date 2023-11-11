@@ -5,4 +5,5 @@ syllabus:
 - FIXME
 ---
 
-- Show how to test a grid.
+-   Introduce [pytest][pytest] for testing invasion percolation
+-   Show how to test in the face of randomness using mock objects

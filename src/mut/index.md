@@ -5,4 +5,5 @@ syllabus:
 - FIXME
 ---
 
-- Look for SNP in genomes correlated with size
+-   Analyze genomic data from snails to find a single nucleotide polymorphism (SNP) associated with size
+-   FIXME: modify this example to get data from SQL database instead of CSV files

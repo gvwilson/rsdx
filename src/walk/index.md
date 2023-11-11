@@ -5,6 +5,6 @@ syllabus:
 - FIXME
 ---
 
-- Start in random location and walk
-- Dosage is linear function of distance at end of each step
-- Low value near origin is artifact of random generation process (?)
+-   Simulate pollutant dosage received by snails using random walk within polluted area
+-   Puzzling result: accumulated dosage is low near center, rises, then falls toward edge
+-   Is this an artifact of the simulation or is there a statistical explanation?

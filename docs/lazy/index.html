@@ -34,9 +34,17 @@
 
 
       <ul>
-<li>Fill grid (because we want exactly the same random numbers).</li>
-<li>Keep track of candidates and only sort/choose them.</li>
-<li>Fix bug of picking first equally-lowest cell (!).</li>
+<li>Introduce big-oh notation for algorithm performance</li>
+<li>Keep track of cells on the boundary of the grid to eliminate (or at least reduce) search<ul>
+<li>Trade space for time</li>
+</ul>
+</li>
+<li>Have to fill grid at the start because we want exactly the same random numbers<ul>
+<li>Instead of generating random cells as we go along, which would be even faster</li>
+</ul>
+</li>
+<li>Fix bug in earlier implementations of picking first equally-lowest cell (!)</li>
+<li>Performance is much (much) better</li>
 </ul>
     </main>
     <footer>

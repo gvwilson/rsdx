@@ -1,15 +1,75 @@
+# AAA
+
 - key: aosa
   url: https://aosabook.org/
   en: "The Architecture of Open Source Applications"
+
+# BBB
+
+# CCC
 
 - key: carpentries
   url: https://carpentries.org/
   en: "Software Carpentry"
 
+# DDD
+
+# EEE
+
+# FFF
+
+# GGG
+
 - key: gvwilson
   url: https://third-bit.com/
   en: "Greg Wilson"
 
+# HHH
+
+# III
+
+# JJJ
+
+# KKK
+
+# LLL
+
+# MMM
+
+# NNN
+
+# OOO
+
+# PPP
+
+# QQQ
+
+# RRR
+
+# SSS
+
+- key: sdxjs
+  url: https://third-bit.com/sdxjs/
+  en: "Software Design by Example in JavaScript"
+
+- key: sdxpy
+  url: https://third-bit.com/sdxpy/
+  en: "Software Design by Example in Python"
+
+# TTT
+
 - key: t3
   url: https://teachtogether.tech/
   en: "Teaching Tech Together"
+
+# UUU
+
+# VVV
+
+# WWW
+
+# XXX
+
+# YYY
+
+# ZZZ
