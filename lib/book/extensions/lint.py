@@ -17,39 +17,12 @@ def main():
     args = parse_args()
     config = bin_util.load_config(args.config)
     content = {
-        "src": collect_files(config, "markdown"),
-        "html": collect_files(config, "html"),
+        "src": _collect_files(config, "markdown"),
+        "html": _collect_files(config, "html"),
     }
     for name, func in globals().items():
         if name.startswith("lint_"):
             func(args, config, content)
-
-
-def collect_files(config, which):
-    """Read text of source and output files."""
-
-    def _same(x):
-        return x
-
-    def _parse(x):
-        return BeautifulSoup(x, "html.parser")
-
-    if which == "markdown":
-        root_dir = config.src_dir
-        filename = "index.md"
-        transform = _same
-    elif which == "html":
-        root_dir = config.out_dir
-        filename = "index.html"
-        transform = _parse
-    else:
-        util.fail(f"unknown file type in collector {which}")
-
-    paths = [
-        Path(root_dir, filename),
-        *[Path(root_dir, slug, filename) for slug in config.chapters],
-    ]
-    return {p: transform(p.read_text()) for p in paths}
 
 
 def lint_chapters_again_keys(args, config, content):
@@ -118,6 +91,27 @@ def lint_single_h1(args, config, content):
             print(f"{filepath} contains {num} H1 headings")
 
 
+def lint_slug_format(args, config, content):
+    """Check slugs in headings, figures, and tables."""
+
+    def _check(node, slug, kind):
+        """Check format of node's ID."""
+        if "id" not in node.attrs:
+            print(f"{filepath} {kind} missing 'id'")
+        elif not node.attrs["id"].startswith(slug):
+            print(f"{filepath} {kind} slug {node.attrs['id']} badly formatted")
+
+    for filepath, doc in content["html"].items():
+        slug = filepath.parts[-2]
+        for figure in doc.find_all("figure"):
+            _check(figure, slug, "figure")
+        for table_div in doc.find_all("div", class_="table"):
+            _check(table_div, slug, "table div")
+        if slug not in bin_util.get_lint(config).get("disable_h2_id", {}):
+            for heading in doc.find_all("h2"):
+                _check(heading, slug, "H2 heading")
+
+
 def lint_unresolved_markdown_links(args, config, content):
     """Look for Markdown [text][key] links that didn't resolve."""
     pat = re.compile(r"\]\[")
@@ -151,9 +145,31 @@ def _check_bibliography(seen):
     report_diff("bibliography keys", seen, exists)
 
 
-def _in_code(node):
-    """Is this DOM node inside a code element?"""
-    return any(p.tag == "code" for p in node.parents)
+def _collect_files(config, which):
+    """Read text of source and output files."""
+
+    def _same(x):
+        return x
+
+    def _parse(x):
+        return BeautifulSoup(x, "html.parser")
+
+    if which == "markdown":
+        root_dir = config.src_dir
+        filename = "index.md"
+        transform = _same
+    elif which == "html":
+        root_dir = config.out_dir
+        filename = "index.html"
+        transform = _parse
+    else:
+        util.fail(f"unknown file type in collector {which}")
+
+    paths = [
+        Path(root_dir, filename),
+        *[Path(root_dir, slug, filename) for slug in config.chapters],
+    ]
+    return {p: transform(p.read_text()) for p in paths}
 
 
 def _find_duplicate_files(source_dirs):
@@ -166,6 +182,11 @@ def _find_duplicate_files(source_dirs):
             hash_code = hashlib.sha256(path.read_bytes()).hexdigest()
             groups[hash_code].add(path)
     return [group for group in groups.values() if len(group) > 1]
+
+
+def _in_code(node):
+    """Is this DOM node inside a code element?"""
+    return any(p.tag == "code" for p in node.parents)
 
 
 if __name__ == "__main__":

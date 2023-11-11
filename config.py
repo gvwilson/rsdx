@@ -53,6 +53,10 @@ exclude = copy + [
     "requirements.txt",
 ]
 
+lint = {
+    "disable_h2_id": ["conduct", "docs"],
+}
+
 markdown_settings = {
     "extensions": [
         "markdown.extensions.extra",

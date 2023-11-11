@@ -133,7 +133,7 @@ def table_def(pargs, kwargs, node):
 
     label = f"Table&nbsp;{known[slug]}"
     caption = f'<caption markdown="1">{label}: {caption}</caption>'
-    return f'<div class="table" markdown="1">\n\n{content}\n\n{caption}</div>'
+    return f'<div class="table" id="{slug}" markdown="1">\n\n{content}\n\n{caption}</div>'
 
 
 @shortcodes.register("toc")

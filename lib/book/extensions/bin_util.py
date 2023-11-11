@@ -9,6 +9,11 @@ ARK_FILE = ".ark"
 INDEX_FILE = "index.md"
 
 
+def get_lint(config):
+    """Get a lint setting or empty list."""
+    return config.lint if hasattr(config, "lint") else {}
+
+
 def load_ark_data(dir_path, section=None, default=None):
     """Load .ark file if there, possibly slicing section."""
     path = Path(dir_path, ARK_FILE)
