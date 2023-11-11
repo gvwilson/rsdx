@@ -31,8 +31,3 @@ def source_dirs(src, config, exclude=[]):
     """Generate list of source directories."""
     exclude = set(exclude)
     return [f"{src}/{key}" for key in config.chapters if key not in exclude]
-
-
-def source_files(src, config, exclude=[]):
-    """Generate list of source Markdown files."""
-    return [f"{d}/{INDEX_FILE}" for d in source_dirs(src, config, exclude)]

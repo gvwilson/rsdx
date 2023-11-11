@@ -6,4 +6,4 @@ syllabus:
 ---
 
 -   Expect to have to run thousands of simulations
--   Can do this with [Make][gnu-make], but most people use a pipeline runner like [Metaflow][metaflow]
+-   Can do this with [Make][gnu_make], but most people use a pipeline runner like [Metaflow][metaflow]

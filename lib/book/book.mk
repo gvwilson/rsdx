@@ -50,7 +50,7 @@ reformat:
 
 ## lint: check project organization
 .PHONY: lint
-lint:
+lint: ${HTML}
 	@${PYTHON} ${ARK_BIN}/lint.py --config ${CONFIG} --src src
 
 ## valid: run html5validator on generated files
