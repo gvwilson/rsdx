@@ -79,6 +79,13 @@ def read_directives(dirname):
     return yaml.safe_load(filepath.read_text()) or {}
 
 
+def read_file(node, filename, kind):
+    """Load a file as text."""
+    filepath = Path(Path(node.filepath).parent, filename)
+    require(filepath.exists(), f"Missing {kind} file {filename} from {node}")
+    return filepath.read_text()
+
+
 def read_info(filename):
     """Read YAML file from project info directory."""
     filepath = Path(ark.site.home(), "info", filename)

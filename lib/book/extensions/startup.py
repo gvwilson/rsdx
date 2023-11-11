@@ -16,8 +16,8 @@ def all_tasks():
     _load_bibliography()
     _load_links()
     _collect_meta()
-    _collect_references()
     _number_chapters()
+    _collect_references()
     _append_links_to_pages()
     _copy_files()
 
@@ -48,24 +48,41 @@ def _collect_references():
     """Collect targets of numbered cross-references."""
 
     def _collect_figures(pargs, kwargs, extra):
-        util.require("slug" in kwargs, f"Bad 'figure' shortcode in {extra['filename']} with {pargs} and {kwargs}")
-        extra["seen"].append(kwargs["slug"])
-        
+        util.require(
+            "slug" in kwargs,
+            f"Bad 'figure' shortcode in {extra['filename']} with {pargs} and {kwargs}",
+        )
+        extra["figures"].append(kwargs["slug"])
+
+    def _collect_tables(pargs, kwargs, extra):
+        util.require(
+            "slug" in kwargs,
+            f"Bad 'table' shortcode in {extra['filename']} with {pargs} and {kwargs}",
+        )
+        extra["tables"].append(kwargs["slug"])
+
     def _visitor(node):
         if (node.ext != "md") or (not node.slug):
             return
-        collected = {"filename": node.filepath, "seen": []}
+        collected = {"filename": node.filepath, "figures": [], "tables": []}
         parser.parse(node.text, collected)
-        collector[node.slug] = {slug: i+1 for i, slug in enumerate(collected["seen"])}
+        collector[node.slug] = {
+            "figures": {slug: i + 1 for i, slug in enumerate(collected["figures"])},
+            "tables": {slug: i + 1 for i, slug in enumerate(collected["tables"])},
+        }
 
     parser = shortcodes.Parser(inherit_globals=False, ignore_unknown=True)
     parser.register(_collect_figures, "figure")
+    parser.register(_collect_tables, "table")
     collector = {}
     ark.nodes.root().walk(_visitor)
     ark.site.config["_figures_"] = {}
-    for seen in collector.values():
-        for key, number in seen.items():
+    ark.site.config["_tables_"] = {}
+    for slug, seen in collector.items():
+        for key, number in seen["figures"].items():
             ark.site.config["_figures_"][key] = number
+        for key, number in seen["tables"].items():
+            ark.site.config["_tables_"][key] = number
 
 
 def _copy_files():
