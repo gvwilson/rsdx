@@ -6,15 +6,15 @@ from fnmatch import fnmatch
 from pathlib import Path
 import sys
 
-import util
+import bin_util
 
 
 def main():
     """Main driver."""
     args = parse_args()
-    config = util.load_config(args.config)
+    config = bin_util.load_config(args.config)
     print(f"# {args.title}\n")
-    for dirname in util.source_dirs(args.src, config, args.notdirs):
+    for dirname in bin_util.source_dirs(args.src, config, args.notdirs):
         print(f"## {dirname}\n")
         for filename in Path(dirname).glob("*.py"):
             if any(fnmatch(filename, pat) for pat in args.notfiles):

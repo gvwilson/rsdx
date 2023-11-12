@@ -26,15 +26,26 @@ commands:
 
 ## build: rebuild the site
 .PHONY: build
-build: ${BUILD_EXTRAS}
+build:
 	@mkdir -p ${HTML_DIR}
 	${ARK} build
 
 ## serve: rebuild and serve the site
 .PHONY: serve
-serve: ${BUILD_EXTRAS}
+serve:
 	@mkdir -p ${HTML_DIR}
 	${ARK} serve
+
+## docs: rebuild code documentation
+docs: DOCS.md
+DOCS.md: ${ARK_BIN}/make_docs.py
+	python ${ARK_BIN}/make_docs.py \
+		--config ${CONFIG} \
+		--src ${SRC_DIR} \
+		--title "Documentation" \
+		--notdirs conduct docs license \
+		--notfiles '*/test_*.py' \
+		> $@
 
 ## --------------------
 
