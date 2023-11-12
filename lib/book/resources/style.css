@@ -133,6 +133,17 @@ div.tagline {
 }
 
 /*
+ * Callouts
+ */
+
+div.callout {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-top: 0rem;
+    background-color: var(--lightgray);
+}
+
+/*
  * Top navigation
  */
 
