@@ -3,6 +3,7 @@
 title = "Research Software Design by Example"
 repo = "https://github.com/gvwilson/rsdx"
 author = "Greg Wilson"
+do_blank = True
 
 chapters = [
     "intro",

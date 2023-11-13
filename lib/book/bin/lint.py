@@ -99,7 +99,11 @@ def lint_duplicate_files(args, config, content):
 def lint_shortcodes(args, config, content):
     """Check shortcode usage in a single pass."""
     collected = _collect_shortcodes(content)
-    report_diff("biblography keys", set(collected["b"]), set(content["bib"]))
+    figure_ids = _collect_ids(content["html"], "figure", "figure")
+    table_ids = _collect_ids(content["html"], "table", "div", "table")
+    report_diff("bib keys", set(collected["b"]), set(content["bib"]))
+    report_diff("figure refs", set(collected["f"]), figure_ids)
+    report_diff("table refs", set(collected["t"]), table_ids)
 
 
 def lint_single_h1(args, config, content):
@@ -212,20 +216,49 @@ def _collect_files(config, which):
     return {p: transform(p.read_text()) for p in paths}
 
 
+def _collect_ids(htmls, name, kind, cls=None):
+    """Collect all IDs of a certain kind."""
+    seen = set()
+    for slug, doc in htmls.items():
+        nodes = doc.find_all(kind, class_=cls)
+        for node in nodes:
+            if "id" not in node.attrs:
+                print(f"{slug}: {name} node missing ID")
+            else:
+                seen.add(node.attrs["id"])
+    return seen
+
+
 def _collect_shortcodes(content):
     """Gather information from shortcodes for checking."""
 
-    def _collect_b(pargs, kwargs, extra):
+    def _collect(extra, kind, pargs, kwargs, multiple):
+        length = (len(pargs) > 0) if multiple else (len(pargs) == 1)
         util.require(
-            (len(pargs) > 0) and (not kwargs),
-            f"Bad 'b' shortcode with {pargs} and {kwargs} in {extra['filename']}",
+            length and (not kwargs),
+            f"Bad '{kind}' shortcode with {pargs} and {kwargs} in {extra['filename']}",
         )
-        extra["b"].update(pargs)
+        extra[kind].update(pargs)
+
+    def _collect_b(pargs, kwargs, extra):
+        _collect(extra, "b", pargs, kwargs, True)
+
+    def _collect_f(pargs, kwargs, extra):
+        _collect(extra, "f", pargs, kwargs, False)
+
+    def _collect_t(pargs, kwargs, extra):
+        _collect(extra, "t", pargs, kwargs, False)
 
     parser = shortcodes.Parser(inherit_globals=False, ignore_unknown=True)
     parser.register(_collect_b, "b")
+    parser.register(_collect_f, "f")
+    parser.register(_collect_t, "t")
 
-    collected = {"b": set()}
+    collected = {
+        "b": set(),
+        "f": set(),
+        "t": set(),
+    }
     for filename in content["src"]:
         collected["filename"] = filename
         try:
