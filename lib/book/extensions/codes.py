@@ -126,16 +126,12 @@ def table_def(pargs, kwargs, node):
     slug = kwargs["slug"]
     tbl = kwargs["tbl"]
     caption = util.markdownify(kwargs["caption"], True)
+    header = f'<table id="{slug}">\n<caption>{caption}</caption>'
 
     util.require_file(node, tbl, "table")
-    known = ark.site.config["_tables_"]
-    content = util.read_file(node, tbl, "table").strip()
-
-    label = f"Table&nbsp;{known[slug]}"
-    caption = f'<caption markdown="1">{label}: {caption}</caption>'
-    return (
-        f'<div class="table" id="{slug}" markdown="1">\n\n{content}\n\n{caption}</div>'
-    )
+    content = util.markdownify(util.read_file(node, tbl, "table").strip())
+    content = content.replace("<table>", header)
+    return content
 
 
 @shortcodes.register("toc")

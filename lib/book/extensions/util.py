@@ -17,6 +17,12 @@ BIB_STYLE = "unsrt"
 DIRECTIVES_FILE = ".ark"
 
 
+def debug(msg):
+    """Report if debugging turned on."""
+    if ark.site.config.get("debug", False):
+        print(msg)
+
+
 def fail(msg):
     """Fail unilaterally."""
     print(msg, file=sys.stderr)

@@ -3,6 +3,8 @@
 title = "Research Software Design by Example"
 repo = "https://github.com/gvwilson/rsdx"
 author = "Greg Wilson"
+
+debug = False
 do_blank = True
 
 chapters = [
@@ -39,6 +41,7 @@ exclude = copy + [
     "*.dvc",
     "*.mk",
     "*.py",
+    "*.tbl",
     "*~",
     ".#*",
     ".coverage",

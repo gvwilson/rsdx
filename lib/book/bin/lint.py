@@ -23,11 +23,11 @@ def main():
         "src": _collect_files(config, "markdown"),
     }
     for name, func in globals().items():
-        if name.startswith("lint_"):
+        if name.startswith("_lint_"):
             func(args, config, content)
 
 
-def lint_bibliography_key_order(args, config, content):
+def _lint_bibliography_key_order(args, config, content):
     """Check bibliography file keys for ordering."""
     previous = None
     for key in content["bib"]:
@@ -36,7 +36,7 @@ def lint_bibliography_key_order(args, config, content):
         previous = key
 
 
-def lint_caption_punctuation(args, config, content):
+def _lint_caption_punctuation(args, config, content):
     """Check punctuation at the ends of captions."""
 
     def _report(f, c):
@@ -51,14 +51,14 @@ def lint_caption_punctuation(args, config, content):
             _report(filepath, caption.string)
 
 
-def lint_chapters_again_keys(args, config, content):
+def _lint_chapters_again_keys(args, config, content):
     """Check chapters against chapter keys."""
     expected = set(util.source_dirs(args.src, config))
     actual = {str(p) for p in Path(args.src).glob("*") if p.is_dir()}
     report_diff("chapter keys vs. directories", expected, actual)
 
 
-def lint_dom_structure(args, config, content):
+def _lint_dom_structure(args, config, content):
     """Check DOM structure against spec."""
     seen = {}
     for filepath, doc in content["html"].items():
@@ -67,7 +67,7 @@ def lint_dom_structure(args, config, content):
     _diff_dom(seen, allowed)
 
 
-def lint_duplicate_files(args, config, content):
+def _lint_duplicate_files(args, config, content):
     """Check for duplicated files."""
     source_dirs = {
         Path(d): i for (i, d) in enumerate(util.source_dirs(args.src, config))
@@ -96,7 +96,7 @@ def lint_duplicate_files(args, config, content):
             )
 
 
-def lint_shortcodes(args, config, content):
+def _lint_shortcodes(args, config, content):
     """Check shortcode usage in a single pass."""
     collected = _collect_shortcodes(content)
     figure_ids = _collect_ids(content["html"], "figure", "figure")
@@ -106,7 +106,7 @@ def lint_shortcodes(args, config, content):
     report_diff("table refs", set(collected["t"]), table_ids)
 
 
-def lint_single_h1(args, config, content):
+def _lint_single_h1(args, config, content):
     """Check for a single H1 in every file."""
     for filepath, doc in content["html"].items():
         num = len(doc.find_all("h1"))
@@ -114,7 +114,7 @@ def lint_single_h1(args, config, content):
             print(f"{filepath} contains {num} H1 headings")
 
 
-def lint_slug_format(args, config, content):
+def _lint_slug_format(args, config, content):
     """Check slugs in headings, figures, and tables."""
 
     def _check(node, slug, kind):
@@ -135,7 +135,7 @@ def lint_slug_format(args, config, content):
                 _check(heading, slug, "H2 heading")
 
 
-def lint_unresolved_markdown_links(args, config, content):
+def _lint_unresolved_markdown_links(args, config, content):
     """Look for Markdown [text][key] links that didn't resolve."""
     pat = re.compile(r"\]\[")
     for filepath, doc in content["html"].items():
