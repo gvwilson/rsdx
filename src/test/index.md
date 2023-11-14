@@ -2,8 +2,6 @@
 title: "Testing Invasion Percolation"
 tag: "How to test an application that relies on randomness."
 syllabus:
-- FIXME
+-   "Introduce pytest by using it to test invasion percolation."
+-   "Show how to use mock objects to test programs that rely on randomness."
 ---
-
--   Introduce [pytest][pytest] for testing invasion percolation
--   Show how to test in the face of randomness using mock objects

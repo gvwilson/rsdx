@@ -26,6 +26,7 @@ chapters = [
     "bib",
     "conduct",
     "credits",
+    "syllabus",
     "docs",
 ]
 

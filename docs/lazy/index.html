@@ -29,23 +29,16 @@
 
   <div class="tagline"><p>Doing only as much work as we have to makes our simulation faster.</p></div>
   <ul class="syllabus">
-<li>FIXME</li>
+<li>Introduce concept of big-oh for algorithm performance.</li>
+<li>Keep track of cells on the boundary of the grid to reduce search: trade space for time.</li>
+<li>Have to fill grid at the start because we want exactly the same random numbers.</li>
+<li>Even though generating random cells as we go along would be faster.</li>
+<li>Performance is much (much) better: O(1) per filled cell rather than O(N^2).</li>
+<li>Along the way, fix bug in earlier implementations of always picking first equally-lowest cell (biased fractal shape).</li>
 </ul>
 
 
-      <ul>
-<li>Introduce big-oh notation for algorithm performance</li>
-<li>Keep track of cells on the boundary of the grid to eliminate (or at least reduce) search<ul>
-<li>Trade space for time</li>
-</ul>
-</li>
-<li>Have to fill grid at the start because we want exactly the same random numbers<ul>
-<li>Instead of generating random cells as we go along, which would be even faster</li>
-</ul>
-</li>
-<li>Fix bug in earlier implementations of picking first equally-lowest cell (!)</li>
-<li>Performance is much (much) better</li>
-</ul>
+      
     </main>
     <footer>
   <a href="../license/">License</a> &middot; <a href="https://github.com/gvwilson/rsdx">Repository</a>

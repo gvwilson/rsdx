@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="repo" content="https://github.com/gvwilson/rsdx">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../tango.css">
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script
+    type="text/javascript"
+    id="MathJax-script"
+    async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <title>Research Software Design by Example: Syllabus</title>
+</head>
+
+  <body>
+    <main>
+      <h1>Syllabus</h1>
+
+
+      <h2><a href="../intro">Introduction</a></h2>
+<ul>
+<li>Assume you know how to program.</li>
+<li>Want to learn how to design pieces of software that are reliable and reusable.</li>
+<li>Best way is to work through examples: principles don&rsquo;t make sense unless you know how to translate them into specifics.</li>
+</ul>
+<h2><a href="../parse">Parse Raw Data</a></h2>
+<ul>
+<li>Real-world data is almost always messy: hand-coded, format changes, different interpretations of standards, etc.</li>
+<li>Build a tool to convert CSV files with pollutant readings from various locations into consistent format.</li>
+<li>Talk about how to build command-line programs that satisfy Taschuk&rsquo;s Rules.</li>
+</ul>
+<h2><a href="../center">Working with Geocoded Data</a></h2>
+<ul>
+<li>Try to narrow down the location of the pollutant spill by building a simple geographical model using cleaned-up data</li>
+<li>Along the way, discuss how to find and select useful open source libraries…</li>
+<li>…what a data manifest is and why we should have one…</li>
+<li>…and how to create a reproducible workflow using Make.</li>
+</ul>
+<h2><a href="../script">Initial Invasion Percolation Script</a></h2>
+<ul>
+<li>Inherit a script that models pollutant spread using invasion percolation.</li>
+<li>Discuss how it works and how details of implementation affect what we&rsquo;re actually simulating.</li>
+<li>Discuss how to make programs like this reproducible despite pseudo-randomness.</li>
+<li>Serves as a starting point for improvements in subsequent chapters.</li>
+</ul>
+<h2><a href="../grid">A Grid Abstraction</a></h2>
+<ul>
+<li>Refactor invasion percolation script so that future work will be easier.</li>
+<li>Introduce abstract base class for grid and provide two interchangeable implementations.</li>
+<li>Discuss how to distribute features among classes.</li>
+<li>This is (nearly) the implementation we should have written in the first place.</li>
+</ul>
+<h2><a href="../perf">Measure Performance</a></h2>
+<ul>
+<li>Introduce the idea that programs are experimental apparatus and can be studied and improved empirically.</li>
+<li>Modify the invasion percolation program to run both grid options with the same seed.</li>
+<li>Collect timings for varying parameters and analyze to compare performance.</li>
+<li>Find that list of lists is 2.4 times faster than NumPy for 101x101 grid.</li>
+<li>Explain why: operations on individual elements of NumPy array require repeated boxing and unboxing.</li>
+<li>Take a closer look at performance details using profiler.</li>
+</ul>
+<h2><a href="../flow">A Pipeline Runner</a></h2>
+<ul>
+<li>Expect to have to run thousands of simulations.</li>
+<li>Can do this with Make, but most scientists now use a pipeline runner like Metaflow.</li>
+</ul>
+<h2><a href="../lazy">A Lazy Algorithm</a></h2>
+<ul>
+<li>Introduce concept of big-oh for algorithm performance.</li>
+<li>Keep track of cells on the boundary of the grid to reduce search: trade space for time.</li>
+<li>Have to fill grid at the start because we want exactly the same random numbers.</li>
+<li>Even though generating random cells as we go along would be faster.</li>
+<li>Performance is much (much) better: O(1) per filled cell rather than O(N^2).</li>
+<li>Along the way, fix bug in earlier implementations of always picking first equally-lowest cell (biased fractal shape).</li>
+</ul>
+<h2><a href="../dim">Measuring Fractal Dimension</a></h2>
+<ul>
+<li>Use box-counting to estimate fractal dimension.</li>
+<li>Use this to determine whether depth of grid (i.e., range of random values) affects properties of fractal.</li>
+</ul>
+<h2><a href="../density">Estimating Density versus Distance</a></h2>
+<ul>
+<li>Code is simple, but output CSV files quickly run into hundreds of megabytes.</li>
+<li>Introduce DVC to store large files out of Git.</li>
+<li>Then calculate density of fractal vs. distance from center.</li>
+</ul>
+<h2><a href="../test">Testing Invasion Percolation</a></h2>
+<ul>
+<li>Introduce pytest by using it to test invasion percolation.</li>
+<li>Show how to use mock objects to test programs that rely on randomness.</li>
+</ul>
+<h2><a href="../mut">Searching for Mutations</a></h2>
+<ul>
+<li>Analyze genomic data from snails to determine if a single nucleotide polymorphism (SNP) is associated with size.</li>
+<li>Write a synthetic data generator to test the analysis pipeline.</li>
+</ul>
+<h2><a href="../walk">Random Walk</a></h2>
+<ul>
+<li>Simulate pollutant dosage received by snails using random walk within polluted area.</li>
+<li>Puzzling result: accumulated dosage is low near center, rises, then falls toward edge.</li>
+<li>Is this an artifact of the simulation or is there a statistical explanation?</li>
+</ul>
+<h2><a href="../finale">Conclusion</a></h2>
+<ul>
+<li>Summarize key ideas.</li>
+</ul>
+    </main>
+    <footer>
+  <a href="../license/">License</a> &middot; <a href="https://github.com/gvwilson/rsdx">Repository</a>
+</footer>
+
+  </body>
+</html>

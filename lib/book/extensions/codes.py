@@ -104,6 +104,21 @@ def rootpage(pargs, kwargs, node):
         util.fail(f"cannot read .ark file {str(path)}")
 
 
+@shortcodes.register("syllabus")
+def syllabus(pargs, kwargs, node):
+    """Handle [% syllabus %] shortcode."""
+    util.require((not pargs) and (not kwargs), f"Bad 'syllabus' shortcode in {node}")
+    meta = ark.site.config['_meta_']
+    lines = []
+    for slug in ark.site.config["chapters"]:
+        if "syllabus" not in meta[slug]:
+            continue
+        lines.append(f"\n## [{meta[slug]['title']}](@root/{slug})\n")
+        for item in meta[slug]["syllabus"]:
+            lines.append(f"- {item}")
+    return "\n".join(lines)
+
+
 @shortcodes.register("t")
 def table_ref(pargs, kwargs, node):
     """Handle [%t slug %] table reference shortcodes."""
