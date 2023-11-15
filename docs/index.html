@@ -54,10 +54,62 @@
 </ol>
 
 <p>Examples of software design in research software engineering.</p>
-<p><em>Last built: 2023-11-14 10:12:58.</em></p>
+<ol>
+<li>
+<p>Convert some messy CSV data files with geocoded pollution measurements into tidy CSV.</p>
+</li>
+<li>
+<p>Use the tidy data to try to find the center point of each polluted region and visualize it.</p>
+</li>
+<li>
+<p>Walk the reader through a student-quality Python script that uses invasion percolation to model pollution spread.</p>
+</li>
+<li>
+<p>Refactor that script into classes with two different grid implementations.</p>
+</li>
+<li>
+<p>Measure the performance of those two implementations in order to pick one.</p>
+</li>
+<li>
+<p>Convert the measurement scripts to use a pipeline runner.</p>
+</li>
+<li>
+<p>Introduce the idea of big-oh and use it to explain why a lazy implementation of percolation is so much faster.</p>
+</li>
+<li>
+<p>Use box-counting to estimate the fractal dimension and compare to density vs. distance.</p>
+<ul>
+<li>Note: this is currently two sections that I&rsquo;ll combine.</li>
+<li>Use this to motivate use of DVC to manage files that are too large for Git.</li>
+</ul>
+</li>
+<li>
+<p>Show how to use mocks to test a program like invasion percolation that relies on pseudo-randomness.</p>
+</li>
+<li>
+<p>Analyze genomic data from snails to see if a single mutation accounts for differences in sizes.</p>
+<ul>
+<li>Building toward modeling pollutant impact on snails.</li>
+</ul>
+</li>
+<li>
+<p>Use a random walk to estimate lifetime dosage for snails in polluted areas and figure out why the results are odd.</p>
+</li>
+</ol>
+<p><em>Last built: 2023-11-15 00:56:52.</em></p>
     </main>
     <footer>
-  <a href="license/">License</a> &middot; <a href="https://github.com/gvwilson/rsdx">Repository</a>
+  <div class="row">
+    <div class="col-1 left">
+      
+    </div>
+    <div class="col-10 center">
+      <a href="license/">License</a> &middot; <a href="https://github.com/gvwilson/rsdx">Repository</a>
+    </div>
+    <div class="col-1 right">
+      
+    </div>
+  </div>
 </footer>
 
   </body>

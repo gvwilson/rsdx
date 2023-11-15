@@ -127,8 +127,7 @@ div.card img:last-child {
  * Chapter taglines
  */
 
-div.tagline {
-    text-align: center;
+span.tagline {
     font-style: italic;
 }
 
@@ -140,6 +139,10 @@ div.callout {
     padding-left: 0.25rem;
     padding-right: 0.25rem;
     padding-top: 0rem;
+    background-color: var(--lightgray);
+}
+
+div.callout h3 {
     background-color: var(--lightgray);
 }
 
