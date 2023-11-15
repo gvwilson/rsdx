@@ -1,5 +1,5 @@
 ---
-title: "Testing Invasion Percolation"
+title: "Test Invasion Percolation"
 tag: "How to test an application that relies on randomness."
 syllabus:
 -   "Introduce pytest by using it to test invasion percolation."

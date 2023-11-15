@@ -40,7 +40,7 @@
 <li>Build a tool to convert CSV files with pollutant readings from various locations into consistent format.</li>
 <li>Talk about how to build command-line programs that satisfy Taschuk&rsquo;s Rules.</li>
 </ul>
-<h2><a href="../center">Working with Geocoded Data</a></h2>
+<h2><a href="../center">Work with Geocoded Data</a></h2>
 <ul>
 <li>Try to narrow down the location of the pollutant spill by building a simple geographical model using cleaned-up data</li>
 <li>Along the way, discuss how to find and select useful open source libraries…</li>
@@ -84,23 +84,20 @@
 <li>Performance is much (much) better: O(1) per filled cell rather than O(N^2).</li>
 <li>Along the way, fix bug in earlier implementations of always picking first equally-lowest cell (biased fractal shape).</li>
 </ul>
-<h2><a href="../dim">Measuring Fractal Dimension</a></h2>
+<h2><a href="../measure">Measure Percolate Properties</a></h2>
 <ul>
 <li>Use box-counting to estimate fractal dimension.</li>
 <li>Use this to determine whether depth of grid (i.e., range of random values) affects properties of fractal.</li>
-</ul>
-<h2><a href="../density">Estimating Density versus Distance</a></h2>
-<ul>
+<li>Then calculate density versus distance from center.</li>
 <li>Code is simple, but output CSV files quickly run into hundreds of megabytes.</li>
 <li>Introduce DVC to store large files out of Git.</li>
-<li>Then calculate density of fractal vs. distance from center.</li>
 </ul>
-<h2><a href="../test">Testing Invasion Percolation</a></h2>
+<h2><a href="../test">Test Invasion Percolation</a></h2>
 <ul>
 <li>Introduce pytest by using it to test invasion percolation.</li>
 <li>Show how to use mock objects to test programs that rely on randomness.</li>
 </ul>
-<h2><a href="../mut">Searching for Mutations</a></h2>
+<h2><a href="../mut">Search for Mutations</a></h2>
 <ul>
 <li>Analyze genomic data from snails to determine if a single nucleotide polymorphism (SNP) is associated with size.</li>
 <li>Write a synthetic data generator to test the analysis pipeline.</li>

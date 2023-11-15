@@ -17,7 +17,6 @@ Examples of software design in research software engineering.
 1.  Introduce the idea of big-oh and use it to explain why a lazy implementation of percolation is so much faster.
 
 1.  Use box-counting to estimate the fractal dimension and compare to density vs. distance.
-    -   Note: this is currently two sections that I'll combine.
     -   Use this to motivate use of DVC to manage files that are too large for Git.
 
 1.  Show how to use mocks to test a program like invasion percolation that relies on pseudo-randomness.

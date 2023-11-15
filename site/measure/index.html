@@ -20,42 +20,45 @@
     id="MathJax-script"
     async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
   </script>
-  <title>Research Software Design by Example: Search for Mutations</title>
+  <title>Research Software Design by Example: Measure Percolate Properties</title>
 </head>
 
   <body>
     <main>
-      <h1>Search for Mutations</h1>
+      <h1>Measure Percolate Properties</h1>
 
 <div class="row">
   <div class="col-1 left">
-    <a href="../test/">&lArr;</a>
+    <a href="../lazy/">&lArr;</a>
   </div>
   <div class="col-10 center">
-    <span class="tagline">Using statistics to determine if a single mutation accounts for our data.</span>
+    <span class="tagline">Empirically estimating the rate at which our fractal grows.</span>
   </div>
   <div class="col-1 right">
-    <a href="../walk/">&rArr;</a>
+    <a href="../test/">&rArr;</a>
   </div>
 </div>
 <ul class="syllabus">
-<li>Analyze genomic data from snails to determine if a single nucleotide polymorphism (SNP) is associated with size.</li>
-<li>Write a synthetic data generator to test the analysis pipeline.</li>
+<li>Use box-counting to estimate fractal dimension.</li>
+<li>Use this to determine whether depth of grid (i.e., range of random values) affects properties of fractal.</li>
+<li>Then calculate density versus distance from center.</li>
+<li>Code is simple, but output CSV files quickly run into hundreds of megabytes.</li>
+<li>Introduce DVC to store large files out of Git.</li>
 </ul>
 
 
-      
+      <p><img alt="Density vs. distance for varying sizes of grids" src="./figures/densities.svg" /></p>
     </main>
     <footer>
   <div class="row">
     <div class="col-1 left">
-      <a href="../test/">&lArr;</a>
+      <a href="../lazy/">&lArr;</a>
     </div>
     <div class="col-10 center">
       <a href="../license/">License</a> &middot; <a href="https://github.com/gvwilson/rsdx">Repository</a>
     </div>
     <div class="col-1 right">
-      <a href="../walk/">&rArr;</a>
+      <a href="../test/">&rArr;</a>
     </div>
   </div>
 </footer>

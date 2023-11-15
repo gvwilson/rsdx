@@ -1,5 +1,5 @@
 ---
-title: "Working with Geocoded Data"
+title: "Work with Geocoded Data"
 tag: "Finding the centers of a set of map points."
 syllabus:
 -   "Try to narrow down the location of the pollutant spill by building a simple geographical model using cleaned-up data"

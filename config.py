@@ -16,8 +16,7 @@ chapters = [
     "perf",
     "flow",
     "lazy",
-    "dim",
-    "density",
+    "measure",
     "test",
     "mut",
     "walk",
@@ -40,6 +39,7 @@ copy = [
 exclude = copy + [
     "*.db",
     "*.dvc",
+    "*.metaflow",
     "*.mk",
     "*.py",
     "*.tbl",

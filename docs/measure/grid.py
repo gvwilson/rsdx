@@ -27,6 +27,10 @@ class Grid:
         """Get depth of grid."""
         return self._depth
 
+    def contents(self):
+        """Get grid content."""
+        return self._grid
+
     def __getitem__(self, key):
         """Get value at location."""
         x, y = key
