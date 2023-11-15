@@ -63,7 +63,7 @@ def parse_args():
     parser.add_argument(
         "--prob_other", type=float, required=True, help="probability of other mutation"
     )
-    parser.add_argument("--seed", type=int, default=None, help="RNG seed")
+    parser.add_argument("--seed", type=int, required=True, help="RNG seed")
 
     args = parser.parse_args()
 
@@ -71,7 +71,6 @@ def parse_args():
     assert args.num_genomes > 0, f"Require --genomes > 0 not {args.num_genomes}"
     assert args.num_snp >= 0, f"Require --num_snp >= 0 not {args.num_snp}"
     assert args.prob_other >= 0.0, f"Require --prob_other >= 0.0 not {args.prob_other}"
-    assert args.seed is not None, "Require --seed [integer]"
 
     return args
 
@@ -147,9 +146,9 @@ def _other_bases(seq, loc):
     """Create a list of bases minus the one in the sequence at that location.
 
     We return a list instead of a set because the result is used in random.choices(),
-    which requires an indexable sequence.
+    which requires an indexable sequence. We sort for reproducibility.
     """
-    return list(set(DNA) - {seq[loc]})
+    return list(sorted(set(DNA) - {seq[loc]}))
 
 
 if __name__ == "__main__":

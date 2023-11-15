@@ -8,8 +8,8 @@ PYTHON := python
 
 # Directories.
 ARK_BIN := lib/book/bin
-SRC_DIR := src
-HTML_DIR := docs
+SRC_DIR := docs
+HTML_DIR := site
 
 # Files.
 CONFIG := config.py
