@@ -70,7 +70,7 @@ markdown_settings = {
     ]
 }
 
-src_dir = "src"
-out_dir = "docs"
+src_dir = "docs"
+out_dir = "site"
 
 extension = "/"

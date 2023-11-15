@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 import random
 
-import util
+from rsdx import util
 
 
 MIN_SNAIL_SIZE = 0.5

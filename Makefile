@@ -30,16 +30,16 @@ TIDY_FILES := $(patsubst %,${DATA_DIR}/survey_tidy/%.csv,${SITES_STEMS})
 RAW_FILES := $(patsubst %,${DATA_DIR}/survey_raw/%.csv,${SITES_STEMS})
 DB_FILE := ${DATA_DIR}/survey.db
 DB_DUMP := ${DATA_DIR}/survey.sql
-GENOME_FILE := ${DATA_DIR}/genomes.json
-SNAILS_FILE := ${DATA_DIR}/snails.csv
+GENOME_FILE := ${DATA_DIR}/snails/snail_genomes.json
+SNAILS_FILE := ${DATA_DIR}/snails/snail_samples.csv
 
 ## datafiles: recreate data files
 .PHONY: datafiles
 datafiles: ${PARAMS_FILES} ${TIDY_FILES} ${DB_DUMP} ${DB_FILE} ${RAW_FILES} ${GENOME_FILE} ${SNAILS_FILE}
 
-${TIDY_FILES} ${DB_FILE}: bin/generate_geocoded_data.py ${PARAMS_FILES}
+${TIDY_FILES} ${DB_FILE}: bin/make_tidy_pollution_samples.py ${PARAMS_FILES}
 	@mkdir -p ${DATA_DIR}/survey_params ${DATA_DIR}/survey_tidy
-	python bin/generate_geocoded_data.py \
+	python bin/make_tidy_pollution_samples.py \
 		--csvdir ${DATA_DIR}/survey_tidy \
 		--dbfile ${DATA_DIR}/survey.db \
 		--paramsdir ${DATA_DIR}/survey_params \
@@ -48,15 +48,15 @@ ${TIDY_FILES} ${DB_FILE}: bin/generate_geocoded_data.py ${PARAMS_FILES}
 ${DB_DUMP}: ${DB_FILE}
 	sqlite3 ${DATA_DIR}/survey.db .dump > ${DATA_DIR}/survey.sql
 
-${RAW_FILES}: ${TIDY_FILES} bin/randomize_geocoded_data.py
+${RAW_FILES}: ${TIDY_FILES} bin/make_messy_pollution_samples.py
 	@mkdir -p ${DATA_DIR}/survey_raw
-	python bin/randomize_geocoded_data.py \
+	python bin/make_messy_pollution_samples.py \
 		--tidydir ${DATA_DIR}/survey_tidy \
 		--rawdir ${DATA_DIR}/survey_raw
 
-${GENOME_FILE}: bin/generate_genomes.py
+${GENOME_FILE}: bin/make_snail_genomes.py
 	@mkdir -p ${DATA_DIR}
-	python bin/generate_genomes.py \
+	python bin/make_snail_genomes.py \
 		--length 30 \
 		--num_genomes 200 \
 		--num_snp 3 \
@@ -64,9 +64,9 @@ ${GENOME_FILE}: bin/generate_genomes.py
 		--seed 67890 \
 		--outfile $@
 
-${SNAILS_FILE}: ${PARAMS_FILES} ${GENOME_FILE} bin/generate_snail_samples.py
+${SNAILS_FILE}: ${PARAMS_FILES} ${GENOME_FILE} bin/make_snail_samples.py
 	@mkdir -p ${DATA_DIR}
-	python bin/generate_snail_samples.py \
+	python bin/make_snail_samples.py \
 		--genomes ${GENOME_FILE} \
 		--site YOU \
 		--paramsdir data/survey_params/ \

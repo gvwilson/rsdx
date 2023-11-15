@@ -6,7 +6,7 @@ from pathlib import Path
 import random
 import sqlite3
 
-import util
+from rsdx import util
 
 
 def main():
