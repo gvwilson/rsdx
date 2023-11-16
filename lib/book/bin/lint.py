@@ -99,8 +99,8 @@ def _lint_duplicate_files(args, config, content):
 def _lint_shortcodes(args, config, content):
     """Check shortcode usage in a single pass."""
     collected = _collect_shortcodes(content)
-    figure_ids = _collect_ids(content["html"], "figure", "figure")
-    table_ids = _collect_ids(content["html"], "table", "div", "table")
+    figure_ids = _collect_ids(content["html"], "figure")
+    table_ids = _collect_ids(content["html"], "table")
     report_diff("bib keys", set(collected["b"]), set(content["bib"]))
     report_diff("figure refs", set(collected["f"]), figure_ids)
     report_diff("table refs", set(collected["t"]), table_ids)
@@ -216,14 +216,16 @@ def _collect_files(config, which):
     return {p: transform(p.read_text()) for p in paths}
 
 
-def _collect_ids(htmls, name, kind, cls=None):
+def _collect_ids(htmls, kind):
     """Collect all IDs of a certain kind."""
     seen = set()
     for slug, doc in htmls.items():
-        nodes = doc.find_all(kind, class_=cls)
+        nodes = doc.find_all(kind)
         for node in nodes:
-            if "id" not in node.attrs:
-                print(f"{slug}: {name} node missing ID")
+            if node.has_attr("class") and "no-id" in node["class"]:
+                continue
+            elif "id" not in node.attrs:
+                print(f"{slug}: {kind} node missing ID")
             else:
                 seen.add(node.attrs["id"])
     return seen

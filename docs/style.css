@@ -147,21 +147,6 @@ div.callout h3 {
 }
 
 /*
- * Top navigation
- */
-
-nav {
-    padding-bottom: var(--small-spacing);
-    border-bottom: solid var(--lightgray) var(--mediumborder);
-    margin-bottom: var(--small-spacing);
-}
-
-a.navlink {
-    margin-left: var(--small-spacing);
-    margin-right: var(--small-spacing);
-}
-
-/*
  * Bottom footer.
  */
 
@@ -187,6 +172,18 @@ ul.syllabus {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     border: var(--mediumborder) var(--darkgray) solid;
+}
+
+/*
+ * FIXME markers.
+ */
+
+div.fixme {
+    border: solid var(--mediumborder) var(--stamp-red-dark);
+}
+
+span.fixme {
+    border-bottom: solid var(--mediumborder) var(--stamp-red-dark);
 }
 
 /*
@@ -251,6 +248,10 @@ img.centered {
 
 img.image {
     width: var(--image-width);
+}
+
+img.logo {
+    float: left;
 }
 
 table {

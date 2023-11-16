@@ -5,6 +5,7 @@ from pathlib import Path
 import ark
 import pybtex.plugin
 import shortcodes
+import yaml
 
 import regex
 import util
@@ -90,6 +91,19 @@ def figure_def(pargs, kwargs, node):
     return f'<figure id="{slug}"{cls}>\n{body}\n{caption}\n</figure>'
 
 
+@shortcodes.register("fixme")
+def fixme(pargs, kwargs, node):
+    """Handle [% fixme 'item' ... %] shortcode."""
+    util.require(
+        (len(pargs) > 0) and (not kwargs),
+        f"Bad 'fixme' shortcode with {pargs} and {kwargs}"
+    )
+    if len(pargs) == 1:
+        return f'<span class="fixme" markdown="1">{pargs[0]}</span>'
+    items = "\n".join(f"-   {x}" for x in pargs)
+    return f'<div class="fixme" markdown="1">\n{items}\n</div>'
+
+
 @shortcodes.register("rootpage")
 def rootpage(pargs, kwargs, node):
     """Handle [% rootpage NAME.md %] shortcode."""
@@ -149,6 +163,23 @@ def table_def(pargs, kwargs, node):
     return content
 
 
+@shortcodes.register("thanks")
+def thanks(pargs, kwargs, node):
+    """Handle [% thanks %] table of thanks shortcode."""
+    util.require(
+        (not pargs) and (list(kwargs.keys()) == ["width"]),
+        f"Badly-formatted 'thanks' shortcode with {pargs} and {kwargs}"
+    )
+
+    filepath = Path(ark.site.home(), "info", "thanks.yml")
+    thanks = yaml.safe_load(filepath.read_text()) or []
+    thanks = [f'<a href="{entry["url"]}">{entry["name"]}</a>' if "url" in entry else entry["name"] for entry in thanks]
+    width = int(kwargs["width"])
+    columns = _split_list(thanks, width)
+    columns = "".join(["<td>" + "<br>".join(c) + "</td>" for c in columns])
+    return f'<table class="no-id"><tr>{columns}</tr></table>'
+
+
 @shortcodes.register("toc")
 def toc(pargs, kwargs, node):
     """Handle [% toc %] table of contents shortcode."""
@@ -159,10 +190,7 @@ def toc(pargs, kwargs, node):
     appendices = []
     for slug in ark.site.config["chapters"]:
         title = ark.site.config["_meta_"][slug]["title"]
-        status = (
-            " (undone)" if ark.site.config["_meta_"][slug].get("blank", None) else ""
-        )
-        entry = f'<li><a href="@root/{slug}/">{title}</a> {status}</li>'
+        entry = f'<li><a href="@root/{slug}/">{title}</a></li>'
         if "tag" in ark.site.config["_meta_"][slug]:
             chapters.append(entry)
         else:
@@ -180,9 +208,29 @@ def x_reference(pargs, kwargs, node):
         f"Bad 'x' shortcode with {pargs} and {kwargs}",
     )
     slug = pargs[0]
+    if ark.site.config.get("draft", False) and (slug not in ark.site.config["chapters"]):
+        return '<span class="fixme">see&nbsp;FIXME</span>'
     util.require(
         slug in ark.site.config["_number_"], f"Unknown key in 'x' shortcode {slug}"
     )
     kind = ark.site.config["_number_"][slug]["kind"]
     number = ark.site.config["_number_"][slug]["number"]
     return f"{kind}&nbsp;{number}"
+
+
+def _split_list(values, width):
+    """Split list into (nearly) equal-sized portions."""
+    heights = [len(values) // width] * width
+    total = sum(heights)
+    for i in range(width):
+        if total == len(values):
+            break
+        heights[i] += 1
+        total += 1
+
+    result = []
+    base = 0
+    for h in heights:
+        result.append(values[base:base+h])
+        base += h
+    return result

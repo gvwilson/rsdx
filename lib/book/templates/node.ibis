@@ -4,7 +4,7 @@
   <body>
     <main>
       {% include "title.html" %}
-      {% if site.do_blank and node.blank %}<p>To do</p>{% else %}{{ node.html }}{% endif %}
+      {{ node.html }}
     </main>
     {% include "foot.html" %}
   </body>
