@@ -9,4 +9,4 @@ syllabus:
 -   "Introduce DVC to store large files out of Git."
 ---
 
-![Density vs. distance for varying sizes of grids](./figures/densities.svg)
+![Density vs. distance for varying sizes of grids](./densities.svg)
