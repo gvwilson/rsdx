@@ -1,4 +1,15 @@
-<h1>{% if node | is_root %}{{ site.title }}{% else %}{{ node | part_title }}{% endif %}</h1>
+<div class="row">
+  <div class="col-1 left">
+    <p>
+      <a href="@root/"><img src="@root/codebender-logo.svg" alt="logo" width="60px"/></a>
+    </p>
+  </div>
+  <div class="col-10 center">
+    <h1>{% if node | is_root %}{{ site.title }}{% else %}{{ node | part_title }}{% endif %}</h1>
+  </div>
+  <div class="col-1 right"></div>
+</div>
+
 {% if node | is_chapter %}
 <div class="row">
   <div class="col-1 left">
