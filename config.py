@@ -19,7 +19,6 @@ chapters = [
     "measure",
     "test",
     "mut",
-    "walk",
     "finale",
     "license",
     "bib",
