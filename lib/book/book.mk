@@ -85,13 +85,13 @@ clean:
 	@rm -rf ${HTML_DIR}
 	@find . -name '*~' -exec rm {} \;
 	@find . -name '*.blg' -exec rm {} \;
+	@find . -name __pycache__ -exec rm -r {} +
+	@find . -name .pytest_cache -exec rm -r {} +
 
 ## sterile: really tidy up
 .PHONY: sterile
 sterile: clean
 	@rm -rf ${OUT_DIR}
-	@find . -name __pycache__ -exec rm -r {} +
-	@find . -name .pytest_cache -exec rm -r {} +
 
 ## --------------------
 
