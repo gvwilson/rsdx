@@ -96,7 +96,7 @@ def fixme(pargs, kwargs, node):
     """Handle [% fixme 'item' ... %] shortcode."""
     util.require(
         (len(pargs) > 0) and (not kwargs),
-        f"Bad 'fixme' shortcode with {pargs} and {kwargs}"
+        f"Bad 'fixme' shortcode with {pargs} and {kwargs}",
     )
     if len(pargs) == 1:
         return f'<span class="fixme" markdown="1">{pargs[0]}</span>'
@@ -122,7 +122,7 @@ def rootpage(pargs, kwargs, node):
 def syllabus(pargs, kwargs, node):
     """Handle [% syllabus %] shortcode."""
     util.require((not pargs) and (not kwargs), f"Bad 'syllabus' shortcode in {node}")
-    meta = ark.site.config['_meta_']
+    meta = ark.site.config["_meta_"]
     lines = []
     for slug in ark.site.config["chapters"]:
         if "syllabus" not in meta[slug]:
@@ -168,12 +168,17 @@ def thanks(pargs, kwargs, node):
     """Handle [% thanks %] table of thanks shortcode."""
     util.require(
         (not pargs) and (list(kwargs.keys()) == ["width"]),
-        f"Badly-formatted 'thanks' shortcode with {pargs} and {kwargs}"
+        f"Badly-formatted 'thanks' shortcode with {pargs} and {kwargs}",
     )
 
     filepath = Path(ark.site.home(), "info", "thanks.yml")
     thanks = yaml.safe_load(filepath.read_text()) or []
-    thanks = [f'<a href="{entry["url"]}">{entry["name"]}</a>' if "url" in entry else entry["name"] for entry in thanks]
+    thanks = [
+        f'<a href="{entry["url"]}">{entry["name"]}</a>'
+        if "url" in entry
+        else entry["name"]
+        for entry in thanks
+    ]
     width = int(kwargs["width"])
     columns = _split_list(thanks, width)
     columns = "".join(["<td>" + "<br>".join(c) + "</td>" for c in columns])
@@ -208,7 +213,9 @@ def x_reference(pargs, kwargs, node):
         f"Bad 'x' shortcode with {pargs} and {kwargs}",
     )
     slug = pargs[0]
-    if ark.site.config.get("draft", False) and (slug not in ark.site.config["chapters"]):
+    if ark.site.config.get("draft", False) and (
+        slug not in ark.site.config["chapters"]
+    ):
         return '<span class="fixme">see&nbsp;FIXME</span>'
     util.require(
         slug in ark.site.config["_number_"], f"Unknown key in 'x' shortcode {slug}"
@@ -231,6 +238,6 @@ def _split_list(values, width):
     result = []
     base = 0
     for h in heights:
-        result.append(values[base:base+h])
+        result.append(values[base : base + h])
         base += h
     return result

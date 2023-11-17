@@ -1,6 +1,7 @@
 -r lib/book/requirements.txt
 coverage
 dvc
+faker
 geopy
 kaleido
 metaflow

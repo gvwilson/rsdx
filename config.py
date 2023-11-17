@@ -19,6 +19,8 @@ chapters = [
     "measure",
     "test",
     "mut",
+    "dataman",
+    "service",
     "finale",
     "license",
     "bib",

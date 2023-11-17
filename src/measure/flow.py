@@ -31,7 +31,9 @@ class InvPercFlow(FlowSpec):
         """Collect parameters and run jobs."""
         initialize_random(self.seed)
         self.args = [
-            Args(size=size, depth=self.depth, seed=random.randrange(sys.maxsize), job=job)
+            Args(
+                size=size, depth=self.depth, seed=random.randrange(sys.maxsize), job=job
+            )
             for size, job in product(self.sizes, range(JOBS))
         ]
         self.next(self.run_job, foreach="args")
@@ -45,7 +47,9 @@ class InvPercFlow(FlowSpec):
         job = f"{self.input.job:02d}"
         seed = f"{self.input.seed}"
         filename = f"results/invperc_{size}_{depth}_{job}_{seed}.csv"
-        np.savetxt(filename, np.array(grid.contents(), dtype=int), fmt="%d", delimiter=",")
+        np.savetxt(
+            filename, np.array(grid.contents(), dtype=int), fmt="%d", delimiter=","
+        )
         self.next(self.join)
 
     @step
@@ -57,6 +61,7 @@ class InvPercFlow(FlowSpec):
     def end(self):
         """Wrap up."""
         pass
+
 
 if __name__ == "__main__":
     InvPercFlow()

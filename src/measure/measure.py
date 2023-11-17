@@ -31,7 +31,9 @@ def main():
     sizes = pd.DataFrame(sizes, columns=["size", "dimension"])
     print(sizes.to_csv(index=False))
 
-    densities = pd.DataFrame(densities, columns=["filename", "size", "dist_2", "fraction"])
+    densities = pd.DataFrame(
+        densities, columns=["filename", "size", "dist_2", "fraction"]
+    )
     summary = (
         densities[["size", "dist_2", "fraction"]]
         .groupby(["size", "dist_2"], as_index=False)
@@ -73,7 +75,7 @@ def measure_dimension(grid):
 
     counts = []
     ruler = 1
-    while (ruler < size):
+    while ruler < size:
         count = 0
         for x in range(size // ruler):
             for y in range(size // ruler):
@@ -92,9 +94,13 @@ def measure_dimension(grid):
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--densities", required=True, type=str, help="save density counts")
+    parser.add_argument(
+        "--densities", required=True, type=str, help="save density counts"
+    )
     parser.add_argument("--filenames", nargs="+", help="files to load")
-    parser.add_argument("--verbose", action="store_true", default=False, help="print progress")
+    parser.add_argument(
+        "--verbose", action="store_true", default=False, help="print progress"
+    )
     return parser.parse_args()
 
 

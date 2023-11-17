@@ -31,7 +31,6 @@ if __name__ == "__main__":
         result = percolate(args)
         print(result)
 
-
     def parse_args():
         """Get command-line parameters."""
         parser = argparse.ArgumentParser()
