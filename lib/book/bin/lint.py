@@ -15,6 +15,12 @@ import regex
 
 
 ARK_FILE = ".ark"
+SVG_FONT = "Helvetica:12px"
+SVG_FONT_PAT = {
+    "font-family": re.compile(r"\bfont-family:\s*(.+?);"),
+    "font-size": re.compile(r"\bfont-size:\s*(.+?);"),
+}
+SVG_MAX_WIDTH = 640
 
 
 def main():
@@ -74,7 +80,7 @@ def _lint_dom_structure(args, config, content):
 
 def _lint_duplicate_files(args, config, content):
     """Check for duplicated files."""
-    chapter_order = {slug:i for i, slug in enumerate(config.chapters)}
+    chapter_order = {slug: i for i, slug in enumerate(config.chapters)}
     arkfiles = content["arkfiles"]
     copied = {slug: values.get("copied", []) for slug, values in arkfiles.items()}
     duplicates = _find_duplicate_files(config)
@@ -91,9 +97,7 @@ def _lint_duplicate_files(args, config, content):
 
     for slug, unused in copied.items():
         if unused:
-            print(
-                f"{slug}/{ARK_FILE} contains unused {', '.join(sorted(unused))}"
-            )
+            print(f"{slug}/{ARK_FILE} contains unused {', '.join(sorted(unused))}")
 
 
 def _lint_shortcodes(args, config, content):
@@ -137,8 +141,30 @@ def _lint_slug_format(args, config, content):
 
 def _lint_svg_files(args, config, content):
     """Check style of SVG diagrams."""
+
+    def _bad_font(n):
+        return (n.attrs["font-family"] != "Helvetica") or (
+            not node.attrs.get("font-size", "").startswith("12")
+        )
+
+    sizes = defaultdict(set)
+    fontish = []
     for filename in Path(args.src).glob("**/*.svg"):
-        pass
+        doc = BeautifulSoup(filename.read_text(), features="xml").find("svg")
+        sizes[_get_svg_size(doc)].add(filename)
+        fontish.extend(
+            (filename, node)
+            for node in doc.find_all(lambda x: "font-family" in x.attrs)
+        )
+
+    for key in sorted(sizes.keys()):
+        if (key[0] != "px") or (key[1] > SVG_MAX_WIDTH):
+            print(f"SVG size {key}: {', '.join(sorted(str(s) for s in sizes[key]))}")
+
+    for filename, node in fontish:
+        if _bad_font(node):
+            print(f"file {filename} has suspicious fonts {node}")
+            continue
 
 
 def _lint_unresolved_markdown_links(args, config, content):
@@ -311,11 +337,27 @@ def _find_duplicate_files(config):
     groups = defaultdict(set)
     for slug in config.chapters:
         for path in Path(config.src_dir, slug).glob("*"):
-            if (not path.is_file()) or str(path).endswith("~") or str(path).startswith("."):
+            if (
+                (not path.is_file())
+                or str(path).endswith("~")
+                or str(path).startswith(".")
+            ):
                 continue
             hash_code = hashlib.sha256(path.read_bytes()).hexdigest()
             groups[hash_code].add(path)
     return [group for group in groups.values() if len(group) > 1]
+
+
+def _get_svg_size(svg):
+    """Get width and height of SVG document."""
+    result = (svg.attrs["width"], svg.attrs["height"])
+    if result[0].endswith("px"):
+        result = ("px", int(result[0][:-2]), int(result[1][:-2]))
+    elif result[0].endswith("pt"):
+        result = ("pt", int(result[0][:-2]), int(result[1][:-2]))
+    else:
+        result = ("raw", int(result[0]), int(result[1]))
+    return result
 
 
 def _in_code(node):
