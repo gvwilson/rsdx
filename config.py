@@ -43,6 +43,7 @@ exclude = copy + [
     "*.metaflow",
     "*.mk",
     "*.py",
+    "*.sql",
     "*.tbl",
     "*~",
     ".#*",

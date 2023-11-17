@@ -1,3 +1,3 @@
 copied:
-  - "grid/grid_array.py"
-  - "grid/grid_list.py"
+  - "src/grid/grid_array.py"
+  - "src/grid/grid_list.py"

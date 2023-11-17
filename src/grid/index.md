@@ -7,3 +7,5 @@ syllabus:
 -   "Discuss how to distribute features among classes."
 -   "This is (nearly) the implementation we should have written in the first place."
 ---
+
+[%b Taschuk2017 %]

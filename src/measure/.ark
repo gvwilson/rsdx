@@ -1,4 +1,2 @@
-copied:
-  - "lazy/.gitignore"
 exclude:
   - results

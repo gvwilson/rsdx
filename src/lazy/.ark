@@ -1,7 +1,7 @@
 copied:
-  - "flow/.gitignore"
-  - "flow/Makefile"
-  - "flow/analysis.py"
-  - "flow/flow.py"
-  - "flow/grid_array.py"
-  - "flow/grid_list.py"
+  - "src/flow/.gitignore"
+  - "src/flow/Makefile"
+  - "src/flow/analysis.py"
+  - "src/flow/flow.py"
+  - "src/flow/grid_array.py"
+  - "src/flow/grid_list.py"

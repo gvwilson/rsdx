@@ -3,6 +3,7 @@
 import argparse
 from bs4 import BeautifulSoup, Tag
 from collections import defaultdict
+import copy
 import hashlib
 from pathlib import Path
 import re
@@ -13,11 +14,15 @@ import util
 import regex
 
 
+ARK_FILE = ".ark"
+
+
 def main():
     """Main driver."""
     args = parse_args()
     config = util.load_config(args.config)
     content = {
+        "arkfiles": _collect_ark_files(config),
         "bib": _collect_bib_keys(),
         "html": _collect_files(config, "html"),
         "src": _collect_files(config, "markdown"),
@@ -69,30 +74,25 @@ def _lint_dom_structure(args, config, content):
 
 def _lint_duplicate_files(args, config, content):
     """Check for duplicated files."""
-    source_dirs = {
-        Path(d): i for (i, d) in enumerate(util.source_dirs(args.src, config))
-    }
-    ark_data = {
-        src_dir: util.load_ark_data(Path(src_dir), "copied", [])
-        for src_dir in source_dirs
-    }
-    ark_lookup = {
-        src_dir: {str(Path(args.src, x)) for x in data}
-        for src_dir, data in ark_data.items()
-    }
-    duplicates = _find_duplicate_files(source_dirs)
+    chapter_order = {slug:i for i, slug in enumerate(config.chapters)}
+    arkfiles = content["arkfiles"]
+    copied = {slug: values.get("copied", []) for slug, values in arkfiles.items()}
+    duplicates = _find_duplicate_files(config)
+
     for group in duplicates:
-        group = sorted(group, key=lambda filename: source_dirs[filename.parent])
+        group = sorted(group, key=lambda filename: chapter_order[filename.parent.name])
         for i, current in list(enumerate(group))[1:]:
             previous = str(group[i - 1])
-            if previous not in ark_lookup[current.parent]:
+            slug = str(current.parent.name)
+            if previous not in copied[slug]:
                 print(f"{current} not listed as duplicate of {previous}")
             else:
-                ark_lookup[current.parent].remove(previous)
-    for src_dir, values in ark_lookup.items():
-        if values:
+                copied[slug].remove(previous)
+
+    for slug, unused in copied.items():
+        if unused:
             print(
-                f"{src_dir}/{util.ARK_FILE} contains unused {', '.join(sorted(values))}"
+                f"{slug}/{ARK_FILE} contains unused {', '.join(sorted(unused))}"
             )
 
 
@@ -135,6 +135,12 @@ def _lint_slug_format(args, config, content):
                 _check(heading, slug, "H2 heading")
 
 
+def _lint_svg_files(args, config, content):
+    """Check style of SVG diagrams."""
+    for filename in Path(args.src).glob("**/*.svg"):
+        pass
+
+
 def _lint_unresolved_markdown_links(args, config, content):
     """Look for Markdown [text][key] links that didn't resolve."""
     pat = re.compile(r"\]\[")
@@ -160,6 +166,18 @@ def report_diff(title, expected, actual):
         print(f"{title} missing: {', '.join(sorted(diff))}")
     if diff := actual - expected:
         print(f"{title} extra: {', '.join(sorted(diff))}")
+
+
+def _collect_ark_files(config):
+    """Collect .ark files in source."""
+    result = {}
+    for slug in config.chapters:
+        filepath = Path(config.src_dir, slug, ARK_FILE)
+        if not filepath.exists():
+            result[slug] = {}
+        else:
+            result[slug] = yaml.safe_load(filepath.read_text())
+    return result
 
 
 def _collect_bib_keys():
@@ -288,12 +306,12 @@ def _diff_dom(actual, expected):
                     print(f"DOM {name}.{attr} == '{value}' seen but not expected")
 
 
-def _find_duplicate_files(source_dirs):
+def _find_duplicate_files(config):
     """Group files by duplicate hashes."""
     groups = defaultdict(set)
-    for src_dir in source_dirs:
-        for path in src_dir.glob("*"):
-            if (not path.is_file()) or (str(path).endswith("~")):
+    for slug in config.chapters:
+        for path in Path(config.src_dir, slug).glob("*"):
+            if (not path.is_file()) or str(path).endswith("~") or str(path).startswith("."):
                 continue
             hash_code = hashlib.sha256(path.read_bytes()).hexdigest()
             groups[hash_code].add(path)
