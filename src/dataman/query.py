@@ -3,10 +3,13 @@
 import click
 
 from query_direct import query_direct
+from query_pony import query_pony
+
 
 TABLES = click.Choice(["staff", "exp", "plate"])
 METHODS = {
     "direct": query_direct,
+    "pony": query_pony,
 }
 FUNCS = click.Choice(METHODS.keys())
 
@@ -21,7 +24,7 @@ def cli():
 @click.option("--which", type=TABLES, help="count")
 @click.argument("dbfile")
 def count(how, which, dbfile):
-    print(METHODS[how]("count", which, dbfile))
+    click.echo(METHODS[how](dbfile, "count", which))
 
 
 @cli.command()
@@ -29,7 +32,7 @@ def count(how, which, dbfile):
 @click.option("--which", type=TABLES, help="list")
 @click.argument("dbfile")
 def ls(how, which, dbfile):
-    print(METHODS[how]("ls", which, dbfile))
+    click.echo(METHODS[how](dbfile, "ls", which))
 
 
 if __name__ == "__main__":

@@ -9,5 +9,6 @@ metaflow
 numpy
 pandas
 plotly.express
+pony
 prettytable
 pytest

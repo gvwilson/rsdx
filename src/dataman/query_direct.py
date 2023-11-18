@@ -24,12 +24,20 @@ QUERIES = {
 }
 
 
-def query_direct(action, which, dbfile):
+def query_direct(dbfile, action, which):
     """Run query and show results."""
-    tbl = PrettyTable(COLUMNS[which])
-    tbl.align = "l"
-    tbl.set_style(MARKDOWN)
     conn = sqlite3.connect(dbfile)
-    cursor = conn.execute(QUERIES[action][which])
-    tbl.add_rows(cursor.fetchall())
-    return tbl
+
+    if action == "count":
+        count = conn.execute(QUERIES[action][which]).fetchone()[0]
+        return count
+
+    elif action == "ls":
+        tbl = PrettyTable(COLUMNS[which])
+        tbl.align = "l"
+        tbl.set_style(MARKDOWN)
+        tbl.add_rows(conn.execute(QUERIES[action][which]).fetchall())
+        return tbl
+
+    else:
+        assert False, f"unknown action {action}"
