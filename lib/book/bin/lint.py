@@ -3,7 +3,6 @@
 import argparse
 from bs4 import BeautifulSoup, Tag
 from collections import defaultdict
-import copy
 import hashlib
 from pathlib import Path
 import re

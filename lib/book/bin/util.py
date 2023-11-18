@@ -1,9 +1,7 @@
 """Utilities."""
 
 import importlib.util
-from pathlib import Path
 import sys
-import yaml
 
 
 INDEX_FILE = "index.md"

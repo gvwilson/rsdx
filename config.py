@@ -33,11 +33,11 @@ chapters = [
 theme = "book"
 
 copy = [
-    "*.csv",
     "*.svg",
 ]
 
 exclude = copy + [
+    "*.csv",
     "*.db",
     "*.dvc",
     "*.metaflow",

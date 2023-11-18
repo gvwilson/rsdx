@@ -1,7 +1,7 @@
 """Initialize database with previous experimental data."""
 
 import argparse
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 import random
 import sqlite3
@@ -38,7 +38,7 @@ def _fill_experiments(args, connection, fake):
         kind = random.choice(kinds)
 
         started, ended = random_experiment_duration(args, kind)
-        experiments.append((kind, started, ended))
+        experiments.append((kind, round_date(started), round_date(ended)))
 
         num_staff = random.randint(*EXPERIMENTS[kind]["staff"])
         performed.extend(
@@ -126,8 +126,8 @@ def random_experiment_duration(args, kind):
     start = datetime.fromtimestamp(start)
     duration = timedelta(days=random.randint(*EXPERIMENTS[kind]["duration"]))
     end = start + duration
-    end = None if end > args.enddate else round_time(end)
-    return round_time(start), end
+    end = None if end > args.enddate else end
+    return start, end
 
 
 FILENAMES = set([""])
@@ -160,12 +160,12 @@ def random_date_interval(start_date, end_date):
     """Choose a random end date (inclusive)."""
     choice = random.uniform(start_date.timestamp(), end_date.timestamp())
     choice = datetime.fromtimestamp(choice)
-    return round_time(choice)
+    return choice
 
 
-def round_time(raw):
+def round_date(raw):
     """Round time to whole day."""
-    return datetime(*raw.timetuple()[:3])
+    return None if raw is None else date(*raw.timetuple()[:3])
 
 
 if __name__ == "__main__":

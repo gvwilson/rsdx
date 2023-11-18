@@ -1,4 +1,5 @@
 -r lib/book/requirements.txt
+click
 coverage
 dvc
 faker
@@ -8,4 +9,5 @@ metaflow
 numpy
 pandas
 plotly.express
+prettytable
 pytest
