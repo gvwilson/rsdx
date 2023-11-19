@@ -1,4 +1,4 @@
-include lib/book/book.mk
+include lib/mccole/mccole.mk
 
 # Directories
 BIN := bin

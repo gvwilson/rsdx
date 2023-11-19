@@ -7,7 +7,7 @@ BIBER := biber
 PYTHON := python
 
 # Directories.
-ARK_BIN := lib/book/bin
+ARK_BIN := lib/mccole/bin
 SRC_DIR := src
 HTML_DIR := docs
 

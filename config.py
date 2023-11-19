@@ -30,7 +30,7 @@ chapters = [
     "docs",
 ]
 
-theme = "book"
+theme = "mccole"
 
 copy = [
     "*.svg",

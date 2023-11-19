@@ -73,7 +73,7 @@ def _lint_dom_structure(args, config, content):
     seen = {}
     for filepath, doc in content["html"].items():
         seen = _collect_dom(seen, doc)
-    allowed = yaml.safe_load(Path("lib", "book", "dom.yml").read_text())
+    allowed = yaml.safe_load(Path("lib", config.theme, "dom.yml").read_text())
     _diff_dom(seen, allowed)
 
 
