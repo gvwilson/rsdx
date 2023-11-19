@@ -158,9 +158,11 @@ def random_plates(args, kind, experiment_id, start_date):
 
 def random_date_interval(start_date, end_date):
     """Choose a random end date (inclusive)."""
+    if isinstance(start_date, date):
+        start_date = datetime(*start_date.timetuple()[:3])
     choice = random.uniform(start_date.timestamp(), end_date.timestamp())
     choice = datetime.fromtimestamp(choice)
-    return choice
+    return round_date(choice)
 
 
 def round_date(raw):

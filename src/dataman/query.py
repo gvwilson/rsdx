@@ -29,6 +29,13 @@ def count(how, which, dbfile):
 
 @cli.command()
 @click.option("--how", type=FUNCS, help="how to execute query")
+@click.argument("dbfile")
+def invalidated(how, dbfile):
+    click.echo(METHODS[how](dbfile, "invalidated"))
+
+
+@cli.command()
+@click.option("--how", type=FUNCS, help="how to execute query")
 @click.option("--which", type=TABLES, help="list")
 @click.argument("dbfile")
 def ls(how, which, dbfile):

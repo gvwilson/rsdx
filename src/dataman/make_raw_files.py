@@ -12,7 +12,7 @@ CALIBRATION_EMPTY = 0.25
 QUERY = """\
 select kind, filename
 from experiment inner join plate
-on experiment.ident = plate.experiment_id;
+on experiment.ident = plate.experiment;
 """
 
 
