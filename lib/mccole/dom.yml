@@ -99,6 +99,7 @@ span:
 strong: []
 sup: []
 table:
+  data-tbl: "*"
   id: "*"
   class:
   - centered

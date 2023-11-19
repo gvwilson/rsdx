@@ -26,12 +26,7 @@ def main():
     """Main driver."""
     args = parse_args()
     config = util.load_config(args.config)
-    content = {
-        "arkfiles": _collect_ark_files(config),
-        "bib": _collect_bib_keys(),
-        "html": _collect_files(config, "html"),
-        "src": _collect_files(config, "markdown"),
-    }
+    content = collect_content(config)
     for name, func in globals().items():
         if name.startswith("_lint_"):
             func(args, config, content)
@@ -72,17 +67,17 @@ def _lint_dom_structure(args, config, content):
     """Check DOM structure against spec."""
     seen = {}
     for filepath, doc in content["html"].items():
-        seen = _collect_dom(seen, doc)
+        seen = collect_dom(seen, doc)
     allowed = yaml.safe_load(Path("lib", config.theme, "dom.yml").read_text())
-    _diff_dom(seen, allowed)
+    diff_dom(seen, allowed)
 
 
 def _lint_duplicate_files(args, config, content):
     """Check for duplicated files."""
     chapter_order = {slug: i for i, slug in enumerate(config.chapters)}
-    arkfiles = content["arkfiles"]
+    arkfiles = content["arkfile"]
     copied = {slug: values.get("copied", []) for slug, values in arkfiles.items()}
-    duplicates = _find_duplicate_files(config)
+    duplicates = find_duplicate_files(config)
 
     for group in duplicates:
         group = sorted(group, key=lambda filename: chapter_order[filename.parent.name])
@@ -99,14 +94,18 @@ def _lint_duplicate_files(args, config, content):
             print(f"{slug}/{ARK_FILE} contains unused {', '.join(sorted(unused))}")
 
 
+def _lint_inclusions(args, config, content):
+    """Check file inclusions."""
+    check_inclusions(config, content, "figure")
+    check_inclusions(config, content, "table")
+
+
 def _lint_shortcodes(args, config, content):
     """Check shortcode usage in a single pass."""
-    collected = _collect_shortcodes(content)
-    figure_ids = _collect_ids(content["html"], "figure")
-    table_ids = _collect_ids(content["html"], "table")
-    report_diff("bib keys", set(collected["b"]), set(content["bib"]))
-    report_diff("figure refs", set(collected["f"]), figure_ids)
-    report_diff("table refs", set(collected["t"]), table_ids)
+    if "bib" not in args.exclude:
+        report_diff("bib keys", set(content["b"]), set(content["bib"]))
+    report_diff("figure refs", set(content["f"]), set(content["figure"]))
+    report_diff("table refs", set(content["t"]), set(content["table"]))
 
 
 def _lint_single_h1(args, config, content):
@@ -150,7 +149,7 @@ def _lint_svg_files(args, config, content):
     fontish = []
     for filename in Path(args.src).glob("**/*.svg"):
         doc = BeautifulSoup(filename.read_text(), features="xml").find("svg")
-        sizes[_get_svg_size(doc)].add(filename)
+        sizes[get_svg_size(doc)].add(filename)
         fontish.extend(
             (filename, node)
             for node in doc.find_all(lambda x: "font-family" in x.attrs)
@@ -171,29 +170,59 @@ def _lint_unresolved_markdown_links(args, config, content):
     pat = re.compile(r"\]\[")
     for filepath, doc in content["html"].items():
         matches = doc.find_all(string=pat)
-        matches = [m for m in matches if not _in_code(m)]
+        matches = [m for m in matches if not in_code(m)]
         if matches:
             matches = "\n".join(f"- {m.parent.sourceline}: {m}" for m in matches)
             print(f"{filepath} contains unresolved link(s):\n{matches}")
 
 
-def parse_args():
-    """Parse command-line arguments."""
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, required=True, help="config file")
-    parser.add_argument("--src", type=str, required=True, help="source directory")
-    return parser.parse_args()
+def check_inclusions(config, content, kind):
+    """Normalize paths of included files."""
+    seen = set()
+    for entry in content[kind].values():
+        slug = entry["filepath"].parent.name
+        src = entry["src"]
+        original = Path(config.src_dir, slug, src)
+        if not original.exists():
+            print(f"Bad inclusion: {original} does not exist")
+        elif original in seen:
+            print(f"Duplicate inclusion: {original}")
+        seen.add(original)
 
 
-def report_diff(title, expected, actual):
-    """Report mis-matches."""
-    if diff := expected - actual:
-        print(f"{title} missing: {', '.join(sorted(diff))}")
-    if diff := actual - expected:
-        print(f"{title} extra: {', '.join(sorted(diff))}")
+def collect_content(config):
+    """Collect things to be linted."""
+
+    def _extract_figure(filepath, id_, node):
+        img = node.find("img")
+        return {
+            "filepath": filepath,
+            "id": id_,
+            "src": None if img is None else img.attrs["src"],
+        }
+
+    def _extract_table(filepath, id_, node):
+        return {
+            "filepath": filepath,
+            "id": id_,
+            "src": node.attrs.get("data-tbl", None),
+        }
+
+    content = {
+        "arkfile": collect_ark_files(config),
+        "bib": collect_bib_keys(),
+        "html": collect_files(config, "html"),
+        "src": collect_files(config, "markdown"),
+    }
+    content |= {
+        "figure": collect_ids(content["html"], "figure", _extract_figure),
+        "table": collect_ids(content["html"], "table", _extract_table),
+        **collect_shortcodes(content),
+    }
+    return content
 
 
-def _collect_ark_files(config):
+def collect_ark_files(config):
     """Collect .ark files in source."""
     result = {}
     for slug in config.chapters:
@@ -205,13 +234,13 @@ def _collect_ark_files(config):
     return result
 
 
-def _collect_bib_keys():
+def collect_bib_keys():
     """Collect bibliography keys from file."""
     content = Path("info", "bibliography.bib").read_text()
     return list(m for m in regex.BIB_KEY.findall(content))
 
 
-def _collect_dom(seen, node):
+def collect_dom(seen, node):
     """Collect DOM element attributes from given node and its descendents."""
 
     if not isinstance(node, Tag):
@@ -227,12 +256,12 @@ def _collect_dom(seen, node):
             for v in value:
                 seen[node.name][key].add(v)
     for child in node:
-        _collect_dom(seen, child)
+        collect_dom(seen, child)
 
     return seen
 
 
-def _collect_files(config, which):
+def collect_files(config, which):
     """Read text of source and output files."""
 
     def _same(x):
@@ -259,22 +288,23 @@ def _collect_files(config, which):
     return {p: transform(p.read_text()) for p in paths}
 
 
-def _collect_ids(htmls, kind):
+def collect_ids(htmls, kind, extract=None):
     """Collect all IDs of a certain kind."""
-    seen = set()
-    for slug, doc in htmls.items():
+    seen = {}
+    for filepath, doc in htmls.items():
         nodes = doc.find_all(kind)
         for node in nodes:
             if node.has_attr("class") and "no-id" in node["class"]:
                 continue
-            elif "id" not in node.attrs:
-                print(f"{slug}: {kind} node missing ID")
-            else:
-                seen.add(node.attrs["id"])
+            if "id" not in node.attrs:
+                print(f"{filepath}: {kind} node missing ID")
+                continue
+            id_ = node.attrs["id"]
+            seen[id_] = None if extract is None else extract(filepath, id_, node)
     return seen
 
 
-def _collect_shortcodes(content):
+def collect_shortcodes(content):
     """Gather information from shortcodes for checking."""
 
     def _collect(extra, kind, pargs, kwargs, multiple):
@@ -285,19 +315,19 @@ def _collect_shortcodes(content):
         )
         extra[kind].update(pargs)
 
-    def _collect_b(pargs, kwargs, extra):
+    def collect_b(pargs, kwargs, extra):
         _collect(extra, "b", pargs, kwargs, True)
 
-    def _collect_f(pargs, kwargs, extra):
+    def collect_f(pargs, kwargs, extra):
         _collect(extra, "f", pargs, kwargs, False)
 
-    def _collect_t(pargs, kwargs, extra):
+    def collect_t(pargs, kwargs, extra):
         _collect(extra, "t", pargs, kwargs, False)
 
     parser = shortcodes.Parser(inherit_globals=False, ignore_unknown=True)
-    parser.register(_collect_b, "b")
-    parser.register(_collect_f, "f")
-    parser.register(_collect_t, "t")
+    parser.register(collect_b, "b")
+    parser.register(collect_f, "f")
+    parser.register(collect_t, "t")
 
     collected = {
         "b": set(),
@@ -314,7 +344,7 @@ def _collect_shortcodes(content):
     return collected
 
 
-def _diff_dom(actual, expected):
+def diff_dom(actual, expected):
     """Show difference between two summaries of DOM structures."""
     for name in sorted(actual):
         if name not in expected:
@@ -331,7 +361,7 @@ def _diff_dom(actual, expected):
                     print(f"DOM {name}.{attr} == '{value}' seen but not expected")
 
 
-def _find_duplicate_files(config):
+def find_duplicate_files(config):
     """Group files by duplicate hashes."""
     groups = defaultdict(set)
     for slug in config.chapters:
@@ -347,7 +377,7 @@ def _find_duplicate_files(config):
     return [group for group in groups.values() if len(group) > 1]
 
 
-def _get_svg_size(svg):
+def get_svg_size(svg):
     """Get width and height of SVG document."""
     result = (svg.attrs["width"], svg.attrs["height"])
     if result[0].endswith("px"):
@@ -359,9 +389,26 @@ def _get_svg_size(svg):
     return result
 
 
-def _in_code(node):
+def in_code(node):
     """Is this DOM node inside a code element?"""
     return any(p.tag == "code" for p in node.parents)
+
+
+def parse_args():
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=str, required=True, help="config file")
+    parser.add_argument("--exclude", nargs="+", default=[], help="tests to exclude")
+    parser.add_argument("--src", type=str, required=True, help="source directory")
+    return parser.parse_args()
+
+
+def report_diff(title, expected, actual):
+    """Report mis-matches."""
+    if diff := expected - actual:
+        print(f"{title} missing: {', '.join(sorted(diff))}")
+    if diff := actual - expected:
+        print(f"{title} extra: {', '.join(sorted(diff))}")
 
 
 if __name__ == "__main__":

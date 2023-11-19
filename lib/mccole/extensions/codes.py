@@ -157,7 +157,7 @@ def table_def(pargs, kwargs, node):
     slug = kwargs["slug"]
     tbl = kwargs["tbl"]
     caption = util.markdownify(kwargs["caption"], True)
-    header = f'<table id="{slug}">\n<caption>{caption}</caption>'
+    header = f'<table id="{slug}" data-tbl="{tbl}">\n<caption>{caption}</caption>'
 
     util.require_file(node, tbl, "table")
     content = util.markdownify(util.read_file(node, tbl, "table").strip())
