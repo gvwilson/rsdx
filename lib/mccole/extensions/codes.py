@@ -156,8 +156,12 @@ def table_def(pargs, kwargs, node):
 
     slug = kwargs["slug"]
     tbl = kwargs["tbl"]
+    known = ark.site.config["_tables_"]
+    label = f"Table&nbsp;{known[slug]}"
     caption = util.markdownify(kwargs["caption"], True)
-    header = f'<table id="{slug}" data-tbl="{tbl}">\n<caption>{caption}</caption>'
+    header = (
+        f'<table id="{slug}" data-tbl="{tbl}">\n<caption>{label}: {caption}</caption>'
+    )
 
     util.require_file(node, tbl, "table")
     content = util.markdownify(util.read_file(node, tbl, "table").strip())
@@ -184,7 +188,7 @@ def thanks(pargs, kwargs, node):
     width = int(kwargs["width"])
     columns = _split_list(thanks, width)
     columns = "".join(["<td>" + "<br>".join(c) + "</td>" for c in columns])
-    return f'<table class="no-id"><tr>{columns}</tr></table>'
+    return f'<table class="no-id"><tbody><tr>{columns}</tr></tbody></table>'
 
 
 @shortcodes.register("toc")
@@ -236,6 +240,6 @@ def _split_list(values, width):
     base = 0
     result = []
     for h in heights:
-        result.append(values[base:base+h])
+        result.append(values[base : base + h])
         base += h
     return result

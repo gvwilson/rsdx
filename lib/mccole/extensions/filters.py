@@ -49,6 +49,12 @@ def part_title(node):
     return util.get_title(node)
 
 
+@ibis.filters.register("slug")
+def slug(node):
+    """Insert node slug."""
+    return node.slug
+
+
 @ibis.filters.register("syllabus")
 def syllabus(node):
     """Format syllabus of chapter."""

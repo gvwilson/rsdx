@@ -9,4 +9,9 @@ syllabus:
 -   "Introduce DVC to store large files out of Git."
 ---
 
-![Density vs. distance for varying sizes of grids](./densities.svg)
+[% figure
+   slug="measure-example"
+   img="./densities.svg"
+   caption="Density vs. distance for varying sizes of grids."
+   alt="Line plot of density versus distance from center for three grid sizes."
+%]

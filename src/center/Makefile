@@ -9,7 +9,7 @@ DB_FILE := ${DATA_DIR}/survey.db
 ## demo: run demo of program
 .PHONY: demo
 demo:
-	python display.py --csvdir ${CSV_DIR} --dbfile ${DB_FILE} --methods csv pandas sql
+	python display.py --csvdir ${CSV_DIR} --dbfile ${DB_FILE} --figdir . --methods csv pandas sql
 
 ## settings: show settings
 .PHONY: settings

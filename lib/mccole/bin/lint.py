@@ -68,7 +68,7 @@ def _lint_dom_structure(args, config, content):
     seen = {}
     for filepath, doc in content["html"].items():
         seen = collect_dom(seen, doc)
-    allowed = yaml.safe_load(Path("lib", config.theme, "dom.yml").read_text())
+    allowed = yaml.safe_load(Path("lib", config.theme, "info", "dom.yml").read_text())
     diff_dom(seen, allowed)
 
 
@@ -211,8 +211,8 @@ def collect_content(config):
     content = {
         "arkfile": collect_ark_files(config),
         "bib": collect_bib_keys(),
-        "html": collect_files(config, "html"),
-        "src": collect_files(config, "markdown"),
+        "html": util.collect_files(config, "html"),
+        "src": util.collect_files(config, "markdown"),
     }
     content |= {
         "figure": collect_ids(content["html"], "figure", _extract_figure),
@@ -259,33 +259,6 @@ def collect_dom(seen, node):
         collect_dom(seen, child)
 
     return seen
-
-
-def collect_files(config, which):
-    """Read text of source and output files."""
-
-    def _same(x):
-        return x
-
-    def _parse(x):
-        return BeautifulSoup(x, "html.parser")
-
-    if which == "markdown":
-        root_dir = config.src_dir
-        filename = "index.md"
-        transform = _same
-    elif which == "html":
-        root_dir = config.out_dir
-        filename = "index.html"
-        transform = _parse
-    else:
-        util.fail(f"unknown file type in collector {which}")
-
-    paths = [
-        Path(root_dir, filename),
-        *[Path(root_dir, slug, filename) for slug in config.chapters],
-    ]
-    return {p: transform(p.read_text()) for p in paths}
 
 
 def collect_ids(htmls, kind, extract=None):

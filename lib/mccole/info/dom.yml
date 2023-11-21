@@ -22,12 +22,15 @@ div:
   - col-3
   - col-9
   - col-10
+  - content
   - fixme
   - left
+  - notex
   - right
   - row
   - table
   - tagline
+  - title
   caption: "*"
   id: "*"
   markdown: "1"
@@ -67,7 +70,8 @@ link:
   - stylesheet
   type:
   - image/x-icon
-main: []
+main:
+  data-slug: "*"
 meta:
   charset: "*"
   content: "*"

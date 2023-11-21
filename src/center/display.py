@@ -122,6 +122,7 @@ def make_figures(args, combined, centers):
         fig.update_layout(width=FIG_SIZE, height=FIG_SIZE)
         if args.figdir:
             fig.write_image(f"{args.figdir}/{row['site']}.svg")
+            fig.write_image(f"{args.figdir}/{row['site']}.pdf")
         else:
             fig.show()
 

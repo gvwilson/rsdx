@@ -11,4 +11,9 @@ syllabus:
 -   FIXME: modify this example to get data from files instead of SQL database
 -   FIXME: use something more Pythonic than Make.
 
-![Sample distribution at COT site](./figures/COT.svg)
+[% figure
+   slug="center-example"
+   img="./COT.svg"
+   caption="Sample distribution at COT site."
+   alt="Geographical map of sample distributions around COT site."
+%]

@@ -26,6 +26,7 @@ example:
 .PHONY: measure
 measure:
 	python measure.py --densities densities.svg --filenames results/*.csv
+	python measure.py --densities densities.pdf --filenames results/*.csv
 
 ## settings: show settings
 .PHONY: settings

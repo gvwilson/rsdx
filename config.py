@@ -1,7 +1,8 @@
 """Ark configuration file."""
 
 title = "Research Software Design by Example"
-repo = "https://github.com/gvwilson/rsdx"
+slug = "rsdx"
+repo = f"https://github.com/gvwilson/{slug}"
 author = "Greg Wilson"
 
 debug = False
@@ -42,6 +43,7 @@ exclude = copy + [
     "*.dvc",
     "*.metaflow",
     "*.mk",
+    "*.pdf",
     "*.py",
     "*.sql",
     "*.tbl",
@@ -76,3 +78,15 @@ src_dir = "src"
 out_dir = "docs"
 
 extension = "/"
+
+# Display values for LaTeX generation.
+if __name__ == "__main__":
+    import sys
+
+    assert len(sys.argv) == 2, "Expect exactly one argument"
+    if sys.argv[1] == "--slug":
+        print(slug)
+    elif sys.argv[1] == "--title":
+        print(title)
+    else:
+        assert False, f"Unknown flag {sys.argv[1]}"

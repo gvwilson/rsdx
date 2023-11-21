@@ -2,7 +2,7 @@
 <html lang="en">
   {% include "head.html" %}
   <body>
-    <main>
+    <main data-slug="{{node | slug}}">
       {% include "title.html" %}
       {{ node.html }}
     </main>
