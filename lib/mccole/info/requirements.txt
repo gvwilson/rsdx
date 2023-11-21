@@ -2,6 +2,7 @@ ark
 beautifulsoup4
 html5validator
 lxml
+pyastgrep
 pybtex
 pymdown-extensions
 ruff
