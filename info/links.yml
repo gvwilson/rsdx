@@ -12,6 +12,10 @@
   url: https://carpentries.org/
   en: "Software Carpentry"
 
+- key: coverage
+  url: https://coverage.readthedocs.io/
+  en: "Python coverage module"
+
 # DDD
 
 - key: dvc
@@ -20,9 +24,17 @@
 
 # EEE
 
+- key: contact_email
+  url: "mailto:gvwilson@third-bit.com"
+  en: "Contact email"
+
 # FFF
 
 # GGG
+
+- key: geopy
+  url: https://geopy.readthedocs.io/
+  en: "Python geopy module"
 
 - key: gnu_make
   url: https://www.gnu.org/software/make/
@@ -54,9 +66,17 @@
 
 # PPP
 
+- key: pony
+  url: https://ponyorm.org/
+  en: "Pony ORM"
+
+- key: profile
+  url: https://docs.python.org/3/library/profile.html
+  en: "Python profile module"
+
 - key: pytest
   url: https://docs.pytest.org/
-  en: "pytest"
+  en: "Python pytest module"
 
 # QQQ
 
@@ -77,6 +97,10 @@
 - key: t3
   url: https://teachtogether.tech/
   en: "Teaching Tech Together"
+
+- key: taschuk
+  url: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005412
+  en: "Taschuk's Rules"
 
 # UUU
 

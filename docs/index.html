@@ -64,40 +64,112 @@
 <li><a href="docs/">Documentation</a></li>
 </ol>
 
-<p>Examples of software design in research software engineering.</p>
+<p>This project is
+a one-semester introduction to software design for research software engineers
+similar in spirit to <a href="https://third-bit.com/sdxjs/">this book in JavaScript</a> and <a href="https://third-bit.com/sdxpys/">this one in Python</a>
+but emphasizing the kinds of problems RSEs are more likely to encounter.</p>
+<p>The course will be built on a series of example that connect with each other
+but can be tackled one by one or out of order.
+What has been roughed out have so far is listed below;
+please <a href="mailto:gvwilson@third-bit.com">reach out</a> if you have suggestions about
+(a) other design challenges to work through and
+(b) a narrative (however fanciful) that connects them to the ongoing story.</p>
 <ol>
 <li>
 <p>Convert some messy CSV data files with geocoded pollution measurements into tidy CSV.</p>
+<ul>
+<li>Writing command-line tools that respect <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005412">Taschuk&rsquo;s Rules</a>.</li>
+<li>Creating a data manifest (and why you want one).</li>
+<li>Using regular expressions if you have to, but an out-of-the-box parser if one is available.</li>
+</ul>
 </li>
 <li>
 <p>Use the tidy data to try to find the center point of each polluted region and visualize it.</p>
+<ul>
+<li>Finding, installing, and figuring out how to use open source packages.</li>
+<li>Using <a href="https://geopy.readthedocs.io/"><code>geopy</code></a> to handle geocoded data.</li>
+<li>Plotting (and the challenge of testing visualization code).</li>
+</ul>
 </li>
 <li>
-<p>Walk the reader through a student-quality Python script that uses invasion percolation to model pollution spread.</p>
-</li>
-<li>
-<p>Refactor that script into classes with two different grid implementations.</p>
-</li>
-<li>
-<p>Measure the performance of those two implementations in order to pick one.</p>
-</li>
-<li>
-<p>Convert the measurement scripts to use a pipeline runner.</p>
-</li>
-<li>
-<p>Introduce the idea of big-oh and use it to explain why a lazy implementation of percolation is so much faster.</p>
-</li>
-<li>
-<p>Motivate remote storage for large files by saving fractals and calculating dimension and density.</p>
+<p>Walk through a student-quality Python script that uses invasion percolation to model pollution spread.</p>
+<ul>
+<li>Reading code.</li>
+<li>Breaking code into comprehensible chunks.</li>
+<li>Writing docstrings and generating documentation pages.</li>
+</ul>
 </li>
 <li>
 <p>Show how to use mocks to test a program like invasion percolation that relies on pseudo-randomness.</p>
+<ul>
+<li>Deciding what tests to write (assume readers have already met <a href="https://docs.pytest.org/"><code>pytest</code></a>).</li>
+<li>Creating and using mock objects.</li>
+<li>Making &ldquo;random&rdquo; reproducible.</li>
+</ul>
 </li>
 <li>
-<p>Analyze genomic data from snails to see if a single mutation accounts for differences in sizes.</p>
+<p>Refactor that script into classes with two different grid implementations.</p>
+<ul>
+<li>Creating classes and class hierarchies.</li>
+<li>Deciding what goes where in such a hierarchy.</li>
+<li>Validating implementations against one another.</li>
+</ul>
+</li>
+<li>
+<p>Measure the performance of those two implementations in order to pick one.</p>
+<ul>
+<li>Using <a href="https://coverage.readthedocs.io/"><code>coverage</code></a> to determine which parts of the code are(n&rsquo;t) being exercised by tests.</li>
+<li>Using <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> to determine which parts are expensive.</li>
+</ul>
+</li>
+<li>
+<p>Convert the performance measurement scripts to use a pipeline runner.</p>
+<ul>
+<li>Describing workflows as directed acyclic graphs.</li>
+<li>Expressing DAGs in code with <a href="https://metaflow.org/">Metaflow</a>.</li>
+</ul>
+</li>
+<li>
+<p>Create a lazy implementation of invasion percolation that&rsquo;s much (much) faster.</p>
+<ul>
+<li>Estimating algorithm performance with big-oh.</li>
+<li>Extending a class hierarchy to accommodate new features.</li>
+<li>Adapting tools written earlier to make all of this simpler to run, test, and document.</li>
+</ul>
+</li>
+<li>
+<p>Use remote storage for large files</p>
+<ul>
+<li>Saving fractals created by invasion percolation for analysis.</li>
+<li>Using <a href="https://dvc.org/">DVC</a> to store those remotely instead of committing to version control.</li>
+<li>Using those files to estimate fractal dimension and density vs. distance from centroid.</li>
+</ul>
+</li>
+<li>
+<p>Analyze genomic data from snails in polluted areas to see if a single mutation accounts for differences in sizes.</p>
+<ul>
+<li>Using a statistical model of single nucleotide polymorphisms (SNPs) to synthesize test data.</li>
+<li>Building a pipeline to analyze and visualize that data.</li>
+<li><em>Note: this is a bit of a jump from previous topics—I need a more connected narrative.</em></li>
+</ul>
+</li>
+<li>
+<p>Get data from a SQL database instead of from CSV files on disk.</p>
+<ul>
+<li>Connecting to a database from Python.</li>
+<li>Embedding SQL queries in Python and reading results.</li>
+<li>Safely parameterizing SQL queries.</li>
+</ul>
+</li>
+<li>
+<p>Use an ORM to interact with the database.</p>
+<ul>
+<li>Creating classes with <a href="https://ponyorm.org/">Pony</a> to mirror database tables.</li>
+<li>Writing queries in Python rather than as embedded SQL strings.</li>
+</ul>
 </li>
 </ol>
-<p><em>Last built: 2023-11-21 02:26:52.</em></p>
+<p><em>Last built: 2023-11-21 16:24:17.</em></p>
     </main>
     <footer>
   <div class="row">
