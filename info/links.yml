@@ -1,0 +1,159 @@
+# configuration
+
+- key: config_website
+  url: "https://gvwilson.github.io/rsdx/"
+  en: "Website"
+- key: config_repo
+  url: "https://github.com/gvwilson/rsdx"
+  en: "GitHub repo"
+
+# AAA
+
+- key: aosa
+  url: https://aosabook.org/
+  en: "The Architecture of Open Source Applications"
+- key: ark
+  url: https://www.dmulholl.com/docs/ark/main/
+  en: "Ark"
+
+# BBB
+
+- key: bs
+  url: https://beautiful-soup-4.readthedocs.io/
+  en: "Beautiful Soup"
+
+# CCC
+
+- key: carpentries
+  url: https://carpentries.org/
+  en: "Software Carpentry"
+
+- key: cc_by_nc
+  url: https://creativecommons.org/licenses/by-nc/4.0/
+  en: CC-BY-NC License
+
+- key: coverage
+  url: https://coverage.readthedocs.io/
+  en: "Python coverage module"
+
+# DDD
+
+- key: dvc
+  url: https://dvc.org/
+  en: "DVC"
+
+# EEE
+
+- key: contact_email
+  url: "mailto:gvwilson@third-bit.com"
+  en: "Contact email"
+
+# FFF
+
+- key: flask
+  url: https://flask.palletsprojects.com/
+  en: "Flask"
+
+# GGG
+
+- key: geopy
+  url: https://geopy.readthedocs.io/
+  en: "Python geopy module"
+
+- key: gnu_make
+  url: https://www.gnu.org/software/make/
+  en: GNU Make
+
+- key: gvwilson
+  url: https://third-bit.com/
+  en: "Greg Wilson"
+
+# HHH
+
+- key: hippocratic_license
+  url: https://firstdonoharm.dev/
+  en: Hippocratic License
+
+# III
+
+# JJJ
+
+- key: jinja
+  url: https://jinja.palletsprojects.com/
+  en: "Jinja"
+
+# KKK
+
+# LLL
+
+- key: logging
+  url: https://docs.python.org/3/library/logging.html
+  en: "Python logging module"
+
+# MMM
+
+- key: metaflow
+  url: https://metaflow.org/
+  en: "Metaflow"
+
+# NNN
+
+# OOO
+
+# PPP
+
+- key: pony
+  url: https://ponyorm.org/
+  en: "Pony ORM"
+
+- key: profile
+  url: https://docs.python.org/3/library/profile.html
+  en: "Python profile module"
+
+- key: pydantic
+  url: https://docs.pydantic.dev/
+  en: "Pydantic"
+
+- key: pytest
+  url: https://docs.pytest.org/
+  en: "Python pytest module"
+
+# QQQ
+
+# RRR
+
+- key: requests
+  url: https://requests.readthedocs.io/
+  en: "Python requests module"
+
+# SSS
+
+- key: sdxjs
+  url: https://third-bit.com/sdxjs/
+  en: "Software Design by Example in JavaScript"
+
+- key: sdxpy
+  url: https://third-bit.com/sdxpy/
+  en: "Software Design by Example in Python"
+
+# TTT
+
+- key: t3
+  url: https://teachtogether.tech/
+  en: "Teaching Tech Together"
+
+- key: taschuk
+  url: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005412
+  en: "Taschuk's Rules"
+
+# UUU
+
+# VVV
+
+# WWW
+
+# XXX
+
+# YYY
+
+# ZZZ

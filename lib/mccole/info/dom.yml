@@ -1,0 +1,129 @@
+'[document]': []
+a:
+  class:
+  - bib-ref
+  - fig-ref
+  - tbl-ref
+  href: "*"
+  type:
+  - "application/zip"
+blockquote: []
+body: []
+br: []
+caption:
+  markdown: "1"
+code: []
+dd: []
+div:
+  class:
+  - callout
+  - center
+  - code-sample
+  - col-1
+  - col-10
+  - col-3
+  - col-9
+  - content
+  - fixme
+  - highlight
+  - lang-txt
+  - left
+  - notex
+  - right
+  - row
+  - table
+  - tagline
+  - title
+  caption: "*"
+  id: "*"
+  markdown: "1"
+  title: "*"
+dl:
+  class:
+  - bib-list
+dt:
+  id: "*"
+  class:
+  - bib-def
+em: []
+figcaption:
+  markdown: "1"
+figure:
+  id: "*"
+footer: []
+h1:
+  id: "*"
+h2:
+  id: "*"
+h3: []
+head: []
+html:
+  lang:
+  - en
+img:
+  alt: "*"
+  class:
+  - column
+  - logo
+  src: "*"
+  width: "*"
+li:
+  markdown: "1"
+link:
+  href: "*"
+  rel:
+  - icon
+  - stylesheet
+  type:
+  - image/x-icon
+main:
+  data-slug: "*"
+meta:
+  charset: "*"
+  content: "*"
+  http-equiv: "*"
+  name: "*"
+ol:
+  class:
+  - toc
+  type:
+  - "1"
+  - A
+p:
+  class:
+  - continue
+pre: []
+script:
+  async: "*"
+  id: "*"
+  src: "*"
+  type: "text/javascript"
+span:
+  class:
+  - bib-ref
+  - bibtex-protected
+  - fixme
+  - tagline
+  id: "*"
+  markdown: "1"
+strong: []
+sup: []
+table:
+  data-tbl: "*"
+  id: "*"
+  class:
+  - centered
+  - no-id
+  width: "*"
+tbody: []
+td:
+  markdown: "1"
+th:
+  style: "*"
+  width: "*"
+thead: []
+title: []
+tr: []
+ul:
+  class:
+  - syllabus

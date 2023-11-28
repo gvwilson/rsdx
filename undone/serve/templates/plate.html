@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<p>Plate: {{ plate_id }}</p>
+<p>Filename: {{ filename }}</p>
+{% if filename %}
+  <p>Found: {{ found }}</p>
+  {% if found %}
+  {{ table | safe }}
+  {% endif %}
+{% endif %}
+{% endblock %}

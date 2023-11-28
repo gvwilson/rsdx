@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap");
+
+:root {
+    --gray: #E8E8E8;
+    --blue: #BABDD8;
+    --green: #D7E0D3;
+
+    --border: 1px;
+    --spacing: 0.25rem;
+
+    --page-width: 60rem;
+}
+
+.row {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%
+}
+
+.row > * {
+  flex: 1; /* allow children to grow when space available */
+}
+
+.col-1 { flex-basis: 8.33%; }
+.col-2 { flex-basis: 16.66%; }
+.col-3 { flex-basis: 25%; }
+.col-4 { flex-basis: 33.33%; }
+.col-5 { flex-basis: 41.66%; }
+.col-6 { flex-basis: 50%; }
+.col-7 { flex-basis: 58.33%; }
+.col-8 { flex-basis: 66.66%; }
+.col-9 { flex-basis: 75%; }
+.col-10 { flex-basis: 83.33%; }
+.col-11 { flex-basis: 91.66%; }
+.col-12 { flex-basis: 100%; }
+
+.left { text-align: left; }
+.center { text-align: center; }
+.right { text-align: right; }
+
+html {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+}
+
+body {
+    max-width: var(--page-width);
+}
+
+code {
+    font-family: "Source Code Pro", monospace;
+}
+
+h1 {
+    text-align: center;
+    background-color: var(--blue);
+}
+
+h2 {
+    background-color: var(--green);
+}
+
+table {
+    border-collapse: collapse;
+    caption-side: bottom;
+}
+
+th, td {
+    vertical-align: top;
+    padding: var(--spacing);
+    border: solid var(--border) var(--gray);
+}
+
+th {
+    font-weight: bold;
+}

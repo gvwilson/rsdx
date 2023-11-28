@@ -1,0 +1,6 @@
+{
+    "csv": "../../data/survey_tidy",
+    "pandas": "../../data/survey.db",
+    "pony": "../../data/survey.db",
+    "sql": "../../data/survey.db"
+}

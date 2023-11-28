@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap");
+
+:root {
+    --gray: #E8E8E8;
+    --blue: #BABDD8;
+    --green: #D7E0D3;
+
+    --border: 1px;
+    --spacing: 0.25rem;
+
+    --page-width: 60rem;
+    --body-size: large;
+    --code-size: medium;
+}
+
+html {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: var(--body-size);
+}
+
+body {
+    max-width: var(--page-width);
+}
+
+code {
+    font-family: "Source Code Pro", monospace;
+    font-size: var(--code-size);
+}
+
+h1 {
+    text-align: center;
+    background-color: var(--blue);
+}
+
+h2 {
+    background-color: var(--green);
+}
+
+table {
+    border-collapse: collapse;
+    caption-side: bottom;
+}
+
+th, td {
+    vertical-align: top;
+    padding: var(--spacing);
+    border: solid var(--border) var(--gray);
+}
+
+th {
+    font-weight: bold;
+}

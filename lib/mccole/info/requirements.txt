@@ -1,0 +1,8 @@
+ark
+beautifulsoup4
+html5validator
+lxml
+pybtex
+pymdown-extensions
+python-frontmatter
+ruff

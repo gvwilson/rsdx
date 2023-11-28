@@ -1,0 +1,4 @@
+copied:
+  - "src/perf/grid_list.py"
+  - "src/perf/grid_array.py"
+  - "src/perf/grid_generic.py"

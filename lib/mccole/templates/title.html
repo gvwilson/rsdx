@@ -1,0 +1,26 @@
+<div class="row title">
+  <div class="col-1 left">
+    <p>
+      <a href="@root/"><img src="@root/codebender-logo.svg" alt="logo" class="logo"/></a>
+    </p>
+  </div>
+  <div class="col-10 center">
+    <h1>{% if node | is_root %}{{ site.title }}{% else %}{{ node | part_title }}{% endif %}</h1>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+{% if node | is_chapter %}
+<div class="row notex">
+  <div class="col-1 left">
+    {{node | link_prev }}
+  </div>
+  <div class="col-10 center">
+    <span class="tagline">{{ node | part_tag }}</span>
+  </div>
+  <div class="col-1 right">
+    {{node | link_next }}
+  </div>
+</div>
+{{ node | syllabus }}
+{% endif %}

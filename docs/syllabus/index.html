@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="repo" content="https://github.com/gvwilson/rsdx">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <title>Research Software Design by Example: Syllabus</title>
+  <link rel="stylesheet" href="../tango.css">
+<link rel="stylesheet" href="../mccole.css">
+
+<link rel="stylesheet" href="../pages.css">
+
+
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']]
+    }
+  };
+</script>
+<script
+  type="text/javascript"
+  id="MathJax-script"
+  async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+  
+
+</head>
+
+  <body>
+    <main data-slug="syllabus">
+      <div class="row title">
+  <div class="col-1 left">
+    <p>
+      <a href="../"><img src="../codebender-logo.svg" alt="logo" class="logo"/></a>
+    </p>
+  </div>
+  <div class="col-10 center">
+    <h1>Syllabus</h1>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+
+
+      <h2 id="syllabus-intro"><a href="../intro">Introduction</a> (<a href="../intro/slides.html">slides</a>)</h2>
+<p><em>An overview of where we&rsquo;re going and why.</em></p>
+<ul>
+<li>Assume you know how to program.</li>
+<li>Want to learn how to design pieces of software that are reliable and reusable.</li>
+<li>Best way is through examples: principles don&rsquo;t make sense unless you know how to translate them into specifics.</li>
+</ul>
+<h2 id="syllabus-parse"><a href="../parse">Parse Raw Data</a> (<a href="../parse/slides.html">slides</a>)</h2>
+<p><em>Convert some messy CSV data files with geocoded pollution measurements into tidy CSV.</em></p>
+<ul>
+<li>Writing command-line tools that respect <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005412">Taschuk&rsquo;s Rules</a>.</li>
+<li>Creating a data manifest (and why you want one).</li>
+<li>Using regular expressions if you have to, but an out-of-the-box parser if one is available.</li>
+</ul>
+<h2 id="syllabus-plugin"><a href="../plugin">Plugin Architecture</a> (<a href="../plugin/slides.html">slides</a>)</h2>
+<p><em>Find the center point of each polluted region and visualize it.</em></p>
+<ul>
+<li>Using a plugin architecture to load modules dynamically.</li>
+<li>Finding, installing, and figuring out how to use open source packages.</li>
+<li>Using <a href="https://geopy.readthedocs.io/"><code>geopy</code></a> to handle geocoded data.</li>
+<li>Plotting (and the challenge of testing visualization code).</li>
+<li>Connecting to a database from Python.</li>
+<li>Embedding SQL queries in Python and reading results.</li>
+<li>Creating classes with <a href="https://ponyorm.org/">Pony</a> ORM to mirror database tables.</li>
+<li>Writing queries in Python rather than as embedded SQL strings.</li>
+<li>Cross-validating implementations.</li>
+</ul>
+<h2 id="syllabus-refactor"><a href="../refactor">Refactoring</a> (<a href="../refactor/slides.html">slides</a>)</h2>
+<p><em>Refactor a student-quality Python script that uses invasion percolation to model pollution spread.</em></p>
+<ul>
+<li>Break code into comprehensible chunks.</li>
+<li>Create classes and class hierarchies.</li>
+<li>Write docstrings and generating documentation pages.</li>
+<li>Validate implementations against one another.</li>
+</ul>
+<h2 id="syllabus-finale"><a href="../finale">Conclusion</a> (<a href="../finale/slides.html">slides</a>)</h2>
+<p><em>What we&rsquo;ve covered and where readers might like to go next.</em></p>
+<ul>
+<li>Summarize key ideas.</li>
+</ul>
+    </main>
+    <footer>
+  <div class="row">
+    <div class="col-1 left">
+      <a href="../conduct/">&lArr;</a>
+    </div>
+    <div class="col-10 center">
+      <a href="../">Home</a>
+      &middot;
+      <a href="../license/">License</a>
+      &middot;
+      <a href="https://github.com/gvwilson/rsdx">Repository</a>
+    </div>
+    <div class="col-1 right">
+      <a href="../credits/">&rArr;</a>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

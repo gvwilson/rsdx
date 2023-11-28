@@ -1,0 +1,8 @@
+<link rel="stylesheet" href="@root/tango.css">
+<link rel="stylesheet" href="@root/mccole.css">
+{% if node | is_slides %}
+<link rel="stylesheet" href="@root/slides.css">
+<script src="@root/slides.js" defer></script>
+{% else %}
+<link rel="stylesheet" href="@root/pages.css">
+{% endif %}

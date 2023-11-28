@@ -1,0 +1,7 @@
+title: "Refactoring"
+tag: "Refactor a student-quality Python script that uses invasion percolation to model pollution spread."
+syllabus:
+-   Break code into comprehensible chunks.
+-   Create classes and class hierarchies.
+-   Write docstrings and generating documentation pages.
+-   Validate implementations against one another.

@@ -1,0 +1,16 @@
+-r lib/mccole/info/requirements.txt
+click
+coverage
+dvc
+faker
+flask
+geopy
+kaleido
+metaflow
+numpy
+pandas
+plotly.express
+pony
+prettytable
+pytest
+python-dotenv

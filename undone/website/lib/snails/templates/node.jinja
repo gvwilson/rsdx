@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="@root/style.css">
+    <title>{{ site.title }}{% if node.title %}: {{ node.title }}{% endif %}</title>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-11">
+	<h1>{{ site.title }}{% if node.title %}: {{ node.title }}{% endif %}</h1>
+	{{ inc.menu }}
+      </div>
+      <div class="col-1">
+	<p>
+	  <img src="@root/snail.svg" alt="Snail logo" width="80%" />
+	</p>
+      </div>
+    </div>
+{{ node.html }}
+  </body>
+</html>
