@@ -1,9 +1,0 @@
-exclude:
-- docs
-- inc
-- lib
-- plates
-- res
-- src
-- LICENSE.md
-- README.md

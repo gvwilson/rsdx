@@ -1,5 +1,0 @@
-copied:
-  - "src/flow/.gitignore"
-  - "src/flow/flow.py"
-  - "src/flow/grid_array.py"
-  - "src/flow/grid_list.py"

@@ -14,6 +14,7 @@ chapters = [
     "plugin",
     "refactor",
     "test",
+    "perf",
     "finale",
 ]
 

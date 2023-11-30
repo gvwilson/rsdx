@@ -38,6 +38,10 @@
 
 # DDD
 
+- key: dataclasses
+  url: https://docs.python.org/3/library/dataclasses.html
+  en: "Python dataclasses module"
+
 - key: dvc
   url: https://dvc.org/
   en: "DVC"

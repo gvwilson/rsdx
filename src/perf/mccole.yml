@@ -1,0 +1,13 @@
+title: "Measure Performance"
+tag: "Compare the performance of grid implementations empirically."
+syllabus:
+-   Introduce Python type annotations.
+-   Define [dataclasses][dataclasses] to represent parameters for profiling runs.
+-   Use [logging][logging] instead of `print` statements for debugging.
+-   Using [`coverage`][coverage] to determine which parts of the code are(n't) being exercised by tests.
+-   Using [`cProfile`][profile] to determine which parts are expensive.
+-   "Tuning code doesn't solve algorithmic problems like quadratic growth in runtime."
+copied:
+-   src/test/grid_array.py
+-   src/test/grid_generic.py
+-   src/test/grid_list.py

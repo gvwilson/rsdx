@@ -20,6 +20,18 @@ class GridGeneric(ABC):
         self._height = height
         self._depth = depth
 
+    def __eq__(self, other):
+        """Compare this grid to another."""
+        if self.width() != other.width():
+            return False
+        if self.height() != other.height():
+            return False
+        for x in range(self.width()):
+            for y in range(self.height()):
+                if self[x, y] != other[x, y]:
+                    return False
+        return True
+
     def width(self):
         """Get width of grid."""
         return self._width
@@ -31,18 +43,6 @@ class GridGeneric(ABC):
     def depth(self):
         """Get depth of grid."""
         return self._depth
-
-    def __eq__(self, other):
-        """Compare to another grid."""
-        if self.width() != other.width():
-            return False
-        if self.height() != other.height():
-            return False
-        for x in range(self.width()):
-            for y in range(self.height()):
-                if self[x, y] != other[x, y]:
-                    return False
-        return True
 
     def adjacent(self, x, y):
         """Is (x, y) adjacent to a filled cell?"""
