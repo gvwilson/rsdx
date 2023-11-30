@@ -374,7 +374,9 @@ def report_unused_duplicates(copied):
     """Report 'duplicated' files that aren't actually duplicated."""
     for slug, unused in copied.items():
         if unused:
-            print(f"{slug}/{util.MCCOLE_FILE} contains unused {', '.join(sorted(unused))}")
+            print(
+                f"{slug}/{util.MCCOLE_FILE} contains unused {', '.join(sorted(unused))}"
+            )
 
 
 if __name__ == "__main__":

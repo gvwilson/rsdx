@@ -37,7 +37,7 @@ body {
     position: relative;
     min-height: 100vh;
     scroll-snap-align: start;
-    border: solid var(--lightborder) var(--lightgray);
+    border: solid var(--light-border) var(--light-gray);
 }
 
 .slide > h2, .slide > h3 {

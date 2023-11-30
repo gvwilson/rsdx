@@ -40,17 +40,17 @@ div.callout {
     padding-left: 0.25rem;
     padding-right: 0.25rem;
     padding-top: 0rem;
-    background-color: var(--lightgray);
+    background-color: var(--light-gray);
 }
 
 div.callout h3 {
-    background-color: var(--lightgray);
+    background-color: var(--light-gray);
 }
 
 /* Bottom footer */
 footer {
     margin-top: var(--medium-spacing);
-    border-top: solid var(--lightgray) var(--mediumborder);
+    border-top: solid var(--light-gray) var(--medium-border);
     padding-top: var(--small-spacing);
     text-align: center;
 }
@@ -60,11 +60,10 @@ ol.toc {}
 
 /* Syllabus listing at start of chapter */
 ul.syllabus {
-    background-color: var(--lightgray);
-    padding-left: var(--largespacing);
-    padding-top: var(--mediumspacing);
-    padding-bottom: var(--mediumspacing);
-    border: solid var(--mediumborder) var(--darkgray);
+    background-color: var(--light-gray);
+    padding-top: var(--medium-spacing);
+    padding-bottom: var(--medium-spacing);
+    border: solid var(--medium-border) var(--dark-gray);
 }
 
 /* Code */

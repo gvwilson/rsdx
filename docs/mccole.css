@@ -4,8 +4,8 @@
 
 /* Variables */
 :root {
-    --lightgray: #E8E8E8;
-    --darkgray: #D8D8D8;
+    --light-gray: #E8E8E8;
+    --dark-gray: #D8D8D8;
 
     --stamp-blue-dark: #1B2A83;
     --stamp-blue-light: #BABDD8;
@@ -26,9 +26,9 @@
     --stamp-red-light: #DAB3B7;
     --stamp-red-light: #DAB3B7;
 
-    --lightborder: 1px;
-    --mediumborder: 2px;
-    --heavyborder: 5px;
+    --light-border: 1px;
+    --medium-border: 2px;
+    --heavy-border: 5px;
 
     --no-spacing: 0px;
     --small-spacing: 0.25rem;
@@ -86,17 +86,17 @@ body {
 
 /* FIXME markers */
 div.fixme {
-    border: solid var(--mediumborder) var(--stamp-red-dark);
+    border: solid var(--medium-border) var(--stamp-red-dark);
 }
 
 span.fixme {
-    border-bottom: solid var(--mediumborder) var(--stamp-red-dark);
+    border-bottom: solid var(--medium-border) var(--stamp-red-dark);
 }
 
 /* Elements */
 blockquote {
     padding-left: var(--medium-spacing);
-    border-left: solid var(--stamp-purple-light) var(--heavyborder);
+    border-left: solid var(--stamp-purple-light) var(--heavy-border);
     margin-left: 0px;
     font-style: italic;
 }
@@ -183,7 +183,7 @@ th, td {
     padding-left: var(--medium-spacing);
     padding-right: var(--medium-spacing);
     vertical-align: top;
-    border: solid var(--lightborder) var(--lightgray);
+    border: solid var(--light-border) var(--light-gray);
 }
 
 th {

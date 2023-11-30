@@ -139,17 +139,26 @@ def rootpage(pargs, kwargs, node):
 @shortcodes.register("syllabus")
 def syllabus(pargs, kwargs, node):
     """Handle [% syllabus %] shortcode."""
-    util.require((not pargs) and (not kwargs), f"Bad 'syllabus' shortcode in {node}")
-    meta = ark.site.config["_meta_"]
+    util.require(
+        (not pargs) and set(kwargs.keys()).issubset({"links"}),
+        f"Bad 'syllabus' shortcode in {node}",
+    )
     lines = []
+    with_links = kwargs.get("links", True) != "False"
     for slug in ark.site.config["chapters"]:
-        assert "syllabus" in meta[slug], f"No syllabus data found for {slug}"
-        assert "tag" in meta[slug], f"No tag found for {slug}"
-        lines.append(
-            f"\n## [{meta[slug]['title']}](@root/{slug}) ([slides](@root/{slug}/slides.html)) {{: #syllabus-{slug}}}\n"
-        )
-        lines.append(f"*{meta[slug]['tag']}*\n")
-        for item in meta[slug]["syllabus"]:
+        meta = ark.site.config["_meta_"][slug]
+        assert "syllabus" in meta, f"No syllabus data found for {slug}"
+        assert "tag" in meta, f"No tag found for {slug}"
+        if with_links:
+            lines.append(
+                f"\n## [{meta['title']}](@root/{slug}) ([slides](@root/{slug}/slides.html)) {{: #syllabus-{slug}}}\n"
+            )
+        else:
+            lines.append(
+                f"\n## {meta['title']} ([slides](@root/{slug}/slides.html)) {{: #syllabus-{slug}}}\n"
+            )
+        lines.append(f"*{meta['tag']}*\n")
+        for item in meta["syllabus"]:
             lines.append(f"- {util.markdownify(item)}")
     return "\n".join(lines)
 
