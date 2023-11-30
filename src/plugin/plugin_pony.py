@@ -8,6 +8,7 @@ from pony import orm
 
 DB = orm.Database()
 
+
 class Sites(DB.Entity):
     """Survey sites."""
 
@@ -15,6 +16,7 @@ class Sites(DB.Entity):
     lon = orm.Required(float)
     lat = orm.Required(float)
     surveys = orm.Set("Surveys")
+
 
 class Surveys(DB.Entity):
     """Surveys done."""
@@ -45,8 +47,22 @@ def read_data(dbfile):
         centers = orm.select(
             (
                 site.site,
-                orm.sum(sample.lon * sample.reading for sample in Samples if sample.label.site == site) / orm.sum(sample.reading for sample in Samples if sample.label.site == site),
-                orm.sum(sample.lat * sample.reading for sample in Samples if sample.label.site == site) / orm.sum(sample.reading for sample in Samples if sample.label.site == site),
+                orm.sum(
+                    sample.lon * sample.reading
+                    for sample in Samples
+                    if sample.label.site == site
+                )
+                / orm.sum(
+                    sample.reading for sample in Samples if sample.label.site == site
+                ),
+                orm.sum(
+                    sample.lat * sample.reading
+                    for sample in Samples
+                    if sample.label.site == site
+                )
+                / orm.sum(
+                    sample.reading for sample in Samples if sample.label.site == site
+                ),
             )
             for site in Sites
         )

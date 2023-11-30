@@ -1,0 +1,17 @@
+-   Use `GridList` and `GridArray` from [%x refactor %].
+-   `test_grid_start.py` tests that grids can be initialized.
+    -   But we don't know if we're getting the actual values from the grid because they're random.
+    -   And repeating the test for different classes is annoying.
+-   Create a new class `GridListRandomizer` that takes a number generator as a constructor parameter.
+    -   Generate a grid filled with known values for testing.
+    -   But we're no longer testing our actual grid class.
+    -   Could add extra arguments for all sorts of things to all our classes, but that's a lot of work.
+-   `test_grid_mock.py` patches the random number generator without modifying the grid class.
+-   `test_grid_parametrize.py` parameterizes the test across both classes.
+-   `grid_filled.py` defines `GridFilled`, which we can populate with known data.
+    -   Exercise: refactor other grid classes so that we have a patchable method instead.
+-   `test_grid_filled.py` starts by testing that filling is working correctly.
+-   Add test for filling grid by creating deterministic filling path.
+-   But suddenly realize: what happens when several fillable cells have the same value?
+    -   `fill_grid` always chooses the first one it encounters.
+    -   So filling has a bias toward the (0, 0) corner of the grid.

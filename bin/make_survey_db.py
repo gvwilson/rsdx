@@ -27,8 +27,12 @@ def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--dbfile", type=str, required=True, help="database file")
-    parser.add_argument("--paramsdir", type=str, required=True, help="parameters directory")
-    parser.add_argument("--samplesdir", type=str, required=True, help="samples directory")
+    parser.add_argument(
+        "--paramsdir", type=str, required=True, help="parameters directory"
+    )
+    parser.add_argument(
+        "--samplesdir", type=str, required=True, help="samples directory"
+    )
     return parser.parse_args()
 
 

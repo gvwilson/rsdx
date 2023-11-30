@@ -13,6 +13,7 @@ chapters = [
     "parse",
     "plugin",
     "refactor",
+    "test",
     "finale",
 ]
 

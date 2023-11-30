@@ -6,10 +6,14 @@ import re
 import sys
 
 from bs4 import BeautifulSoup
+import yaml
 
 
 # Bibliography keys.
 BIB_KEY = re.compile(r"^@.+?\{(.*?),", re.MULTILINE)
+
+# McCole directives.
+MCCOLE_FILE = "mccole.yml"
 
 
 def collect_files(config, which, with_root=True):
@@ -39,6 +43,14 @@ def collect_files(config, which, with_root=True):
             *paths,
         ]
     return {p: transform(p.read_text()) for p in paths}
+
+
+def collect_meta(config):
+    """Collect metadata."""
+    return {
+        slug: yaml.safe_load(Path(config.src_dir, slug, MCCOLE_FILE).read_text())
+        for slug in config.contents
+    }
 
 
 def fail(msg):

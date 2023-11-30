@@ -12,7 +12,6 @@ import yaml
 import util
 
 
-ARK_FILE = ".ark"
 SVG_FONT = "Helvetica:12px"
 SVG_FONT_PAT = {
     "font-family": re.compile(r"\bfont-family:\s*(.+?);"),
@@ -73,24 +72,10 @@ def _lint_dom_structure(args, config, content):
 
 def _lint_duplicate_files(args, config, content):
     """Check for duplicated files."""
-    content_order = {slug: i for i, slug in enumerate(config.contents)}
-    arkfiles = content["arkfile"]
-    copied = {slug: values.get("copied", []) for slug, values in arkfiles.items()}
+    copied = {slug: meta.get("copied", []) for slug, meta in content["meta"].items()}
     duplicates = find_duplicate_files(config)
-
-    for group in duplicates:
-        group = sorted(group, key=lambda filename: content_order[filename.parent.name])
-        for i, current in list(enumerate(group))[1:]:
-            previous = str(group[i - 1])
-            slug = str(current.parent.name)
-            if previous not in copied[slug]:
-                print(f"{current} not listed as duplicate of {previous}")
-            else:
-                copied[slug].remove(previous)
-
-    for slug, unused in copied.items():
-        if unused:
-            print(f"{slug}/{ARK_FILE} contains unused {', '.join(sorted(unused))}")
+    report_duplicate_files(config, copied, duplicates)
+    report_unused_duplicates(copied)
 
 
 def _lint_inclusions(args, config, content):
@@ -208,9 +193,9 @@ def collect_content(config):
         }
 
     content = {
-        "arkfile": collect_ark_files(config),
         "bib": collect_bib_keys(),
         "html": util.collect_files(config, "html"),
+        "meta": util.collect_meta(config),
         "src": util.collect_files(config, "markdown"),
     }
     content |= {
@@ -219,18 +204,6 @@ def collect_content(config):
         **collect_shortcodes(content),
     }
     return content
-
-
-def collect_ark_files(config):
-    """Collect .ark files in source."""
-    result = {}
-    for slug in config.contents:
-        filepath = Path(config.src_dir, slug, ARK_FILE)
-        if not filepath.exists():
-            result[slug] = {}
-        else:
-            result[slug] = yaml.safe_load(filepath.read_text())
-    return result
 
 
 def collect_bib_keys():
@@ -381,6 +354,27 @@ def report_diff(title, expected, actual):
         print(f"{title} missing: {', '.join(sorted(diff))}")
     if diff := actual - expected:
         print(f"{title} extra: {', '.join(sorted(diff))}")
+
+
+def report_duplicate_files(config, copied, duplicates):
+    """Report any duplicates, removing them from the expected copied files."""
+    content_order = {slug: i for i, slug in enumerate(config.contents)}
+    for group in duplicates:
+        group = sorted(group, key=lambda filename: content_order[filename.parent.name])
+        for i, current in list(enumerate(group))[1:]:
+            previous = str(group[i - 1])
+            slug = str(current.parent.name)
+            if previous not in copied[slug]:
+                print(f"{current} not listed as duplicate of {previous}")
+            else:
+                copied[slug].remove(previous)
+
+
+def report_unused_duplicates(copied):
+    """Report 'duplicated' files that aren't actually duplicated."""
+    for slug, unused in copied.items():
+        if unused:
+            print(f"{slug}/{util.MCCOLE_FILE} contains unused {', '.join(sorted(unused))}")
 
 
 if __name__ == "__main__":

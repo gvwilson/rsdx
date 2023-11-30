@@ -47,17 +47,6 @@ serve:
 	@mkdir -p ${HTML_DIR}
 	${ARK} serve
 
-## docs: rebuild code documentation
-docs: DOCS.md
-DOCS.md: ${ARK_BIN}/make_docs.py
-	python ${ARK_BIN}/make_docs.py \
-		--config ${CONFIG} \
-		--src ${SRC_DIR} \
-		--title "Documentation" \
-		--notdirs conduct docs license \
-		--notfiles '*/test_*.py' \
-		> $@
-
 ## readme: rebuild README file
 readme: ${ARK_BIN}/make_readme.py
 	python ${ARK_BIN}/make_readme.py \

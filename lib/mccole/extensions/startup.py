@@ -38,7 +38,9 @@ def _append_links_to_pages():
 def _collect_meta():
     """Collect metadata from mccole.yml files."""
     ark.site.config["_meta_"] = {
-        slug: yaml.safe_load(Path(ark.site.config["src_dir"], slug, util.MCCOLE_FILE).read_text())
+        slug: yaml.safe_load(
+            Path(ark.site.config["src_dir"], slug, util.MCCOLE_FILE).read_text()
+        )
         for slug in ark.site.config["contents"]
     }
 
