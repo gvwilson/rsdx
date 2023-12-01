@@ -10,7 +10,8 @@ def main():
     initialize_random(params)
     grid = initialize_grid(params)
     num_filled = fill_grid(grid)
-    print_grid(params, grid, num_filled, details="full")
+    if len(sys.argv) > 2:
+        print_grid(params, grid, num_filled, details="full")
 
 
 if __name__ == "__main__":

@@ -69,7 +69,6 @@ def print_grid(params, grid, num_filled, details="brief"):
 
 def setup(cls):
     """Get parameters."""
-    assert len(sys.argv) == 2, "Usage: invperc.py params_file.json"
     with open(sys.argv[1], "r") as reader:
         d = json.load(reader)
         return cls(**d)

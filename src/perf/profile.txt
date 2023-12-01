@@ -1,0 +1,50 @@
+         13885219 function calls in 3.169 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+  1794596    1.541    0.000    2.443    0.000 grid_generic.py:47(adjacent)
+  8601051    0.872    0.000    0.872    0.000 grid_list.py:20(__getitem__)
+      356    0.551    0.002    3.161    0.009 invperc_util.py:12(choose_cell)
+  1708120    0.101    0.000    0.101    0.000 grid_generic.py:39(height)
+  1731763    0.096    0.000    0.096    0.000 grid_generic.py:35(width)
+     5041    0.003    0.000    0.005    0.000 random.py:284(randrange)
+     5041    0.002    0.000    0.002    0.000 random.py:235(_randbelow_with_getrandbits)
+        1    0.001    0.001    0.008    0.008 grid_list.py:10(__init__)
+     5041    0.001    0.000    0.006    0.000 random.py:358(randint)
+    15123    0.001    0.000    0.001    0.000 {built-in method _operator.index}
+     8187    0.000    0.000    0.000    0.000 {method 'getrandbits' of '_random.Random' objects}
+        1    0.000    0.000    3.161    3.161 invperc_util.py:25(fill_grid)
+     5112    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+     5041    0.000    0.000    0.000    0.000 {method 'bit_length' of 'int' objects}
+      356    0.000    0.000    0.000    0.000 grid_generic.py:60(on_border)
+      357    0.000    0.000    0.000    0.000 grid_list.py:25(__setitem__)
+        1    0.000    0.000    0.000    0.000 {built-in method io.open}
+        1    0.000    0.000    3.169    3.169 {built-in method builtins.exec}
+        1    0.000    0.000    3.169    3.169 <string>:1(<module>)
+        1    0.000    0.000    3.169    3.169 invperc_single.py:7(main)
+        1    0.000    0.000    0.000    0.000 {function Random.seed at 0x1009f6980}
+        1    0.000    0.000    0.000    0.000 invperc_util.py:70(setup)
+        1    0.000    0.000    0.000    0.000 decoder.py:332(decode)
+        1    0.000    0.000    0.000    0.000 __init__.py:274(load)
+        1    0.000    0.000    0.000    0.000 decoder.py:343(raw_decode)
+        1    0.000    0.000    0.000    0.000 {method 'read' of '_io.TextIOWrapper' objects}
+        1    0.000    0.000    0.000    0.000 invperc_util.py:49(initialize_random)
+        1    0.000    0.000    0.000    0.000 __init__.py:299(loads)
+        1    0.000    0.000    0.000    0.000 random.py:128(seed)
+        1    0.000    0.000    0.008    0.008 invperc_util.py:38(initialize_grid)
+        1    0.000    0.000    0.000    0.000 {method '__exit__' of '_io._IOBase' objects}
+        1    0.000    0.000    0.000    0.000 <frozen codecs>:319(decode)
+        2    0.000    0.000    0.000    0.000 {method 'match' of 're.Pattern' objects}
+        1    0.000    0.000    0.000    0.000 <frozen codecs>:309(__init__)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 <frozen codecs>:260(__init__)
+        1    0.000    0.000    0.000    0.000 <string>:2(__init__)
+        1    0.000    0.000    0.000    0.000 {built-in method _codecs.utf_8_decode}
+        1    0.000    0.000    0.000    0.000 grid_generic.py:17(__init__)
+        3    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        1    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 {method 'end' of 're.Match' objects}
+
+

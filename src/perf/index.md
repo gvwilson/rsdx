@@ -10,4 +10,5 @@
    alt="Line graph showing that running time increases quadratically with grid size."
 %]
 
--   Time is growing quadratically with grid size.
+-   Profiling with [`cProfile`][profile] shows that we're spending most of our time in adjacency tests.
+-   Overall time is growing quadratically with grid size.

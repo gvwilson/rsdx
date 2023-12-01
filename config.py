@@ -48,6 +48,7 @@ exclude = copy + [
     "*.py",
     "*.sql",
     "*.tbl",
+    "*.txt",
     "*.yml",
     "*~",
     ".#*",

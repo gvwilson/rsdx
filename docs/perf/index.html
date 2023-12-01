@@ -59,7 +59,6 @@
 <li>Introduce Python type annotations.</li>
 <li>Define <a href="https://docs.python.org/3/library/dataclasses.html">dataclasses</a> to represent parameters for profiling runs.</li>
 <li>Use <a href="https://docs.python.org/3/library/logging.html">logging</a> instead of <code>print</code> statements for debugging.</li>
-<li>Using <a href="https://coverage.readthedocs.io/"><code>coverage</code></a> to determine which parts of the code are(n&rsquo;t) being exercised by tests.</li>
 <li>Using <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> to determine which parts are expensive.</li>
 <li>Tuning code doesn&rsquo;t solve algorithmic problems like quadratic growth in runtime.</li>
 </ul>
@@ -77,7 +76,8 @@
 </figure>
 
 <ul>
-<li>Time is growing quadratically with grid size.</li>
+<li>Profiling with <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> shows that we&rsquo;re spending most of our time in adjacency tests.</li>
+<li>Overall time is growing quadratically with grid size.</li>
 </ul>
     </main>
     <footer>
