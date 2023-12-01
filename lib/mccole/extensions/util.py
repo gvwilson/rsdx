@@ -1,18 +1,15 @@
 """Utilities for building site."""
 
+from collections import defaultdict
 import markdown
 from pathlib import Path
-import pybtex.database
-import pybtex.plugin
 import re
 import sys
+import time
 import yaml
 
 import ark
 
-
-# How to format bibliography.
-BIB_STYLE = "unsrt"
 
 # Level-1 Markdown heading.
 FIRST_H1 = re.compile(r"^#\s+.+$", re.MULTILINE)
@@ -25,6 +22,20 @@ MARKDOWN_FOOTER_LINK = re.compile(r"\[.*?\]\[(.+?)\]", re.MULTILINE)
 
 # McCole directives.
 MCCOLE_FILE = "mccole.yml"
+
+# How long everything took.
+TIMINGS = defaultdict(float)
+
+
+def timing(func):
+    """Time-recording decorator."""
+    def wrapper(*args, **kwargs):
+        global TIMINGS
+        t_start = time.time()
+        result = func(*args, **kwargs)
+        TIMINGS[func.__name__] += time.time() - t_start
+        return result
+    return wrapper
 
 
 def debug(msg):
@@ -74,29 +85,22 @@ def get_title(node):
     return ark.site.config["_meta_"][slug]["title"]
 
 
-def markdownify(text, strip_p=True):
+@timing
+def markdownify(text, strip_p=True, with_links=False):
     """Convert Markdown to HTML."""
     extensions = ["markdown.extensions.extra", "markdown.extensions.smarty"]
-    combined = f"{text}\n{ark.site.config['_links_block_']}"
+    links = ark.site.config['_links_block_']
+    combined = f"{text}\n{links}" if with_links else text
     result = markdown.markdown(combined, extensions=extensions)
     if strip_p and result.startswith("<p>"):
         result = INSIDE_PARAGRAPH.match(result).group(1)
     return result
 
 
+@timing
 def read_bibliography():
     """Load bibliography."""
-    filename = Path(ark.site.home(), "info", "bibliography.bib")
-    try:
-        raw = pybtex.database.parse_file(filename)
-        style_name = ark.site.config.get(BIB_STYLE, None)
-        style = pybtex.plugin.find_plugin("pybtex.style.formatting", style_name)()
-        styled_bib = style.format_bibliography(raw)
-        return styled_bib
-    except FileNotFoundError:
-        fail(f"Unable to read bibliography {filename}")
-    except pybtex.exceptions.PybtexError:
-        fail(f"Unable to parse bibliography {filename}")
+    return Path(ark.site.home(), "tmp", "bibliography.html").read_text()
 
 
 def read_file(node, filename, kind):

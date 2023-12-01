@@ -25,6 +25,7 @@ def all_tasks():
     _copy_files()
 
 
+@util.timing
 def _append_links_to_pages():
     """Add Markdown links table to Markdown files."""
 
@@ -35,6 +36,7 @@ def _append_links_to_pages():
     ark.nodes.root().walk(_visitor)
 
 
+@util.timing
 def _collect_meta():
     """Collect metadata from mccole.yml files."""
     ark.site.config["_meta_"] = {
@@ -45,6 +47,7 @@ def _collect_meta():
     }
 
 
+@util.timing
 def _collect_targets():
     """Collect targets of numbered cross-references."""
 
@@ -92,6 +95,7 @@ def _collect_targets():
             ark.site.config["_tables_"][key] = number
 
 
+@util.timing
 def _copy_files():
     """Copy files from source directories (not recursive)."""
     for pat in ark.site.config["copy"]:
@@ -104,6 +108,7 @@ def _copy_files():
             copyfile(src_file, out_file)
 
 
+@util.timing
 def _do_not_collect(node, include_slides):
     """Do not collect data from node (root page or slides)."""
 
@@ -123,11 +128,13 @@ def _do_not_collect(node, include_slides):
     return True
 
 
+@util.timing
 def _load_bibliography():
     """Ensure bibliography is in memory."""
     ark.site.config["_bib_"] = util.read_bibliography()
 
 
+@util.timing
 def _load_links():
     """Load links file."""
     links = util.read_info("links.yml")
@@ -137,6 +144,7 @@ def _load_links():
     )
 
 
+@util.timing
 def _number_contents():
     """Number chapters and appendices."""
     chapters = {
@@ -150,6 +158,7 @@ def _number_contents():
     ark.site.config["_number_"] = chapters | appendices
 
 
+@util.timing
 def _set_build_timestamp():
     """Record time of build."""
     ark.site.config["_date_"] = datetime.utcnow().replace(microsecond=0).isoformat(" ")

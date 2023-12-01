@@ -12,6 +12,7 @@ import util
 
 
 @shortcodes.register("b")
+@util.timing
 def bibliography_ref(pargs, kwargs, node):
     """Handle [%b key1 key2 %] biblography references."""
     util.require(
@@ -25,24 +26,18 @@ def bibliography_ref(pargs, kwargs, node):
 
 
 @shortcodes.register("bibliography")
+@util.timing
 def bibliography(pargs, kwargs, node):
     """Handle [% bibliography %] shortcode."""
-
-    def _fmt(key, body):
-        return f'<dt id="{key}" class="bib-def">{key}</dt>\n<dd>{body}</dd>'
-
     util.require(
         (not pargs) and (not kwargs),
         f"Bad 'bibliography' shortcode with {pargs} and {kwargs} in {node}",
     )
-
-    styled_bib = ark.site.config["_bib_"]
-    html = pybtex.plugin.find_plugin("pybtex.backends", "html")()
-    entries = [_fmt(entry.key, entry.text.render(html)) for entry in styled_bib]
-    return '<dl class="bib-list">\n\n' + "\n\n".join(entries) + "\n\n</dl>"
+    return Path(ark.site.home(), "tmp", "bibliography.html").read_text()
 
 
 @shortcodes.register("date")
+@util.timing
 def date(pargs, kwargs, node):
     """Handle [% date %] shortcode."""
     util.require(
@@ -53,6 +48,7 @@ def date(pargs, kwargs, node):
 
 
 @shortcodes.register("f")
+@util.timing
 def figure_ref(pargs, kwargs, node):
     """Handle [%f slug %] figure reference shortcodes."""
     util.require((len(pargs) == 1) and (not kwargs), f"Bad 'f' shortcode in {node}")
@@ -63,6 +59,7 @@ def figure_ref(pargs, kwargs, node):
 
 
 @shortcodes.register("figure")
+@util.timing
 def figure_def(pargs, kwargs, node):
     """Handle figure definition."""
     allowed = {"cls", "scale", "slug", "img", "alt", "caption"}
@@ -92,6 +89,7 @@ def figure_def(pargs, kwargs, node):
 
 
 @shortcodes.register("fixme")
+@util.timing
 def fixme(pargs, kwargs, node):
     """Handle [% fixme 'item' ... %] shortcode."""
     util.require(
@@ -105,6 +103,7 @@ def fixme(pargs, kwargs, node):
 
 
 @shortcodes.register("image")
+@util.timing
 def image(pargs, kwargs, node):
     """Handle image."""
     allowed = {"src", "alt", "width"}
@@ -123,6 +122,7 @@ def image(pargs, kwargs, node):
 
 
 @shortcodes.register("rootpage")
+@util.timing
 def rootpage(pargs, kwargs, node):
     """Handle [% rootpage NAME.md %] shortcode."""
     util.require(
@@ -137,6 +137,7 @@ def rootpage(pargs, kwargs, node):
 
 
 @shortcodes.register("syllabus")
+@util.timing
 def syllabus(pargs, kwargs, node):
     """Handle [% syllabus %] shortcode."""
     util.require(
@@ -159,11 +160,12 @@ def syllabus(pargs, kwargs, node):
             )
         lines.append(f"*{meta['tag']}*\n")
         for item in meta["syllabus"]:
-            lines.append(f"- {util.markdownify(item)}")
+            lines.append(f"- {item}")
     return "\n".join(lines)
 
 
 @shortcodes.register("t")
+@util.timing
 def table_ref(pargs, kwargs, node):
     """Handle [%t slug %] table reference shortcodes."""
     util.require((len(pargs) == 1) and (not kwargs), f"Bad 't' shortcode in {node}")
@@ -174,6 +176,7 @@ def table_ref(pargs, kwargs, node):
 
 
 @shortcodes.register("table")
+@util.timing
 def table_def(pargs, kwargs, node):
     """Handle table definition."""
     allowed = {"slug", "tbl", "caption"}
@@ -199,6 +202,7 @@ def table_def(pargs, kwargs, node):
 
 
 @shortcodes.register("thanks")
+@util.timing
 def thanks(pargs, kwargs, node):
     """Handle [% thanks %] table of thanks shortcode."""
     util.require(
@@ -221,6 +225,7 @@ def thanks(pargs, kwargs, node):
 
 
 @shortcodes.register("toc")
+@util.timing
 def toc(pargs, kwargs, node):
     """Handle [% toc %] table of contents shortcode."""
 
@@ -251,6 +256,7 @@ def toc(pargs, kwargs, node):
 
 
 @shortcodes.register("x")
+@util.timing
 def x_reference(pargs, kwargs, node):
     """Handle [%x slug %] cross-reference shortcode."""
     util.require(

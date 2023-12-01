@@ -5,6 +5,7 @@
 ARK_BIN := lib/mccole/bin
 SRC_DIR := src
 HTML_DIR := docs
+TMP_DIR := tmp
 
 # Tools
 ARK := ark
@@ -15,9 +16,10 @@ CONVERT_SVG := ${ARK_BIN}/convert_svg.sh
 
 # Files.
 BIBLIOGRAPHY := info/bibliography.bib
-TEX_CLASS := lib/mccole/info/krantz.cls
+BIB_HTML := tmp/bibliography.html
 CONFIG := config.py
 MARKDOWN := ${SRC_DIR}/index.md $(wildcard ${SRC_DIR}/*/index.md)
+TEX_CLASS := lib/mccole/info/krantz.cls
 
 # Configuration.
 SLUG := $(shell python ${CONFIG} --slug)
@@ -37,7 +39,7 @@ commands:
 
 ## build: rebuild the site
 .PHONY: build
-build:
+build: ${BIB_HTML}
 	@mkdir -p ${HTML_DIR}
 	${ARK} build
 
@@ -46,6 +48,12 @@ build:
 serve:
 	@mkdir -p ${HTML_DIR}
 	${ARK} serve
+
+## bib: rebuild HTML version of bibliography
+bib: ${BIB_HTML}
+${BIB_HTML}: ${BIBLIOGRAPHY}
+	@mkdir -p ${TMP_DIR}
+	python ${ARK_BIN}/make_bibliography.py --infile $< --outfile $@
 
 ## readme: rebuild README file
 readme: ${ARK_BIN}/make_readme.py
@@ -99,7 +107,7 @@ lint: ${HTML}
 ## bibvalid: validate bibliography
 .PHONY: bibvalid
 bibvalid:
-	@${BIBTEX} --tool --validate-datamodel info/bibliography.bib
+	@${BIBTEX} --tool --validate-datamodel ${BIBLIOGRAPHY}
 
 ## valid: run html5validator on generated files
 .PHONY: valid
@@ -113,7 +121,7 @@ valid:
 ## clean: tidy up
 .PHONY: clean
 clean:
-	@rm -rf ${HTML_DIR}
+	@rm -rf ${HTML_DIR} ${TMP_DIR}
 	@find . -name '*~' -exec rm {} \;
 	@find . -name '*.blg' -exec rm {} \;
 	@find . -name __pycache__ -exec rm -r {} +

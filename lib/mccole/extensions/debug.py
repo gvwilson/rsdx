@@ -1,3 +1,5 @@
+"""Debug Ark."""
+
 import ark
 
 import util
@@ -15,7 +17,10 @@ def debug_DEPLOY():
 
 @ark.events.register(ark.events.Event.EXIT)
 def debug_EXIT():
-    util.debug("EVENT EXIT")
+    util.debug(f"EVENT EXIT")
+    if ark.site.config["debug"]:
+        for (func, total) in sorted(util.TIMINGS.items(), reverse=True, key=lambda x: x[1]):
+            print(f"{func}: {total}")
 
 
 @ark.events.register(ark.events.Event.EXIT_BUILD)

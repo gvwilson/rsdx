@@ -103,6 +103,9 @@ span:
   - bib-ref
   - bibtex-protected
   - fixme
+  - gu
+  - nl
+  - nt
   - tagline
   id: "*"
   markdown: "1"

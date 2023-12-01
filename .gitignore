@@ -25,3 +25,4 @@ docs/*.tex
 docs/*.toc
 docs/*/*.pdf
 src/*/*.pdf
+tmp
