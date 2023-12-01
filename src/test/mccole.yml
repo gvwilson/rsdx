@@ -4,6 +4,7 @@ syllabus:
 -   Deciding what tests to write (assume readers have already met [`pytest`][pytest]).
 -   Creating and using mock objects.
 -   Making "random" reproducible.
+-   Using [coverage][coverage] to determine what is and isn't being tested.
 copied:
 -   src/refactor/grid_array.py
 -   src/refactor/grid_list.py
