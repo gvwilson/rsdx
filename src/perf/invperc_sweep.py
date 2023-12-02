@@ -1,9 +1,10 @@
 """Invasion percolation in Python."""
 
 import csv
+import sys
 import time
 
-from invperc_util import *
+from invperc_util import get_params, initialize_grid, initialize_random
 from params_single import ParamsSingle
 from params_sweep import ParamsSweep
 
@@ -13,15 +14,16 @@ COLUMNS = ("kind", "width", "height", "depth", "num_filled", "time")
 
 def main():
     """Main driver."""
-    params = setup(ParamsSweep)
+    params = get_params(sys.argv[1], ParamsSweep)
     initialize_random(params)
     results = []
     for p in generate_sweep(params):
         print(p)
         grid = initialize_grid(p)
         t_start = time.time()
-        num_filled = fill_grid(grid)
-        results.append(record_result(p, num_filled, time.time() - t_start))
+        num_filled = grid.fill()
+        t_elapsed = time.time() - t_start
+        results.append(record_result(p, num_filled, t_elapsed))
     save_results(params, results)
 
 

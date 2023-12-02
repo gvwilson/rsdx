@@ -57,6 +57,27 @@ class GridGeneric(ABC):
             return True
         return False
 
+    def choose_cell(self):
+        """Choose the next cell to fill."""
+        least, cx, cy = None, None, None
+        for x in range(self.width()):
+            for y in range(self.height()):
+                temp = self[x, y]
+                if not self.adjacent(x, y):
+                    continue
+                if (least is None) or ((temp != 0) and (temp < least)):
+                    least, cx, cy = temp, x, y
+        return cx, cy
+
+    def fill(self):
+        """Fill grid one cell at a time."""
+        self[self.width() // 2, self.height() // 2] = 0
+        while True:
+            x, y = self.choose_cell()
+            self[x, y] = 0
+            if self.on_border(x, y):
+                break
+
     def on_border(self, x, y):
         """Is this cell on the border of the grid?"""
         if (x == 0) or (x == self.width() - 1):

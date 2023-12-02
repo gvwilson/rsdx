@@ -12,6 +12,12 @@ DATA := ${ROOT}/data
 commands:
 	@grep -h -E '^##' ${MAKEFILE_LIST} | sed -e 's/## //g' | column -t -s ':'
 
+
+## clean: clean up files
+.PHONY: clean
+clean:
+	@rm -rf __pycache__ .coverage .pytest_cache *~
+
 .PHONY: examples_settings
 examples_settings:
 	@echo "DATA:" ${DATA}

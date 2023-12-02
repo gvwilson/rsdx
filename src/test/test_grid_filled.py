@@ -3,7 +3,6 @@
 import pytest
 
 from grid_filled import GridFilled
-from invperc import fill_grid
 
 
 def test_explicit_filling_fills_correctly():
@@ -17,5 +16,5 @@ def test_explicit_filling_fills_correctly():
 
 def test_filling_with_straight_run_to_edge():
     g = GridFilled(3, 3, 4, [[4, 1, 4], [4, 4, 4], [4, 4, 4]])
-    fill_grid(g)
+    g.fill()
     assert g == GridFilled(3, 3, 4, [[4, 0, 4], [4, 0, 4], [4, 4, 4]])
