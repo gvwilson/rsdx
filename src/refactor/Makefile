@@ -14,6 +14,5 @@ refactored:
 	@echo "refactored array"
 	python invperc.py array 15 15 5 98765
 
-## settings: show settings
 .PHONY: settings
-settings: examples_settings
+settings: _settings

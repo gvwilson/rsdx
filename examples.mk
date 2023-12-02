@@ -16,10 +16,10 @@ commands:
 ## clean: clean up files
 .PHONY: clean
 clean:
-	@rm -rf __pycache__ .coverage .pytest_cache *~
+	@rm -rf *~ __pycache__ .coverage .pytest_cache htmlcov
 
-.PHONY: examples_settings
-examples_settings:
+## settings: show settings
+.PHONY: _settings
+_settings:
 	@echo "DATA:" ${DATA}
 	@echo "ROOT:" ${ROOT}
-	@echo "---"

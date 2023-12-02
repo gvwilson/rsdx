@@ -8,8 +8,7 @@ SURVEY_DB := ${DATA}/survey.db
 display:
 	python display.py --plugins plugins.json
 
-## settings: show settings
 .PHONY: settings
-settings: examples_settings
+settings: _settings
 	@echo "TIDY_DIR:" ${TIDY_DIR}
 	@echo "SURVEY_DB:" ${SURVEY_DB}

@@ -31,3 +31,6 @@ coverage:
 	coverage run -m pytest test_grid_filled.py
 	coverage report -m
 	coverage html
+
+.PHONY: settings
+settings: _settings

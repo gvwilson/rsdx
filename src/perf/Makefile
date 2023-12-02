@@ -19,3 +19,6 @@ full:
 .PHONY: profile
 profile:
 	python run_profile.py > profile.txt
+
+.PHONY: settings
+settings: _settings
