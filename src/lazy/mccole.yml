@@ -4,3 +4,12 @@ syllabus:
 -   Estimating algorithm performance with big-oh.
 -   Extending a class hierarchy to accommodate new features.
 -   Adapting tools written earlier to make all of this simpler to run, test, and document.
+copied:
+-   src/perf/grid_list.py
+-   src/perf/grid_array.py
+-   src/perf/plot.py
+-   src/perf/params_sweep.py
+-   src/perf/invperc_sweep.py
+-   src/perf/params_single.py
+-   src/perf/invperc_single.py
+-   src/perf/grid_generic.py

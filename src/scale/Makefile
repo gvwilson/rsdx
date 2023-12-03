@@ -1,3 +1,5 @@
+# scale
+
 include ../../examples.mk
 
 ## standalone: run invasion percolation

@@ -1,3 +1,5 @@
+# refactor
+
 include ../../examples.mk
 
 ## original: run demo of original program

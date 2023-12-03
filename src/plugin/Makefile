@@ -1,3 +1,5 @@
+# plugin
+
 include ../../examples.mk
 
 TIDY_DIR := ${DATA}/survey_tidy

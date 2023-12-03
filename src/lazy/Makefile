@@ -1,3 +1,5 @@
+# lazy
+
 include ../../examples.mk
 
 ## single: run single sweep

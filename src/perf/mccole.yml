@@ -8,5 +8,4 @@ syllabus:
 -   "Tuning code doesn't solve algorithmic problems like quadratic growth in runtime."
 copied:
 -   src/test/grid_array.py
--   src/test/grid_generic.py
 -   src/test/grid_list.py

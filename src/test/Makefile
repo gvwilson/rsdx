@@ -1,3 +1,5 @@
+# test
+
 include ../../examples.mk
 
 ## start: initial tests
