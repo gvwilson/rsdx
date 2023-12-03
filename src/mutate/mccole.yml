@@ -1,0 +1,8 @@
+title: "Search for Mutations"
+tag: "Analyze genomic data from snails in polluted areas to see if a single mutation accounts for differences in sizes."
+syllabus:
+-   Use a statistical model of single nucleotide polymorphisms (SNPs) to synthesize genomic data.
+-   Use another model to combine that data with geocoded samples to generate snail sizes.
+-   Build a program to analyze and visualize the synthetic data to test the analysis pipeline.
+exclude:
+-   data
