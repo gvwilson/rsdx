@@ -20,6 +20,18 @@ class GridGeneric(ABC):
         self._height = height
         self._depth = depth
 
+    def __eq__(self, other):
+        """Compare this grid to another."""
+        if self.width() != other.width():
+            return False
+        if self.height() != other.height():
+            return False
+        for x in range(self.width()):
+            for y in range(self.height()):
+                if self[x, y] != other[x, y]:
+                    return False
+        return True
+
     def width(self):
         """Get width of grid."""
         return self._width
@@ -31,18 +43,6 @@ class GridGeneric(ABC):
     def depth(self):
         """Get depth of grid."""
         return self._depth
-
-    def __eq__(self, other):
-        """Compare to another grid."""
-        if self.width() != other.width():
-            return False
-        if self.height() != other.height():
-            return False
-        for x in range(self.width()):
-            for y in range(self.height()):
-                if self[x, y] != other[x, y]:
-                    return False
-        return True
 
     def adjacent(self, x, y):
         """Is (x, y) adjacent to a filled cell?"""
@@ -56,6 +56,30 @@ class GridGeneric(ABC):
         if (y_1 < self.height()) and (self[x, y_1] == 0):
             return True
         return False
+
+    def choose_cell(self):
+        """Choose the next cell to fill."""
+        least, cx, cy = None, None, None
+        for x in range(self.width()):
+            for y in range(self.height()):
+                temp = self[x, y]
+                if not self.adjacent(x, y):
+                    continue
+                if (least is None) or ((temp != 0) and (temp < least)):
+                    least, cx, cy = temp, x, y
+        return cx, cy
+
+    def fill(self):
+        """Fill grid one cell at a time."""
+        self[self.width() // 2, self.height() // 2] = 0
+        num_filled = 1
+        while True:
+            x, y = self.choose_cell()
+            self[x, y] = 0
+            num_filled += 1
+            if self.on_border(x, y):
+                break
+        return num_filled
 
     def on_border(self, x, y):
         """Is this cell on the border of the grid?"""

@@ -3,5 +3,5 @@ import sys
 
 from invperc_single import main
 
-sys.argv = ["invperc_single.py", "params_profile.json"]
+sys.argv = ["invperc_single.py", "profile.json"]
 cProfile.run("main()", sort="tottime")

@@ -7,7 +7,6 @@ from dataclasses import dataclass
 class ParamsSingle:
     """A single set of invasion percolation parameters."""
 
-    kind: str
     width: int
     height: int
     depth: int

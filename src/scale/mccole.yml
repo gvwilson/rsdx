@@ -1,0 +1,10 @@
+title: "Scaling Up"
+tag: "Generate fractals using a workflow runner and store them remotely."
+syllabus:
+-   Describing workflows as directed acyclic graphs.
+-   Expressing DAGs in code with [Metaflow][metaflow].
+-   Use [DVC][dvc] to store data remotely.
+copied:
+-   src/lazy/grid_generic.py
+-   src/lazy/grid_lazy.py
+-   src/lazy/grid_list.py
