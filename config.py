@@ -16,6 +16,7 @@ chapters = [
     "test",
     "perf",
     "lazy",
+    "scale",
     "finale",
 ]
 

@@ -29,12 +29,14 @@ TIMINGS = defaultdict(float)
 
 def timing(func):
     """Time-recording decorator."""
+
     def wrapper(*args, **kwargs):
         global TIMINGS
         t_start = time.time()
         result = func(*args, **kwargs)
         TIMINGS[func.__name__] += time.time() - t_start
         return result
+
     return wrapper
 
 
@@ -89,7 +91,7 @@ def get_title(node):
 def markdownify(text, strip_p=True, with_links=False):
     """Convert Markdown to HTML."""
     extensions = ["markdown.extensions.extra", "markdown.extensions.smarty"]
-    links = ark.site.config['_links_block_']
+    links = ark.site.config["_links_block_"]
     combined = f"{text}\n{links}" if with_links else text
     result = markdown.markdown(combined, extensions=extensions)
     if strip_p and result.startswith("<p>"):

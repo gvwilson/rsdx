@@ -68,7 +68,9 @@ def syllabus(node):
     slug = util.get_slug(node)
     meta = ark.site.config["_meta_"][slug]
     util.require("syllabus" in meta, f"No syllabus for {slug}")
-    items = "\n".join([f"<li>{util.markdownify(s, with_links=True)}</li>" for s in meta["syllabus"]])
+    items = "\n".join(
+        [f"<li>{util.markdownify(s, with_links=True)}</li>" for s in meta["syllabus"]]
+    )
     return f'<ul class="syllabus">\n{items}\n</ul>'
 
 

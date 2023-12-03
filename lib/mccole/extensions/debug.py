@@ -19,7 +19,9 @@ def debug_DEPLOY():
 def debug_EXIT():
     util.debug(f"EVENT EXIT")
     if ark.site.config["debug"]:
-        for (func, total) in sorted(util.TIMINGS.items(), reverse=True, key=lambda x: x[1]):
+        for func, total in sorted(
+            util.TIMINGS.items(), reverse=True, key=lambda x: x[1]
+        ):
             print(f"{func}: {total}")
 
 

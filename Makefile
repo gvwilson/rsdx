@@ -13,7 +13,6 @@ RAW_SURVEY_FILES := $(patsubst %,${DATA}/survey_raw/%.csv,${SURVEY_SITES_STEMS})
 SURVEY_DB := ${DATA}/survey.db
 
 ## datafiles: recreate data files
-.PHONY: datafiles
 datafiles: ${TIDY_SURVEY_FILES} ${RAW_SURVEY_FILES} ${SURVEY_DB}
 
 ${TIDY_SURVEY_FILES}: bin/make_tidy_samples.py ${SURVEY_PARAMS_FILES}
@@ -39,7 +38,6 @@ ${SURVEY_DB}: bin/make_survey_db.py ${SURVEY_PARAMS_FILES} ${TIDY_SURVEY_FILES}
 ## --------------------
 
 ## settings: show variables
-.PHONY: settings
 settings: book_settings
 	@echo "--------------------"
 	@echo "BIN:" ${BIN}
