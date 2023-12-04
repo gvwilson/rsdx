@@ -26,3 +26,7 @@ class GridList(GridGeneric):
         """Set value at location."""
         x, y = key
         self._grid[x][y] = value
+
+    def values(self):
+        """Return all values as list of lists."""
+        return [col[:] for col in self._grid]

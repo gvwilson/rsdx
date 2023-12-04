@@ -12,8 +12,8 @@ def invperc(params):
     """Invasion percolation."""
     random.seed(params.seed)
     grid = GridLazy(params.width, params.height, params.depth)
-    num_filled = grid.fill()
-    return grid, num_filled
+    grid.fill()
+    return grid
 
 
 def save_grid(writer, grid):

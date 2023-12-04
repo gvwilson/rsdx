@@ -1,6 +1,7 @@
 """Re-run everything."""
 
 from collections import defaultdict
+import csv
 import json
 from pathlib import Path
 import random
@@ -9,14 +10,9 @@ import sys
 from metaflow import FlowSpec, Parameter, JSONType, step
 
 from invperc import invperc
+from measure import collect_density, estimate_density, measure_dimension
 from params_single import ParamsSingle
 from params_sweep import ParamsSweep
-
-
-# Defaults
-SIZES = [15, 25, 35]
-DEPTH = 10
-REPS = 10
 
 
 class InvPercFlow(FlowSpec):
@@ -34,27 +30,47 @@ class InvPercFlow(FlowSpec):
     @step
     def run_job(self):
         """Run a sweep with one set of parameters."""
-        grid, num_filled = invperc(self.input)
-        self.result = {"size": self.input.width, "num_filled": num_filled, "grid": grid}
+        grid = invperc(self.input)
+        self.result = {
+            "size": grid.width(),
+            "depth": grid.depth(),
+            "density": collect_density(grid),
+            "dimension": measure_dimension(grid),
+        }
         self.next(self.join)
 
     @step
     def join(self, inputs):
         """Combine results from all sweeps."""
-        num_grids = defaultdict(int)
-        num_filled = defaultdict(int)
+        counts = defaultdict(int)
+        dimensions = defaultdict(float)
+        densities = defaultdict(list)
+
         for i in inputs:
-            num_grids[i.result["size"]] += 1
-            num_filled[i.result["size"]] += i.result["num_filled"]
-        self.results = {"num_grids": num_grids, "num_filled": num_filled}
+            key = (i.result["size"], i.result["depth"])
+            counts[key] += 1
+            dimensions[key] += i.result["dimension"]
+            densities[key].extend(i.result["density"])
+
+        for key in densities:
+            densities[key] = estimate_density(densities[key])
+
+        self.results = {
+            "counts": counts,
+            "dimensions": dimensions,
+            "densities": densities,
+        }
         self.next(self.end)
 
     @step
     def end(self):
-        """Save results."""
-        for size in sorted(self.results["num_grids"].keys()):
-            ave = self.results["num_filled"][size] / self.results["num_grids"][size]
-            print(f"{size}: {ave:.1f}")
+        """Report results."""
+        table = [("size", "depth", "count", "dimension", "density_x", "density_k")]
+        for key, count in sorted(self.results["counts"].items()):
+            size, depth = key
+            dim = self.results["dimensions"][key] / count
+            table.append((size, depth, count, dim, *self.results["densities"][key]))
+        csv.writer(sys.stdout, lineterminator="\n").writerows(table)
 
 
 def load_params(filename):
