@@ -17,6 +17,7 @@ MIN_SNAIL_SIZE = 0.5
 MAX_SNAIL_SIZE = 5.0
 SNAIL_PRECISION = 1
 
+
 def main():
     """Main driver."""
     args = parse_args()
@@ -67,8 +68,12 @@ def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--genomes", type=str, required=True, help="genome file")
-    parser.add_argument("--mutant", type=float, help="scaling factor for mutant genomes")
-    parser.add_argument("--normal", type=float, help="scaling factor for normal genomes")
+    parser.add_argument(
+        "--mutant", type=float, help="scaling factor for mutant genomes"
+    )
+    parser.add_argument(
+        "--normal", type=float, help="scaling factor for normal genomes"
+    )
     parser.add_argument("--outfile", type=str, help="output file")
     parser.add_argument(
         "--paramsdir", type=str, required=True, help="parameters directory"
