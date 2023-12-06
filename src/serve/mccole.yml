@@ -1,0 +1,10 @@
+title: "Build a Web Service"
+tag: "Build a small [Flask][flask] web server to display plate data."
+syllabus:
+-   Routing HTTP requests to functions.
+-   Separating routing from model.
+-   Creating HTML pages from [Jinja][jinja] templates.
+-   Serving static files (and what that means).
+exclude:
+-   static
+-   templates

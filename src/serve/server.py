@@ -3,13 +3,14 @@
 import csv
 
 from flask import Flask, render_template
+import os
 from pathlib import Path
 from prettytable import PrettyTable
 
 import model
 
 SITE_TITLE = "Plate Data Server"
-PLATES_DIR = "plates"
+PLATES_DIR = str(Path(os.getenv("RSDX_DATA"), "assays"))
 
 
 app = Flask(__name__)

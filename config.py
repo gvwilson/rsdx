@@ -18,6 +18,7 @@ chapters = [
     "lazy",
     "scale",
     "mutate",
+    "serve",
     "finale",
 ]
 

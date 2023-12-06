@@ -2,11 +2,12 @@
 
 from datetime import date
 import os
+from pathlib import Path
 
 from pony import orm
 
 
-DB_FILE = os.getenv("PLATE_DATA_DB")
+DB_FILE = str(Path(os.getenv("RSDX_DATA"), "assays.db"))
 DB = orm.Database()
 
 
