@@ -4,7 +4,6 @@
 
 import argparse
 import csv
-from datetime import datetime, timedelta
 import random
 import sys
 
@@ -13,7 +12,6 @@ import pytz
 MODEL = "Weyland-Yutani 470"
 PLATE_HEIGHT = 4
 PLATE_WIDTH = 4
-TIME_FORMAT = "%Y-%m-%d:%H:%M:%S"
 
 
 def main():
@@ -47,10 +45,8 @@ def generate_foot(sample_locations):
 
 def generate_head(args, i):
     """Make head of plate."""
-    time = datetime.strftime(args.exptime + timedelta(minutes=i), TIME_FORMAT)
     return [
         [MODEL],
-        ["Recorded", time],
         [],
     ]
 
@@ -79,7 +75,6 @@ def parse_args():
     parser.add_argument(
         "--control", type=float, required=True, help="expected value for untreated wells"
     )
-    parser.add_argument("--exptime", type=str, default=None, help="reading date/time")
     parser.add_argument("--num", type=int, required=True, help="number of plates")
     parser.add_argument("--seed", type=int, required=True, help="RNG seed")
     parser.add_argument("--stem", type=str, help="output file stem")
@@ -87,9 +82,7 @@ def parse_args():
     parser.add_argument(
         "--treated", type=float, required=True, help="expected value for treated wells"
     )
-    args = parser.parse_args()
-    args.exptime = datetime.strptime(args.exptime, TIME_FORMAT)
-    return args
+    return parser.parse_args()
 
 
 def reading(args, treated, iteration):

@@ -44,7 +44,6 @@ ${ASSAY_PLATES}: bin/make_assay_plates.py
 		--treated 8 \
 		--stdev 3 \
 		--num 100 \
-		--exptime 2023-09-01:13:02:06 \
 		--seed 1789426 \
 		--stem ${ASSAY_PLATE_STEM}
 
