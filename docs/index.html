@@ -55,7 +55,7 @@
 <li>A Lazy Algorithm: Create a lazy implementation of invasion percolation that&rsquo;s much faster. (<a href="lazy/slides.html">slides</a>)</li>
 <li>Scaling Up: Generate fractals using a workflow runner and store them remotely. (<a href="scale/slides.html">slides</a>)</li>
 <li>Search for Mutations: Analyze genomic data from snails in polluted areas to see if a single mutation accounts for differences in sizes. (<a href="mutate/slides.html">slides</a>)</li>
-<li>Build a Web Service: Build a small [Flask][flask] web server to display plate data. (<a href="serve/slides.html">slides</a>)</li>
+<li>Build a Web Service: Build a small Flask web server to display plate data. (<a href="serve/slides.html">slides</a>)</li>
 <li>Conclusion: What we&rsquo;ve covered and where readers might like to go next. (<a href="finale/slides.html">slides</a>)</li>
 </ol>
 <ol class="toc" type="A">
@@ -66,7 +66,93 @@
 <li><a href="credits">Credits</a></li>
 </ol>
 
-<p><em>Last built: 2023-12-06 18:24:33.</em></p>
+<h2 id="syllabus-intro">Introduction (<a href="intro/slides.html">slides</a>)</h2>
+<p><em>An overview of where we&rsquo;re going and why.</em></p>
+<ul>
+<li>Assume you know how to program.</li>
+<li>Want to learn how to design pieces of software that are reliable and reusable.</li>
+<li>Best way is through examples: principles don&rsquo;t make sense unless you know how to translate them into specifics.</li>
+</ul>
+<h2 id="syllabus-parse">Parse Raw Data (<a href="parse/slides.html">slides</a>)</h2>
+<p><em>Convert some messy CSV data files with geocoded pollution measurements into tidy CSV.</em></p>
+<ul>
+<li>Writing command-line tools that respect <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005412">Taschuk&rsquo;s Rules</a>.</li>
+<li>Creating a data manifest (and why you want one).</li>
+<li>Using regular expressions if you have to, but an out-of-the-box parser if one is available.</li>
+</ul>
+<h2 id="syllabus-plugin">Plugin Architecture (<a href="plugin/slides.html">slides</a>)</h2>
+<p><em>Find the center point of each polluted region and visualize it.</em></p>
+<ul>
+<li>Using a plugin architecture to load modules dynamically.</li>
+<li>Finding, installing, and figuring out how to use open source packages.</li>
+<li>Using <a href="https://geopy.readthedocs.io/"><code>geopy</code></a> to handle geocoded data.</li>
+<li>Plotting (and the challenge of testing visualization code).</li>
+<li>Connecting to a database from Python.</li>
+<li>Embedding SQL queries in Python and reading results.</li>
+<li>Creating classes with <a href="https://ponyorm.org/">Pony</a> ORM to mirror database tables.</li>
+<li>Writing queries in Python rather than as embedded SQL strings.</li>
+<li>Cross-validating implementations.</li>
+</ul>
+<h2 id="syllabus-refactor">Refactoring (<a href="refactor/slides.html">slides</a>)</h2>
+<p><em>Refactor a student-quality Python script that uses invasion percolation to model pollution spread.</em></p>
+<ul>
+<li>Break code into comprehensible chunks.</li>
+<li>Create classes and class hierarchies.</li>
+<li>Write docstrings and generating documentation pages.</li>
+<li>Validate implementations against one another.</li>
+</ul>
+<h2 id="syllabus-test">Test Invasion Percolation (<a href="test/slides.html">slides</a>)</h2>
+<p><em>Use mocks to test a program like invasion percolation that relies on pseudo-randomness.</em></p>
+<ul>
+<li>Deciding what tests to write (assume readers have already met <a href="https://docs.pytest.org/"><code>pytest</code></a>).</li>
+<li>Creating and using mock objects.</li>
+<li>Making &ldquo;random&rdquo; reproducible.</li>
+<li>Using <a href="https://coverage.readthedocs.io/">coverage</a> to determine what is and isn&rsquo;t being tested.</li>
+</ul>
+<h2 id="syllabus-perf">Measure Performance (<a href="perf/slides.html">slides</a>)</h2>
+<p><em>Compare the performance of grid implementations empirically.</em></p>
+<ul>
+<li>Introduce Python type annotations.</li>
+<li>Define <a href="https://docs.python.org/3/library/dataclasses.html">dataclasses</a> to represent parameters for profiling runs.</li>
+<li>Use <a href="https://docs.python.org/3/library/logging.html">logging</a> instead of <code>print</code> statements for debugging.</li>
+<li>Using <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> to determine which parts are expensive.</li>
+<li>Tuning code doesn&rsquo;t solve algorithmic problems like quadratic growth in runtime.</li>
+</ul>
+<h2 id="syllabus-lazy">A Lazy Algorithm (<a href="lazy/slides.html">slides</a>)</h2>
+<p><em>Create a lazy implementation of invasion percolation that&rsquo;s much faster.</em></p>
+<ul>
+<li>Estimating algorithm performance with big-oh.</li>
+<li>Extending a class hierarchy to accommodate new features.</li>
+<li>Adapting tools written earlier to make all of this simpler to run, test, and document.</li>
+</ul>
+<h2 id="syllabus-scale">Scaling Up (<a href="scale/slides.html">slides</a>)</h2>
+<p><em>Generate fractals using a workflow runner and store them remotely.</em></p>
+<ul>
+<li>Describing workflows as directed acyclic graphs.</li>
+<li>Expressing DAGs in code with <a href="https://metaflow.org/">Metaflow</a>.</li>
+<li>Use <a href="https://dvc.org/">DVC</a> to store data remotely.</li>
+</ul>
+<h2 id="syllabus-mutate">Search for Mutations (<a href="mutate/slides.html">slides</a>)</h2>
+<p><em>Analyze genomic data from snails in polluted areas to see if a single mutation accounts for differences in sizes.</em></p>
+<ul>
+<li>Use a statistical model of single nucleotide polymorphisms (SNPs) to synthesize genomic data.</li>
+<li>Use another model to combine that data with geocoded samples to generate snail sizes.</li>
+<li>Build a program to analyze and visualize the synthetic data to test the analysis pipeline.</li>
+</ul>
+<h2 id="syllabus-serve">Build a Web Service (<a href="serve/slides.html">slides</a>)</h2>
+<p><em>Build a small Flask web server to display plate data.</em></p>
+<ul>
+<li>Routing HTTP requests to functions.</li>
+<li>Separating routing from model.</li>
+<li>Creating HTML pages from <a href="https://jinja.palletsprojects.com/">Jinja</a> templates.</li>
+<li>Serving static files (and what that means).</li>
+</ul>
+<h2 id="syllabus-finale">Conclusion (<a href="finale/slides.html">slides</a>)</h2>
+<p><em>What we&rsquo;ve covered and where readers might like to go next.</em></p>
+<ul>
+<li>Summarize key ideas.</li>
+</ul>
+<p><em>Last built: 2023-12-06 18:27:58.</em></p>
     </main>
     <footer>
   <div class="row">
