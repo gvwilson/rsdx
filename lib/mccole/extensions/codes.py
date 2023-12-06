@@ -229,27 +229,23 @@ def thanks(pargs, kwargs, node):
 def toc(pargs, kwargs, node):
     """Handle [% toc %] table of contents shortcode."""
 
-    def _format(slug, kind, is_appendix):
+    def _format(slug, is_chapter):
         meta = ark.site.config["_meta_"][slug]
-        title = util.markdownify(meta["title"])
-        if (kind == "chapters") or is_appendix:
-            title = f'<a href="@root/{slug}">{title}</a>'
-        tag = "" if is_appendix else f": {util.markdownify(meta['tag'])}"
-        slides = ""
-        if not is_appendix:
-            slides = f' (<a href="@root/{slug}/slides.html">slides</a>)'
+        title = f'<a href="@root/{slug}">{util.markdownify(meta["title"])}</a>'
+        tag = f": {util.markdownify(meta['tag'])}" if is_chapter else ""
+        slides = f' (<a href="@root/{slug}/slides.html">slides</a>)' if is_chapter else ""
         return f"<li>{title}{tag}{slides}</li>"
 
     util.require(
-        (not pargs) and ("kind" in kwargs),
+        (not pargs) and (not kwargs),
         f"Bad 'toc' shortcode with {pargs} and {kwargs}",
     )
     chapters = [
-        _format(slug, kwargs["kind"], False) for slug in ark.site.config["chapters"]
+        _format(slug, True) for slug in ark.site.config["chapters"]
     ]
     chapters = '<ol class="toc" type="1">\n' + "\n".join(chapters) + "\n</ol>"
     appendices = [
-        _format(slug, kwargs["kind"], True) for slug in ark.site.config["appendices"]
+        _format(slug, False) for slug in ark.site.config["appendices"]
     ]
     appendices = '<ol class="toc" type="A">\n' + "\n".join(appendices) + "\n</ol>"
     return f"{chapters}\n{appendices}"

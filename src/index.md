@@ -1,4 +1,4 @@
-[% toc kind="slides" %]
+[% toc %]
 
 [% syllabus links=False %]
 
