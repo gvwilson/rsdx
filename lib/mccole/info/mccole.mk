@@ -10,9 +10,10 @@ TMP_DIR := tmp
 # Tools
 ARK := ark
 BIBTEX := biber
+CONVERT_SVG := ${ARK_BIN}/convert_svg.sh
 LATEX := xelatex
 PYTHON := python
-CONVERT_SVG := ${ARK_BIN}/convert_svg.sh
+SHELL := bash
 
 # Files.
 BIBLIOGRAPHY := info/bibliography.bib
@@ -20,6 +21,7 @@ BIB_HTML := tmp/bibliography.html
 CONFIG := config.py
 MARKDOWN := ${SRC_DIR}/index.md $(wildcard ${SRC_DIR}/*/index.md)
 TEX_CLASS := lib/mccole/info/krantz.cls
+WORDS := info/wordlist.txt
 
 # Configuration.
 SLUG := $(shell python ${CONFIG} --slug)
@@ -103,6 +105,11 @@ reformat:
 .PHONY: lint
 lint: ${HTML}
 	@${PYTHON} ${ARK_BIN}/lint.py --config ${CONFIG} --src src
+
+## spelling: check spelling
+.PHONY: spelling
+spelling:
+	@${SHELL} ${ARK_BIN}/spelling.sh | ${PYTHON} ${ARK_BIN}/spelling.py ${WORDS}
 
 ## bibvalid: validate bibliography
 .PHONY: bibvalid
