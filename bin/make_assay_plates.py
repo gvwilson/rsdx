@@ -50,7 +50,7 @@ def _gen_body(args, placement):
     """Make body of plate."""
     title_row = ["", *[chr(ord("A") + col) for col in range(PLATE_WIDTH)]]
     readings = [
-        [f"{_reading(args, placement[row][col]):.02f}" for col in range(PLATE_WIDTH)]
+        [_reading(args, placement[row][col]) for col in range(PLATE_WIDTH)]
         for row in range(PLATE_HEIGHT)
     ]
     readings = [[str(i + 1), *r] for (i, r) in enumerate(readings)]
@@ -91,7 +91,8 @@ def _normalize_csv(rows):
 def _reading(args, treated):
     """Generate a single plate reading."""
     mean = args.treated if treated else args.control
-    return max(0.0, random.gauss(mean, args.stdev))
+    value = max(0.0, random.gauss(mean, args.stdev))
+    return f"{value:.02f}"
 
 
 def _save(filename, rows):
