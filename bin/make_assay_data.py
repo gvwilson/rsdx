@@ -28,6 +28,7 @@ from experiment inner join plate
 on experiment.ident = plate.experiment
 """
 
+
 @dataclass
 class Params:
     """Parameters for assay data generation."""
@@ -107,7 +108,9 @@ def fill_experiments(params, connection, fake):
         )
 
         if ended is not None:
-            plates.extend(random_plates(params, kind, experiment_id, started, random_filename))
+            plates.extend(
+                random_plates(params, kind, experiment_id, started, random_filename)
+            )
 
     invalidated = invalidate_plates(params, plates)
 

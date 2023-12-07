@@ -1,0 +1,12 @@
+title: "Packaging"
+tag: "Navigating the confusion of creating a simple Python package."
+syllabus:
+-   FIXME
+exclude:
+- LICENSE.md
+- README.md
+- dist
+- html
+- invperc
+- invperc.egg-info
+- pyproject.toml

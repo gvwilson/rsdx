@@ -17,6 +17,7 @@ chapters = [
     "perf",
     "lazy",
     "scale",
+    "package",
     "mutate",
     "website",
     "serve",

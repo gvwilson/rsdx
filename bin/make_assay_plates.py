@@ -35,11 +35,16 @@ def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--control", type=float, required=True, help="expected value for untreated wells"
+        "--control",
+        type=float,
+        required=True,
+        help="expected value for untreated wells",
     )
     parser.add_argument("--outfile", type=str, help="output file")
     parser.add_argument("--seed", type=int, required=True, help="RNG seed")
-    parser.add_argument("--stdev", type=float, required=True, help="sample standard deviation")
+    parser.add_argument(
+        "--stdev", type=float, required=True, help="sample standard deviation"
+    )
     parser.add_argument(
         "--treated", type=float, required=True, help="expected value for treated wells"
     )
@@ -76,7 +81,7 @@ def _gen_placement():
     columns = list(c for c in range(PLATE_WIDTH))
     random.shuffle(columns)
     columns = columns[:PLATE_HEIGHT]
-    for (r, row) in enumerate(placement):
+    for r, row in enumerate(placement):
         row[columns[r]] = True
     return placement, columns
 

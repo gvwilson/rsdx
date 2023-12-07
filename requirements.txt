@@ -1,4 +1,5 @@
 -r lib/mccole/info/requirements.txt
+build
 click
 coverage
 dvc
@@ -9,6 +10,7 @@ kaleido
 metaflow
 numpy
 pandas
+pdoc
 plotly.express
 pony
 prettytable

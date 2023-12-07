@@ -2,6 +2,7 @@
 
 import sys
 
+
 def report(label, words):
     if not words:
         return

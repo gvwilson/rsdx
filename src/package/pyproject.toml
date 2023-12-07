@@ -1,0 +1,20 @@
+[project]
+name = "invperc"
+description = "Invasion Percolation"
+readme = "README.md"
+authors = [
+    { name = "Greg Wilson", email = "gvwilson@third-bit.com" }
+]
+license = { text = "Hippocratic License" }
+dependencies = ["pandas", "numpy"]
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://third-bit.com/rsdx/"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = {attr = "invperc.__version__"}

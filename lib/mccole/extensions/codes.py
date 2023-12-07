@@ -233,20 +233,18 @@ def toc(pargs, kwargs, node):
         meta = ark.site.config["_meta_"][slug]
         title = f'<a href="@root/{slug}">{util.markdownify(meta["title"])}</a>'
         tag = f": {util.markdownify(meta['tag'])}" if is_chapter else ""
-        slides = f' (<a href="@root/{slug}/slides.html">slides</a>)' if is_chapter else ""
+        slides = (
+            f' (<a href="@root/{slug}/slides.html">slides</a>)' if is_chapter else ""
+        )
         return f"<li>{title}{tag}{slides}</li>"
 
     util.require(
         (not pargs) and (not kwargs),
         f"Bad 'toc' shortcode with {pargs} and {kwargs}",
     )
-    chapters = [
-        _format(slug, True) for slug in ark.site.config["chapters"]
-    ]
+    chapters = [_format(slug, True) for slug in ark.site.config["chapters"]]
     chapters = '<ol class="toc" type="1">\n' + "\n".join(chapters) + "\n</ol>"
-    appendices = [
-        _format(slug, False) for slug in ark.site.config["appendices"]
-    ]
+    appendices = [_format(slug, False) for slug in ark.site.config["appendices"]]
     appendices = '<ol class="toc" type="A">\n' + "\n".join(appendices) + "\n</ol>"
     return f"{chapters}\n{appendices}"
 
