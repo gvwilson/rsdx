@@ -144,7 +144,7 @@ def make_random_filename():
     result = ""
     while True:
         while result in filenames:
-            stem = "".join(random.choices(string.hexdigits, k=FILENAME_LENGTH))
+            stem = "".join(random.choices(string.hexdigits, k=FILENAME_LENGTH)).lower()
             result = f"{stem}.csv"
         filenames.add(result)
         yield result

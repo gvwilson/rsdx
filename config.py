@@ -18,6 +18,7 @@ chapters = [
     "lazy",
     "scale",
     "mutate",
+    "website",
     "serve",
     "finale",
 ]
@@ -45,6 +46,7 @@ exclude = copy + [
     "*.db",
     "*.dvc",
     "*.env",
+    "*.jinja",
     "*.json",
     "*.metaflow",
     "*.mk",
