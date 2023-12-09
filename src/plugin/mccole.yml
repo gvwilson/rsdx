@@ -10,3 +10,4 @@ syllabus:
 -   Creating classes with [Pony][pony] ORM to mirror database tables.
 -   Writing queries in Python rather than as embedded SQL strings.
 -   Cross-validating implementations.
+-   Big benefit of ORM is avoiding transposition errors with integer values.

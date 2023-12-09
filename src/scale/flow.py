@@ -7,7 +7,7 @@ from pathlib import Path
 import random
 import sys
 
-from metaflow import FlowSpec, Parameter, JSONType, step
+from metaflow import FlowSpec, Parameter, step
 
 from invperc import invperc
 from measure import collect_density, estimate_density, measure_dimension

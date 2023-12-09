@@ -1,9 +1,7 @@
 """Entry point for command-line execution."""
 
 import argparse
-import json
 import random
-import sys
 
 from . import invperc
 

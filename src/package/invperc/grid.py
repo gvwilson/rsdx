@@ -76,7 +76,7 @@ class Grid:
         rows = []
         for y in range(self.height - 1, -1, -1):
             row = ("X" if self[x, y] == 0 else "." for x in range(self.width))
-            rows.append(''.join(row))
+            rows.append("".join(row))
         return "\n".join(rows)
 
     @property

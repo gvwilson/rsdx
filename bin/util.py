@@ -1,6 +1,7 @@
 """Utilities."""
 
 import random
+import sys
 
 from geopy.distance import lonlat, distance
 

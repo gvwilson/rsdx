@@ -1,7 +1,6 @@
 """Invasion percolation implementation utilities."""
 
 import json
-from pathlib import Path
 import random
 import sys
 
@@ -22,7 +21,7 @@ def initialize_grid(params):
         "list": GridList,
         "array": GridArray,
     }
-    assert params.kind in lookup, f"Unknown grid type {kind}"
+    assert params.kind in lookup, f"Unknown grid type {params.kind}"
     cls = lookup[params.kind]
     return cls(params.width, params.height, params.depth)
 

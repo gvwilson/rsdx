@@ -1,9 +1,7 @@
 """Initialize database with previous experimental data."""
 
 import argparse
-from dataclasses import asdict, dataclass, field
 from datetime import date, datetime, timedelta
-import json
 from pathlib import Path
 import random
 import sqlite3
@@ -11,56 +9,19 @@ import string
 
 from faker import Faker
 
-from make_assay_plates import generate_plate
+from assay_params import load_params
 
-
-DATE_FORMAT = "%Y-%m-%d"
 EXPERIMENTS = {
     "calibration": {"staff": [1, 1], "duration": [0, 0], "plates": [1, 1]},
     "trial": {"staff": [1, 2], "duration": [1, 2], "plates": [2, 16]},
 }
 FILENAME_LENGTH = 8
-DEFAULT_START_DATE = datetime.strptime("2023-11-01", DATE_FORMAT)
-DEFAULT_END_DATE = datetime.strptime("2023-11-10", DATE_FORMAT)
-PLATE_QUERY = """\
-select experiment.kind, plate.filename
-from experiment inner join plate
-on experiment.ident = plate.experiment
-"""
-
-
-@dataclass
-class Params:
-    """Parameters for assay data generation."""
-
-    seed: int = None
-    startdate: date = None
-    enddate: date = None
-    locale: str = "en_IN"
-    staff: int = 1
-    experiments: int = 1
-    invalid: float = 0.1
-    control: float = 5.0
-    treated: float = 8.0
-    stdev: float = 3.0
-
-    def __post_init__(self):
-        """Convert dates if provided."""
-        if self.startdate is None:
-            self.startdate = DEFAULT_START_DATE
-        else:
-            self.startdate = datetime.strptime(self.startdate, DATE_FORMAT)
-
-        if self.enddate is None:
-            self.enddate = DEFAULT_END_DATE
-        else:
-            self.enddate = datetime.strptime(self.enddate, DATE_FORMAT)
 
 
 def main():
     """Main driver."""
     args = parse_args()
-    params = Params(**json.loads(Path(args.params).read_text()))
+    params = load_params(args.params)
     random.seed(params.seed)
     fake = Faker(params.locale)
 
@@ -68,15 +29,6 @@ def main():
     fill_staff(params, connection, fake)
     fill_experiments(params, connection, fake)
     connection.commit()
-
-    create_plate_files(args, params, connection)
-
-
-def create_plate_files(args, params, connection):
-    """Create randomized plate files."""
-    cursor = connection.execute(PLATE_QUERY)
-    for kind, filename in cursor:
-        generate_plate(params, Path(args.platedir, filename))
 
 
 def create_tables(args):
@@ -100,11 +52,13 @@ def fill_experiments(params, connection, fake):
         kind = random.choice(kinds)
 
         started, ended = random_experiment_duration(params, kind)
-        experiments.append((kind, round_date(started), round_date(ended)))
+        experiments.append(
+            (experiment_id, kind, round_date(started), round_date(ended))
+        )
 
         num_staff = random.randint(*EXPERIMENTS[kind]["staff"])
         performed.extend(
-            [(experiment_id, s) for s in random.sample(staff_ids, num_staff)]
+            [(s, experiment_id) for s in random.sample(staff_ids, num_staff)]
         )
 
         if ended is not None:
@@ -114,7 +68,7 @@ def fill_experiments(params, connection, fake):
 
     invalidated = invalidate_plates(params, plates)
 
-    connection.executemany("insert into experiment values (null, ?, ?, ?)", experiments)
+    connection.executemany("insert into experiment values (?, ?, ?, ?)", experiments)
     connection.executemany("insert into performed values (?, ?)", performed)
     connection.executemany("insert into plate values (null, ?, ?, ?)", plates)
     connection.executemany("insert into invalidated values (?, ?, ?)", invalidated)
@@ -158,7 +112,6 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dbfile", type=str, required=True, help="database file")
     parser.add_argument("--params", type=str, required=True, help="parameter file")
-    parser.add_argument("--platedir", type=str, required=True, help="plate directory")
     parser.add_argument("--tables", type=str, required=True, help="SQL tables file")
     return parser.parse_args()
 

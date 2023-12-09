@@ -39,13 +39,16 @@ ${SURVEY_DB}: bin/make_survey_db.py ${SURVEY_PARAMS_FILES} ${TIDY_SURVEY_FILES}
 		--paramsdir ${DATA}/params \
 		--samplesdir ${DATA}/survey_tidy
 
-${ASSAY_DB}: bin/make_assay_data.py ${ASSAY_PARAMS}
+${ASSAY_DB}: bin/make_assay_data.py bin/make_assay_plates.py ${ASSAY_PARAMS}
 	@mkdir -p ${DATA}
 	@mkdir -p ${ASSAY_PLATES_DIR}
 	python bin/make_assay_data.py \
 		--params ${ASSAY_PARAMS} \
 		--dbfile $@ \
-		--tables ${ASSAY_TABLES} \
+		--tables ${ASSAY_TABLES}
+	python bin/make_assay_plates.py \
+		--params ${ASSAY_PARAMS} \
+		--dbfile $@ \
 		--platedir ${ASSAY_PLATES_DIR}
 
 ## --------------------

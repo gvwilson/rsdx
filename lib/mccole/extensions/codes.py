@@ -3,7 +3,6 @@
 from pathlib import Path
 
 import ark
-import pybtex.plugin
 import shortcodes
 import textwrap
 import yaml

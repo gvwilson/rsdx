@@ -1,10 +1,11 @@
 """Create HTML version of bibliography."""
 
 import argparse
-import sys
 
 import pybtex.database
 import pybtex.plugin
+
+import util
 
 # How to format bibliography.
 BIB_STYLE = "unsrt"
@@ -23,9 +24,9 @@ def main():
         with open(args.outfile, "w") as writer:
             print(html, file=writer)
     except FileNotFoundError:
-        fail(f"Unable to read bibliography {args.infile}")
+        util.fail(f"Unable to read bibliography {args.infile}")
     except pybtex.exceptions.PybtexError:
-        fail(f"Unable to parse bibliography {args.infile}")
+        util.fail(f"Unable to parse bibliography {args.infile}")
 
 
 def fmt(key, body):

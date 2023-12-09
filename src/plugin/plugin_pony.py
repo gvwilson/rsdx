@@ -1,7 +1,6 @@
 """Read data using Pony ORM."""
 
 from datetime import date
-from pathlib import Path
 
 import pandas as pd
 from pony import orm

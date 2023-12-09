@@ -1,7 +1,5 @@
 """Test grid operations."""
 
-import pytest
-
 from grid_array import GridArray
 from grid_list import GridList
 

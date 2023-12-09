@@ -1,7 +1,5 @@
 """Test grid operations."""
 
-import pytest
-
 from grid_list_randomizer import GridListRandomizer
 
 
