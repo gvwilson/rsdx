@@ -14,11 +14,16 @@ SURVEY_DB := ${DATA}/survey.db
 ASSAY_DB := ${DATA}/assays.db
 ASSAY_PARAMS := ${DATA}/params/assays.json
 ASSAY_PLATES_DIR := ${DATA}/assays
+ASSAY_PAGE_DIR := ${DATA}/staff
 ASSAY_TABLES := ${DATA}/params/assay_tables.sql
+STAFF_INDEX := ${DATA}/params/index.html
+STAFF_TEMPLATE := ${DATA}/params/staff.html
 
 ## datafiles: recreate data files
 datafiles: ${TIDY_SURVEY_FILES} ${RAW_SURVEY_FILES} ${SURVEY_DB} ${ASSAY_DB}
 
+## tidy_survey_files: tidy versions of snail survey files
+tidy_survey_files: ${TIDY_SURVEY_FILES}
 ${TIDY_SURVEY_FILES}: bin/tidy_samples.py ${SURVEY_PARAMS_FILES}
 	@mkdir -p ${DATA}/survey_tidy
 	python bin/tidy_samples.py \
@@ -26,12 +31,16 @@ ${TIDY_SURVEY_FILES}: bin/tidy_samples.py ${SURVEY_PARAMS_FILES}
 		--csvdir ${DATA}/survey_tidy \
 		--seed 12345
 
+## raw_survey_files: reverse-engineered raw snail survey files
+raw_survey_files: ${RAW_SURVEY_FILES}
 ${RAW_SURVEY_FILES}: bin/raw_samples.py ${TIDY_SURVEY_FILES}
 	@mkdir -p ${DATA}/survey_raw
 	python bin/raw_samples.py \
 		--tidydir ${DATA}/survey_tidy \
 		--rawdir ${DATA}/survey_raw
 
+## survey_db: SQLite survey database
+survey_db: ${SURVEY_DB}
 ${SURVEY_DB}: bin/survey_db.py ${SURVEY_PARAMS_FILES} ${TIDY_SURVEY_FILES}
 	@mkdir -p ${DATA}
 	python bin/survey_db.py \
@@ -39,17 +48,31 @@ ${SURVEY_DB}: bin/survey_db.py ${SURVEY_PARAMS_FILES} ${TIDY_SURVEY_FILES}
 		--paramsdir ${DATA}/params \
 		--samplesdir ${DATA}/survey_tidy
 
+## assay_db: genomic assay database
+assay_db: ${ASSAY_DB}
 ${ASSAY_DB}: bin/assay_data.py bin/assay_plates.py ${ASSAY_PARAMS}
 	@mkdir -p ${DATA}
 	@mkdir -p ${ASSAY_PLATES_DIR}
 	python bin/assay_data.py \
-		--params ${ASSAY_PARAMS} \
 		--dbfile $@ \
+		--params ${ASSAY_PARAMS} \
 		--tables ${ASSAY_TABLES}
 	python bin/assay_plates.py \
-		--params ${ASSAY_PARAMS} \
 		--dbfile $@ \
+		--params ${ASSAY_PARAMS} \
 		--platedir ${ASSAY_PLATES_DIR}
+
+## staff_pages: HTML pages for genomics staff
+.PHONY: staff_pages
+staff_pages:
+	@mkdir -p ${ASSAY_PAGE_DIR}
+	python bin/assay_staff.py \
+		--dbfile ${ASSAY_DB} \
+		--index ${STAFF_INDEX} \
+		--pagedir ${ASSAY_PAGE_DIR} \
+		--params ${ASSAY_PARAMS} \
+		--seed 7149238 \
+		--staff ${STAFF_TEMPLATE}
 
 ## --------------------
 

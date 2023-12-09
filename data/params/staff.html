@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>{{data.title}}: {{data.staff.personal}} {{data.staff.family}}</title>
+  </head>
+  <body>
+    <h1>{{data.staff.personal}} {{data.staff.family}}</h1>
+    <p class="bio">
+      {{data.staff.bio}}
+    </p>
+    <table>
+      <tr>
+	<th>Calibrations</th>
+	<td>{{data.experiments.calibration}}</td>
+      </tr>
+      <tr>
+	<th>Trials</th>
+	<td>{{data.experiments.trial}}</td>
+      </tr>
+    </table>
+    <footer>
+      <p>
+	{{data.copyright}} {{data.title}}
+      </p>
+    </footer>
+  </body>
+</html>
