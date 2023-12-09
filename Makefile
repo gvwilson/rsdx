@@ -19,34 +19,34 @@ ASSAY_TABLES := ${DATA}/params/assay_tables.sql
 ## datafiles: recreate data files
 datafiles: ${TIDY_SURVEY_FILES} ${RAW_SURVEY_FILES} ${SURVEY_DB} ${ASSAY_DB}
 
-${TIDY_SURVEY_FILES}: bin/make_tidy_samples.py ${SURVEY_PARAMS_FILES}
+${TIDY_SURVEY_FILES}: bin/tidy_samples.py ${SURVEY_PARAMS_FILES}
 	@mkdir -p ${DATA}/survey_tidy
-	python bin/make_tidy_samples.py \
+	python bin/tidy_samples.py \
 		--paramsdir ${DATA}/params \
 		--csvdir ${DATA}/survey_tidy \
 		--seed 12345
 
-${RAW_SURVEY_FILES}: bin/make_raw_samples.py ${TIDY_SURVEY_FILES}
+${RAW_SURVEY_FILES}: bin/raw_samples.py ${TIDY_SURVEY_FILES}
 	@mkdir -p ${DATA}/survey_raw
-	python bin/make_raw_samples.py \
+	python bin/raw_samples.py \
 		--tidydir ${DATA}/survey_tidy \
 		--rawdir ${DATA}/survey_raw
 
-${SURVEY_DB}: bin/make_survey_db.py ${SURVEY_PARAMS_FILES} ${TIDY_SURVEY_FILES}
+${SURVEY_DB}: bin/survey_db.py ${SURVEY_PARAMS_FILES} ${TIDY_SURVEY_FILES}
 	@mkdir -p ${DATA}
-	python bin/make_survey_db.py \
+	python bin/survey_db.py \
 		--dbfile ${SURVEY_DB} \
 		--paramsdir ${DATA}/params \
 		--samplesdir ${DATA}/survey_tidy
 
-${ASSAY_DB}: bin/make_assay_data.py bin/make_assay_plates.py ${ASSAY_PARAMS}
+${ASSAY_DB}: bin/assay_data.py bin/assay_plates.py ${ASSAY_PARAMS}
 	@mkdir -p ${DATA}
 	@mkdir -p ${ASSAY_PLATES_DIR}
-	python bin/make_assay_data.py \
+	python bin/assay_data.py \
 		--params ${ASSAY_PARAMS} \
 		--dbfile $@ \
 		--tables ${ASSAY_TABLES}
-	python bin/make_assay_plates.py \
+	python bin/assay_plates.py \
 		--params ${ASSAY_PARAMS} \
 		--dbfile $@ \
 		--platedir ${ASSAY_PLATES_DIR}
