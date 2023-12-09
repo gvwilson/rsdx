@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="repo" content="https://github.com/gvwilson/rsdx">
   <link rel="icon" type="image/x-icon" href="../favicon.ico">
-  <title>Research Software Design by Example: Build a Web Service</title>
+  <title>Research Software Design by Example: Scraping Data</title>
   <link rel="stylesheet" href="../tango.css">
 <link rel="stylesheet" href="../mccole.css">
 
@@ -30,7 +30,7 @@
 </head>
 
   <body>
-    <main data-slug="serve">
+    <main data-slug="scrape">
       <div class="row title">
   <div class="col-1 left">
     <p>
@@ -38,7 +38,7 @@
     </p>
   </div>
   <div class="col-10 center">
-    <h1>Build a Web Service</h1>
+    <h1>Scraping Data</h1>
   </div>
   <div class="col-1"></div>
 </div>
@@ -46,29 +46,30 @@
 
 <div class="row notex">
   <div class="col-1 left">
-    <a href="../scrape/">&lArr;</a>
+    <a href="../website/">&lArr;</a>
   </div>
   <div class="col-10 center">
-    <span class="tagline">Build a small Flask web server to display plate data.</span>
+    <span class="tagline">Pull data from web pages using requests and Beautiful Soup.</span>
   </div>
   <div class="col-1 right">
-    <a href="../finale/">&rArr;</a>
+    <a href="../serve/">&rArr;</a>
   </div>
 </div>
 <ul class="syllabus">
-<li>Routing HTTP requests to functions.</li>
-<li>Separating routing from model.</li>
-<li>Creating HTML pages from <a href="https://jinja.palletsprojects.com/">Jinja</a> templates.</li>
-<li>Serving static files (and what that means).</li>
+<li>How HTTP requests work.</li>
+<li>Using <a href="https://requests.readthedocs.io/">requests</a> to fetch web pages.</li>
+<li>How HTML is represented as DOM.</li>
+<li>Using <a href="https://beautiful-soup-4.readthedocs.io/">Beautiful Soup</a> to parse HTML.</li>
+<li>Using query selectors to find elements in DOM.</li>
 </ul>
 
 
-      <p><span class="fixme" markdown="1">Need to talk about authentication.</span></p>
+      <p><span class="fixme" markdown="1">write web scraping content</span></p>
     </main>
     <footer>
   <div class="row">
     <div class="col-1 left">
-      <a href="../scrape/">&lArr;</a>
+      <a href="../website/">&lArr;</a>
     </div>
     <div class="col-10 center">
       <a href="../">Home</a>
@@ -78,7 +79,7 @@
       <a href="https://github.com/gvwilson/rsdx">Repository</a>
     </div>
     <div class="col-1 right">
-      <a href="../finale/">&rArr;</a>
+      <a href="../serve/">&rArr;</a>
     </div>
   </div>
 </footer>

@@ -1,0 +1,8 @@
+title: "Scraping Data"
+tag: "Pull data from web pages using requests and Beautiful Soup."
+syllabus:
+-   How HTTP requests work.
+-   Using [requests][requests] to fetch web pages.
+-   How HTML is represented as DOM.
+-   Using [Beautiful Soup][bs] to parse HTML.
+-   Using query selectors to find elements in DOM.

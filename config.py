@@ -20,6 +20,7 @@ chapters = [
     "package",
     "mutate",
     "website",
+    "scrape",
     "serve",
     "finale",
 ]
