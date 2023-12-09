@@ -14,9 +14,9 @@ SURVEY_DB := ${DATA}/survey.db
 ASSAY_DB := ${DATA}/assays.db
 ASSAY_PARAMS := ${DATA}/params/assays.json
 ASSAY_PLATES_DIR := ${DATA}/assays
-ASSAY_PAGE_DIR := ${DATA}/staff
 ASSAY_TABLES := ${DATA}/params/assay_tables.sql
 STAFF_INDEX := ${DATA}/params/index.html
+ASSAY_STAFF_DIR := ${DATA}/staff
 STAFF_TEMPLATE := ${DATA}/params/staff.html
 
 ## datafiles: recreate data files
@@ -65,14 +65,18 @@ ${ASSAY_DB}: bin/assay_data.py bin/assay_plates.py ${ASSAY_PARAMS}
 ## staff_pages: HTML pages for genomics staff
 .PHONY: staff_pages
 staff_pages:
-	@mkdir -p ${ASSAY_PAGE_DIR}
 	python bin/assay_staff.py \
 		--dbfile ${ASSAY_DB} \
 		--index ${STAFF_INDEX} \
-		--pagedir ${ASSAY_PAGE_DIR} \
+		--pagedir ${ASSAY_STAFF_DIR} \
 		--params ${ASSAY_PARAMS} \
 		--seed 7149238 \
 		--staff ${STAFF_TEMPLATE}
+
+## staff_server: server HTML pages for genomics staff
+.PHONY: staff_server
+staff_server:
+	python -m http.server -d ${ASSAY_STAFF_DIR} 8000
 
 ## --------------------
 
