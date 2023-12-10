@@ -16,3 +16,4 @@ pony
 prettytable
 pytest
 python-dotenv
+requests
