@@ -1,5 +1,5 @@
 [% toc %]
 
-[% syllabus links=False %]
+[% summary kind="abstracts" links=False %]
 
 *Last built: [% date %].*

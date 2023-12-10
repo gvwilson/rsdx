@@ -135,31 +135,39 @@ def rootpage(pargs, kwargs, node):
         util.fail(f"cannot read .ark file {str(path)}")
 
 
-@shortcodes.register("syllabus")
+@shortcodes.register("summary")
 @util.timing
-def syllabus(pargs, kwargs, node):
-    """Handle [% syllabus %] shortcode."""
+def summary(pargs, kwargs, node):
+    """Handle [% summary %] shortcode."""
     util.require(
-        (not pargs) and set(kwargs.keys()).issubset({"links"}),
-        f"Bad 'syllabus' shortcode in {node}",
+        (not pargs) and ("kind" in kwargs),
+        f"Bad 'syllabus' shortcode in {node} with {pargs} and {kwargs}",
     )
+    kind = kwargs["kind"]
+    util.require(
+        kind in {"abstracts", "syllabus"},
+        f"Unknown kind '{kind}' in summary shortcode"
+    )
+    with_links = kwargs.get("links", "") != "False"
+
     lines = []
-    with_links = kwargs.get("links", True) != "False"
     for slug in ark.site.config["chapters"]:
         meta = ark.site.config["_meta_"][slug]
-        assert "syllabus" in meta, f"No syllabus data found for {slug}"
         assert "tag" in meta, f"No tag found for {slug}"
-        if with_links:
-            lines.append(
-                f"\n## [{meta['title']}](@root/{slug}) ([slides](@root/{slug}/slides.html)) {{: #syllabus-{slug}}}\n"
-            )
-        else:
-            lines.append(
-                f"\n## {meta['title']} ([slides](@root/{slug}/slides.html)) {{: #syllabus-{slug}}}\n"
-            )
+        util.require("abstract" in meta, f"No abstract found for {slug}")
+        util.require("syllabus" in meta, f"No syllabus data found for {slug}")
+
+        title = f"[{meta['title']}](@root/{slug})" if with_links else meta["title"]
+        slides = f"[slides](@root/{slug}/slides.html)"
+        label = f"{{: #syllabus-{slug}}}"
+        lines.append(f"\n## {title} ({slides}) {label}\n")
         lines.append(f"*{meta['tag']}*\n")
-        for item in meta["syllabus"]:
-            lines.append(f"- {item}")
+        if kind == "abstracts":
+            lines.append(meta["abstract"])
+        elif kind == "syllabus":
+            for item in meta["syllabus"]:
+                lines.append(f"- {item}")
+
     return "\n".join(lines)
 
 

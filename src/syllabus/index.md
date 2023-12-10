@@ -1,1 +1,1 @@
-[% syllabus %]
+[% summary kind="syllabus" %]

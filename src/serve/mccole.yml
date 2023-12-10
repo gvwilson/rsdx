@@ -1,5 +1,11 @@
 title: "Build a Web Service"
 tag: "Build a small Flask web server to display plate data."
+abstract: >
+    As a counterpart to the previous lesson,
+    this one shows how web servers handle requests and generate dynamic HTML pages.
+    Understanding how this works will help research software engineers
+    design services of their own
+    and debug them when things go wrong.
 syllabus:
 -   Routing HTTP requests to functions.
 -   Separating routing from model.
