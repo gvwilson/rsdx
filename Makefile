@@ -13,7 +13,8 @@ RAW_SURVEY_FILES := $(patsubst %,${DATA}/survey_raw/%.csv,${SURVEY_SITES_STEMS})
 SURVEY_DB := ${DATA}/survey.db
 ASSAY_DB := ${DATA}/assays.db
 ASSAY_PARAMS := ${DATA}/params/assays.json
-ASSAY_PLATES_DIR := ${DATA}/assays
+ASSAY_DESIGNS_DIR := ${DATA}/designs
+ASSAY_RESULTS_DIR := ${DATA}/assays
 ASSAY_TABLES := ${DATA}/params/assay_tables.sql
 STAFF_INDEX := ${DATA}/params/index.html
 ASSAY_STAFF_DIR := ${DATA}/staff
@@ -52,7 +53,8 @@ ${SURVEY_DB}: bin/survey_db.py ${SURVEY_PARAMS_FILES} ${TIDY_SURVEY_FILES}
 assay_db: ${ASSAY_DB}
 ${ASSAY_DB}: bin/assay_data.py bin/assay_plates.py ${ASSAY_PARAMS}
 	@mkdir -p ${DATA}
-	@mkdir -p ${ASSAY_PLATES_DIR}
+	@mkdir -p ${ASSAY_DESIGNS_DIR}
+	@mkdir -p ${ASSAY_RESULTS_DIR}
 	python bin/assay_data.py \
 		--dbfile $@ \
 		--params ${ASSAY_PARAMS} \
@@ -60,7 +62,8 @@ ${ASSAY_DB}: bin/assay_data.py bin/assay_plates.py ${ASSAY_PARAMS}
 	python bin/assay_plates.py \
 		--dbfile $@ \
 		--params ${ASSAY_PARAMS} \
-		--platedir ${ASSAY_PLATES_DIR}
+		--designs ${ASSAY_DESIGNS_DIR} \
+		--results ${ASSAY_RESULTS_DIR}
 
 ## staff_pages: HTML pages for genomics staff
 .PHONY: staff_pages
@@ -85,7 +88,7 @@ settings: book_settings
 	@echo "--------------------"
 	@echo "ASSAY_DB:" ${ASSAY_DB}
 	@echo "ASSAY_PARAMS:" ${ASSAY_PARAMS}
-	@echo "ASSAY_PLATES_DIR:" ${ASSAY_PLATES_DIR}
+	@echo "ASSAY_RESULTS_DIR:" ${ASSAY_RESULTS_DIR}
 	@echo "ASSAY_TABLES:" ${ASSAY_TABLES}
 	@echo "BIN:" ${BIN}
 	@echo "DATA:" ${DATA}

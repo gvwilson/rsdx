@@ -1,9 +1,10 @@
 """Assay parameters dataclass."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date, datetime
 import json
 from pathlib import Path
+from typing import List
 
 
 DATE_FORMAT = "%Y-%m-%d"
@@ -25,6 +26,8 @@ class Params:
     control: float = 5.0
     treated: float = 8.0
     stdev: float = 3.0
+    treatment: str = None
+    controls: List[str] = field(default_factory=list)
 
     def __post_init__(self):
         """Convert dates if provided."""

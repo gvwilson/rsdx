@@ -28,53 +28,58 @@ def main():
     params = load_params(args.params)
     random.seed(params.seed)
     connection = sqlite3.connect(args.dbfile)
-    create_plate_files(args, params, connection)
+    create_files(args, params, connection)
 
 
-def create_plate_files(args, params, connection):
+def create_files(args, params, connection):
     """Create randomized plate files."""
     cursor = connection.execute(PLATE_QUERY)
     rows = cursor.fetchall()
     for kind, filename in rows:
-        generate_plate(params, Path(args.platedir, filename), kind)
+        create_one(
+            params, kind, design_file=Path(args.designs, filename), results_file=Path(args.results, filename)
+        )
 
 
-def generate_plate(params, outfile, kind):
+def create_one(params, kind, design_file, results_file):
     """Generate an entire plate."""
-    head = _gen_head(params)
-    placement, sample_locs = _gen_placement(kind)
-    body = _gen_body(params, placement)
-    foot = _gen_foot(sample_locs)
-    plate = _normalize_csv([*head, *body, *foot])
-    _save(outfile, plate)
+    placement, sample_locs = _placement(kind)
+    head = _head(params)
+
+    design = [*head, *generate(params, placement, _content)]
+    _save(design_file, _normalize_csv(design))
+
+    results = [*head, *generate(params, placement, _reading)]
+    _save(results_file, _normalize_csv(results))
+
+
+def generate(params, placement, func):
+    """Make body of plate design or results."""
+    title_row = ["", *[chr(ord("A") + col) for col in range(PLATE_WIDTH)]]
+    values = [
+        [func(params, placement[row][col]) for col in range(PLATE_WIDTH)]
+        for row in range(PLATE_HEIGHT)
+    ]
+    labeled = [[str(i + 1), *r] for (i, r) in enumerate(values)]
+    return [title_row, *labeled]
 
 
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--dbfile", type=str, required=True, help="database file")
+    parser.add_argument("--designs", type=str, required=True, help="designs directory")
     parser.add_argument("--params", type=str, required=True, help="parameter file")
-    parser.add_argument("--platedir", type=str, required=True, help="plate directory")
+    parser.add_argument("--results", type=str, required=True, help="results directory")
     return parser.parse_args()
 
 
-def _gen_body(params, placement):
-    """Make body of plate."""
-    title_row = ["", *[chr(ord("A") + col) for col in range(PLATE_WIDTH)]]
-    readings = [
-        [_reading(params, placement[row][col]) for col in range(PLATE_WIDTH)]
-        for row in range(PLATE_HEIGHT)
-    ]
-    readings = [[str(i + 1), *r] for (i, r) in enumerate(readings)]
-    return [title_row, *readings]
+def _content(params, treated):
+    """Generate a single plate treatment."""
+    return params.treatment if treated else random.choice(params.controls)
 
 
-def _gen_foot(sample_locs):
-    """Generate foot of plate."""
-    return [[], ["Samples", *sample_locs]]
-
-
-def _gen_head(params):
+def _head(params):
     """Make head of plate."""
     return [
         [MODEL],
@@ -82,7 +87,7 @@ def _gen_head(params):
     ]
 
 
-def _gen_placement(kind):
+def _placement(kind):
     """Generate random placement of samples."""
     placement = [[False for col in range(PLATE_WIDTH)] for row in range(PLATE_HEIGHT)]
     if kind == "calibration":
