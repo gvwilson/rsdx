@@ -1,0 +1,9 @@
+title: "Quality Control"
+tag: "Check snail genome assay data for errors."
+abstract: >
+    Real data is almost always messy,
+    so real-world analysis almost always requires data checking and cleanup.
+    This lesson therefore looks at how to build checks on the snail genome assay files.
+syllabus:
+-   Check the existence, structure, content, and consistency of data in that order.
+-   Separate quality control checks from reports.

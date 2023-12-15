@@ -19,6 +19,7 @@ chapters = [
     "scale",
     "package",
     "mutate",
+    "lint",
     "website",
     "scrape",
     "serve",
