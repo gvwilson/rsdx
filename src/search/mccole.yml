@@ -1,0 +1,6 @@
+title: "Search"
+tag: "Search bibliography entries."
+abstract: >
+    This lesson shows how to build a simple search engine using TF-IDF.
+syllabus:
+-   Create a table of term occurrences and calculate TF-IDF scores to support search.

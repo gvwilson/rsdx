@@ -19,6 +19,7 @@ ASSAY_TABLES := ${DATA}/params/assay_tables.sql
 STAFF_INDEX := ${DATA}/params/index.html
 ASSAY_STAFF_DIR := ${DATA}/staff
 STAFF_TEMPLATE := ${DATA}/params/staff.html
+SNAIL_BIB_DIR := ${DATA}/bib
 
 ## datafiles: recreate data files
 datafiles: ${TIDY_SURVEY_FILES} ${RAW_SURVEY_FILES} ${SURVEY_DB} ${ASSAY_DB}
@@ -80,6 +81,13 @@ staff_pages:
 .PHONY: staff_server
 staff_server:
 	python -m http.server -d ${ASSAY_STAFF_DIR} 8000
+
+
+## snail_bib: create snail bibliography
+.PHONY: snail_bib
+snail_bib:
+	@mkdir -p ${SNAIL_BIB_DIR}
+	python bin/fetch_bib_data.py --outdir ${SNAIL_BIB_DIR}
 
 ## --------------------
 

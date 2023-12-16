@@ -2,7 +2,6 @@
 
 include ../../examples.mk
 
-DATA := ../../data
 LOCAL := ./data
 GENOMES := ${LOCAL}/genomes.csv
 SAMPLES := ${LOCAL}/samples.csv
@@ -27,7 +26,6 @@ tidy:
 	@rm -rf ${LOCAL}
 
 settings: _settings
-	@echo "DATA:" ${DATA}
 	@echo "LOCAL:" ${LOCAL}
 	@echo "GENOMES:" ${GENOMES}
 	@echo "SAMPLES:" ${SAMPLES}
