@@ -20,7 +20,7 @@ chapters = [
     "package",
     "mutate",
     "search",
-    "lint",
+    "lims",
     "website",
     "scrape",
     "serve",
@@ -76,7 +76,7 @@ exclude = copy + [
 ]
 
 lint = {
-    "disable_h2_id": ["conduct", "license"],
+    "disable_h2_id": ["@root", "conduct", "license"],
 }
 
 markdown_settings = {

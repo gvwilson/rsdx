@@ -150,6 +150,7 @@ def summary(pargs, kwargs, node):
     )
     with_links = kwargs.get("links", "") != "False"
     with_slides = kwargs.get("slides", "") != "False"
+    link_key = kwargs.get("key", "summary")
 
     lines = []
     for slug in ark.site.config["chapters"]:
@@ -160,7 +161,7 @@ def summary(pargs, kwargs, node):
 
         title = f"[{meta['title']}](@root/{slug})" if with_links else meta["title"]
         slides = f"([slides](@root/{slug}/slides.html))" if with_slides else ""
-        label = f"{{: #summary-{slug}}}"
+        label = f"{{: #{link_key}-{slug}}}"
         lines.append(f"\n## {title} {slides} {label}\n")
         if kind == "abstracts":
             lines.append(meta["abstract"])

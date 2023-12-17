@@ -32,6 +32,10 @@
   url: https://creativecommons.org/licenses/by-nc/4.0/
   en: CC-BY-NC License
 
+- key: contact_email
+  url: "mailto:gvwilson@third-bit.com"
+  en: "Contact email"
+
 - key: coverage
   url: https://coverage.readthedocs.io/
   en: "Python coverage module"
@@ -48,9 +52,9 @@
 
 # EEE
 
-- key: contact_email
-  url: "mailto:gvwilson@third-bit.com"
-  en: "Contact email"
+- key: eln
+  url: https://en.wikipedia.org/wiki/Electronic_lab_notebook
+  en: "Electronic Lab Notebook"
 
 # FFF
 
@@ -89,6 +93,10 @@
 # KKK
 
 # LLL
+
+- key: lims
+  url: https://en.wikipedia.org/wiki/Laboratory_information_management_system
+  en: "Laboratory Information Management System"
 
 - key: logging
   url: https://docs.python.org/3/library/logging.html

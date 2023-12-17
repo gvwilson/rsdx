@@ -1,1 +1,0 @@
-[%fixme "write linting lesson" %]

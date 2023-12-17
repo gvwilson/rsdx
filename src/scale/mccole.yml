@@ -14,4 +14,3 @@ syllabus:
 copied:
 -   src/lazy/grid_generic.py
 -   src/lazy/grid_lazy.py
--   src/lazy/grid_list.py
