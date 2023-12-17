@@ -1,5 +1,5 @@
-title: "Build a Web Service"
-tag: "Build a small Flask web server to display plate data."
+title: "A Web Service"
+tag: "Build a small web server to display plate data."
 abstract: >
     As a counterpart to the previous lesson,
     this one shows how web servers handle requests and generate dynamic HTML pages.
@@ -11,6 +11,7 @@ syllabus:
 -   Separating routing from model.
 -   Creating HTML pages from [Jinja][jinja] templates.
 -   Serving static files (and what that means).
+-   The difference between data as HTML and data for machine consumption.
 exclude:
 -   static
 -   templates

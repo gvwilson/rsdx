@@ -1,4 +1,4 @@
-title: "Test Invasion Percolation"
+title: "Unit Tests"
 tag: "Use mocks to test programs that rely on pseudo-randomness."
 abstract: >
     Testing research software is hard:
@@ -10,7 +10,8 @@ abstract: >
     and the use of coverage tools to determine
     what is and isn't being tested.
 syllabus:
--   Deciding what tests to write (assume readers have already met [`pytest`][pytest]).
+-   A quick review of [`pytest][pytest].
+-   Deciding what tests to write.
 -   Creating and using mock objects.
 -   Making "random" reproducible.
 -   Using [coverage][coverage] to determine what is and isn't being tested.

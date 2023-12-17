@@ -1,5 +1,5 @@
-title: "Refactoring"
-tag: "Refactor a student-quality Python script that uses invasion percolation to model pollution spread."
+title: "Refactor"
+tag: "Refactor a student-quality script that models the spread of pollution."
 abstract: >
     Computational notebooks are a great tool for exploratory work,
     but research software engineers must also be able to create

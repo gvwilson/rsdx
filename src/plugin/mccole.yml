@@ -1,4 +1,4 @@
-title: "Plugin Architecture"
+title: "A Plugin Architecture"
 tag: "Find the center point of each polluted region and visualize it."
 abstract: >
     Research data may come from files, databases, websites, and many other sources.

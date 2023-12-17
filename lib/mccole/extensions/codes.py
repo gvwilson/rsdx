@@ -141,27 +141,27 @@ def summary(pargs, kwargs, node):
     """Handle [% summary %] shortcode."""
     util.require(
         (not pargs) and ("kind" in kwargs),
-        f"Bad 'syllabus' shortcode in {node} with {pargs} and {kwargs}",
+        f"Bad 'summary' shortcode in {node} with {pargs} and {kwargs}",
     )
     kind = kwargs["kind"]
     util.require(
-        kind in {"abstracts", "syllabus"},
+        kind in {"abstracts", "summary", "syllabus"},
         f"Unknown kind '{kind}' in summary shortcode"
     )
     with_links = kwargs.get("links", "") != "False"
+    with_slides = kwargs.get("slides", "") != "False"
 
     lines = []
     for slug in ark.site.config["chapters"]:
         meta = ark.site.config["_meta_"][slug]
-        assert "tag" in meta, f"No tag found for {slug}"
+        util.require("tag" in meta, f"No tag found for {slug}")
         util.require("abstract" in meta, f"No abstract found for {slug}")
         util.require("syllabus" in meta, f"No syllabus data found for {slug}")
 
         title = f"[{meta['title']}](@root/{slug})" if with_links else meta["title"]
-        slides = f"[slides](@root/{slug}/slides.html)"
-        label = f"{{: #syllabus-{slug}}}"
-        lines.append(f"\n## {title} ({slides}) {label}\n")
-        lines.append(f"*{meta['tag']}*\n")
+        slides = f"([slides](@root/{slug}/slides.html))" if with_slides else ""
+        label = f"{{: #summary-{slug}}}"
+        lines.append(f"\n## {title} {slides} {label}\n")
         if kind == "abstracts":
             lines.append(meta["abstract"])
         elif kind == "syllabus":
@@ -235,20 +235,22 @@ def thanks(pargs, kwargs, node):
 @util.timing
 def toc(pargs, kwargs, node):
     """Handle [% toc %] table of contents shortcode."""
+    util.require(
+        (not pargs),
+        f"Bad 'toc' shortcode with {pargs} and {kwargs}",
+    )
+    with_slides = kwargs.get("slides", "") != "False"
 
     def _format(slug, is_chapter):
         meta = ark.site.config["_meta_"][slug]
         title = f'<a href="@root/{slug}">{util.markdownify(meta["title"])}</a>'
         tag = f": {util.markdownify(meta['tag'])}" if is_chapter else ""
+        show_slides = is_chapter and with_slides
         slides = (
-            f' (<a href="@root/{slug}/slides.html">slides</a>)' if is_chapter else ""
+            f' (<a href="@root/{slug}/slides.html">slides</a>)' if show_slides else ""
         )
         return f"<li>{title}{tag}{slides}</li>"
 
-    util.require(
-        (not pargs) and (not kwargs),
-        f"Bad 'toc' shortcode with {pargs} and {kwargs}",
-    )
     chapters = [_format(slug, True) for slug in ark.site.config["chapters"]]
     chapters = '<ol class="toc" type="1">\n' + "\n".join(chapters) + "\n</ol>"
     appendices = [_format(slug, False) for slug in ark.site.config["appendices"]]

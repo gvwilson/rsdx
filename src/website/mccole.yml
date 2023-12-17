@@ -1,5 +1,5 @@
-title: "Build a Static Site"
-tag: "Build a static site to display research results using Ark and Jinja."
+title: "A Static Web Site"
+tag: "Build a static web site to display research results."
 abstract: >
     Sharing knowledge is as much a part of research as
     asking good questions and getting correct answers.
@@ -10,7 +10,9 @@ abstract: >
 syllabus:
 -   How page templates are expanded.
 -   Using configuration data in a site.
--   Adding extensions to [Ark][ark].
+-   More about [Jinja][jinja] templates.
+-   Adding extensions to [Ark][ark] to display scientific data.
+-   Figuring out how to build extensions for third-party software.
 exclude:
 -   docs
 -   inc

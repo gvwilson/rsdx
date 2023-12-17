@@ -1,4 +1,4 @@
-title: "Packaging"
+title: "A Python Package"
 tag: "Navigating the confusion of creating a simple Python package."
 abstract: >
     Creating an installable package is the best way to share your code with other people,

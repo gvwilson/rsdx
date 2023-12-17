@@ -1,4 +1,4 @@
-title: "Scaling Up"
+title: "Scale Up"
 tag: "Generate fractals using a workflow runner and store them remotely."
 abstract: >
     Once we have an algorithm that's worth scaling up,

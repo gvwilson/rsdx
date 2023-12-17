@@ -150,6 +150,10 @@
   url: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005412
   en: "Taschuk's Rules"
 
+- key: tf_idf
+  url: https://en.wikipedia.org/wiki/Tf%E2%80%93idf
+  en: "TF-IDF"
+
 # UUU
 
 # VVV

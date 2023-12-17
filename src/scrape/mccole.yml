@@ -1,4 +1,4 @@
-title: "Scraping Data"
+title: "Scrape Web Data"
 tag: "Pull data from web pages using requests and Beautiful Soup."
 abstract: >
     Some researchers make their data easy to access and use,
