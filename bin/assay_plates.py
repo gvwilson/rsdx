@@ -37,7 +37,10 @@ def create_files(args, params, connection):
     rows = cursor.fetchall()
     for kind, filename in rows:
         create_one(
-            params, kind, design_file=Path(args.designs, filename), results_file=Path(args.results, filename)
+            params,
+            kind,
+            design_file=Path(args.designs, filename),
+            results_file=Path(args.results, filename),
         )
 
 

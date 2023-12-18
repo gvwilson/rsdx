@@ -16,7 +16,11 @@ def main():
     args = parse_args()
     if args.email:
         pyalex.config.email = args.email
-    pager = Works().filter(concepts={"wikidata": args.concept}).paginate(method="page", per_page=200)
+    pager = (
+        Works()
+        .filter(concepts={"wikidata": args.concept})
+        .paginate(method="page", per_page=200)
+    )
     counter = 0
     for page in pager:
         for work in page:
@@ -27,19 +31,25 @@ def main():
             data = {
                 "doi": work["doi"],
                 "year": work["publication_year"],
-                "abstract": work["abstract"]
+                "abstract": work["abstract"],
             }
             if all(data.values()):
-                Path(args.outdir, f"{ident}.json").write_text(json.dumps(data, ensure_ascii=False))
+                Path(args.outdir, f"{ident}.json").write_text(
+                    json.dumps(data, ensure_ascii=False)
+                )
 
 
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--concept", type=str, default=WIKIDATA_LAND_SNAIL, help="Wikidata concept URL")
+    parser.add_argument(
+        "--concept", type=str, default=WIKIDATA_LAND_SNAIL, help="Wikidata concept URL"
+    )
     parser.add_argument("--email", type=str, default=None, help="user email address")
     parser.add_argument("--outdir", type=str, required=True, help="output directory")
-    parser.add_argument("--verbose", action="store_true", default=False, help="report progress")
+    parser.add_argument(
+        "--verbose", action="store_true", default=False, help="report progress"
+    )
     return parser.parse_args()
 
 

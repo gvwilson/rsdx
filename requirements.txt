@@ -18,3 +18,4 @@ pyalex
 pytest
 python-dotenv
 requests
+tinydb

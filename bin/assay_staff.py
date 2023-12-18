@@ -50,21 +50,25 @@ def main():
     for ident, kind, count in connection.execute(EXPERIMENT_QUERY).fetchall():
         experiments[ident][kind] = count
 
-    content = index_template.render(data={
-        "title": TITLE,
-        "copyright": COPYRIGHT,
-        "staff": staff,
-    })
+    content = index_template.render(
+        data={
+            "title": TITLE,
+            "copyright": COPYRIGHT,
+            "staff": staff,
+        }
+    )
     Path(args.pagedir, "index.html").write_text(content)
 
     for ident in staff:
         filename = Path(args.pagedir, staff[ident]["page"])
-        content = staff_template.render(data={
-            "staff": staff[ident],
-            "experiments": experiments[ident],
-            "title": TITLE,
-            "copyright": COPYRIGHT,
-        })
+        content = staff_template.render(
+            data={
+                "staff": staff[ident],
+                "experiments": experiments[ident],
+                "title": TITLE,
+                "copyright": COPYRIGHT,
+            }
+        )
         filename.write_text(content)
 
 

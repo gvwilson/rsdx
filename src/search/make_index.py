@@ -13,7 +13,9 @@ def main():
     """Main driver."""
     args = parse_args()
     abstracts = read_abstracts(args.bibdir)
-    words_in_file = {filename: get_words(abstract) for filename, abstract in abstracts.items()}
+    words_in_file = {
+        filename: get_words(abstract) for filename, abstract in abstracts.items()
+    }
     term_freq = calculate_tf(words_in_file)
     inverse_doc_freq = calculate_idf(words_in_file)
     tf_idf = calculate_tf_idf(term_freq, inverse_doc_freq)
@@ -44,7 +46,7 @@ def calculate_tf(words_in_file):
 def calculate_tf_idf(term_freq, inverse_doc_freq):
     """Calculate overall score for each term in each document."""
     result = defaultdict(dict)
-    for ((filename, word), tf) in term_freq.items():
+    for (filename, word), tf in term_freq.items():
         result[word][filename] = tf * inverse_doc_freq[word]
     return result
 
@@ -60,7 +62,9 @@ def get_words(text):
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--bibdir", type=str, required=True, help="bibliography directory")
+    parser.add_argument(
+        "--bibdir", type=str, required=True, help="bibliography directory"
+    )
     parser.add_argument("--outfile", type=str, default=None, help="output file")
     return parser.parse_args()
 

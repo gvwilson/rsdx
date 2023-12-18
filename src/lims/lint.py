@@ -71,9 +71,15 @@ def load_file(filename):
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--assays", type=str, required=True, help="assay results directory")
-    parser.add_argument("--designs", type=str, required=True, help="assay designs directory")
-    parser.add_argument("--params", type=str, required=True, help="assay parameters file")
+    parser.add_argument(
+        "--assays", type=str, required=True, help="assay results directory"
+    )
+    parser.add_argument(
+        "--designs", type=str, required=True, help="assay designs directory"
+    )
+    parser.add_argument(
+        "--params", type=str, required=True, help="assay parameters file"
+    )
     return parser.parse_args()
 
 
@@ -83,8 +89,8 @@ def _lint_all_match(args):
     assay_files = set(p.name for p in Path(args.assays).iterdir())
     messages = []
     for title, files in (
-            ("design but not assay", design_files - assay_files),
-            ("assay but not design", assay_files - design_files),
+        ("design but not assay", design_files - assay_files),
+        ("assay but not design", assay_files - design_files),
     ):
         if files:
             files = sorted(str(f) for f in files)
@@ -111,7 +117,9 @@ def _lint_design_data_contents(params, filename, data):
     allowed = {params.treatment} | set(params.controls)
     unknown = set(data[3:7, 1:5].flatten()) - allowed
     if unknown:
-        return [f"design file {filename} has unknown value(s) {', '.join(sorted(unknown))}"]
+        return [
+            f"design file {filename} has unknown value(s) {', '.join(sorted(unknown))}"
+        ]
     return []
 
 
