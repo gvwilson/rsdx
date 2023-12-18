@@ -16,15 +16,21 @@ def main():
     """Main driver."""
     args = parse_args()
     params = load_params(args.params)
-    messages = [
-        *do_all(args),
-        *do_single(params, args.designs, "_lint_design_"),
-        *do_single(params, args.assays, "_lint_assay_"),
-    ]
-    report(messages)
+
+    design_files = load_all_files(args.designs)
+    assay_files = load_all_files(args.assays)
+
+    messages = lint_all(args)
+    for filename, data in design_files.items():
+        messages.extend(lint_design(params, filename, data))
+    for filename, data in assay_files.items():
+        messages.extend(lint_assay(params, filename, data))
+
+    for m in messages:
+        print(m)
 
 
-def do_all(args):
+def lint_all(args):
     """Do global linting."""
     messages = []
     for name, func in globals().items():
@@ -33,18 +39,33 @@ def do_all(args):
     return messages
 
 
-def do_single(params, directory, prefix):
-    """Do operations on single set of files."""
-    files = {
-        filename: np.loadtxt(filename, delimiter=",", dtype="str")
-        for filename in Path(directory).iterdir()
-    }
+def lint_assay(params, filename, data):
+    """Run checks on a single assay file."""
+    return lint_single_file(params, "_lint_assay_", filename, data)
+
+
+def lint_design(params, filename, data):
+    """Run checks on a single design file."""
+    return lint_single_file(params, "_lint_design_", filename, data)
+
+
+def lint_single_file(params, prefix, filename, data):
+    """Do one kind of linting on a single set of files."""
     messages = []
     for name, func in globals().items():
         if name.startswith(prefix) and callable(func):
-            for filename, array in files.items():
-                messages.extend(func(params, filename, array))
+            messages.extend(func(params, filename, data))
     return messages
+
+
+def load_all_files(dirpath):
+    """Load all files in directory."""
+    return {filename: load_file(filename) for filename in Path(dirpath).iterdir()}
+
+
+def load_file(filename):
+    """Load design or assay file as numpy array."""
+    return np.loadtxt(filename, delimiter=",", dtype="str")
 
 
 def parse_args():
@@ -54,12 +75,6 @@ def parse_args():
     parser.add_argument("--designs", type=str, required=True, help="assay designs directory")
     parser.add_argument("--params", type=str, required=True, help="assay parameters file")
     return parser.parse_args()
-
-
-def report(messages):
-    """Show problems."""
-    for m in messages:
-        print(m)
 
 
 def _lint_all_match(args):
@@ -77,33 +92,33 @@ def _lint_all_match(args):
     return messages
 
 
-def _lint_assay_data_shape(params, filename, array):
+def _lint_assay_data_shape(params, filename, data):
     """Check shape of assay data."""
-    if array.shape != DATA_SHAPE:
-        return [f"assay file {filename} has wrong shape {array.shape}"]
+    if data.shape != DATA_SHAPE:
+        return [f"assay file {filename} has wrong shape {data.shape}"]
     return []
 
 
-def _lint_assay_machine_header(params, filename, array):
+def _lint_assay_machine_header(params, filename, data):
     """Check shape of assay data."""
-    if array[0, 0] != MACHINE_HEADER:
-        return [f"assay file {filename} has wrong machine header {array[0, 0]}"]
+    if data[0, 0] != MACHINE_HEADER:
+        return [f"assay file {filename} has wrong machine header {data[0, 0]}"]
     return []
 
 
-def _lint_design_data_contents(params, filename, array):
+def _lint_design_data_contents(params, filename, data):
     """Check contents of data portion of file."""
     allowed = {params.treatment} | set(params.controls)
-    unknown = set(array[3:7, 1:5].flatten()) - allowed
+    unknown = set(data[3:7, 1:5].flatten()) - allowed
     if unknown:
         return [f"design file {filename} has unknown value(s) {', '.join(sorted(unknown))}"]
     return []
 
 
-def _lint_design_data_shape(params, filename, array):
+def _lint_design_data_shape(params, filename, data):
     """Check shape of assay design."""
-    if array.shape != DATA_SHAPE:
-        return [f"design file {filename} has wrong shape {array.shape}"]
+    if data.shape != DATA_SHAPE:
+        return [f"design file {filename} has wrong shape {data.shape}"]
     return []
 
 
