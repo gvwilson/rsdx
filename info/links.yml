@@ -3,6 +3,7 @@
 - key: config_website
   url: "https://gvwilson.github.io/rsdx/"
   en: "Website"
+
 - key: config_repo
   url: "https://github.com/gvwilson/rsdx"
   en: "GitHub repo"
@@ -12,24 +13,45 @@
 - key: aosa
   url: https://aosabook.org/
   en: "The Architecture of Open Source Applications"
+
 - key: ark
   url: https://www.dmulholl.com/docs/ark/main/
   en: "Ark"
 
 # BBB
 
+- key: book_repo
+  url: "https://github.com/gvwilson/rsdx/"
+  en: "'Research Software Design by Example' repository"
+
+- key: book_site
+  url: "https://third-bit.com/rsdx/"
+  en: "'Research Software Design by Example' website"
+
 - key: bs
-  url: https://beautiful-soup-4.readthedocs.io/
+  url: "https://beautiful-soup-4.readthedocs.io/"
   en: "Beautiful Soup"
 
 # CCC
 
 - key: carpentries
-  url: https://carpentries.org/
+  url: "https://carpentries.org/"
   en: "Software Carpentry"
 
+- key: "carpentries_git"
+  url: "https://swcarpentry.github.io/git-novice/"
+  title: "Software Carpentry lesson on Git"
+
+- key: carpentries_python
+  url: "https://swcarpentry.github.io/python-novice-inflammation/"
+  en: "Software Carpentry lesson on Python"
+
+- key: "carpentries_shell"
+  url: "https://swcarpentry.github.io/shell-novice/"
+  title: "Software Carpentry lesson on the Unix shell"
+
 - key: cc_by_nc
-  url: https://creativecommons.org/licenses/by-nc/4.0/
+  url: "https://creativecommons.org/licenses/by-nc/4.0/"
   en: CC-BY-NC License
 
 - key: contact_email
@@ -37,75 +59,99 @@
   en: "Contact email"
 
 - key: coverage
-  url: https://coverage.readthedocs.io/
+  url: "https://coverage.readthedocs.io/"
   en: "Python coverage module"
 
 # DDD
 
 - key: dataclasses
-  url: https://docs.python.org/3/library/dataclasses.html
+  url: "https://docs.python.org/3/library/dataclasses.html"
   en: "Python dataclasses module"
 
 - key: dvc
-  url: https://dvc.org/
+  url: "https://dvc.org/"
   en: "DVC"
 
 # EEE
 
 - key: eln
-  url: https://en.wikipedia.org/wiki/Electronic_lab_notebook
+  url: "https://en.wikipedia.org/wiki/Electronic_lab_notebook"
   en: "Electronic Lab Notebook"
+
+- key: email
+  url: "mailto:gvwilson@third-bit.com"
+  en: "Contact address"
+
+- key: evans_julia
+  url: "https://jvns.ca/"
+  en: "Julia Evans"
+
+- key: evans_zines
+  url: "https://wizardzines.com/"
+  en: "Wizard Zines"
 
 # FFF
 
 - key: flask
-  url: https://flask.palletsprojects.com/
+  url: "https://flask.palletsprojects.com/"
   en: "Flask"
 
 # GGG
 
+- key: git
+  url: "https://git-scm.com/"
+  en: "Git"
+
 - key: geopy
-  url: https://geopy.readthedocs.io/
+  url: "https://geopy.readthedocs.io/"
   en: "Python geopy module"
 
+- key: glosario
+  url: "https://glosario.carpentries.org/"
+  en: "Glosario"
+
 - key: gnu_make
-  url: https://www.gnu.org/software/make/
-  en: GNU Make
+  url: "https://www.gnu.org/software/make/"
+  en: "GNU Make"
 
 - key: gvwilson
-  url: https://third-bit.com/
+  url: "https://third-bit.com/"
   en: "Greg Wilson"
 
 # HHH
 
 - key: hippocratic_license
-  url: https://firstdonoharm.dev/
-  en: Hippocratic License
+  url: "https://firstdonoharm.dev/"
+  en: "Hippocratic License"
 
 # III
 
 # JJJ
 
 - key: jinja
-  url: https://jinja.palletsprojects.com/
+  url: "https://jinja.palletsprojects.com/"
   en: "Jinja"
 
 # KKK
 
 # LLL
 
+- key: latex
+  url: "https://www.latex-project.org/"
+  en: "LaTeX"
+
 - key: lims
-  url: https://en.wikipedia.org/wiki/Laboratory_information_management_system
+  url: "https://en.wikipedia.org/wiki/Laboratory_information_management_system"
   en: "Laboratory Information Management System"
 
 - key: logging
-  url: https://docs.python.org/3/library/logging.html
+  url: "https://docs.python.org/3/library/logging.html"
   en: "Python logging module"
 
 # MMM
 
 - key: metaflow
-  url: https://metaflow.org/
+  url: "https://metaflow.org/"
   en: "Metaflow"
 
 # NNN
@@ -114,52 +160,68 @@
 
 # PPP
 
+- key: pip
+  url: "https://pip.pypa.io/"
+  en: "pip"
+
 - key: pony
-  url: https://ponyorm.org/
+  url: "https://ponyorm.org/"
   en: "Pony ORM"
 
 - key: profile
-  url: https://docs.python.org/3/library/profile.html
+  url: "https://docs.python.org/3/library/profile.html"
   en: "Python profile module"
 
 - key: pydantic
-  url: https://docs.pydantic.dev/
+  url: "https://docs.pydantic.dev/"
   en: "Pydantic"
 
 - key: pytest
-  url: https://docs.pytest.org/
+  url: "https://docs.pytest.org/"
   en: "Python pytest module"
+
+- key: python
+  url: "https://www.python.org/"
+  en: "Python"
 
 # QQQ
 
 # RRR
 
+- key: red_door
+  url: "https://www.reddoorshelter.ca/"
+  en: "Red Door Family Shelter"
+
 - key: requests
-  url: https://requests.readthedocs.io/
+  url: "https://requests.readthedocs.io/"
   en: "Python requests module"
+
+- key: ruff
+  url: "https://docs.astral.sh/ruff/"
+  en: "Ruff"
 
 # SSS
 
 - key: sdxjs
-  url: https://third-bit.com/sdxjs/
+  url: "https://third-bit.com/sdxjs/"
   en: "Software Design by Example in JavaScript"
 
 - key: sdxpy
-  url: https://third-bit.com/sdxpy/
+  url: "https://third-bit.com/sdxpy/"
   en: "Software Design by Example in Python"
 
 # TTT
 
 - key: t3
-  url: https://teachtogether.tech/
+  url: "https://teachtogether.tech/"
   en: "Teaching Tech Together"
 
 - key: taschuk
-  url: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005412
+  url: "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005412"
   en: "Taschuk's Rules"
 
 - key: tf_idf
-  url: https://en.wikipedia.org/wiki/Tf%E2%80%93idf
+  url: "https://en.wikipedia.org/wiki/Tf%E2%80%93idf"
   en: "TF-IDF"
 
 # UUU
@@ -167,6 +229,10 @@
 # VVV
 
 # WWW
+
+- key: webaim_wave
+  url: "https://wave.webaim.org/"
+  en: "WAVE"
 
 # XXX
 

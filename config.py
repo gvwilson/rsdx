@@ -40,7 +40,9 @@ contents = chapters + appendices
 theme = "mccole"
 
 copy = [
+    "*.out",
     "*.png",
+    "*.sh",
     "*.svg",
 ]
 

@@ -10,6 +10,10 @@ import yaml
 import util
 
 
+# Prefix glossary keys to avoid collision with e.g. chapter heading keys.
+GL_PREFIX = "gl:"
+
+
 @shortcodes.register("b")
 @util.timing
 def bibliography_ref(pargs, kwargs, node):
@@ -99,6 +103,19 @@ def fixme(pargs, kwargs, node):
         return f'<span class="fixme" markdown="1">{pargs[0]}</span>'
     items = "\n".join(f"-   {x.strip()}" for x in pargs)
     return f'<div class="fixme" markdown="1">\n{items}\n</div>'
+
+
+@shortcodes.register("g")
+def glossary_ref(pargs, kwargs, node):
+    """Handle [% g key "text" %] glossary reference shortcode."""
+    util.require(
+        (len(pargs) == 2) and (not kwargs),
+        f"Bad 'g' shortcode {pargs} and {kwargs} in {node}",
+    )
+    key, text = pargs
+    cls = 'class="gl-ref"'
+    href = f'href="@root/glossary/#{GL_PREFIX}{key}"'
+    return f'<a {cls} {href} markdown="1">{text}</a>'
 
 
 @shortcodes.register("image")
