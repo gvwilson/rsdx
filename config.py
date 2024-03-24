@@ -42,6 +42,7 @@ theme = "mccole"
 copy = [
     "*.out",
     "*.png",
+    "*.py",
     "*.sh",
     "*.svg",
 ]
@@ -57,7 +58,6 @@ exclude = copy + [
     "*.metaflow",
     "*.mk",
     "*.pdf",
-    "*.py",
     "*.sql",
     "*.tbl",
     "*.txt",

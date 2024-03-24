@@ -6,6 +6,22 @@ DATA := data
 
 ## --------------------
 
+## release: make a release
+.PHONY: release
+ifeq ($(origin RSDX_RELEASE),undefined)
+release:
+	@echo "RSDX_RELEASE not defined"
+else
+release:
+	rm -rf docs ${RSDX_RELEASE}
+	make build
+	cp -r docs ${RSDX_RELEASE}
+	find ${RSDX_RELEASE} \( -name .DS_Store -or -name '*.pdf' -or -name '*.aux' -or -name '*.bbl' -or -name '*.bcf' -or -name '*.bib' -or -name '*.blg' -or -name '*.cls' -or -name '*.idx' -or -name '*.ilg' -or -name '*.ind' -or -name '*.log' -or -name '*.tex' -or -name '*.toc' \) -exec rm {} +
+	cd ${RSDX_RELEASE} && zip -q -r ${SLUG}-examples.zip . -i '*.json' '*.out' '*.py' '*.sh' '*.txt' '*.yml'
+endif
+
+## --------------------
+
 SURVEY_PARAMS_FILES := ${DATA}/params/sites.csv ${DATA}/params/surveys.csv
 SURVEY_SITES_STEMS := $(shell tail -n +2 ${DATA}/params/sites.csv | cut -d , -f 1)
 TIDY_SURVEY_FILES := $(patsubst %,${DATA}/survey_tidy/%.csv,${SURVEY_SITES_STEMS})

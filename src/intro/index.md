@@ -195,7 +195,7 @@ All contributors are required to abide by our Code of Conduct
 
 ## Acknowledgments {: #intro-acknowledgments}
 
-Like [%b Wilson2024 Wilson2022 %],
+Like [%b Wilson2022 %] and [%b Wilson2022 %],
 this book was inspired by [%b Kamin1990 Kernighan1979 Kernighan1981 Kernighan1983 Kernighan1988 Oram2007 Wirth1976 %] and by:
 
 -   [*The Architecture of Open Source Applications*][aosa] series
