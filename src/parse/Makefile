@@ -13,3 +13,10 @@ _diff:
 
 settings: _settings
 	@echo "STEMS:" ${STEMS}
+
+## naive: try running naive parser
+naive:
+	@for stem in ${STEMS}; do echo $${stem}; make STEM=$${stem} _naive; done
+
+_naive:
+	@python naive.py ${DATA}/survey_raw/${STEM}.csv
