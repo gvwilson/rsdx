@@ -94,6 +94,15 @@ COW,2023-04-27,-124.045,48.8216,81.7
 
 [%inc parse.py pattern=func:normalize %]
 
+-   Result
+
+[% figure
+   slug="parse_call_tree"
+   img="call_tree.svg"
+   alt="Call tree of completed parser"
+   caption="Parser call tree"
+%]
+
 -   Run it on our files and check the results
 
 ## Exercises
