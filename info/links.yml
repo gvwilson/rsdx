@@ -8,7 +8,7 @@
   url: "https://github.com/gvwilson/rsdx"
   en: "GitHub repo"
 
-# AAA
+# A
 
 - key: aosa
   url: https://aosabook.org/
@@ -18,7 +18,7 @@
   url: https://www.dmulholl.com/docs/ark/main/
   en: "Ark"
 
-# BBB
+# B
 
 - key: book_repo
   url: "https://github.com/gvwilson/rsdx/"
@@ -32,7 +32,7 @@
   url: "https://beautiful-soup-4.readthedocs.io/"
   en: "Beautiful Soup"
 
-# CCC
+# C
 
 - key: carpentries
   url: "https://carpentries.org/"
@@ -62,7 +62,7 @@
   url: "https://coverage.readthedocs.io/"
   en: "Python coverage module"
 
-# DDD
+# D
 
 - key: dataclasses
   url: "https://docs.python.org/3/library/dataclasses.html"
@@ -72,7 +72,7 @@
   url: "https://dvc.org/"
   en: "DVC"
 
-# EEE
+# E
 
 - key: eln
   url: "https://en.wikipedia.org/wiki/Electronic_lab_notebook"
@@ -90,13 +90,13 @@
   url: "https://wizardzines.com/"
   en: "Wizard Zines"
 
-# FFF
+# F
 
 - key: flask
   url: "https://flask.palletsprojects.com/"
   en: "Flask"
 
-# GGG
+# G
 
 - key: git
   url: "https://git-scm.com/"
@@ -118,23 +118,23 @@
   url: "https://third-bit.com/"
   en: "Greg Wilson"
 
-# HHH
+# H
 
 - key: hippocratic_license
   url: "https://firstdonoharm.dev/"
   en: "Hippocratic License"
 
-# III
+# I
 
-# JJJ
+# J
 
 - key: jinja
   url: "https://jinja.palletsprojects.com/"
   en: "Jinja"
 
-# KKK
+# K
 
-# LLL
+# L
 
 - key: latex
   url: "https://www.latex-project.org/"
@@ -148,25 +148,21 @@
   url: "https://docs.python.org/3/library/logging.html"
   en: "Python logging module"
 
-# MMM
+# M
 
 - key: metaflow
   url: "https://metaflow.org/"
   en: "Metaflow"
 
-# NNN
+# N
 
-# OOO
+# O
 
-# PPP
+# P
 
 - key: pip
   url: "https://pip.pypa.io/"
   en: "pip"
-
-- key: pony
-  url: "https://ponyorm.org/"
-  en: "Pony ORM"
 
 - key: profile
   url: "https://docs.python.org/3/library/profile.html"
@@ -184,9 +180,9 @@
   url: "https://www.python.org/"
   en: "Python"
 
-# QQQ
+# Q
 
-# RRR
+# R
 
 - key: red_door
   url: "https://www.reddoorshelter.ca/"
@@ -200,7 +196,7 @@
   url: "https://docs.astral.sh/ruff/"
   en: "Ruff"
 
-# SSS
+# S
 
 - key: sdxjs
   url: "https://third-bit.com/sdxjs/"
@@ -210,7 +206,11 @@
   url: "https://third-bit.com/sdxpy/"
   en: "Software Design by Example in Python"
 
-# TTT
+- key: sqlmodel
+  url: "https://sqlmodel.tiangolo.com/"
+  en: "SQLModel ORM"
+
+# T
 
 - key: t3
   url: "https://teachtogether.tech/"
@@ -224,18 +224,18 @@
   url: "https://en.wikipedia.org/wiki/Tf%E2%80%93idf"
   en: "TF-IDF"
 
-# UUU
+# U
 
-# VVV
+# V
 
-# WWW
+# W
 
 - key: webaim_wave
   url: "https://wave.webaim.org/"
   en: "WAVE"
 
-# XXX
+# X
 
-# YYY
+# Y
 
-# ZZZ
+# Z

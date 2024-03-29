@@ -62,17 +62,246 @@
 <li>Plotting (and the challenge of testing visualization code).</li>
 <li>Connecting to a database from Python.</li>
 <li>Embedding SQL queries in Python and reading results.</li>
-<li>Creating classes with <a href="https://ponyorm.org/">Pony</a> ORM to mirror database tables.</li>
+<li>Creating classes with [Pony][pony] ORM to mirror database tables.</li>
 <li>Writing queries in Python rather than as embedded SQL strings.</li>
 <li>Cross-validating implementations.</li>
 <li>Big benefit of ORM is avoiding transposition errors with integer values.</li>
 </ul>
 
 
-      <figure id="plugin-example">
-<img src="././COW.svg" alt="Geographical map of sample distributions around COW site."/>
-<figcaption markdown="1">Figure&nbsp;1: Sample distribution at COW site.</figcaption>
+      <ul>
+<li>Research data may come from files, databases, websites, and many other sources</li>
+<li>Instead of adding code to a program to handle each one,
+    use a <a class="gl-ref" href="../glossary/#gl:plugin_architecture" markdown="1">plugin architecture</a>
+    that loads data handlers dynamically</li>
+<li>Lets users extend the program without modifying its internals</li>
+<li>Work backward from configuration file<ul>
+<li>File type and parameter(s) it needs</li>
+</ul>
+</li>
+</ul>
+<div class="code-sample lang-json" title="plugins.json">
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;csv&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;../../data/survey_tidy&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;pandas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;../../data/survey.db&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;sql&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;../../data/survey.db&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;sqlmodel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;../../data/survey.db&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<h2>Generic Program</h2>
+<ul>
+<li>Table structure</li>
+</ul>
+<figure id="plugin_table_structure">
+<img src="./table_structure.svg" alt="Structure of survey tables"/>
+<figcaption markdown="1">Figure&nbsp;1: Survey table structure</figcaption>
 </figure>
+
+<ul>
+<li>Write <code>main</code><ul>
+<li>If the file type is X, load <code>plugin_X</code> as a module</li>
+<li>Then call the <code>read_data</code> function in that module</li>
+<li>A <a class="gl-ref" href="../glossary/#gl:contract" markdown="1">contract</a> between the program and its plugins</li>
+</ul>
+</li>
+</ul>
+<div class="code-sample lang-py" title="display.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">plugins</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+    <span class="n">tables</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">plugin_stem</span><span class="p">,</span> <span class="n">plugin_param</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;plugin_</span><span class="si">{</span><span class="n">plugin_stem</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">tables</span><span class="p">[</span><span class="n">plugin_stem</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">read_data</span><span class="p">(</span><span class="n">plugin_param</span><span class="p">)</span>
+    <span class="n">check</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+    <span class="n">make_figures</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;combined&#39;</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;centers&#39;</span><span class="p">])</span>
+</code></pre></div>
+</div>
+<ul>
+<li>
+<p>Result from each <code>read_data</code> is a list of tables</p>
+<ul>
+<li>Load all available examples to <a class="gl-ref" href="../glossary/#gl:cross_validation" markdown="1">cross validate</a></li>
+</ul>
+</li>
+<li>
+<p>Parsing command-line arguments is simple</p>
+</li>
+</ul>
+<div class="code-sample lang-py" title="display.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments.&quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--figdir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;figures directory&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--plugins&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;plugins file&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Checking tables against each other<ul>
+<li>Do they have the same keys?</li>
+<li>Do they have the same number of values for each key?</li>
+</ul>
+</li>
+</ul>
+<div class="code-sample lang-py" title="display.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">tables</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check all tables against each other.&quot;&quot;&quot;</span>
+    <span class="n">ref_key</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ref_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ref_key</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="n">ref_key</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;mis-match in provided tables </span><span class="si">{</span><span class="n">ref_key</span><span class="si">}</span><span class="s1"> != </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">sub_key</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">[</span><span class="n">ref_key</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="n">ref_key</span><span class="p">][</span><span class="n">sub_key</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">sub_key</span><span class="p">]):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;mis-match in </span><span class="si">{</span><span class="n">sub_key</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">ref_key</span><span class="si">}</span><span class="s1"> != </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Have one more function to generate a plot like <a class="fig-ref" href="#plugin-example">Figure&nbsp;2</a></li>
+</ul>
+<figure id="plugin-example">
+<img src="././COW.svg" alt="Geographical map of sample distributions around COW site."/>
+<figcaption markdown="1">Figure&nbsp;2: Sample distribution at COW site.</figcaption>
+</figure>
+
+<h2>Handling CSV</h2>
+<ul>
+<li>Plugin to handle CSV is the simplest<ul>
+<li>Read all the files in the directory using Pandas</li>
+</ul>
+</li>
+</ul>
+<div class="code-sample lang-py" title="plugin_csv.py">
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Load data from CSV files given directory.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">import</span> <span class="nn">util</span>
+
+
+<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">csvdir</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read CSV files directly into dataframes.&quot;&quot;&quot;</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">csvdir</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.csv&quot;</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">combine_with_pandas</span><span class="p">(</span><span class="o">*</span><span class="n">raw</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Combine</li>
+</ul>
+<div class="code-sample lang-py" title="util.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">combine_with_pandas</span><span class="p">(</span><span class="o">*</span><span class="n">tables</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine tables using Pandas.&quot;&quot;&quot;</span>
+    <span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
+    <span class="n">centers</span> <span class="o">=</span> <span class="n">centers_with_pandas</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;combined&#39;</span><span class="p">:</span> <span class="n">combined</span><span class="p">,</span> <span class="s1">&#39;centers&#39;</span><span class="p">:</span> <span class="n">centers</span><span class="p">}</span>
+</code></pre></div>
+</div>
+<p><span class="fixme" markdown="1">prevent code reformatting</span></p>
+<h2>Handling Databases</h2>
+<ul>
+<li>What if data is in a database?</li>
+<li>Pandas can read directly given a SQL query</li>
+</ul>
+<div class="code-sample lang-py" title="plugin_sql.py">
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Load data from SQLite database using Pandas.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="kn">import</span> <span class="nn">util</span>
+
+
+<span class="n">Q_CENTERS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">select</span>
+<span class="s2">    surveys.site,</span>
+<span class="s2">    sum(samples.lon * samples.reading) / sum(samples.reading) as lon,</span>
+<span class="s2">    sum(samples.lat * samples.reading) / sum(samples.reading) as lat</span>
+<span class="s2">from surveys join samples</span>
+<span class="s2">on surveys.label = samples.label</span>
+<span class="s2">group by surveys.site</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">dbfile</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read tables and do calculations directly in SQL.&quot;&quot;&quot;</span>
+    <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbfile</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;combined&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">Q_SAMPLES</span><span class="p">,</span> <span class="n">con</span><span class="p">),</span>
+        <span class="s2">&quot;centers&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">Q_CENTERS</span><span class="p">,</span> <span class="n">con</span><span class="p">),</span>
+    <span class="p">}</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Sample query</li>
+</ul>
+<p><span class="fixme" markdown="1">need a way to include variable Q_SAMPLE</span></p>
+<h2>Object-Relational Mapper</h2>
+<ul>
+<li>Use <a href="https://sqlmodel.tiangolo.com/">SQLModel</a> <a class="gl-ref" href="../glossary/#gl:orm" markdown="1">object-relational mapper</a> (ORM)<ul>
+<li>Define classes using <a class="gl-ref" href="../glossary/#gl:type_annotation" markdown="1">type annotations</a></li>
+<li>ORM maps these to database columns</li>
+</ul>
+</li>
+<li>Hard (odd) part is inter-table relationships<ul>
+<li>And making sense of error messages</li>
+</ul>
+</li>
+</ul>
+<div class="code-sample lang-py" title="plugin_sqlmodel.py">
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Sites</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Survey sites.&quot;&quot;&quot;</span>
+    <span class="n">site</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">surveys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;Surveys&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;site_id&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="code-sample lang-py" title="plugin_sqlmodel.py">
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Surveys</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Surveys done.&quot;&quot;&quot;</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">date_type</span>
+    <span class="n">site</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">foreign_key</span><span class="o">=</span><span class="s1">&#39;sites.site&#39;</span><span class="p">)</span>
+    <span class="n">site_id</span><span class="p">:</span> <span class="n">Sites</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;surveys&#39;</span><span class="p">)</span>
+    <span class="n">samples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;Samples&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;label_id&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="code-sample lang-py" title="plugin_sqlmodel.py">
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Samples</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Individual samples.&quot;&quot;&quot;</span>
+    <span class="n">rowid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">reading</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">foreign_key</span><span class="o">=</span><span class="s1">&#39;surveys.label&#39;</span><span class="p">)</span>
+    <span class="n">label_id</span><span class="p">:</span> <span class="n">Surveys</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;samples&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>With this, the <code>read_data</code> function is:</li>
+</ul>
+<div class="code-sample lang-py" title="plugin_sqlmodel.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">dbfile</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read database and do calculations with SQLModel ORM.&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;sqlite:///</span><span class="si">{</span><span class="n">dbfile</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">combined</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(((</span><span class="n">s</span><span class="o">.</span><span class="n">label_id</span><span class="o">.</span><span class="n">site</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">reading</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">Samples</span><span class="p">))))</span>
+        <span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">combined</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;site&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;reading&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;combined&#39;</span><span class="p">:</span> <span class="n">combined</span><span class="p">,</span> <span class="s1">&#39;centers&#39;</span><span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">centers_with_pandas</span><span class="p">(</span><span class="n">combined</span><span class="p">)}</span>
+</code></pre></div>
+</div>
+<p><span class="fixme" markdown="1">show how to calculate centers using aggregation in ORM as well</span></p>
     </main>
     <footer>
   <div class="row">

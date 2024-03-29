@@ -14,9 +14,8 @@ on surveys.label = samples.label
 """
 
 
-def combine_with_pandas(*tables):
-    """Combine tables using Pandas."""
-    combined = pd.concat(tables)
+def centers_with_pandas(combined):
+    """Find centers of sites."""
     temp = pd.DataFrame(
         {
             "site": combined["site"],
@@ -30,11 +29,17 @@ def combine_with_pandas(*tables):
         .agg({"weighted_lon": "mean", "weighted_lat": "mean", "reading": "mean"})
         .reset_index()
     )
-    centers = pd.DataFrame(
+    return pd.DataFrame(
         {
             "site": temp["site"],
             "lon": temp["weighted_lon"] / temp["reading"],
             "lat": temp["weighted_lat"] / temp["reading"],
         }
     )
+
+
+def combine_with_pandas(*tables):
+    """Combine tables using Pandas."""
+    combined = pd.concat(tables)
+    centers = centers_with_pandas(combined)
     return {"combined": combined, "centers": centers}

@@ -18,4 +18,5 @@ pyalex
 pytest
 python-dotenv
 requests
+sqlmodel
 tinydb
