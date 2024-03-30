@@ -7,6 +7,7 @@ repo = f"https://github.com/gvwilson/{slug}"
 author = "Greg Wilson"
 
 debug = False
+lang = "en"
 
 chapters = [
     "intro",
@@ -31,6 +32,7 @@ appendices = [
     "license",
     "bib",
     "conduct",
+    "glossary",
     "syllabus",
     "credits",
 ]

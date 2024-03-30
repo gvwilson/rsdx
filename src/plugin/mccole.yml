@@ -14,7 +14,7 @@ syllabus:
 -   Plotting (and the challenge of testing visualization code).
 -   Connecting to a database from Python.
 -   Embedding SQL queries in Python and reading results.
--   Creating classes with [Pony][pony] ORM to mirror database tables.
+-   Creating classes with [SQLModel][sqlmodel] ORM to mirror database tables.
 -   Writing queries in Python rather than as embedded SQL strings.
 -   Cross-validating implementations.
 -   Big benefit of ORM is avoiding transposition errors with integer values.

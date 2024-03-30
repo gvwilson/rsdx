@@ -62,7 +62,7 @@
 <li>Plotting (and the challenge of testing visualization code).</li>
 <li>Connecting to a database from Python.</li>
 <li>Embedding SQL queries in Python and reading results.</li>
-<li>Creating classes with [Pony][pony] ORM to mirror database tables.</li>
+<li>Creating classes with <a href="https://sqlmodel.tiangolo.com/">SQLModel</a> ORM to mirror database tables.</li>
 <li>Writing queries in Python rather than as embedded SQL strings.</li>
 <li>Cross-validating implementations.</li>
 <li>Big benefit of ORM is avoiding transposition errors with integer values.</li>
@@ -89,7 +89,7 @@
 <span class="p">}</span>
 </code></pre></div>
 </div>
-<h2>Generic Program</h2>
+<h2 id="plugin-generic">Generic Program</h2>
 <ul>
 <li>Table structure</li>
 </ul>
@@ -171,7 +171,7 @@
 <figcaption markdown="1">Figure&nbsp;2: Sample distribution at COW site.</figcaption>
 </figure>
 
-<h2>Handling CSV</h2>
+<h2 id="plugin-csv">Handling CSV</h2>
 <ul>
 <li>Plugin to handle CSV is the simplest<ul>
 <li>Read all the files in the directory using Pandas</li>
@@ -205,22 +205,40 @@
     <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;combined&#39;</span><span class="p">:</span> <span class="n">combined</span><span class="p">,</span> <span class="s1">&#39;centers&#39;</span><span class="p">:</span> <span class="n">centers</span><span class="p">}</span>
 </code></pre></div>
 </div>
-<p><span class="fixme" markdown="1">prevent code reformatting</span></p>
-<h2>Handling Databases</h2>
+<h2 id="plugin-db">Handling Databases</h2>
 <ul>
 <li>What if data is in a database?</li>
 <li>Pandas can read directly given a SQL query</li>
+<li>The simple query</li>
+</ul>
+<div class="code-sample lang-py" title="util.py">
+<div class="highlight"><pre><span></span><code><span class="c1"># Query to select all samples from database in normalized form.</span>
+<span class="n">Q_SAMPLES</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">select</span>
+<span class="s2">    surveys.site,</span>
+<span class="s2">    samples.lon,</span>
+<span class="s2">    samples.lat,</span>
+<span class="s2">    samples.reading</span>
+<span class="s2">from surveys join samples</span>
+<span class="s2">on surveys.label = samples.label</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</code></pre></div>
+</div>
+<ul>
+<li>The code</li>
 </ul>
 <div class="code-sample lang-py" title="plugin_sql.py">
-<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Load data from SQLite database using Pandas.&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">sqlite3</span>
-
-<span class="kn">import</span> <span class="nn">util</span>
-
-
-<span class="n">Q_CENTERS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">dbfile</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read tables and do calculations directly in SQL.&quot;&quot;&quot;</span>
+    <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbfile</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;combined&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">Q_SAMPLES</span><span class="p">,</span> <span class="n">con</span><span class="p">),</span> <span class="s1">&#39;centers&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">Q_CENTERS</span><span class="p">,</span> <span class="n">con</span><span class="p">)}</span>
+</code></pre></div>
+</div>
+<ul>
+<li>The more complex query to find the center</li>
+</ul>
+<div class="code-sample lang-py" title="plugin_sql.py">
+<div class="highlight"><pre><span></span><code><span class="n">Q_CENTERS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">select</span>
 <span class="s2">    surveys.site,</span>
 <span class="s2">    sum(samples.lon * samples.reading) / sum(samples.reading) as lon,</span>
@@ -229,22 +247,9 @@
 <span class="s2">on surveys.label = samples.label</span>
 <span class="s2">group by surveys.site</span>
 <span class="s2">&quot;&quot;&quot;</span>
-
-
-<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">dbfile</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read tables and do calculations directly in SQL.&quot;&quot;&quot;</span>
-    <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbfile</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;combined&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">Q_SAMPLES</span><span class="p">,</span> <span class="n">con</span><span class="p">),</span>
-        <span class="s2">&quot;centers&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">Q_CENTERS</span><span class="p">,</span> <span class="n">con</span><span class="p">),</span>
-    <span class="p">}</span>
 </code></pre></div>
 </div>
-<ul>
-<li>Sample query</li>
-</ul>
-<p><span class="fixme" markdown="1">need a way to include variable Q_SAMPLE</span></p>
-<h2>Object-Relational Mapper</h2>
+<h2 id="plugin-orm">Object-Relational Mapper</h2>
 <ul>
 <li>Use <a href="https://sqlmodel.tiangolo.com/">SQLModel</a> <a class="gl-ref" href="../glossary/#gl:orm" markdown="1">object-relational mapper</a> (ORM)<ul>
 <li>Define classes using <a class="gl-ref" href="../glossary/#gl:type_annotation" markdown="1">type annotations</a></li>
@@ -301,7 +306,10 @@
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;combined&#39;</span><span class="p">:</span> <span class="n">combined</span><span class="p">,</span> <span class="s1">&#39;centers&#39;</span><span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">centers_with_pandas</span><span class="p">(</span><span class="n">combined</span><span class="p">)}</span>
 </code></pre></div>
 </div>
-<p><span class="fixme" markdown="1">show how to calculate centers using aggregation in ORM as well</span></p>
+<h2 id="plugin-exercises">Exercises</h2>
+<ol>
+<li>Calculate centers using aggregation in ORM.</li>
+</ol>
     </main>
     <footer>
   <div class="row">

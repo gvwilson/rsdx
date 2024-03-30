@@ -2,6 +2,7 @@
 
 import pandas as pd
 
+# [query]
 # Query to select all samples from database in normalized form.
 Q_SAMPLES = """
 select
@@ -12,6 +13,7 @@ select
 from surveys join samples
 on surveys.label = samples.label
 """
+# [/query]
 
 
 def centers_with_pandas(combined):

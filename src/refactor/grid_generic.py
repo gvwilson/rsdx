@@ -1,5 +1,6 @@
 """Represent 2D grid."""
 
+# [main]
 from abc import ABC, abstractmethod
 
 
@@ -31,6 +32,7 @@ class GridGeneric(ABC):
     def depth(self):
         """Get depth of grid."""
         return self._depth
+# [/main]
 
     def adjacent(self, x, y):
         """Is (x, y) adjacent to a filled cell?"""

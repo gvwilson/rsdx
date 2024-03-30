@@ -105,7 +105,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 
 -   Run it on our files and check the results
 
-## Exercises
+## Exercises {: #parse-exercises}
 
 1.  Check that all rows of body are indented the same amount.
 

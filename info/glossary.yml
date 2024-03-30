@@ -1,0 +1,108 @@
+# 1
+
+# A
+
+- key: abc
+  en:
+    term: "abstract base class"
+    def: >
+      FIXME
+
+# B
+
+# C
+
+- key: cognitive_load
+  en:
+    term: "cognitive load"
+    def: >
+      The mental effort required to solve a problem.
+
+- key: contract
+  en:
+    term: "contract"
+    def: >
+      FIXME
+
+- key: cross_validation
+  en:
+    term: "cross validation"
+    def: >
+      FIXME
+
+# D
+
+# E
+
+# F
+
+# G
+
+# H
+
+# I
+
+- key: inv_perc
+  en:
+    term: "invasion percolation"
+    def: >
+      FIXME
+
+# J
+
+# K
+
+# L
+
+# M
+
+# N
+
+# O
+
+- key: orm
+  en:
+    term: "object-relational mapper"
+    acronym: ORM
+    def: >
+      FIXME
+
+# P
+
+- key: plugin_architecture
+  en:
+    term: "plugin architecture"
+    def: >
+      FIXME
+
+# Q
+
+# R
+
+- key: rng_seed
+  en:
+    term: "random number generation seed"
+    def: >
+      FIXME
+
+# S
+
+# T
+
+- key: type_annotation
+  en:
+    term: "type annotation"
+    def: >
+      FIXME
+
+# U
+
+# V
+
+# W
+
+# X
+
+# Y
+
+# Z

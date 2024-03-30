@@ -105,6 +105,35 @@ def fixme(pargs, kwargs, node):
     return f'<div class="fixme" markdown="1">\n{items}\n</div>'
 
 
+@shortcodes.register("glossary")
+def glossary(pargs, kwargs, node):
+    """Handle [% glossary %] shortcode."""
+    util.require(
+        (not pargs) and (not kwargs),
+        f"Bad 'bibliography' shortcode with {pargs} and {kwargs} in {node}",
+    )
+    lang = ark.site.config["lang"]
+    filepath = Path(ark.site.home(), "info", "glossary.yml")
+    glossary = yaml.safe_load(filepath.read_text()) or []
+
+    try:
+        glossary.sort(key=lambda x: x[lang]["term"].lower())
+    except KeyError as exc:
+        util.fail(f"Glossary entries missing key, term, or {lang}: {exc}.")
+
+    entries = "\n\n".join([_as_markdown(entry, lang) for entry in glossary])
+    return f'<dl class="glossary">\n{entries}\n</dl>'
+
+
+def _as_markdown(entry, lang):
+    """Convert a single glossary entry to Markdown."""
+    key = entry["key"]
+    term = util.markdownify(entry[lang]["term"])
+    acronym = f" ({entry[lang]['acronym']})" if "acronym" in entry[lang] else ""
+    defn = util.markdownify(entry[lang]["def"])
+    return f'<dt id="g:{key}">{term}{acronym}</dt><dd>{defn}</dd>'
+
+
 @shortcodes.register("g")
 def glossary_ref(pargs, kwargs, node):
     """Handle [% g key "text" %] glossary reference shortcode."""

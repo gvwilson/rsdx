@@ -3,8 +3,10 @@
 import random
 import sys
 
+# [import]
 from grid_list import GridList
 from grid_array import GridArray
+# [/import]
 
 
 def main():

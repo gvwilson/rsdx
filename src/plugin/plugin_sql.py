@@ -6,6 +6,7 @@ import sqlite3
 import util
 
 
+# [query]
 Q_CENTERS = """
 select
     surveys.site,
@@ -15,6 +16,7 @@ from surveys join samples
 on surveys.label = samples.label
 group by surveys.site
 """
+# [/query]
 
 
 def read_data(dbfile):

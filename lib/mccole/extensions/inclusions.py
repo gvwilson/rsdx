@@ -10,6 +10,12 @@ import shortcodes
 import util
 
 
+COMMENT = {
+    "py": "#",
+    "sql": "--",
+}
+
+
 class Match:
     """Represent a single match by kind and name."""
 
@@ -35,11 +41,16 @@ def inclusion(pargs, kwargs, node):
     name = pargs[0]
     path = Path(ark.site.config["src_dir"], *node.path) / name
     kind = path.suffix.lstrip(".")
+    indent = kwargs.get("indent", False)
     try:
         if not kwargs:
-            body = _include_whole_file(path)
+            body = _whole(path)
+        elif "pattern" in kwargs:
+            body = _match(path, kwargs["pattern"], indent)
+        elif "mark" in kwargs:
+            body = _extract(path, kwargs["mark"], indent)
         else:
-            body = _include_matching_portion(path, kwargs)
+            util.fail(f"Badly-formed inclusion for '{path}' in {node} with '{kwargs}'")
         body = f"```{kind}\n{body}\n```\n"
         cls = f'class="code-sample lang-{kind}"'
         return f'<div {cls} title="{name}" markdown="1">\n{body}</div>'
@@ -47,20 +58,25 @@ def inclusion(pargs, kwargs, node):
         util.fail(f"Unable to read inclusion '{path}' in {node}.")
 
 
-def _include_matching_portion(path, kwargs):
-    """Include matching portion of Python source file."""
-    util.require(
-        "pattern" in kwargs.keys(), f"Bad 'inc' shortcode: 'pattern' not in {kwargs}"
-    )
-    pattern = kwargs["pattern"]
-    indent = kwargs.get("indent", False)
-    return _match(path, pattern, indent)
-
-
-def _include_whole_file(path):
-    """Get an entire file."""
-    lines = path.read_text().split("\n")
-    return textwrap.dedent("\n".join(x.rstrip() for x in lines))
+def _extract(filepath, mark, indent):
+    """Extract portion of file in comment markers."""
+    if isinstance(filepath, str):
+        filepath = Path(filepath)
+    text = filepath.read_text()
+    suffix = filepath.suffix.lstrip(".")
+    if suffix in COMMENT:
+        comment = COMMENT[suffix]
+        before = f"{comment} [{mark}]"
+        after = f"{comment} [/{mark}]"
+        before_in = before in text
+        after_in = after in text
+        if before_in and after_in:
+            text = text.split(before)[1].split(after)[0]
+        elif before_in or after_in:
+            util.fail(
+                f"Mis-matched mark with '{mark}' in {filename} in {node.path}"
+            )
+    return text
 
 
 def _match(filepath, pattern, indent):
@@ -101,3 +117,9 @@ def _translate_pattern(pattern):
         return Match(lookup[cls], name)
 
     return [_translate_one(p) for p in pattern.split()]
+
+
+def _whole(path):
+    """Get an entire file."""
+    lines = path.read_text().split("\n")
+    return textwrap.dedent("\n".join(x.rstrip() for x in lines))

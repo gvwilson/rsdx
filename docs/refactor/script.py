@@ -4,8 +4,8 @@ import random
 import sys
 
 
-# Create a width X height grid.
 def make_grid(width, height, depth):
+    """Create a width X height grid."""
     grid = []
     for x in range(width):
         row = []
@@ -15,8 +15,8 @@ def make_grid(width, height, depth):
     return grid
 
 
-# Choose the next cell to fill in.
 def choose_cell(grid):
+    """Choose the next cell to fill in."""
     least, cx, cy = None, None, None
     for x in range(len(grid)):
         row = grid[x]
@@ -29,8 +29,8 @@ def choose_cell(grid):
     return cx, cy
 
 
-# Is (x, y) adjacent to a filled cell?
 def adjacent(grid, x, y):
+    """Is (x, y) adjacent to a filled cell?"""
     x_1, y_1 = x + 1, y + 1
     if (x > 0) and (grid[x - 1][y] == 0):
         return True
@@ -43,8 +43,8 @@ def adjacent(grid, x, y):
     return False
 
 
-# Is this cell on the border of the grid?
 def on_border(width, height, x, y):
+    """Is this cell on the border of the grid?"""
     if (x == 0) or (x == width - 1):
         return True
     if (y == 0) or (y == height - 1):
@@ -52,8 +52,8 @@ def on_border(width, height, x, y):
     return False
 
 
-# Show the result.
 def print_grid(grid, width, height, depth, seed, as_numbers=False):
+    """Show the result."""
     print(width, height, depth, seed)
     height = len(grid[0])
     for y in range(height - 1, -1, -1):
@@ -65,6 +65,7 @@ def print_grid(grid, width, height, depth, seed, as_numbers=False):
         sys.stdout.write("\n")
 
 
+# [main]
 # Grid size and range of fill values.
 width = int(sys.argv[1])
 height = int(sys.argv[2])
@@ -92,3 +93,4 @@ while True:
 
 # Show result.
 print_grid(grid, width, height, depth, seed)
+# [/main]

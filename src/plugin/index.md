@@ -8,7 +8,7 @@
 
 [%inc plugins.json %]
 
-## Generic Program
+## Generic Program {: #plugin-generic}
 
 -   Table structure
 
@@ -48,7 +48,7 @@
    alt="Geographical map of sample distributions around COW site."
 %]
 
-## Handling CSV
+## Handling CSV {: #plugin-csv}
 
 -   Plugin to handle CSV is the simplest
     -   Read all the files in the directory using Pandas
@@ -59,20 +59,23 @@
 
 [%inc util.py pattern=func:combine_with_pandas %]
 
-[%fixme "prevent code reformatting" %]
-
-## Handling Databases
+## Handling Databases {: #plugin-db}
 
 -   What if data is in a database?
 -   Pandas can read directly given a SQL query
+-   The simple query
 
-[%inc plugin_sql.py %]
+[%inc util.py mark=query %]
 
--   Sample query
+-   The code
 
-[%fixme "need a way to include variable Q_SAMPLE" %]
+[%inc plugin_sql.py pattern=func:read_data %]
 
-## Object-Relational Mapper
+-   The more complex query to find the center
+
+[%inc plugin_sql.py mark=query %]
+
+## Object-Relational Mapper {: #plugin-orm}
 
 -   Use [SQLModel][sqlmodel] [%g orm "object-relational mapper" %] (ORM)
     -   Define classes using [%g type_annotation "type annotations" %]
@@ -90,4 +93,6 @@
 
 [%inc plugin_sqlmodel.py pattern=func:read_data %]
 
-[%fixme "show how to calculate centers using aggregation in ORM as well" %]
+## Exercises {: #plugin-exercises}
+
+1.  Calculate centers using aggregation in ORM.
