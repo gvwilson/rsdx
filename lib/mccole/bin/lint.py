@@ -12,7 +12,7 @@ import yaml
 import util
 
 
-SVG_FONT = "Helvetica:12px"
+SVG_FONT = "Helvetica:14px"
 SVG_FONT_PAT = {
     "font-family": re.compile(r"\bfont-family:\s*(.+?);"),
     "font-size": re.compile(r"\bfont-size:\s*(.+?);"),
@@ -126,7 +126,7 @@ def _lint_svg_files(args, config, content):
 
     def _bad_font(n):
         return (n.attrs["font-family"] != "Helvetica") or (
-            not node.attrs.get("font-size", "").startswith("12")
+            not node.attrs.get("font-size", "").startswith("14")
         )
 
     sizes = defaultdict(set)
