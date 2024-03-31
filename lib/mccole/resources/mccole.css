@@ -4,6 +4,7 @@
 
 /* Variables */
 :root {
+    --faint-gray: #F0F0F0;
     --light-gray: #E8E8E8;
     --dark-gray: #D8D8D8;
 
@@ -34,6 +35,88 @@
     --small-spacing: 0.25rem;
     --medium-spacing: 0.5rem;
     --large-spacing: 1rem;
+
+    --logo-width: 30px;
+    --sidebar-width: 300px;
+    --body-width: 80rem;
+}
+
+/*
+ * One-column display with nav bar at the top.
+ */
+
+@media screen {
+  .sidebar {
+    left: 0;
+    top: 0;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background-color: var(--faint-gray);
+  }
+
+  /*
+   * Flex grid
+   */
+  .row {
+      width: 100%
+  }
+}
+
+/*
+ * If screen is wide enough,
+ * two-column display with nav bar on the left.
+ */
+
+@media screen and (min-width: 900px) {
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    width: var(--sidebar-width);
+    border-right: solid var(--dark-gray) var(--light-border);
+  }
+
+  .contents {
+    margin-left: var(--sidebar-width);
+  }
+
+  /*
+   * Flex grid
+   */
+  .row {
+      display: flex;
+      flex-flow: row wrap;
+  }
+}
+
+/*
+ * Hide things when printing.
+ */
+
+@media print {
+    :not(#printable *) {
+        visibility: hidden;
+    }
+    #printable * {
+        visibility: visible;
+    }
+    #printable {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+
+/*
+ * Off-page content for screen readers.
+ */
+.screen-reader-only {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }
 
 /* Overall appearance */
@@ -44,6 +127,10 @@ html {
 
 body {
     max-width: var(--page-width);
+}
+
+footer {
+    text-align: center;
 }
 
 /* Flex grid */
@@ -150,7 +237,8 @@ img.column {
 
 img.logo {
     float: left;
-    width: 60px;
+    width: 40px;
+    padding-right: 10px;
 }
 
 pre, img {

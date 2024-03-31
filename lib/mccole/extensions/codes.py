@@ -191,7 +191,7 @@ def summary(pargs, kwargs, node):
     )
     kind = kwargs["kind"]
     util.require(
-        kind in {"abstracts", "summary", "syllabus"},
+        kind in {"abstracts", "summary", "syllabus", "toc"},
         f"Unknown kind '{kind}' in summary shortcode",
     )
     with_links = kwargs.get("links", "") != "False"

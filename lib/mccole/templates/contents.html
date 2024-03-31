@@ -1,0 +1,25 @@
+<p>
+  <img src="@root/logo.svg" alt="site logo" class="logo" />
+  <a href="@root/">{{ site.title }}</a>
+</p>
+
+<div class="screen-reader-only">
+  <a href="#printable">Skip to content</a>
+</div>
+
+<ol type="1">
+  {% for slug in site.chapters %}
+  <li><a href="@root/{{slug}}">{{slug | part_title}}</a></li>
+  {% endfor %}
+</ol>
+<ol type="A">
+  {% for slug in site.appendices %}
+  <li><a href="@root/{{slug}}">{{slug | part_title}}</a></li>
+  {% endfor %}
+</ol>
+
+{% if site.archive %}
+<p><a href="@root/{{ site.archive }}" type="application/zip">download examples</a></p>
+{% endif %}
+
+<p><a href="{{ site.repo }}">GitHub repository</a></p>

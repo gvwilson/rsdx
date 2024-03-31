@@ -54,6 +54,8 @@ def fail(msg):
 
 def get_slug(node):
     """Get chapter-level slug of file."""
+    if isinstance(node, str):
+        return node
     if len(node.path) == 0:
         return ""
     if node.path[-1] == "slides":

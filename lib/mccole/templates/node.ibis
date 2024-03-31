@@ -2,10 +2,16 @@
 <html lang="en">
   {% include "head.html" %}
   <body>
-    <main data-slug="{{node | slug}}">
-      {% include "title.html" %}
-      {{ node.html }}
-    </main>
-    {% include "foot.html" %}
+    <div class="row">
+      <div class="sidebar">
+        {% include "contents.html" %}
+      </div>
+      <div id="printable" class="contents bordered">
+        <main data-slug="{{node | slug}}">
+          {% include "title.html" %}
+          {{ node.html }}
+        </main>
+      </div>
+    </div>
   </body>
 </html>
