@@ -132,6 +132,13 @@
 
 # S
 
+- key: spread
+  en:
+    term: spread
+    def: >
+      To automatically match the values from a list or dictionary supplied by the caller
+      to the parameters of a function.
+
 # T
 
 - key: type_annotation

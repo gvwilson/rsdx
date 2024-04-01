@@ -237,7 +237,7 @@ img.column {
 
 img.logo {
     float: left;
-    width: 40px;
+    width: var(--logo-width);
     padding-right: 10px;
 }
 

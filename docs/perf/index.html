@@ -126,10 +126,123 @@
 
 
           <ul>
-<li>Use <code>dataclasses</code> to create a <code>Params</code> class in <code>params_first.py</code>.</li>
-<li>Modify code in <code>invperc_first.py</code> to use these parameters.</li>
+<li><span class="bib-ref">[<a class="bib-ref" href="../bib/#Bentley1982">Bentley1982</a>]</span> changed how I see programming<ul>
+<li>Speed doesn&rsquo;t always matter, but when it does, it really does</li>
+<li>There are widely-useful techniques for improving performance (e.g., spending memory to save time)</li>
+<li><em>We can and should tackle this experimentally</em></li>
+<li>If &ldquo;software engineering&rdquo; means anything, it ought to mean this</li>
+</ul>
+</li>
+</ul>
+<h2 id="perf-repro">Reproducibility</h2>
+<ul>
+<li>Use <code>dataclasses</code> module to create a <code>Params</code> class in <code>params_single.py</code><ul>
+<li>Could use a dictionary or similar instead</li>
+<li>But this is a step toward something larger</li>
+</ul>
+</li>
 <li>Can now save parameters in version control.</li>
-<li>Name output file based on input parameters.</li>
+</ul>
+<div class="code-sample lang-py" title="params_single.py">
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ParamsSingle</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single set of invasion percolation parameters.&quot;&quot;&quot;</span>
+    <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Modify code in <code>invperc_single.py</code> to use these parameters</li>
+</ul>
+<div class="code-sample lang-py" title="invperc_single.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ParamsSingle</span><span class="p">)</span>
+    <span class="n">initialize_random</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">initialize_grid</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">num_filled</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">print_grid</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">num_filled</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Load parameters from JSON file<ul>
+<li>Could easily use YAML instead</li>
+<li><a class="gl-ref" href="../glossary/#gl:spread" markdown="1">Spread</a> values into dataclass constructor</li>
+</ul>
+</li>
+</ul>
+<div class="code-sample lang-py" title="invperc_util.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get parameters.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">d</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Name the output file based on input parameters<ul>
+<li>Would be nice if there was a standard way to embed parameters in the plot itself</li>
+</ul>
+</li>
+</ul>
+<h2 id="perf-perf">Performance</h2>
+<ul>
+<li>Application&rsquo;s performance usually depends on what exactly it&rsquo;s doing<ul>
+<li>So we <a class="gl-ref" href="../glossary/#gl:parameter_sweeping" markdown="1">sweep</a> the range of parameters to see how performance changes</li>
+</ul>
+</li>
+<li>Create another dataclass that stores multiple values for interesting parameters</li>
+</ul>
+<div class="code-sample lang-py" title="params_sweep.py">
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ParamsSweep</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A range of invasion percolation parameters.&quot;&quot;&quot;</span>
+    <span class="n">kind</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">depth</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">runs</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Then write a new <code>main</code> to try each combination of parameter values</li>
+</ul>
+<div class="code-sample lang-py" title="invperc_sweep.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ParamsSweep</span><span class="p">)</span>
+    <span class="n">initialize_random</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">generate_sweep</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">initialize_grid</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">t_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">num_filled</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
+        <span class="n">t_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_start</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record_result</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">num_filled</span><span class="p">,</span> <span class="n">t_elapsed</span><span class="p">))</span>
+    <span class="n">save_results</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Could generate a list of parameter combinations</li>
+<li>Instead, use a <a class="gl-ref" href="../glossary/#gl:generator" markdown="1">generator</a> to produce one at a time</li>
+</ul>
+<div class="code-sample lang-py" title="invperc_sweep.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">generate_sweep</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate next single parameter object.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">kind</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">depth</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">depth</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">runs</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">ParamsSingle</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Save results as CSV and plot</li>
 </ul>
 <figure id="perf_example">
 <img src="././k+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg" alt="Line graph showing that running time increases quadratically with grid size."/>
@@ -137,9 +250,50 @@
 </figure>
 
 <ul>
-<li>Profiling with <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> shows that we&rsquo;re spending most of our time in adjacency tests.</li>
-<li>Overall time is growing quadratically with grid size.</li>
+<li>NumPy array is <em>worse</em> than list-of-lists<ul>
+<li>We&rsquo;re constantly <a class="gl-ref" href="../glossary/#gl:boxing" markdown="1">boxing</a> and <a class="gl-ref" href="../glossary/#gl:unboxing" markdown="1">unboxing</a> values</li>
 </ul>
+</li>
+<li>More important: runtime is growing faster than linear<ul>
+<li>Which makes sense: we are searching N<sup>2</sup> cells each time we fill one</li>
+</ul>
+</li>
+</ul>
+<h2 id="perf-profile">Profiling</h2>
+<ul>
+<li>A <a class="gl-ref" href="../glossary/#gl:profiler" markdown="1">profiler</a> records how much time is spent on each line of code<ul>
+<li>Either by instrumenting it</li>
+<li>Or by sampling location periodically</li>
+</ul>
+</li>
+<li>Use Python&rsquo;s <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> module</li>
+</ul>
+<div class="code-sample lang-py" title="run_profile.py">
+<div class="highlight"><pre><span></span><code><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;invperc_single.py&quot;</span><span class="p">,</span> <span class="s2">&quot;profile.json&quot;</span><span class="p">]</span>
+<span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;main()&quot;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s2">&quot;tottime&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="code-sample lang-txt" title="profile_head.txt">
+<div class="highlight"><pre><span></span><code>         13885219 function calls in 3.169 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+  1794596    1.541    0.000    2.443    0.000 grid_generic.py:47(adjacent)
+  8601051    0.872    0.000    0.872    0.000 grid_list.py:20(__getitem__)
+      356    0.551    0.002    3.161    0.009 invperc_util.py:12(choose_cell)
+  1708120    0.101    0.000    0.101    0.000 grid_generic.py:39(height)
+  1731763    0.096    0.000    0.096    0.000 grid_generic.py:35(width)
+…more lines…
+</code></pre></div>
+</div>
+<ul>
+<li>We are spending most of our time in adjacency tests</li>
+<li>Most of which are re-checking things we knew before</li>
+<li>If we want to make this faster, this is what we need to fix</li>
+</ul>
+<h2 id="perf-exercises">Exercises</h2>
+<p><span class="fixme" markdown="1">add exercises for performance profiling</span></p>
         </main>
       </div>
     </div>

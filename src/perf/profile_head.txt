@@ -1,0 +1,11 @@
+         13885219 function calls in 3.169 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+  1794596    1.541    0.000    2.443    0.000 grid_generic.py:47(adjacent)
+  8601051    0.872    0.000    0.872    0.000 grid_list.py:20(__getitem__)
+      356    0.551    0.002    3.161    0.009 invperc_util.py:12(choose_cell)
+  1708120    0.101    0.000    0.101    0.000 grid_generic.py:39(height)
+  1731763    0.096    0.000    0.096    0.000 grid_generic.py:35(width)
+…more lines…

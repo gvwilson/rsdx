@@ -17,5 +17,7 @@ full:
 ## profile: run with profiling
 profile:
 	python run_profile.py > profile.txt
+	head -n 10 profile.txt > profile_head.txt
+	echo "…more lines…" >> profile_head.txt
 
 settings: _settings
