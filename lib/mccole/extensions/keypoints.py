@@ -18,7 +18,7 @@ def keypoints(node):
     )
     util.require(
         "syllabus" in metadata[node.slug],
-        f"No syllabus for {node.slug} in metadata",
+        f"No syllabus for {node.slug} in metadata {metadata[node.slug]}",
     )
     points = [util.markdownify(p) for p in metadata[node.slug]["syllabus"]]
     points = "\n".join([f"<li>{p}</li>" for p in points])

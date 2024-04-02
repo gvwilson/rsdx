@@ -25,13 +25,6 @@ def exit_build():
     _copy_files()
 
 
-@ark.filters.register(ark.filters.Filter.LOAD_NODE_FILE)
-def filter_files(value, filepath):
-    """Only process HTML and Markdown files."""
-    result = filepath.suffix in {".html", ".md"}
-    return result
-
-
 def _append_links():
     """Add links to node text."""
     util.ensure_links()
@@ -98,8 +91,8 @@ def _collect_shortcodes_terms(pargs, kwargs, extra):
     extra["terms"].append(pargs[0])
 
 
-# Visit each node, collecting data.
 def _collect_shortcodes_visitor(node, parser, collector):
+    """Visit each node, collecting data."""
     if (not node.slug) or (node.ext != "md"):
         return
 

@@ -37,7 +37,7 @@ appendices = [
     "colophon",
 ]
 
-# What to copy
+# Files to copy
 copy = [
     "*.out",
     "*.png",
@@ -46,35 +46,15 @@ copy = [
     "*.svg",
 ]
 
-# What not to copy
-exclude = copy + [
-    "*.css",
-    "*.csv",
-    "*.db",
-    "*.dvc",
-    "*.env",
-    "*.jinja",
-    "*.json",
-    "*.metaflow",
-    "*.mk",
-    "*.pdf",
-    "*.sql",
-    "*.tbl",
-    "*.txt",
-    "*.yml",
-    "*~",
-    ".#*",
-    ".coverage",
-    ".pytest_cache",
-    "CODE_OF_CONDUCT.md",
-    "DOCS.md",
-    "LICENSE.md",
-    "Makefile",
-    "README.md",
-    "__pycache__",
-    "htmlcov",
-    "pyproject.toml",
-    "requirements.txt",
+# Directories to skip
+exclude = [
+    "website/res",
+    "website/inc",
+    "website/lib",
+    "website/src",
+    "serve/static",
+    "serve/templates",
+    "package/invperc",
 ]
 
 # Theme information.

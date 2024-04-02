@@ -1,112 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="repo" content="https://github.com/gvwilson/rsdx">
-  <link rel="icon" type="image/x-icon" href="../favicon.ico">
-  <title>Research Software Design by Example: A Plugin Architecture</title>
-  <link rel="stylesheet" href="../tango.css">
-<link rel="stylesheet" href="../mccole.css">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../mccole.css" type="text/css">
+<title>Research Software Design by Example &middot; A Plugin Architecture</title>
 
-<link rel="stylesheet" href="../pages.css">
-
-
-  <script>
-  MathJax = {
-    tex: {
-      inlineMath: [['\\(', '\\)']]
-    }
-  };
-</script>
-<script
-  type="text/javascript"
-  id="MathJax-script"
-  async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
-
-  
-
-</head>
-
+  </head>
   <body>
-    <div class="row">
-      <div class="sidebar">
-        <p>
-  <img src="../logo.svg" alt="site logo" class="logo" />
-  <a href="../">Research Software Design by Example</a>
-</p>
+    <main>
+      <h1>A Plugin Architecture</h1>
 
-<div class="screen-reader-only">
-  <a href="#printable">Skip to content</a>
-</div>
-
-<ol type="1">
-  
-  <li><a href="../intro">Introduction</a></li>
-  
-  <li><a href="../parse">Parse Raw Data</a></li>
-  
-  <li><a href="../plugin">A Plugin Architecture</a></li>
-  
-  <li><a href="../refactor">Refactor</a></li>
-  
-  <li><a href="../test">Unit Tests</a></li>
-  
-  <li><a href="../perf">Measure Performance</a></li>
-  
-  <li><a href="../lazy">A Lazy Algorithm</a></li>
-  
-  <li><a href="../scale">Scale Up</a></li>
-  
-  <li><a href="../package">A Python Package</a></li>
-  
-  <li><a href="../mutate">Synthetic Data</a></li>
-  
-  <li><a href="../search">Search</a></li>
-  
-  <li><a href="../lims">Laboratory Information Management System</a></li>
-  
-  <li><a href="../website">A Static Web Site</a></li>
-  
-  <li><a href="../scrape">Scrape Web Data</a></li>
-  
-  <li><a href="../serve">A Web Service</a></li>
-  
-  <li><a href="../finale">Conclusion</a></li>
-  
-</ol>
-<ol type="A">
-  
-  <li><a href="../license">License</a></li>
-  
-  <li><a href="../bib">Bibliography</a></li>
-  
-  <li><a href="../conduct">Code of Conduct</a></li>
-  
-  <li><a href="../glossary">Glossary</a></li>
-  
-  <li><a href="../syllabus">Syllabus</a></li>
-  
-  <li><a href="../credits">Credits</a></li>
-  
-</ol>
-
-
-
-<p><a href="https://github.com/gvwilson/rsdx">GitHub repository</a></p>
-
-      </div>
-      <div id="printable" class="contents bordered">
-        <main data-slug="plugin">
-          <div class="row title">
-  <div class="col-12 center">
-    <h1>A Plugin Architecture</h1>
-  </div>
-</div>
-
-
-<div class="row notex">
+      <div class="row notex">
   <div class="col-1 left">
     <a href="../parse/">&lArr;</a>
   </div>
@@ -117,21 +23,23 @@
     <a href="../refactor/">&rArr;</a>
   </div>
 </div>
-<ul class="syllabus">
+
+      <ul class="keypoints">
 <li>Using a plugin architecture to load modules dynamically.</li>
 <li>Finding, installing, and figuring out how to use open source packages.</li>
-<li>Using <a href="https://geopy.readthedocs.io/"><code>geopy</code></a> to handle geocoded data.</li>
+<li>Use geopy to handle geocoded data.</li>
 <li>Plotting (and the challenge of testing visualization code).</li>
 <li>Connecting to a database from Python.</li>
 <li>Embedding SQL queries in Python and reading results.</li>
-<li>Creating classes with <a href="https://sqlmodel.tiangolo.com/">SQLModel</a> ORM to mirror database tables.</li>
+<li>Creating classes with SQLModel ORM to mirror database tables.</li>
 <li>Writing queries in Python rather than as embedded SQL strings.</li>
 <li>Cross-validating implementations.</li>
 <li>Big benefit of ORM is avoiding transposition errors with integer values.</li>
 </ul>
-
-
-          <ul>
+      <p class="terms">Terms Defined: 
+<a class="gl-ref" href="../glossary/#gl:contract" markdown="1">contract</a>, <a class="gl-ref" href="../glossary/#gl:cross_validation" markdown="1">cross validation</a>, <a class="gl-ref" href="../glossary/#gl:orm" markdown="1">object-relational mapper</a>, <a class="gl-ref" href="../glossary/#gl:plugin_architecture" markdown="1">plugin architecture</a>, <a class="gl-ref" href="../glossary/#gl:type_annotation" markdown="1">type annotation</a>
+</p>
+      <ul>
 <li>Research data may come from files, databases, websites, and many other sources</li>
 <li>Instead of adding code to a program to handle each one,
     use a <a class="gl-ref" href="../glossary/#gl:plugin_architecture" markdown="1">plugin architecture</a>
@@ -157,7 +65,7 @@
 </ul>
 <figure id="plugin_table_structure">
 <img src="./table_structure.svg" alt="Structure of survey tables"/>
-<figcaption markdown="1">Figure&nbsp;1: Survey table structure</figcaption>
+<figcaption>Figure&nbsp;3.1: Survey table structure</figcaption>
 </figure>
 
 <ul>
@@ -226,11 +134,11 @@
 </code></pre></div>
 </div>
 <ul>
-<li>Have one more function to generate a plot like <a class="fig-ref" href="#plugin-example">Figure&nbsp;2</a></li>
+<li>Have one more function to generate a plot like <a class="fig-ref" href="../plugin/#plugin-example">Figure&nbsp;3.2</a></li>
 </ul>
 <figure id="plugin-example">
 <img src="././COW.svg" alt="Geographical map of sample distributions around COW site."/>
-<figcaption markdown="1">Figure&nbsp;2: Sample distribution at COW site.</figcaption>
+<figcaption>Figure&nbsp;3.2: Sample distribution at COW site.</figcaption>
 </figure>
 
 <h2 id="plugin-csv">Handling CSV</h2>
@@ -372,8 +280,14 @@
 <ol>
 <li>Calculate centers using aggregation in ORM.</li>
 </ol>
-        </main>
-      </div>
-    </div>
+    </main>
+    <footer>
+  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
+  &middot;
+  <a href="https://github.com/gvwilson/rsdx">repository</a>
+  &middot;
+  <a href="../license/">license</a>
+</footer>
+
   </body>
 </html>
