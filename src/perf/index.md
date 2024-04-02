@@ -55,7 +55,7 @@
 -   NumPy array is *worse* than list-of-lists
     -   We're constantly [%g boxing "boxing" %] and [%g unboxing "unboxing" %] values
 -   More important: runtime is growing faster than linear
-    -   Which makes sense: we are searching N<sup>2</sup> cells each time we fill one
+    -   Which makes sense: we are searching \\( N^2 \\) cells each time we fill one
 
 ## Profiling {: #perf-profile}
 
