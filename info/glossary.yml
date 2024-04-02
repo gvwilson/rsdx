@@ -107,6 +107,12 @@
 
 # P
 
+- key: parameterize_test
+  en:
+    term: parameterize (a test)
+    def: >
+      FIXME
+
 - key: pass_test
   en:
     term: pass (result of test)
