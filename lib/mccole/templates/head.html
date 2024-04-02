@@ -1,10 +1,5 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="repo" content="{{site.repo}}">
-  <link rel="icon" type="image/x-icon" href="@root/favicon.ico">
-  <title>{{ site.title }}{% if node | not_root %}: {{ node | part_title }}{% endif %}</title>
-  {% include "css.html" %}
-  {% include "mathjax.html" %}
-  {% include "plausible.html" %}
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="@root/logo.svg">
+<link rel="stylesheet" href="@root/mccole.css" type="text/css">
+<title>{{ site.title }}{% if node.title %} &middot; {{ node.title }}{% endif %}</title>

@@ -1,12 +1,12 @@
 """Ark configuration file."""
-
 title = "Research Software Design by Example"
 slug = "rsdx"
-website = f"https://gvwilson.github.io/{slug}/"
 repo = f"https://github.com/gvwilson/{slug}"
-author = "Greg Wilson"
-
-debug = False
+author = {
+    "name": "Greg Wilson",
+    "email": "gvwilson@third-bit.com",
+    "site": "https://third-bit.com/",
+}
 lang = "en"
 
 chapters = [
@@ -33,14 +33,11 @@ appendices = [
     "bib",
     "conduct",
     "glossary",
-    "syllabus",
     "credits",
+    "colophon",
 ]
 
-contents = chapters + appendices
-
-theme = "mccole"
-
+# What to copy
 copy = [
     "*.out",
     "*.png",
@@ -49,6 +46,7 @@ copy = [
     "*.svg",
 ]
 
+# What not to copy
 exclude = copy + [
     "*.css",
     "*.csv",
@@ -79,10 +77,13 @@ exclude = copy + [
     "requirements.txt",
 ]
 
-lint = {
-    "disable_h2_id": ["@root", "conduct", "license"],
-}
+# Theme information.
+theme = "mccole"
+src_dir = "src"
+out_dir = "docs"
+extension = "/"
 
+# Enable various Markdown extensions.
 markdown_settings = {
     "extensions": [
         "markdown.extensions.extra",
@@ -91,18 +92,13 @@ markdown_settings = {
     ]
 }
 
-src_dir = "src"
-out_dir = "docs"
-
-extension = "/"
-
 # Display values for LaTeX generation.
 if __name__ == "__main__":
     import sys
 
     assert len(sys.argv) == 2, "Expect exactly one argument"
     if sys.argv[1] == "--order":
-        print(" ".join(contents))
+        print(" ".join(chapters + appendices))
     elif sys.argv[1] == "--slug":
         print(slug)
     elif sys.argv[1] == "--title":

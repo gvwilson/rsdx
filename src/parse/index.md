@@ -1,3 +1,12 @@
+---
+title: "Parse Raw Data"
+tagline: "Turning messy data files into something we can process more easily."
+syllabus:
+-   Writing command-line tools that respect Taschuk's Rules.
+-   Creating a data manifest (and why you want one).
+-   Using regular expressions if you have to, but an out-of-the-box parser if one is available.
+---
+
 -   We are studying the impact of a toxic waste leak on snails on Vancouver Island
 -   First step is to read data files with snail weight readings from four sample sites
 -   First file looks like this

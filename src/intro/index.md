@@ -1,23 +1,10 @@
 ---
-abstract: >
-    The best way to learn design is to study examples,
-    and the best examples are problems people already understand.
-    These lessons therefore build scale models
-    of programs that researchers write every day
-    to show how experienced software designers think.
-    Along the way,
-    they introduce some fundamental ideas
-    that many self-taught programmers haven't encountered.
-    The lessons assume readers can write small programs and want to write larger ones,
-    or are looking for material to use in software design classes that they teach.
+title: "Introduction"
+tagline: "An overview of where we're going and why."
 syllabus:
--   The complexity of a system increases more rapidly than its size.
--   The best way to learn design is to study examples,
-    and the best examples are problems people already understand.
--   These lessons assume readers can write small programs and want to write larger ones,
-    or are looking for material to use in software design classes that they teach.
--   All of the content is free to read and re-use under open licenses,
-    and all royalties from sales of this book will go to charity.
+-   Assume you know how to program.
+-   Want to learn how to design pieces of software that are reliable and reusable.
+-   Best way is through examples: principles don't make sense unless you know how to translate them into specifics.
 ---
 
 The best way to learn design in any field
