@@ -1,1 +1,5 @@
-[% rootpage LICENSE.md %]
+---
+title: "License"
+---
+
+[% rootfile "LICENSE.md" %]

@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="repo" content="https://github.com/gvwilson/rsdx">
-  <link rel="icon" type="image/x-icon" href="../favicon.ico">
-  <title>Research Software Design by Example: Unit Tests</title>
-  <link rel="stylesheet" href="../tango.css">
-<link rel="stylesheet" href="../mccole.css">
-
-<link rel="stylesheet" href="../pages.css">
-
-
-  <script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../mccole.css" type="text/css">
+<title>Research Software Design by Example &middot; Unit Tests</title>
+<script>
   MathJax = {
     tex: {
       inlineMath: [['\\(', '\\)']]
@@ -25,88 +19,15 @@
   async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 
-  
 
-</head>
-
+  </head>
   <body>
-    <div class="row">
-      <div class="sidebar">
-        <p>
-  <img src="../logo.svg" alt="site logo" class="logo" />
-  <a href="../">Research Software Design by Example</a>
-</p>
-
-<div class="screen-reader-only">
-  <a href="#printable">Skip to content</a>
-</div>
-
-<ol type="1">
-  
-  <li><a href="../intro">Introduction</a></li>
-  
-  <li><a href="../parse">Parse Raw Data</a></li>
-  
-  <li><a href="../plugin">A Plugin Architecture</a></li>
-  
-  <li><a href="../refactor">Refactor</a></li>
-  
-  <li><a href="../test">Unit Tests</a></li>
-  
-  <li><a href="../perf">Measure Performance</a></li>
-  
-  <li><a href="../lazy">A Lazy Algorithm</a></li>
-  
-  <li><a href="../scale">Scale Up</a></li>
-  
-  <li><a href="../package">A Python Package</a></li>
-  
-  <li><a href="../mutate">Synthetic Data</a></li>
-  
-  <li><a href="../search">Search</a></li>
-  
-  <li><a href="../lims">Laboratory Information Management System</a></li>
-  
-  <li><a href="../website">A Static Web Site</a></li>
-  
-  <li><a href="../scrape">Scrape Web Data</a></li>
-  
-  <li><a href="../serve">A Web Service</a></li>
-  
-  <li><a href="../finale">Conclusion</a></li>
-  
-</ol>
-<ol type="A">
-  
-  <li><a href="../license">License</a></li>
-  
-  <li><a href="../bib">Bibliography</a></li>
-  
-  <li><a href="../conduct">Code of Conduct</a></li>
-  
-  <li><a href="../glossary">Glossary</a></li>
-  
-  <li><a href="../syllabus">Syllabus</a></li>
-  
-  <li><a href="../credits">Credits</a></li>
-  
-</ol>
+    <main>
+      
+<h1>Unit Tests</h1>
 
 
-
-<p><a href="https://github.com/gvwilson/rsdx">GitHub repository</a></p>
-
-      </div>
-      <div id="printable" class="contents bordered">
-        <main data-slug="test">
-          <div class="row title">
-  <div class="col-12 center">
-    <h1>Unit Tests</h1>
-  </div>
-</div>
-
-
-<div class="row notex">
+      <div class="row notex">
   <div class="col-1 left">
     <a href="../refactor/">&lArr;</a>
   </div>
@@ -117,25 +38,27 @@
     <a href="../perf/">&rArr;</a>
   </div>
 </div>
-<ul class="syllabus">
-<li>A quick review of <a href="https://docs.pytest.org/">`pytest</a>.</li>
+
+      <ul class="keypoints">
+<li>A quick review of pytest.</li>
 <li>Deciding what tests to write.</li>
 <li>Creating and using mock objects.</li>
 <li>Making &ldquo;random&rdquo; reproducible.</li>
-<li>Using <a href="https://coverage.readthedocs.io/">coverage</a> to determine what is and isn&rsquo;t being tested.</li>
+<li>Using coverage to determine what is and isn&rsquo;t being tested.</li>
 </ul>
-
-
-          <h2 id="test-start">False Starts</h2>
+      <p class="terms">Terms defined: 
+<a class="gl-ref" href="../glossary/#gl:mock_object" markdown="1">mock object</a>, <a class="gl-ref" href="../glossary/#gl:parameterize_test" markdown="1">parameterize (a test)</a>
+</p>
+      <h2 id="test-start">False Starts</h2>
 <ul>
-<li>Use <code>GridList</code> and <code>GridArray</code> from Chapter&nbsp;4</li>
+<li>Use <code>GridList</code> and <code>GridArray</code> from <a href="../refactor/">Chapter&nbsp;4</a></li>
 <li><code>test_grid_start.py</code> tests that grids can be initialized<ul>
 <li>But we don&rsquo;t know if we&rsquo;re getting the actual values from the grid because they&rsquo;re random</li>
 <li>And repeating the test for different classes is error-prone as well as annoying</li>
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="test_grid_start.py">
+<div class="code-sample language-py" title="test_grid_start.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_array_constructed_correctly</span><span class="p">():</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">GridArray</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
@@ -146,7 +69,7 @@
             <span class="k">assert</span> <span class="n">g</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
 </code></pre></div>
 </div>
-<div class="code-sample lang-py" title="test_grid_start.py">
+<div class="code-sample language-py" title="test_grid_start.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_list_constructed_correctly</span><span class="p">():</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">GridList</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
@@ -163,7 +86,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="grid_list_randomizer.py">
+<div class="code-sample language-py" title="grid_list_randomizer.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">rand</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
@@ -179,7 +102,7 @@
 <ul>
 <li>Test looks better</li>
 </ul>
-<div class="code-sample lang-py" title="test_grid_randomizer.py">
+<div class="code-sample language-py" title="test_grid_randomizer.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_list_with_randomizer_function</span><span class="p">():</span>
 
     <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">):</span>
@@ -204,7 +127,7 @@
 <li><code>test_grid_mock.py</code> replaces the random number generator with a <a class="gl-ref" href="../glossary/#gl:mock_object" markdown="1">mock object</a>
     without modifying the grid class</li>
 </ul>
-<div class="code-sample lang-py" title="test_grid_mock.py">
+<div class="code-sample language-py" title="test_grid_mock.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_list_patching_randomization</span><span class="p">():</span>
     <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s1">&#39;random.randint&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="mi">12345</span><span class="p">):</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">GridList</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -219,7 +142,7 @@
 <ul>
 <li><code>test_grid_parametrize.py</code> <a class="gl-ref" href="../glossary/#gl:parameterize_test" markdown="1">parameterizes</a> the test across both classes</li>
 </ul>
-<div class="code-sample lang-py" title="test_grid_parametrize.py">
+<div class="code-sample language-py" title="test_grid_parametrize.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;cls&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">GridArray</span><span class="p">,</span> <span class="n">GridList</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">test_grid_list_parameterizing_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s1">&#39;random.randint&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="mi">12345</span><span class="p">):</span>
@@ -236,7 +159,7 @@
 <ul>
 <li><code>grid_filled.py</code> defines <code>GridFilled</code>, which we can populate with whatever data we want</li>
 </ul>
-<div class="code-sample lang-py" title="grid_filled.py">
+<div class="code-sample language-py" title="grid_filled.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="n">width</span>
@@ -248,7 +171,7 @@
 <ul>
 <li><code>test_grid_filled.py</code> starts by testing that filling from specified works correctly</li>
 </ul>
-<div class="code-sample lang-py" title="test_grid_filled.py">
+<div class="code-sample language-py" title="test_grid_filled.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_explicit_filling_fills_correctly</span><span class="p">():</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">GridFilled</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
@@ -261,7 +184,7 @@
 <ul>
 <li>Add test for filling grid by creating deterministic filling path</li>
 </ul>
-<div class="code-sample lang-py" title="test_grid_filled.py">
+<div class="code-sample language-py" title="test_grid_filled.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_filling_with_straight_run_to_edge</span><span class="p">():</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">GridFilled</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
     <span class="n">g</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
@@ -279,8 +202,16 @@
 <ol>
 <li>Refactor grid classes so that we have a patchable method for filling initial values.</li>
 </ol>
-        </main>
-      </div>
-    </div>
+    </main>
+    <footer>
+  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
+  &middot;
+  <a href="../">home</a>
+  &middot;
+  <a href="https://github.com/gvwilson/rsdx">repository</a>
+  &middot;
+  <a href="../license/">license</a>
+</footer>
+
   </body>
 </html>

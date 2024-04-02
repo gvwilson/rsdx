@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="repo" content="https://github.com/gvwilson/rsdx">
-  <link rel="icon" type="image/x-icon" href="../favicon.ico">
-  <title>Research Software Design by Example: Parse Raw Data</title>
-  <link rel="stylesheet" href="../tango.css">
-<link rel="stylesheet" href="../mccole.css">
-
-<link rel="stylesheet" href="../pages.css">
-
-
-  <script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../mccole.css" type="text/css">
+<title>Research Software Design by Example &middot; Parse Raw Data</title>
+<script>
   MathJax = {
     tex: {
       inlineMath: [['\\(', '\\)']]
@@ -25,88 +19,15 @@
   async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 
-  
 
-</head>
-
+  </head>
   <body>
-    <div class="row">
-      <div class="sidebar">
-        <p>
-  <img src="../logo.svg" alt="site logo" class="logo" />
-  <a href="../">Research Software Design by Example</a>
-</p>
-
-<div class="screen-reader-only">
-  <a href="#printable">Skip to content</a>
-</div>
-
-<ol type="1">
-  
-  <li><a href="../intro">Introduction</a></li>
-  
-  <li><a href="../parse">Parse Raw Data</a></li>
-  
-  <li><a href="../plugin">A Plugin Architecture</a></li>
-  
-  <li><a href="../refactor">Refactor</a></li>
-  
-  <li><a href="../test">Unit Tests</a></li>
-  
-  <li><a href="../perf">Measure Performance</a></li>
-  
-  <li><a href="../lazy">A Lazy Algorithm</a></li>
-  
-  <li><a href="../scale">Scale Up</a></li>
-  
-  <li><a href="../package">A Python Package</a></li>
-  
-  <li><a href="../mutate">Synthetic Data</a></li>
-  
-  <li><a href="../search">Search</a></li>
-  
-  <li><a href="../lims">Laboratory Information Management System</a></li>
-  
-  <li><a href="../website">A Static Web Site</a></li>
-  
-  <li><a href="../scrape">Scrape Web Data</a></li>
-  
-  <li><a href="../serve">A Web Service</a></li>
-  
-  <li><a href="../finale">Conclusion</a></li>
-  
-</ol>
-<ol type="A">
-  
-  <li><a href="../license">License</a></li>
-  
-  <li><a href="../bib">Bibliography</a></li>
-  
-  <li><a href="../conduct">Code of Conduct</a></li>
-  
-  <li><a href="../glossary">Glossary</a></li>
-  
-  <li><a href="../syllabus">Syllabus</a></li>
-  
-  <li><a href="../credits">Credits</a></li>
-  
-</ol>
+    <main>
+      
+<h1>Parse Raw Data</h1>
 
 
-
-<p><a href="https://github.com/gvwilson/rsdx">GitHub repository</a></p>
-
-      </div>
-      <div id="printable" class="contents bordered">
-        <main data-slug="parse">
-          <div class="row title">
-  <div class="col-12 center">
-    <h1>Parse Raw Data</h1>
-  </div>
-</div>
-
-
-<div class="row notex">
+      <div class="row notex">
   <div class="col-1 left">
     <a href="../intro/">&lArr;</a>
   </div>
@@ -117,14 +38,14 @@
     <a href="../plugin/">&rArr;</a>
   </div>
 </div>
-<ul class="syllabus">
-<li>Writing command-line tools that respect <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005412">Taschuk&rsquo;s Rules</a>.</li>
+
+      <ul class="keypoints">
+<li>Writing command-line tools that respect Taschuk&rsquo;s Rules.</li>
 <li>Creating a data manifest (and why you want one).</li>
 <li>Using regular expressions if you have to, but an out-of-the-box parser if one is available.</li>
 </ul>
-
-
-          <ul>
+      
+      <ul>
 <li>We are studying the impact of a toxic waste leak on snails on Vancouver Island</li>
 <li>First step is to read data files with snail weight readings from four sample sites</li>
 <li>First file looks like this</li>
@@ -151,7 +72,7 @@ GBY,2023-05-08,-124.45828,48.92066,32.6
 </li>
 <li>That seems simple</li>
 </ul>
-<div class="code-sample lang-py" title="naive.py">
+<div class="code-sample language-py" title="naive.py">
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
@@ -159,7 +80,7 @@ GBY,2023-05-08,-124.45828,48.92066,32.6
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<div class="code-sample lang-out" title="naive_GBY.out">
+<div class="code-sample language-out" title="naive_GBY.out">
 <div class="highlight"><pre><span></span><code>  site        date        lon       lat  reading
 0  GBY  2023-05-08 -124.45981  48.92163     26.7
 1  GBY  2023-05-08 -124.45932  48.92091     70.9
@@ -174,7 +95,7 @@ GBY,2023-05-08,-124.45828,48.92066,32.6
 <ul>
 <li>Try it on the next file</li>
 </ul>
-<div class="code-sample lang-out" title="naive_YOU.out">
+<div class="code-sample language-out" title="naive_YOU.out">
 <div class="highlight"><pre><span></span><code>    Unnamed: 0 site        date        lon       lat  reading
 0          NaN  YOU  2023-05-01 -124.19699  48.87250     96.6
 1          NaN  YOU  2023-05-01 -124.19707  48.87281     70.0
@@ -224,7 +145,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="parse.py">
+<div class="code-sample language-py" title="parse.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
@@ -243,7 +164,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <ul>
 <li>Use <code>argparse</code> module to parse arguments</li>
 </ul>
-<div class="code-sample lang-py" title="parse.py">
+<div class="code-sample language-py" title="parse.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments.&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
@@ -261,7 +182,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="parse.py">
+<div class="code-sample language-py" title="parse.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load messy data.&quot;&quot;&quot;</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">reader</span><span class="p">)]</span>
@@ -282,7 +203,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </li>
 <li>Use an enumeration to keep track of these</li>
 </ul>
-<div class="code-sample lang-py" title="parse.py">
+<div class="code-sample language-py" title="parse.py">
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">State</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumerate possible parser states.&quot;&quot;&quot;</span>
     <span class="n">HEADER</span> <span class="o">=</span> <span class="s1">&#39;header&#39;</span>
@@ -301,7 +222,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <li>A structured way to manage complexity as parsing gets more complicated</li>
 <li>Could just use strings instead of an enum, but the latter is easy to keep track of</li>
 </ul>
-<div class="code-sample lang-py" title="parse.py">
+<div class="code-sample language-py" title="parse.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Split header from body.&quot;&quot;&quot;</span>
     <span class="n">header</span> <span class="o">=</span> <span class="p">[]</span>
@@ -336,7 +257,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="parse.py">
+<div class="code-sample language-py" title="parse.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove leading spaces from rows if necessary.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
@@ -349,7 +270,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </ul>
 <figure id="parse_call_tree">
 <img src="./call_tree.svg" alt="Call tree of completed parser"/>
-<figcaption markdown="1">Figure&nbsp;1: Parser call tree</figcaption>
+<figcaption>Figure&nbsp;2.1: Parser call tree</figcaption>
 </figure>
 
 <ul>
@@ -385,8 +306,16 @@ COW,2023-04-27,-124.045,48.8216,81.7
     How would you use this in testing?</p>
 </li>
 </ol>
-        </main>
-      </div>
-    </div>
+    </main>
+    <footer>
+  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
+  &middot;
+  <a href="../">home</a>
+  &middot;
+  <a href="https://github.com/gvwilson/rsdx">repository</a>
+  &middot;
+  <a href="../license/">license</a>
+</footer>
+
   </body>
 </html>

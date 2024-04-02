@@ -1,3 +1,13 @@
+---
+title: "Measure Performance"
+tagline: "Compare the performance of grid implementations empirically."
+syllabus:
+-   Introduce Python type annotations.
+-   Define dataclasses to represent parameters for profiling runs.
+-   Using cProfile to determine which parts are expensive.
+-   Tuning code does not solve algorithmic problems like quadratic growth in runtime.
+---
+
 -   [%b Bentley1982 %] changed how I see programming
     -   Speed doesn't always matter, but when it does, it really does
     -   There are widely-useful techniques for improving performance (e.g., spending memory to save time)

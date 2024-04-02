@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="repo" content="https://github.com/gvwilson/rsdx">
-  <link rel="icon" type="image/x-icon" href="../favicon.ico">
-  <title>Research Software Design by Example: A Web Service</title>
-  <link rel="stylesheet" href="../tango.css">
-<link rel="stylesheet" href="../mccole.css">
-
-<link rel="stylesheet" href="../pages.css">
-
-
-  <script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../mccole.css" type="text/css">
+<title>Research Software Design by Example &middot; A Web Service</title>
+<script>
   MathJax = {
     tex: {
       inlineMath: [['\\(', '\\)']]
@@ -25,88 +19,15 @@
   async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 
-  
 
-</head>
-
+  </head>
   <body>
-    <div class="row">
-      <div class="sidebar">
-        <p>
-  <img src="../logo.svg" alt="site logo" class="logo" />
-  <a href="../">Research Software Design by Example</a>
-</p>
-
-<div class="screen-reader-only">
-  <a href="#printable">Skip to content</a>
-</div>
-
-<ol type="1">
-  
-  <li><a href="../intro">Introduction</a></li>
-  
-  <li><a href="../parse">Parse Raw Data</a></li>
-  
-  <li><a href="../plugin">A Plugin Architecture</a></li>
-  
-  <li><a href="../refactor">Refactor</a></li>
-  
-  <li><a href="../test">Unit Tests</a></li>
-  
-  <li><a href="../perf">Measure Performance</a></li>
-  
-  <li><a href="../lazy">A Lazy Algorithm</a></li>
-  
-  <li><a href="../scale">Scale Up</a></li>
-  
-  <li><a href="../package">A Python Package</a></li>
-  
-  <li><a href="../mutate">Synthetic Data</a></li>
-  
-  <li><a href="../search">Search</a></li>
-  
-  <li><a href="../lims">Laboratory Information Management System</a></li>
-  
-  <li><a href="../website">A Static Web Site</a></li>
-  
-  <li><a href="../scrape">Scrape Web Data</a></li>
-  
-  <li><a href="../serve">A Web Service</a></li>
-  
-  <li><a href="../finale">Conclusion</a></li>
-  
-</ol>
-<ol type="A">
-  
-  <li><a href="../license">License</a></li>
-  
-  <li><a href="../bib">Bibliography</a></li>
-  
-  <li><a href="../conduct">Code of Conduct</a></li>
-  
-  <li><a href="../glossary">Glossary</a></li>
-  
-  <li><a href="../syllabus">Syllabus</a></li>
-  
-  <li><a href="../credits">Credits</a></li>
-  
-</ol>
+    <main>
+      
+<h1>A Web Service</h1>
 
 
-
-<p><a href="https://github.com/gvwilson/rsdx">GitHub repository</a></p>
-
-      </div>
-      <div id="printable" class="contents bordered">
-        <main data-slug="serve">
-          <div class="row title">
-  <div class="col-12 center">
-    <h1>A Web Service</h1>
-  </div>
-</div>
-
-
-<div class="row notex">
+      <div class="row notex">
   <div class="col-1 left">
     <a href="../scrape/">&lArr;</a>
   </div>
@@ -117,18 +38,26 @@
     <a href="../finale/">&rArr;</a>
   </div>
 </div>
-<ul class="syllabus">
+
+      <ul class="keypoints">
 <li>Routing HTTP requests to functions.</li>
 <li>Separating routing from model.</li>
-<li>Creating HTML pages from <a href="https://jinja.palletsprojects.com/">Jinja</a> templates.</li>
+<li>Creating HTML pages from Jinja templates.</li>
 <li>Serving static files (and what that means).</li>
 <li>The difference between data as HTML and data for machine consumption.</li>
 </ul>
+      
+      <p class="fixme">FIXME: Need to talk about authentication.</p>
+    </main>
+    <footer>
+  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
+  &middot;
+  <a href="../">home</a>
+  &middot;
+  <a href="https://github.com/gvwilson/rsdx">repository</a>
+  &middot;
+  <a href="../license/">license</a>
+</footer>
 
-
-          <p><span class="fixme" markdown="1">Need to talk about authentication.</span></p>
-        </main>
-      </div>
-    </div>
   </body>
 </html>

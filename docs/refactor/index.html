@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="repo" content="https://github.com/gvwilson/rsdx">
-  <link rel="icon" type="image/x-icon" href="../favicon.ico">
-  <title>Research Software Design by Example: Refactor</title>
-  <link rel="stylesheet" href="../tango.css">
-<link rel="stylesheet" href="../mccole.css">
-
-<link rel="stylesheet" href="../pages.css">
-
-
-  <script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../mccole.css" type="text/css">
+<title>Research Software Design by Example &middot; Refactor</title>
+<script>
   MathJax = {
     tex: {
       inlineMath: [['\\(', '\\)']]
@@ -25,88 +19,15 @@
   async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 
-  
 
-</head>
-
+  </head>
   <body>
-    <div class="row">
-      <div class="sidebar">
-        <p>
-  <img src="../logo.svg" alt="site logo" class="logo" />
-  <a href="../">Research Software Design by Example</a>
-</p>
-
-<div class="screen-reader-only">
-  <a href="#printable">Skip to content</a>
-</div>
-
-<ol type="1">
-  
-  <li><a href="../intro">Introduction</a></li>
-  
-  <li><a href="../parse">Parse Raw Data</a></li>
-  
-  <li><a href="../plugin">A Plugin Architecture</a></li>
-  
-  <li><a href="../refactor">Refactor</a></li>
-  
-  <li><a href="../test">Unit Tests</a></li>
-  
-  <li><a href="../perf">Measure Performance</a></li>
-  
-  <li><a href="../lazy">A Lazy Algorithm</a></li>
-  
-  <li><a href="../scale">Scale Up</a></li>
-  
-  <li><a href="../package">A Python Package</a></li>
-  
-  <li><a href="../mutate">Synthetic Data</a></li>
-  
-  <li><a href="../search">Search</a></li>
-  
-  <li><a href="../lims">Laboratory Information Management System</a></li>
-  
-  <li><a href="../website">A Static Web Site</a></li>
-  
-  <li><a href="../scrape">Scrape Web Data</a></li>
-  
-  <li><a href="../serve">A Web Service</a></li>
-  
-  <li><a href="../finale">Conclusion</a></li>
-  
-</ol>
-<ol type="A">
-  
-  <li><a href="../license">License</a></li>
-  
-  <li><a href="../bib">Bibliography</a></li>
-  
-  <li><a href="../conduct">Code of Conduct</a></li>
-  
-  <li><a href="../glossary">Glossary</a></li>
-  
-  <li><a href="../syllabus">Syllabus</a></li>
-  
-  <li><a href="../credits">Credits</a></li>
-  
-</ol>
+    <main>
+      
+<h1>Refactor</h1>
 
 
-
-<p><a href="https://github.com/gvwilson/rsdx">GitHub repository</a></p>
-
-      </div>
-      <div id="printable" class="contents bordered">
-        <main data-slug="refactor">
-          <div class="row title">
-  <div class="col-12 center">
-    <h1>Refactor</h1>
-  </div>
-</div>
-
-
-<div class="row notex">
+      <div class="row notex">
   <div class="col-1 left">
     <a href="../plugin/">&lArr;</a>
   </div>
@@ -117,15 +38,17 @@
     <a href="../test/">&rArr;</a>
   </div>
 </div>
-<ul class="syllabus">
+
+      <ul class="keypoints">
 <li>Break code into comprehensible chunks.</li>
 <li>Create classes and class hierarchies.</li>
 <li>Write docstrings and generating documentation pages.</li>
 <li>Validate implementations against one another.</li>
 </ul>
-
-
-          <ul>
+      <p class="terms">Terms defined: 
+<a class="gl-ref" href="../glossary/#gl:abc" markdown="1">abstract base class</a>, <a class="gl-ref" href="../glossary/#gl:cross_validation" markdown="1">cross validation</a>, <a class="gl-ref" href="../glossary/#gl:inv_perc" markdown="1">invasion percolation</a>, <a class="gl-ref" href="../glossary/#gl:rng_seed" markdown="1">random number generation seed</a>
+</p>
+      <ul>
 <li>Goal is to refactor a program that (kind of) works
     to create something we can do more work with</li>
 <li>Original problem is <a class="gl-ref" href="../glossary/#gl:inv_perc" markdown="1">invasion percolation</a><ul>
@@ -149,7 +72,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="script.py">
+<div class="code-sample language-py" title="script.py">
 <div class="highlight"><pre><span></span><code><span class="c1"># Grid size and range of fill values.</span>
 <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -185,7 +108,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="script.py">
+<div class="code-sample language-py" title="script.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_grid</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a width X height grid.&quot;&quot;&quot;</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="p">[]</span>
@@ -200,7 +123,7 @@
 <ul>
 <li>Choose the next cell to fill in by sweeping the whole grid</li>
 </ul>
-<div class="code-sample lang-py" title="script.py">
+<div class="code-sample language-py" title="script.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">choose_cell</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Choose the next cell to fill in.&quot;&quot;&quot;</span>
     <span class="n">least</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -218,7 +141,7 @@
 <ul>
 <li>Relies on another function to test adjacency</li>
 </ul>
-<div class="code-sample lang-py" title="script.py">
+<div class="code-sample language-py" title="script.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">adjacent</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Is (x, y) adjacent to a filled cell?&quot;&quot;&quot;</span>
     <span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -236,7 +159,7 @@
 <ul>
 <li>We also need to test if we&rsquo;re on the border</li>
 </ul>
-<div class="code-sample lang-py" title="script.py">
+<div class="code-sample language-py" title="script.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_border</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Is this cell on the border of the grid?&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">==</span> <span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
@@ -249,7 +172,7 @@
 <ul>
 <li>And finally, show the result</li>
 </ul>
-<div class="code-sample lang-py" title="script.py">
+<div class="code-sample language-py" title="script.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">as_numbers</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the result.&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
@@ -273,7 +196,7 @@
 <ul>
 <li>Main function</li>
 </ul>
-<div class="code-sample lang-py" title="invperc.py">
+<div class="code-sample language-py" title="invperc.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">kind</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">seed</span> <span class="o">=</span> <span class="n">setup</span><span class="p">()</span>
@@ -288,7 +211,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="invperc.py">
+<div class="code-sample language-py" title="invperc.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get parameters.&quot;&quot;&quot;</span>
     <span class="n">kind</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -306,7 +229,7 @@
 <ul>
 <li>We&rsquo;re going to build (at least) two grid classes, so import both here</li>
 </ul>
-<div class="code-sample lang-py" title="invperc.py">
+<div class="code-sample language-py" title="invperc.py">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">grid_list</span> <span class="kn">import</span> <span class="n">GridList</span>
 <span class="kn">from</span> <span class="nn">grid_array</span> <span class="kn">import</span> <span class="n">GridArray</span>
 </code></pre></div>
@@ -317,7 +240,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="invperc.py">
+<div class="code-sample language-py" title="invperc.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">initialize_grid</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Prepare grid for simulation.&quot;&quot;&quot;</span>
     <span class="n">lookup</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;list&#39;</span><span class="p">:</span> <span class="n">GridList</span><span class="p">,</span> <span class="s1">&#39;array&#39;</span><span class="p">:</span> <span class="n">GridArray</span><span class="p">}</span>
@@ -330,7 +253,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="invperc.py">
+<div class="code-sample language-py" title="invperc.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_grid</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the result.&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">grid</span><span class="o">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">grid</span><span class="o">.</span><span class="n">depth</span><span class="p">(),</span> <span class="n">seed</span><span class="p">)</span>
@@ -353,7 +276,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="grid_generic.py">
+<div class="code-sample language-py" title="grid_generic.py">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 
 
@@ -394,7 +317,7 @@
 </li>
 <li>Filling</li>
 </ul>
-<div class="code-sample lang-py" title="grid_generic.py">
+<div class="code-sample language-py" title="grid_generic.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill grid one cell at a time.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -408,7 +331,7 @@
 <ul>
 <li>Choose the next cell:</li>
 </ul>
-<div class="code-sample lang-py" title="grid_generic.py">
+<div class="code-sample language-py" title="grid_generic.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">choose_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Choose the next cell to fill.&quot;&quot;&quot;</span>
     <span class="n">least</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -425,7 +348,7 @@
 <ul>
 <li>Adjacency test</li>
 </ul>
-<div class="code-sample lang-py" title="grid_generic.py">
+<div class="code-sample language-py" title="grid_generic.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">adjacent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Is (x, y) adjacent to a filled cell?&quot;&quot;&quot;</span>
     <span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -443,7 +366,7 @@
 <ul>
 <li>Border test</li>
 </ul>
-<div class="code-sample lang-py" title="grid_generic.py">
+<div class="code-sample language-py" title="grid_generic.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_border</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Is this cell on the border of the grid?&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
@@ -456,7 +379,7 @@
 <ul>
 <li>Now implement a grid that uses list-of-lists like before</li>
 </ul>
-<div class="code-sample lang-py" title="grid_list.py">
+<div class="code-sample language-py" title="grid_list.py">
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GridList</span><span class="p">(</span><span class="n">GridGeneric</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represent grid as list of lists.&quot;&quot;&quot;</span>
 
@@ -484,7 +407,7 @@
 <ul>
 <li>And another that uses a NumPy array</li>
 </ul>
-<div class="code-sample lang-py" title="grid_array.py">
+<div class="code-sample language-py" title="grid_array.py">
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GridArray</span><span class="p">(</span><span class="n">GridGeneric</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represent grid as NumPy array.&quot;&quot;&quot;</span>
 
@@ -512,8 +435,16 @@
 </li>
 <li>Allows <a class="gl-ref" href="../glossary/#gl:cross_validation" markdown="1">cross-validation</a> of implementations</li>
 </ul>
-        </main>
-      </div>
-    </div>
+    </main>
+    <footer>
+  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
+  &middot;
+  <a href="../">home</a>
+  &middot;
+  <a href="https://github.com/gvwilson/rsdx">repository</a>
+  &middot;
+  <a href="../license/">license</a>
+</footer>
+
   </body>
 </html>

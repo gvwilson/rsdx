@@ -1,3 +1,14 @@
+---
+title: "Unit Tests"
+tagline: "Use mocks to test programs that rely on pseudo-randomness."
+syllabus:
+-   A quick review of pytest.
+-   Deciding what tests to write.
+-   Creating and using mock objects.
+-   Making "random" reproducible.
+-   Using coverage to determine what is and isn't being tested.
+---
+
 ## False Starts {: #test-start}
 
 -   Use `GridList` and `GridArray` from [%x refactor %]

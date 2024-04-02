@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="repo" content="https://github.com/gvwilson/rsdx">
-  <link rel="icon" type="image/x-icon" href="../favicon.ico">
-  <title>Research Software Design by Example: Introduction</title>
-  <link rel="stylesheet" href="../tango.css">
-<link rel="stylesheet" href="../mccole.css">
-
-<link rel="stylesheet" href="../pages.css">
-
-
-  <script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../mccole.css" type="text/css">
+<title>Research Software Design by Example &middot; Introduction</title>
+<script>
   MathJax = {
     tex: {
       inlineMath: [['\\(', '\\)']]
@@ -25,88 +19,15 @@
   async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 
-  
 
-</head>
-
+  </head>
   <body>
-    <div class="row">
-      <div class="sidebar">
-        <p>
-  <img src="../logo.svg" alt="site logo" class="logo" />
-  <a href="../">Research Software Design by Example</a>
-</p>
-
-<div class="screen-reader-only">
-  <a href="#printable">Skip to content</a>
-</div>
-
-<ol type="1">
-  
-  <li><a href="../intro">Introduction</a></li>
-  
-  <li><a href="../parse">Parse Raw Data</a></li>
-  
-  <li><a href="../plugin">A Plugin Architecture</a></li>
-  
-  <li><a href="../refactor">Refactor</a></li>
-  
-  <li><a href="../test">Unit Tests</a></li>
-  
-  <li><a href="../perf">Measure Performance</a></li>
-  
-  <li><a href="../lazy">A Lazy Algorithm</a></li>
-  
-  <li><a href="../scale">Scale Up</a></li>
-  
-  <li><a href="../package">A Python Package</a></li>
-  
-  <li><a href="../mutate">Synthetic Data</a></li>
-  
-  <li><a href="../search">Search</a></li>
-  
-  <li><a href="../lims">Laboratory Information Management System</a></li>
-  
-  <li><a href="../website">A Static Web Site</a></li>
-  
-  <li><a href="../scrape">Scrape Web Data</a></li>
-  
-  <li><a href="../serve">A Web Service</a></li>
-  
-  <li><a href="../finale">Conclusion</a></li>
-  
-</ol>
-<ol type="A">
-  
-  <li><a href="../license">License</a></li>
-  
-  <li><a href="../bib">Bibliography</a></li>
-  
-  <li><a href="../conduct">Code of Conduct</a></li>
-  
-  <li><a href="../glossary">Glossary</a></li>
-  
-  <li><a href="../syllabus">Syllabus</a></li>
-  
-  <li><a href="../credits">Credits</a></li>
-  
-</ol>
+    <main>
+      
+<h1>Introduction</h1>
 
 
-
-<p><a href="https://github.com/gvwilson/rsdx">GitHub repository</a></p>
-
-      </div>
-      <div id="printable" class="contents bordered">
-        <main data-slug="intro">
-          <div class="row title">
-  <div class="col-12 center">
-    <h1>Introduction</h1>
-  </div>
-</div>
-
-
-<div class="row notex">
+      <div class="row notex">
   <div class="col-1 left">
     
   </div>
@@ -117,14 +38,16 @@
     <a href="../parse/">&rArr;</a>
   </div>
 </div>
-<ul class="syllabus">
+
+      <ul class="keypoints">
 <li>Assume you know how to program.</li>
 <li>Want to learn how to design pieces of software that are reliable and reusable.</li>
 <li>Best way is through examples: principles don&rsquo;t make sense unless you know how to translate them into specifics.</li>
 </ul>
-
-
-          <p>The best way to learn design in any field
+      <p class="terms">Terms defined: 
+<a class="gl-ref" href="../glossary/#gl:cognitive_load" markdown="1">cognitive load</a>
+</p>
+      <p>The best way to learn design in any field
 is to study examples <span class="bib-ref">[<a class="bib-ref" href="../bib/#Schon1984">Schon1984</a>, <a class="bib-ref" href="../bib/#Petre2016">Petre2016</a>]</span>,
 and the most approachable examples are based on
 problems that learners are already familiar with.
@@ -183,7 +106,7 @@ and starting points for course projects.</em></p>
 First,
 as the number of components in a system grows,
 the complexity of the system increases rapidly
-(<a class="fig-ref" href="#intro-complexity">Figure&nbsp;1</a>).
+(<a class="fig-ref" href="../intro/#intro-complexity">Figure&nbsp;1.1</a>).
 However,
 the number of things we can hold in working memory at any time
 is fixed and fairly small <span class="bib-ref">[<a class="bib-ref" href="../bib/#Hermans2021">Hermans2021</a>]</span>.
@@ -194,7 +117,7 @@ Figuring out what those pieces and interactions should be
 is the core of what we call &ldquo;design&rdquo;.</p>
 <figure id="intro-complexity">
 <img src="./complexity.svg" alt="Complexity and size"/>
-<figcaption markdown="1">Figure&nbsp;1: How complexity grows with size.</figcaption>
+<figcaption>Figure&nbsp;1.1: How complexity grows with size.</figcaption>
 </figure>
 
 <p>Second,
@@ -208,7 +131,7 @@ we incur a similar load translating functions of functions
 into actual operations on actual data.</p>
 <p>More experienced programmers are more capable at both ends of the curve,
 but that&rsquo;s not the only thing that changes.
-If a novice&rsquo;s comprehension curve looks like the lower one in <a class="fig-ref" href="#intro-comprehension">Figure&nbsp;2</a>,
+If a novice&rsquo;s comprehension curve looks like the lower one in <a class="fig-ref" href="../intro/#intro-comprehension">Figure&nbsp;1.2</a>,
 then an expert&rsquo;s looks like the upper one.
 Experts don&rsquo;t just understand more at all levels of abstraction;
 their <em>preferred</em> level has also shifted
@@ -222,7 +145,7 @@ will almost certainly be different from the code that
 an expert can understand most quickly.</p>
 <figure id="intro-comprehension">
 <img src="./comprehension.svg" alt="Comprehension curves"/>
-<figcaption markdown="1">Figure&nbsp;2: Novice and expert comprehension curves.</figcaption>
+<figcaption>Figure&nbsp;1.2: Novice and expert comprehension curves.</figcaption>
 </figure>
 
 <p>Our third big idea is testing research applications is hard
@@ -235,13 +158,13 @@ if we think about how we&rsquo;re going to check the code as we design it,
 we can make it as trustworthy as a physical experiment.</p>
 <h2 id="intro-layout">Formatting</h2>
 <p>We display Python source code like this:</p>
-<div class="code-sample lang-py" title="python_sample.py">
+<div class="code-sample language-py" title="python_sample.py">
 <div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="s2">&quot;example&quot;</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <p class="continue">and Unix shell commands like this:</p>
-<div class="code-sample lang-sh" title="shell_sample.sh">
+<div class="code-sample language-sh" title="shell_sample.sh">
 <div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span>filename<span class="w"> </span><span class="k">in</span><span class="w"> </span>*.dat
 <span class="k">do</span>
 <span class="w">    </span>cut<span class="w"> </span>-d<span class="w"> </span>,<span class="w"> </span>-f<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="nv">$filename</span>
@@ -249,13 +172,13 @@ we can make it as trustworthy as a physical experiment.</p>
 </code></pre></div>
 </div>
 <p class="continue">Data files and program output are shown like this:</p>
-<div class="code-sample lang-yml" title="data_sample.yml">
+<div class="code-sample language-yml" title="data_sample.yml">
 <div class="highlight"><pre><span></span><code>- name: read
   params:
   - sample_data.csv
 </code></pre></div>
 </div>
-<div class="code-sample lang-out" title="output_sample.out">
+<div class="code-sample language-out" title="output_sample.out">
 <div class="highlight"><pre><span></span><code>alpha
 beta
 gamma
@@ -274,8 +197,8 @@ but the empty parentheses makes it hard to tell
 whether we&rsquo;re talking about the function itself
 or a call to the function with no parameters.</p>
 <h2 id="intro-use">Usage</h2>
-<p>The source for this book is available in <a href="https://github.com/gvwilson/rsdx/">our Git repository</a>
-and all of it can be read on <a href="https://third-bit.com/rsdx/">our website</a>.
+<p>The source for this book is available in <a href="https://github.com/gvwilson/rsdx">our Git repository</a>
+and all of it can be read on <a href="https://gvwilson.github.io/rsdx/">our website</a>.
 All of the written material in this book
 is licensed under the <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons - Attribution - NonCommercial 4.0 International license</a>
 (CC-BY-NC-4.0),
@@ -287,14 +210,14 @@ if you want to sell copies or make money from this material in any other way,
 you must <a href="mailto:gvwilson@third-bit.com">contact us</a> and obtain permission first.
 The second license allows you to use and remix the software on this site
 provided you do not violate international agreements governing human rights;
-please see Appendix&nbsp;A for details.</p>
+please see <a href="../license/">Appendix&nbsp;A</a> for details.</p>
 <p>If you would like to improve what we have,
 add new material,
 or ask questions,
-please file an issue in <a href="https://github.com/gvwilson/rsdx/">our GitHub repository</a>
-or <a href="mailto:gvwilson@third-bit.com">send an email</a>.
+please <a href="https://github.com/gvwilson/rsdx">file an issue</a>
+or <a href="gvwilson@third-bit.com">email us</a>.
 All contributors are required to abide by our Code of Conduct
-(Appendix&nbsp;C).</p>
+(<a href="../conduct/">Appendix&nbsp;B</a>).</p>
 <h2 id="intro-acknowledgments">Acknowledgments</h2>
 <p>Like <span class="bib-ref">[<a class="bib-ref" href="../bib/#Wilson2022">Wilson2022</a>]</span> and <span class="bib-ref">[<a class="bib-ref" href="../bib/#Wilson2022">Wilson2022</a>]</span>,
 this book was inspired by <span class="bib-ref">[<a class="bib-ref" href="../bib/#Kamin1990">Kamin1990</a>, <a class="bib-ref" href="../bib/#Kernighan1979">Kernighan1979</a>, <a class="bib-ref" href="../bib/#Kernighan1981">Kernighan1981</a>, <a class="bib-ref" href="../bib/#Kernighan1983">Kernighan1983</a>, <a class="bib-ref" href="../bib/#Kernighan1988">Kernighan1988</a>, <a class="bib-ref" href="../bib/#Oram2007">Oram2007</a>, <a class="bib-ref" href="../bib/#Wirth1976">Wirth1976</a>]</span> and by:</p>
@@ -306,7 +229,8 @@ this book was inspired by <span class="bib-ref">[<a class="bib-ref" href="../bib
 <li>everyone who helped write <span class="bib-ref">[<a class="bib-ref" href="../bib/#Irving2021">Irving2021</a>]</span>
     or ever contributed to a <a href="https://carpentries.org/">Carpentries</a> lesson.</li>
 </ul>
-<p><span class="fixme" markdown="1">add thanks</span></p>
+<p class="fixme">FIXME: add thanks</p>
+
 <p>I am also grateful to Shashi Kumar for help with LaTeX,
 and to the creators of
 <a href="https://glosario.carpentries.org/">Glosario</a>,
@@ -316,15 +240,23 @@ and to the creators of
 <a href="https://pip.pypa.io/">pip</a>,
 <a href="https://www.python.org/">Python</a>,
 <a href="https://docs.astral.sh/ruff/">Ruff</a>,
-<a href="https://wave.webaim.org/">WAVE</a>,
+<a href="https://wave.webaim.org/">WAVE</a>[webaim_wave],
 and many other open source tools:
 if we all give a little,
 we all get a lot.</p>
 <p>All royalties from this book will go to the <a href="https://www.reddoorshelter.ca/">Red Door Family Shelter</a> in Toronto.</p>
 <h2 id="intro-exercises">Exercises</h2>
-<p><span class="fixme" markdown="1">fill in exercises for introduction</span></p>
-        </main>
-      </div>
-    </div>
+<p class="fixme">FIXME: fill in exercises for introduction</p>
+    </main>
+    <footer>
+  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
+  &middot;
+  <a href="../">home</a>
+  &middot;
+  <a href="https://github.com/gvwilson/rsdx">repository</a>
+  &middot;
+  <a href="../license/">license</a>
+</footer>
+
   </body>
 </html>

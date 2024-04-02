@@ -1,3 +1,12 @@
+---
+title: "A Lazy Algorithm"
+tagline: "Create a lazy implementation of invasion percolation that's much faster."
+syllabus:
+-   Estimating algorithm performance with big-oh.
+-   Extending a class hierarchy to accommodate new features.
+-   Adapting tools written earlier to make all of this simpler to run, test, and document.
+---
+
 -   Start with the punchline and work backward
 -   The bottom lines in this graph show the performance we can get by changing our implementation of invasion percolation
 

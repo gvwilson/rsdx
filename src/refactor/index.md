@@ -1,3 +1,13 @@
+---
+title: "Refactor"
+tagline: "Refactor a student-quality script that models the spread of pollution."
+syllabus:
+-   Break code into comprehensible chunks.
+-   Create classes and class hierarchies.
+-   Write docstrings and generating documentation pages.
+-   Validate implementations against one another.
+---
+
 -   Goal is to refactor a program that (kind of) works
     to create something we can do more work with
 -   Original problem is [%g inv_perc "invasion percolation" %]

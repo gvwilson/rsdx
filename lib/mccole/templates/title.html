@@ -1,20 +1,12 @@
-<div class="row title">
-  <div class="col-12 center">
-    <h1>{% if node | is_root %}{{ site.title }}{% else %}{{ node | part_title }}{% endif %}</h1>
-  </div>
-</div>
-
-{% if node | is_chapter %}
 <div class="row notex">
-  <div class="col-1 left">
-    {{node | link_prev }}
-  </div>
+  <div class="col-1"></div>
   <div class="col-10 center">
-    <span class="tagline">{{ node | part_tag }}</span>
+    {% if node.title %}
+      <h1>{{ node.title }}</h1>
+    {% else %}
+      <h1>{{ site.title }}</h1>
+      {% if site.subtitle %}<p class="subtitle">{{ site.subtitle }}</p>{% endif %}
+    {% endif %}
   </div>
-  <div class="col-1 right">
-    {{node | link_next }}
-  </div>
+  <div class="col-1"></div>
 </div>
-{{ node | syllabus }}
-{% endif %}

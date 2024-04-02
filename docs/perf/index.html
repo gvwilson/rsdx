@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="repo" content="https://github.com/gvwilson/rsdx">
-  <link rel="icon" type="image/x-icon" href="../favicon.ico">
-  <title>Research Software Design by Example: Measure Performance</title>
-  <link rel="stylesheet" href="../tango.css">
-<link rel="stylesheet" href="../mccole.css">
-
-<link rel="stylesheet" href="../pages.css">
-
-
-  <script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../mccole.css" type="text/css">
+<title>Research Software Design by Example &middot; Measure Performance</title>
+<script>
   MathJax = {
     tex: {
       inlineMath: [['\\(', '\\)']]
@@ -25,88 +19,15 @@
   async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 
-  
 
-</head>
-
+  </head>
   <body>
-    <div class="row">
-      <div class="sidebar">
-        <p>
-  <img src="../logo.svg" alt="site logo" class="logo" />
-  <a href="../">Research Software Design by Example</a>
-</p>
-
-<div class="screen-reader-only">
-  <a href="#printable">Skip to content</a>
-</div>
-
-<ol type="1">
-  
-  <li><a href="../intro">Introduction</a></li>
-  
-  <li><a href="../parse">Parse Raw Data</a></li>
-  
-  <li><a href="../plugin">A Plugin Architecture</a></li>
-  
-  <li><a href="../refactor">Refactor</a></li>
-  
-  <li><a href="../test">Unit Tests</a></li>
-  
-  <li><a href="../perf">Measure Performance</a></li>
-  
-  <li><a href="../lazy">A Lazy Algorithm</a></li>
-  
-  <li><a href="../scale">Scale Up</a></li>
-  
-  <li><a href="../package">A Python Package</a></li>
-  
-  <li><a href="../mutate">Synthetic Data</a></li>
-  
-  <li><a href="../search">Search</a></li>
-  
-  <li><a href="../lims">Laboratory Information Management System</a></li>
-  
-  <li><a href="../website">A Static Web Site</a></li>
-  
-  <li><a href="../scrape">Scrape Web Data</a></li>
-  
-  <li><a href="../serve">A Web Service</a></li>
-  
-  <li><a href="../finale">Conclusion</a></li>
-  
-</ol>
-<ol type="A">
-  
-  <li><a href="../license">License</a></li>
-  
-  <li><a href="../bib">Bibliography</a></li>
-  
-  <li><a href="../conduct">Code of Conduct</a></li>
-  
-  <li><a href="../glossary">Glossary</a></li>
-  
-  <li><a href="../syllabus">Syllabus</a></li>
-  
-  <li><a href="../credits">Credits</a></li>
-  
-</ol>
+    <main>
+      
+<h1>Measure Performance</h1>
 
 
-
-<p><a href="https://github.com/gvwilson/rsdx">GitHub repository</a></p>
-
-      </div>
-      <div id="printable" class="contents bordered">
-        <main data-slug="perf">
-          <div class="row title">
-  <div class="col-12 center">
-    <h1>Measure Performance</h1>
-  </div>
-</div>
-
-
-<div class="row notex">
+      <div class="row notex">
   <div class="col-1 left">
     <a href="../test/">&lArr;</a>
   </div>
@@ -117,15 +38,17 @@
     <a href="../lazy/">&rArr;</a>
   </div>
 </div>
-<ul class="syllabus">
+
+      <ul class="keypoints">
 <li>Introduce Python type annotations.</li>
-<li>Define <a href="https://docs.python.org/3/library/dataclasses.html">dataclasses</a> to represent parameters for profiling runs.</li>
-<li>Using <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> to determine which parts are expensive.</li>
+<li>Define dataclasses to represent parameters for profiling runs.</li>
+<li>Using cProfile to determine which parts are expensive.</li>
 <li>Tuning code does not solve algorithmic problems like quadratic growth in runtime.</li>
 </ul>
-
-
-          <ul>
+      <p class="terms">Terms defined: 
+<a class="gl-ref" href="../glossary/#gl:boxing" markdown="1">boxing (a value)</a>, <a class="gl-ref" href="../glossary/#gl:generator" markdown="1">generator</a>, <a class="gl-ref" href="../glossary/#gl:parameter_sweeping" markdown="1">parameter sweeping</a>, <a class="gl-ref" href="../glossary/#gl:profiler" markdown="1">profiler</a>, <a class="gl-ref" href="../glossary/#gl:spread" markdown="1">spread</a>, <a class="gl-ref" href="../glossary/#gl:unboxing" markdown="1">unboxing (a value)</a>
+</p>
+      <ul>
 <li><span class="bib-ref">[<a class="bib-ref" href="../bib/#Bentley1982">Bentley1982</a>]</span> changed how I see programming<ul>
 <li>Speed doesn&rsquo;t always matter, but when it does, it really does</li>
 <li>There are widely-useful techniques for improving performance (e.g., spending memory to save time)</li>
@@ -143,7 +66,7 @@
 </li>
 <li>Can now save parameters in version control.</li>
 </ul>
-<div class="code-sample lang-py" title="params_single.py">
+<div class="code-sample language-py" title="params_single.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ParamsSingle</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A single set of invasion percolation parameters.&quot;&quot;&quot;</span>
@@ -157,7 +80,7 @@
 <ul>
 <li>Modify code in <code>invperc_single.py</code> to use these parameters</li>
 </ul>
-<div class="code-sample lang-py" title="invperc_single.py">
+<div class="code-sample language-py" title="invperc_single.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ParamsSingle</span><span class="p">)</span>
@@ -175,7 +98,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample lang-py" title="invperc_util.py">
+<div class="code-sample language-py" title="invperc_util.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get parameters.&quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
@@ -197,7 +120,7 @@
 </li>
 <li>Create another dataclass that stores multiple values for interesting parameters</li>
 </ul>
-<div class="code-sample lang-py" title="params_sweep.py">
+<div class="code-sample language-py" title="params_sweep.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ParamsSweep</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A range of invasion percolation parameters.&quot;&quot;&quot;</span>
@@ -211,7 +134,7 @@
 <ul>
 <li>Then write a new <code>main</code> to try each combination of parameter values</li>
 </ul>
-<div class="code-sample lang-py" title="invperc_sweep.py">
+<div class="code-sample language-py" title="invperc_sweep.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ParamsSweep</span><span class="p">)</span>
@@ -231,7 +154,7 @@
 <li>Could generate a list of parameter combinations</li>
 <li>Instead, use a <a class="gl-ref" href="../glossary/#gl:generator" markdown="1">generator</a> to produce one at a time</li>
 </ul>
-<div class="code-sample lang-py" title="invperc_sweep.py">
+<div class="code-sample language-py" title="invperc_sweep.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">generate_sweep</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate next single parameter object.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">kind</span><span class="p">:</span>
@@ -246,7 +169,7 @@
 </ul>
 <figure id="perf_example">
 <img src="././k+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg" alt="Line graph showing that running time increases quadratically with grid size."/>
-<figcaption markdown="1">Figure&nbsp;1: Running times for various depths and sizes.</figcaption>
+<figcaption>Figure&nbsp;6.1: Running times for various depths and sizes.</figcaption>
 </figure>
 
 <ul>
@@ -268,12 +191,12 @@
 </li>
 <li>Use Python&rsquo;s <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> module</li>
 </ul>
-<div class="code-sample lang-py" title="run_profile.py">
+<div class="code-sample language-py" title="run_profile.py">
 <div class="highlight"><pre><span></span><code><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;invperc_single.py&quot;</span><span class="p">,</span> <span class="s2">&quot;profile.json&quot;</span><span class="p">]</span>
 <span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;main()&quot;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s2">&quot;tottime&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<div class="code-sample lang-txt" title="profile_head.txt">
+<div class="code-sample language-txt" title="profile_head.txt">
 <div class="highlight"><pre><span></span><code>         13885219 function calls in 3.169 seconds
 
    Ordered by: internal time
@@ -293,9 +216,17 @@
 <li>If we want to make this faster, this is what we need to fix</li>
 </ul>
 <h2 id="perf-exercises">Exercises</h2>
-<p><span class="fixme" markdown="1">add exercises for performance profiling</span></p>
-        </main>
-      </div>
-    </div>
+<p class="fixme">FIXME: add exercises for performance profiling</p>
+    </main>
+    <footer>
+  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
+  &middot;
+  <a href="../">home</a>
+  &middot;
+  <a href="https://github.com/gvwilson/rsdx">repository</a>
+  &middot;
+  <a href="../license/">license</a>
+</footer>
+
   </body>
 </html>

@@ -1,1 +1,10 @@
+---
+title: "Synthetic Data"
+tagline: "Analyze snail genomes to see if a single mutation accounts for size differences."
+syllabus:
+-   Use a statistical model of single nucleotide polymorphisms (SNPs) to synthesize genomic data.
+-   Use another model to combine that data with geocoded samples to generate snail sizes.
+-   Build a program to analyze and visualize the synthetic data to test the analysis pipeline.
+---
+
 [%fixme "write points for mutation" %]

@@ -1,4 +1,4 @@
-include lib/mccole/info/mccole.mk
+include lib/mccole/mccole.mk
 
 # Directories
 BIN := bin

@@ -1,23 +1,10 @@
 ---
-abstract: >
-    The best way to learn design is to study examples,
-    and the best examples are problems people already understand.
-    These lessons therefore build scale models
-    of programs that researchers write every day
-    to show how experienced software designers think.
-    Along the way,
-    they introduce some fundamental ideas
-    that many self-taught programmers haven't encountered.
-    The lessons assume readers can write small programs and want to write larger ones,
-    or are looking for material to use in software design classes that they teach.
+title: "Introduction"
+tagline: "An overview of where we're going and why."
 syllabus:
--   The complexity of a system increases more rapidly than its size.
--   The best way to learn design is to study examples,
-    and the best examples are problems people already understand.
--   These lessons assume readers can write small programs and want to write larger ones,
-    or are looking for material to use in software design classes that they teach.
--   All of the content is free to read and re-use under open licenses,
-    and all royalties from sales of this book will go to charity.
+-   Assume you know how to program.
+-   Want to learn how to design pieces of software that are reliable and reusable.
+-   "Best way is through examples: principles don't make sense unless you know how to translate them into specifics."
 ---
 
 The best way to learn design in any field
@@ -170,8 +157,8 @@ or a call to the function with no parameters.
 
 ## Usage {: #intro-use}
 
-The source for this book is available in [our Git repository][book_repo]
-and all of it can be read on [our website][book_site].
+The source for this book is available in <a href="[% config repo %]">our Git repository</a>
+and all of it can be read on <a href="[% config site %]">our website</a>.
 All of the written material in this book
 is licensed under the [Creative Commons - Attribution - NonCommercial 4.0 International license][cc_by_nc]
 (CC-BY-NC-4.0),
@@ -180,7 +167,7 @@ The first license allows you to use and remix this material for noncommercial pu
 as-is or in adapted form,
 provided you cite its original source;
 if you want to sell copies or make money from this material in any other way,
-you must [contact us][email] and obtain permission first.
+you must <a href="mailto:[% config author.email %]">contact us</a> and obtain permission first.
 The second license allows you to use and remix the software on this site
 provided you do not violate international agreements governing human rights;
 please see [%x license %] for details.
@@ -188,8 +175,8 @@ please see [%x license %] for details.
 If you would like to improve what we have,
 add new material,
 or ask questions,
-please file an issue in [our GitHub repository][book_repo]
-or [send an email][email].
+please <a href="[% config repo %]">file an issue</a>
+or <a href="[% config author.email %]">email us</a>.
 All contributors are required to abide by our Code of Conduct
 ([%x conduct %]).
 

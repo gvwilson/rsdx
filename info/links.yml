@@ -1,13 +1,3 @@
-# configuration
-
-- key: config_website
-  url: "https://gvwilson.github.io/rsdx/"
-  en: "Website"
-
-- key: config_repo
-  url: "https://github.com/gvwilson/rsdx"
-  en: "GitHub repo"
-
 # A
 
 - key: aosa
@@ -18,15 +8,11 @@
   url: https://www.dmulholl.com/docs/ark/main/
   en: "Ark"
 
+- key: "atkinson"
+  url: "https://brailleinstitute.org/freefont"
+  title: "Atkinson Hyperlegible font"
+
 # B
-
-- key: book_repo
-  url: "https://github.com/gvwilson/rsdx/"
-  en: "'Research Software Design by Example' repository"
-
-- key: book_site
-  url: "https://third-bit.com/rsdx/"
-  en: "'Research Software Design by Example' website"
 
 - key: bs
   url: "https://beautiful-soup-4.readthedocs.io/"
@@ -54,10 +40,6 @@
   url: "https://creativecommons.org/licenses/by-nc/4.0/"
   en: CC-BY-NC License
 
-- key: contact_email
-  url: "mailto:gvwilson@third-bit.com"
-  en: "Contact email"
-
 - key: coverage
   url: "https://coverage.readthedocs.io/"
   en: "Python coverage module"
@@ -68,6 +50,10 @@
   url: "https://docs.python.org/3/library/dataclasses.html"
   en: "Python dataclasses module"
 
+- key: "draw_io"
+  url: "https://www.drawio.com/"
+  title: "draw.io"
+
 - key: dvc
   url: "https://dvc.org/"
   en: "DVC"
@@ -77,10 +63,6 @@
 - key: eln
   url: "https://en.wikipedia.org/wiki/Electronic_lab_notebook"
   en: "Electronic Lab Notebook"
-
-- key: email
-  url: "mailto:gvwilson@third-bit.com"
-  en: "Contact address"
 
 - key: evans_julia
   url: "https://jvns.ca/"
@@ -98,6 +80,10 @@
 
 # G
 
+- key: "ghp"
+  url: "https://pages.github.com/"
+  title: "GitHub Pages"
+
 - key: git
   url: "https://git-scm.com/"
   en: "Git"
@@ -114,11 +100,11 @@
   url: "https://www.gnu.org/software/make/"
   en: "GNU Make"
 
-- key: gvwilson
-  url: "https://third-bit.com/"
-  en: "Greg Wilson"
-
 # H
+
+- key: "highlight_css"
+  url: "https://numist.github.io/highlight-css/"
+  title: "highlight-css"
 
 - key: hippocratic_license
   url: "https://firstdonoharm.dev/"
@@ -156,6 +142,10 @@
 
 # N
 
+- key: navarro_danielle
+  url: "https://art.djnavarro.net/"
+  title: "Danielle Navarro"
+
 # O
 
 # P
@@ -163,6 +153,10 @@
 - key: pip
   url: "https://pip.pypa.io/"
   en: "pip"
+
+- key: "plausible"
+  url: "https://plausible.io/"
+  title: "Plausible"
 
 - key: profile
   url: "https://docs.python.org/3/library/profile.html"
@@ -210,6 +204,10 @@
   url: "https://sqlmodel.tiangolo.com/"
   en: "SQLModel ORM"
 
+- key: "stamps"
+  url: "https://third-bit.com/colophon/"
+  title: "Classic Canadian postage stamps"
+
 # T
 
 - key: t3
@@ -230,9 +228,13 @@
 
 # W
 
-- key: webaim_wave
+- key: wave
   url: "https://wave.webaim.org/"
-  en: "WAVE"
+  en: "WebAIM WAVE"
+
+- key: wilson_greg
+  url: "https://third-bit.com/"
+  en: "Greg Wilson"
 
 # X
 

@@ -1,3 +1,19 @@
+---
+title: "A Plugin Architecture"
+tagline: "Find the center point of each polluted region and visualize it."
+syllabus:
+-   Using a plugin architecture to load modules dynamically.
+-   Finding, installing, and figuring out how to use open source packages.
+-   Use geopy to handle geocoded data.
+-   Plotting (and the challenge of testing visualization code).
+-   Connecting to a database from Python.
+-   Embedding SQL queries in Python and reading results.
+-   Creating classes with SQLModel ORM to mirror database tables.
+-   Writing queries in Python rather than as embedded SQL strings.
+-   Cross-validating implementations.
+-   Big benefit of ORM is avoiding transposition errors with integer values.
+---
+
 -   Research data may come from files, databases, websites, and many other sources
 -   Instead of adding code to a program to handle each one,
     use a [%g plugin_architecture "plugin architecture" %]

@@ -18,6 +18,12 @@
 
 # B
 
+- key: boxing
+  en:
+    term: boxing (a value)
+    def: >
+      FIXME
+
 # C
 
 - key: cognitive_load
@@ -68,6 +74,12 @@
 
 # G
 
+- key: generator
+  en:
+    term: generator
+    def: >
+      FIXME
+
 # H
 
 # I
@@ -107,6 +119,18 @@
 
 # P
 
+- key: parameter_sweeping
+  en:
+    term: parameter sweeping
+    def: >
+      FIXME
+
+- key: parameterize_test
+  en:
+    term: parameterize (a test)
+    def: >
+      FIXME
+
 - key: pass_test
   en:
     term: pass (result of test)
@@ -117,6 +141,12 @@
 - key: plugin_architecture
   en:
     term: "plugin architecture"
+    def: >
+      FIXME
+
+- key: profiler
+  en:
+    term: profiler
     def: >
       FIXME
 
@@ -148,6 +178,12 @@
       FIXME
 
 # U
+
+- key: unboxing
+  en:
+    term: unboxing (a value)
+    def: >
+      FIXME
 
 - key: unit_test
   en:
