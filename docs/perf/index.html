@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../tango.css" type="text/css">
 <link rel="stylesheet" href="../mccole.css" type="text/css">
 <title>Research Software Design by Example &middot; Measure Performance</title>
 <script>
@@ -23,21 +24,29 @@
   </head>
   <body>
     <main>
-      
-<h1>Measure Performance</h1>
-
-
       <div class="row notex">
+  <div class="col-1"></div>
+  <div class="col-10 center">
+    
+      <h1>Measure Performance</h1>
+    
+  </div>
+  <div class="col-1"></div>
+</div>
+
+      
+<nav class="row notex">
   <div class="col-1 left">
-    <a href="../test/">&lArr;</a>
+    <a href="../test/" title="previous" class="undecorated">&#8678;</a>
   </div>
   <div class="col-10 center">
-    <span class="tagline">Compare the performance of grid implementations empirically.</span>
+    <a href="../" title="home" class="undecorated">&#9737;</a>
   </div>
   <div class="col-1 right">
-    <a href="../lazy/">&rArr;</a>
+    <a href="../lazy/" title="next" class="undecorated">&#8680;</a>
   </div>
-</div>
+</nav>
+
 
       <ul class="keypoints">
 <li>Introduce Python type annotations.</li>
@@ -66,7 +75,7 @@
 </li>
 <li>Can now save parameters in version control.</li>
 </ul>
-<div class="code-sample language-py" title="params_single.py">
+<div class="language-py" title="params_single.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ParamsSingle</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A single set of invasion percolation parameters.&quot;&quot;&quot;</span>
@@ -80,7 +89,7 @@
 <ul>
 <li>Modify code in <code>invperc_single.py</code> to use these parameters</li>
 </ul>
-<div class="code-sample language-py" title="invperc_single.py">
+<div class="language-py" title="invperc_single.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ParamsSingle</span><span class="p">)</span>
@@ -98,7 +107,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample language-py" title="invperc_util.py">
+<div class="language-py" title="invperc_util.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get parameters.&quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
@@ -120,7 +129,7 @@
 </li>
 <li>Create another dataclass that stores multiple values for interesting parameters</li>
 </ul>
-<div class="code-sample language-py" title="params_sweep.py">
+<div class="language-py" title="params_sweep.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ParamsSweep</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A range of invasion percolation parameters.&quot;&quot;&quot;</span>
@@ -134,7 +143,7 @@
 <ul>
 <li>Then write a new <code>main</code> to try each combination of parameter values</li>
 </ul>
-<div class="code-sample language-py" title="invperc_sweep.py">
+<div class="language-py" title="invperc_sweep.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ParamsSweep</span><span class="p">)</span>
@@ -154,7 +163,7 @@
 <li>Could generate a list of parameter combinations</li>
 <li>Instead, use a <a class="gl-ref" href="../glossary/#gl:generator" markdown="1">generator</a> to produce one at a time</li>
 </ul>
-<div class="code-sample language-py" title="invperc_sweep.py">
+<div class="language-py" title="invperc_sweep.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">generate_sweep</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate next single parameter object.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">kind</span><span class="p">:</span>
@@ -191,12 +200,12 @@
 </li>
 <li>Use Python&rsquo;s <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> module</li>
 </ul>
-<div class="code-sample language-py" title="run_profile.py">
+<div class="language-py" title="run_profile.py">
 <div class="highlight"><pre><span></span><code><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;invperc_single.py&quot;</span><span class="p">,</span> <span class="s2">&quot;profile.json&quot;</span><span class="p">]</span>
 <span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;main()&quot;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s2">&quot;tottime&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<div class="code-sample language-txt" title="profile_head.txt">
+<div class="language-txt" title="profile_head.txt">
 <div class="highlight"><pre><span></span><code>         13885219 function calls in 3.169 seconds
 
    Ordered by: internal time

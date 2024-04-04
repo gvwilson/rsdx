@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../tango.css" type="text/css">
 <link rel="stylesheet" href="../mccole.css" type="text/css">
 <title>Research Software Design by Example &middot; Unit Tests</title>
 <script>
@@ -23,21 +24,29 @@
   </head>
   <body>
     <main>
-      
-<h1>Unit Tests</h1>
-
-
       <div class="row notex">
+  <div class="col-1"></div>
+  <div class="col-10 center">
+    
+      <h1>Unit Tests</h1>
+    
+  </div>
+  <div class="col-1"></div>
+</div>
+
+      
+<nav class="row notex">
   <div class="col-1 left">
-    <a href="../refactor/">&lArr;</a>
+    <a href="../refactor/" title="previous" class="undecorated">&#8678;</a>
   </div>
   <div class="col-10 center">
-    <span class="tagline">Use mocks to test programs that rely on pseudo-randomness.</span>
+    <a href="../" title="home" class="undecorated">&#9737;</a>
   </div>
   <div class="col-1 right">
-    <a href="../perf/">&rArr;</a>
+    <a href="../perf/" title="next" class="undecorated">&#8680;</a>
   </div>
-</div>
+</nav>
+
 
       <ul class="keypoints">
 <li>A quick review of pytest.</li>
@@ -58,7 +67,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample language-py" title="test_grid_start.py">
+<div class="language-py" title="test_grid_start.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_array_constructed_correctly</span><span class="p">():</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">GridArray</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
@@ -69,7 +78,7 @@
             <span class="k">assert</span> <span class="n">g</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
 </code></pre></div>
 </div>
-<div class="code-sample language-py" title="test_grid_start.py">
+<div class="language-py" title="test_grid_start.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_list_constructed_correctly</span><span class="p">():</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">GridList</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
@@ -86,7 +95,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample language-py" title="grid_list_randomizer.py">
+<div class="language-py" title="grid_list_randomizer.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">rand</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
@@ -102,7 +111,7 @@
 <ul>
 <li>Test looks better</li>
 </ul>
-<div class="code-sample language-py" title="test_grid_randomizer.py">
+<div class="language-py" title="test_grid_randomizer.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_list_with_randomizer_function</span><span class="p">():</span>
 
     <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">):</span>
@@ -127,7 +136,7 @@
 <li><code>test_grid_mock.py</code> replaces the random number generator with a <a class="gl-ref" href="../glossary/#gl:mock_object" markdown="1">mock object</a>
     without modifying the grid class</li>
 </ul>
-<div class="code-sample language-py" title="test_grid_mock.py">
+<div class="language-py" title="test_grid_mock.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_list_patching_randomization</span><span class="p">():</span>
     <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s1">&#39;random.randint&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="mi">12345</span><span class="p">):</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">GridList</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -142,7 +151,7 @@
 <ul>
 <li><code>test_grid_parametrize.py</code> <a class="gl-ref" href="../glossary/#gl:parameterize_test" markdown="1">parameterizes</a> the test across both classes</li>
 </ul>
-<div class="code-sample language-py" title="test_grid_parametrize.py">
+<div class="language-py" title="test_grid_parametrize.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;cls&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">GridArray</span><span class="p">,</span> <span class="n">GridList</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">test_grid_list_parameterizing_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s1">&#39;random.randint&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="mi">12345</span><span class="p">):</span>
@@ -159,7 +168,7 @@
 <ul>
 <li><code>grid_filled.py</code> defines <code>GridFilled</code>, which we can populate with whatever data we want</li>
 </ul>
-<div class="code-sample language-py" title="grid_filled.py">
+<div class="language-py" title="grid_filled.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="n">width</span>
@@ -171,7 +180,7 @@
 <ul>
 <li><code>test_grid_filled.py</code> starts by testing that filling from specified works correctly</li>
 </ul>
-<div class="code-sample language-py" title="test_grid_filled.py">
+<div class="language-py" title="test_grid_filled.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_explicit_filling_fills_correctly</span><span class="p">():</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">GridFilled</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
@@ -184,7 +193,7 @@
 <ul>
 <li>Add test for filling grid by creating deterministic filling path</li>
 </ul>
-<div class="code-sample language-py" title="test_grid_filled.py">
+<div class="language-py" title="test_grid_filled.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_filling_with_straight_run_to_edge</span><span class="p">():</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">GridFilled</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
     <span class="n">g</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>

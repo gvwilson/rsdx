@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../tango.css" type="text/css">
 <link rel="stylesheet" href="../mccole.css" type="text/css">
 <title>Research Software Design by Example &middot; A Lazy Algorithm</title>
 <script>
@@ -23,21 +24,29 @@
   </head>
   <body>
     <main>
-      
-<h1>A Lazy Algorithm</h1>
-
-
       <div class="row notex">
+  <div class="col-1"></div>
+  <div class="col-10 center">
+    
+      <h1>A Lazy Algorithm</h1>
+    
+  </div>
+  <div class="col-1"></div>
+</div>
+
+      
+<nav class="row notex">
   <div class="col-1 left">
-    <a href="../perf/">&lArr;</a>
+    <a href="../perf/" title="previous" class="undecorated">&#8678;</a>
   </div>
   <div class="col-10 center">
-    <span class="tagline">Create a lazy implementation of invasion percolation that&rsquo;s much faster.</span>
+    <a href="../" title="home" class="undecorated">&#9737;</a>
   </div>
   <div class="col-1 right">
-    <a href="../scale/">&rArr;</a>
+    <a href="../scale/" title="next" class="undecorated">&#8680;</a>
   </div>
-</div>
+</nav>
+
 
       <ul class="keypoints">
 <li>Estimating algorithm performance with big-oh.</li>
@@ -80,7 +89,7 @@
 </li>
 <li><code>GridLazy</code> constructor</li>
 </ul>
-<div class="code-sample language-py" title="grid_lazy.py">
+<div class="language-py" title="grid_lazy.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
@@ -95,7 +104,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample language-py" title="grid_lazy.py">
+<div class="language-py" title="grid_lazy.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill grid one cell at a time.&quot;&quot;&quot;</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
@@ -114,7 +123,7 @@
 <ul>
 <li>Adding candidates</li>
 </ul>
-<div class="code-sample language-py" title="grid_lazy.py">
+<div class="language-py" title="grid_lazy.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add candidates around (x, y).&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
@@ -123,7 +132,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_one_candidate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">iy</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<div class="code-sample language-py" title="grid_lazy.py">
+<div class="language-py" title="grid_lazy.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_one_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add (x, y) if suitable.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()):</span>
@@ -139,7 +148,7 @@
 <ul>
 <li>Choosing a cell</li>
 </ul>
-<div class="code-sample language-py" title="grid_lazy.py">
+<div class="language-py" title="grid_lazy.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">choose_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Choose the next cell to fill.&quot;&quot;&quot;</span>
     <span class="n">min_key</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>

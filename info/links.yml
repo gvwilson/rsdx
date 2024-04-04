@@ -14,7 +14,7 @@
 
 # B
 
-- key: bs
+- key: bs4
   url: "https://beautiful-soup-4.readthedocs.io/"
   en: "Beautiful Soup"
 
@@ -110,6 +110,10 @@
   url: "https://firstdonoharm.dev/"
   en: "Hippocratic License"
 
+- key: "html5validator"
+  url: "https://pypi.org/project/html5validator/"
+  title: "html5validator"
+
 # I
 
 # J
@@ -161,6 +165,10 @@
 - key: profile
   url: "https://docs.python.org/3/library/profile.html"
   en: "Python profile module"
+
+- key: "pybtex"
+  url: "https://pypi.org/project/pybtex/"
+  title: "pybtex"
 
 - key: pydantic
   url: "https://docs.pydantic.dev/"

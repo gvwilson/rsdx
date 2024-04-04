@@ -115,4 +115,4 @@ syllabus:
 
 -   Should always get identical answer regardless of which grid is used
     -   For the same parameters including RNG seed of course
--   Allows [%g cross_validation "cross-validation" %] of implementations
+-   Allows cross-validation of implementations

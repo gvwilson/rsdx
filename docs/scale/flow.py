@@ -7,6 +7,7 @@ from pathlib import Path
 import random
 import sys
 
+# [start]
 from metaflow import FlowSpec, Parameter, step
 
 from invperc import invperc
@@ -19,6 +20,7 @@ class InvPercFlow(FlowSpec):
     """Metaflow for invasion percolation."""
 
     sweep = Parameter("sweep", help="sweep parameter file", type=str, required=True)
+# [/start]
 
     @step
     def start(self):

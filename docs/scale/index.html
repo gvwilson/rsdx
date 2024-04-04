@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../tango.css" type="text/css">
 <link rel="stylesheet" href="../mccole.css" type="text/css">
 <title>Research Software Design by Example &middot; Scale Up</title>
 <script>
@@ -23,30 +24,193 @@
   </head>
   <body>
     <main>
-      
-<h1>Scale Up</h1>
-
-
       <div class="row notex">
+  <div class="col-1"></div>
+  <div class="col-10 center">
+    
+      <h1>Scale Up</h1>
+    
+  </div>
+  <div class="col-1"></div>
+</div>
+
+      
+<nav class="row notex">
   <div class="col-1 left">
-    <a href="../lazy/">&lArr;</a>
+    <a href="../lazy/" title="previous" class="undecorated">&#8678;</a>
   </div>
   <div class="col-10 center">
-    <span class="tagline">Generate fractals using a workflow runner and store them remotely.</span>
+    <a href="../" title="home" class="undecorated">&#9737;</a>
   </div>
   <div class="col-1 right">
-    <a href="../package/">&rArr;</a>
+    <a href="../package/" title="next" class="undecorated">&#8680;</a>
   </div>
-</div>
+</nav>
+
 
       <ul class="keypoints">
 <li>Describing workflows as directed acyclic graphs.</li>
 <li>Expressing DAGs in code with Metaflow.</li>
-<li>Use logging instead of print statements for debugging.</li>
-<li>Use DVC to store data remotely.</li>
 </ul>
-      
-      <p class="fixme">FIXME: discuss scaling</p>
+      <p class="terms">Terms defined: 
+<a class="gl-ref" href="../glossary/#gl:workflow" markdown="1">workflow</a>
+</p>
+      <ul>
+<li>Reminder: storing parameters as dataclass</li>
+</ul>
+<div class="language-py" title="params_single.py">
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Parameters for single invasion percolation sweep.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ParamsSingle</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single set of invasion percolation parameters.&quot;&quot;&quot;</span>
+
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Load from JSON</li>
+</ul>
+<div class="language-json" title="standalone.json">
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;depth&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;seed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">172839</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Build a <a class="gl-ref" href="../glossary/#gl:workflow" markdown="1">workflow</a> to run parameter sweeps using <a href="https://metaflow.org/">Metaflow</a><ul>
+<li>Define a Python class with methods for workflow stages</li>
+<li>Use decorators to mark steps</li>
+<li>Parameters to methods coordinate dataflow</li>
+</ul>
+</li>
+<li>Start</li>
+</ul>
+<div class="language-py" title="flow.py">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">metaflow</span> <span class="kn">import</span> <span class="n">FlowSpec</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">step</span>
+
+<span class="kn">from</span> <span class="nn">invperc</span> <span class="kn">import</span> <span class="n">invperc</span>
+<span class="kn">from</span> <span class="nn">measure</span> <span class="kn">import</span> <span class="n">collect_density</span><span class="p">,</span> <span class="n">estimate_density</span><span class="p">,</span> <span class="n">measure_dimension</span>
+<span class="kn">from</span> <span class="nn">params_single</span> <span class="kn">import</span> <span class="n">ParamsSingle</span>
+<span class="kn">from</span> <span class="nn">params_sweep</span> <span class="kn">import</span> <span class="n">ParamsSweep</span>
+
+
+<span class="k">class</span> <span class="nc">InvPercFlow</span><span class="p">(</span><span class="n">FlowSpec</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Metaflow for invasion percolation.&quot;&quot;&quot;</span>
+
+    <span class="n">sweep</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;sweep&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;sweep parameter file&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>First step loads parameters and creates parameters for each task</li>
+</ul>
+<div class="language-py" title="flow.py">
+<div class="highlight"><pre><span></span><code><span class="nd">@step</span>
+<span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect parameters and run jobs.&quot;&quot;&quot;</span>
+    <span class="n">sweep</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sweep</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">make_sweeps</span><span class="p">(</span><span class="n">sweep</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_job</span><span class="p">,</span> <span class="n">foreach</span><span class="o">=</span><span class="s1">&#39;args&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="language-py" title="flow.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_params</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get sweep parameters from file.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ParamsSweep</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
+</code></pre></div>
+</div>
+<div class="language-py" title="flow.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_sweeps</span><span class="p">(</span><span class="n">sweeps</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert sweep parameters into individual jobs.&quot;&quot;&quot;</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">sweeps</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">sweeps</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">depth</span> <span class="ow">in</span> <span class="n">sweeps</span><span class="o">.</span><span class="n">depth</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sweeps</span><span class="o">.</span><span class="n">runs</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ParamsSingle</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Run a single job</li>
+</ul>
+<div class="language-py" title="flow.py">
+<div class="highlight"><pre><span></span><code><span class="nd">@step</span>
+<span class="k">def</span> <span class="nf">run_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run a sweep with one set of parameters.&quot;&quot;&quot;</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">invperc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">grid</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="n">grid</span><span class="o">.</span><span class="n">depth</span><span class="p">(),</span> <span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="n">collect_density</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="s1">&#39;dimension&#39;</span><span class="p">:</span> <span class="n">measure_dimension</span><span class="p">(</span><span class="n">grid</span><span class="p">)}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Combine results from all jobs</li>
+</ul>
+<div class="language-py" title="flow.py">
+<div class="highlight"><pre><span></span><code><span class="nd">@step</span>
+<span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine results from all sweeps.&quot;&quot;&quot;</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">dimensions</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">densities</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">],</span> <span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">])</span>
+        <span class="n">counts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">dimensions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;dimension&#39;</span><span class="p">]</span>
+        <span class="n">densities</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;density&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">densities</span><span class="p">:</span>
+        <span class="n">densities</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">estimate_density</span><span class="p">(</span><span class="n">densities</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;counts&#39;</span><span class="p">:</span> <span class="n">counts</span><span class="p">,</span> <span class="s1">&#39;dimensions&#39;</span><span class="p">:</span> <span class="n">dimensions</span><span class="p">,</span> <span class="s1">&#39;densities&#39;</span><span class="p">:</span> <span class="n">densities</span><span class="p">}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Report results</li>
+</ul>
+<div class="language-py" title="flow.py">
+<div class="highlight"><pre><span></span><code><span class="nd">@step</span>
+<span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Report results.&quot;&quot;&quot;</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;dimension&#39;</span><span class="p">,</span> <span class="s1">&#39;density_x&#39;</span><span class="p">,</span> <span class="s1">&#39;density_k&#39;</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;counts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">size</span><span class="p">,</span> <span class="n">depth</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">/</span> <span class="n">count</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;densities&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]))</span>
+    <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">lineterminator</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Run with single-job JSON parameter file shown earlier</li>
+</ul>
+<div class="language-sh" title="run_standalone.sh">
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>invperc.py<span class="w"> </span>standalone.json
+</code></pre></div>
+</div>
+<ul>
+<li>Run full sweep</li>
+</ul>
+<div class="language-json" title="sweep.json">
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">75</span><span class="p">,</span><span class="w"> </span><span class="mi">95</span><span class="p">,</span><span class="w"> </span><span class="mi">105</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;depth&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;runs&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;seed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">556677</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<div class="language-sh" title="run_sweep.sh">
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>flow.py<span class="w"> </span>run<span class="w"> </span>--sweep<span class="w"> </span>sweep.json
+</code></pre></div>
+</div>
     </main>
     <footer>
   © 2024 <a href="https://third-bit.com/">Greg Wilson</a>

@@ -11,18 +11,7 @@ syllabus:
 -   First step is to read data files with snail weight readings from four sample sites
 -   First file looks like this
 
-```csv
-Site:,GBY
-site,date,lon,lat,reading
-GBY,2023-05-08,-124.45981,48.92163,26.7
-GBY,2023-05-08,-124.45932,48.92091,70.9
-GBY,2023-05-08,-124.46036,48.92098,38.1
-GBY,2023-05-08,-124.45743,48.92101,1.7
-GBY,2023-05-08,-124.46048,48.92059,33.0
-GBY,2023-05-08,-124.46061,48.92166,7.9
-GBY,2023-05-08,-124.46004,48.92069,50.1
-GBY,2023-05-08,-124.45828,48.92066,32.6
-```
+[%inc GBY.csv %]
 
 -   First row has only two columns (one of which includes the site ID, which we can check against the file name)
 -   After that we have five nicely-formatted columns
@@ -42,15 +31,7 @@ GBY,2023-05-08,-124.45828,48.92066,32.6
 -   Problem is that the table of readings is indented by one column
 -   Next file starts like this:
 
-```csv
-Site:,COW
-Analyst:,P. Srinath
-
-SITE,DATE,LON,LAT,READING
-COW,2023-04-27,-124.04518,48.82171,106.9
-COW,2023-04-27,-124.045,48.8216,81.7
-…
-```
+[%inc COW.csv ellipsis=True %]
 
 -   And another one has *two* blank lines between the header and the data
 -   Option 1: edit the data files

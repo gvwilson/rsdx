@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../tango.css" type="text/css">
 <link rel="stylesheet" href="../mccole.css" type="text/css">
 <title>Research Software Design by Example &middot; Introduction</title>
 <script>
@@ -23,21 +24,29 @@
   </head>
   <body>
     <main>
-      
-<h1>Introduction</h1>
-
-
       <div class="row notex">
+  <div class="col-1"></div>
+  <div class="col-10 center">
+    
+      <h1>Introduction</h1>
+    
+  </div>
+  <div class="col-1"></div>
+</div>
+
+      
+<nav class="row notex">
   <div class="col-1 left">
     
   </div>
   <div class="col-10 center">
-    <span class="tagline">An overview of where we&rsquo;re going and why.</span>
+    <a href="../" title="home" class="undecorated">&#9737;</a>
   </div>
   <div class="col-1 right">
-    <a href="../parse/">&rArr;</a>
+    <a href="../parse/" title="next" class="undecorated">&#8680;</a>
   </div>
-</div>
+</nav>
+
 
       <ul class="keypoints">
 <li>Assume you know how to program.</li>
@@ -158,13 +167,13 @@ if we think about how we&rsquo;re going to check the code as we design it,
 we can make it as trustworthy as a physical experiment.</p>
 <h2 id="intro-layout">Formatting</h2>
 <p>We display Python source code like this:</p>
-<div class="code-sample language-py" title="python_sample.py">
+<div class="language-py" title="python_sample.py">
 <div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="s2">&quot;example&quot;</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <p class="continue">and Unix shell commands like this:</p>
-<div class="code-sample language-sh" title="shell_sample.sh">
+<div class="language-sh" title="shell_sample.sh">
 <div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span>filename<span class="w"> </span><span class="k">in</span><span class="w"> </span>*.dat
 <span class="k">do</span>
 <span class="w">    </span>cut<span class="w"> </span>-d<span class="w"> </span>,<span class="w"> </span>-f<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="nv">$filename</span>
@@ -172,13 +181,13 @@ we can make it as trustworthy as a physical experiment.</p>
 </code></pre></div>
 </div>
 <p class="continue">Data files and program output are shown like this:</p>
-<div class="code-sample language-yml" title="data_sample.yml">
+<div class="language-yml" title="data_sample.yml">
 <div class="highlight"><pre><span></span><code>- name: read
   params:
   - sample_data.csv
 </code></pre></div>
 </div>
-<div class="code-sample language-out" title="output_sample.out">
+<div class="language-out" title="output_sample.out">
 <div class="highlight"><pre><span></span><code>alpha
 beta
 gamma

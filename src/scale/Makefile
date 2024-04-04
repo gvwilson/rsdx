@@ -4,12 +4,12 @@ include ../../examples.mk
 
 ## standalone: run invasion percolation
 standalone:
-	python invperc.py standalone.json
+	bash run_standalone.sh
 
 ## short: run short sweep for testing
 short:
-	python flow.py run --sweep short.json
+	bash run_short.sh
 
 ## sweep: run sweep
 sweep:
-	python flow.py run --sweep sweep.json
+	bash run_sweep.sh

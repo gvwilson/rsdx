@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="../logo.svg">
+<link rel="stylesheet" href="../tango.css" type="text/css">
 <link rel="stylesheet" href="../mccole.css" type="text/css">
 <title>Research Software Design by Example &middot; A Plugin Architecture</title>
 <script>
@@ -23,21 +24,29 @@
   </head>
   <body>
     <main>
-      
-<h1>A Plugin Architecture</h1>
-
-
       <div class="row notex">
+  <div class="col-1"></div>
+  <div class="col-10 center">
+    
+      <h1>A Plugin Architecture</h1>
+    
+  </div>
+  <div class="col-1"></div>
+</div>
+
+      
+<nav class="row notex">
   <div class="col-1 left">
-    <a href="../parse/">&lArr;</a>
+    <a href="../parse/" title="previous" class="undecorated">&#8678;</a>
   </div>
   <div class="col-10 center">
-    <span class="tagline">Find the center point of each polluted region and visualize it.</span>
+    <a href="../" title="home" class="undecorated">&#9737;</a>
   </div>
   <div class="col-1 right">
-    <a href="../refactor/">&rArr;</a>
+    <a href="../refactor/" title="next" class="undecorated">&#8680;</a>
   </div>
-</div>
+</nav>
+
 
       <ul class="keypoints">
 <li>Using a plugin architecture to load modules dynamically.</li>
@@ -65,7 +74,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample language-json" title="plugins.json">
+<div class="language-json" title="plugins.json">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;csv&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;../../data/survey_tidy&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;pandas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;../../data/survey.db&quot;</span><span class="p">,</span>
@@ -91,7 +100,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample language-py" title="display.py">
+<div class="language-py" title="display.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
@@ -116,7 +125,7 @@
 <p>Parsing command-line arguments is simple</p>
 </li>
 </ul>
-<div class="code-sample language-py" title="display.py">
+<div class="language-py" title="display.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments.&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
@@ -132,7 +141,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample language-py" title="display.py">
+<div class="language-py" title="display.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">tables</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check all tables against each other.&quot;&quot;&quot;</span>
     <span class="n">ref_key</span> <span class="o">=</span> <span class="kc">None</span>
@@ -163,7 +172,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample language-py" title="plugin_csv.py">
+<div class="language-py" title="plugin_csv.py">
 <div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Load data from CSV files given directory.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -182,7 +191,7 @@
 <ul>
 <li>Combine</li>
 </ul>
-<div class="code-sample language-py" title="util.py">
+<div class="language-py" title="util.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">combine_with_pandas</span><span class="p">(</span><span class="o">*</span><span class="n">tables</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine tables using Pandas.&quot;&quot;&quot;</span>
     <span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
@@ -196,7 +205,7 @@
 <li>Pandas can read directly given a SQL query</li>
 <li>The simple query</li>
 </ul>
-<div class="code-sample language-py" title="util.py">
+<div class="language-py" title="util.py">
 <div class="highlight"><pre><span></span><code><span class="c1"># Query to select all samples from database in normalized form.</span>
 <span class="n">Q_SAMPLES</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">select</span>
@@ -212,7 +221,7 @@
 <ul>
 <li>The code</li>
 </ul>
-<div class="code-sample language-py" title="plugin_sql.py">
+<div class="language-py" title="plugin_sql.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">dbfile</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Read tables and do calculations directly in SQL.&quot;&quot;&quot;</span>
     <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbfile</span><span class="p">)</span>
@@ -222,7 +231,7 @@
 <ul>
 <li>The more complex query to find the center</li>
 </ul>
-<div class="code-sample language-py" title="plugin_sql.py">
+<div class="language-py" title="plugin_sql.py">
 <div class="highlight"><pre><span></span><code><span class="n">Q_CENTERS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">select</span>
 <span class="s2">    surveys.site,</span>
@@ -246,7 +255,7 @@
 </ul>
 </li>
 </ul>
-<div class="code-sample language-py" title="plugin_sqlmodel.py">
+<div class="language-py" title="plugin_sqlmodel.py">
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Sites</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Survey sites.&quot;&quot;&quot;</span>
     <span class="n">site</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -255,7 +264,7 @@
     <span class="n">surveys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;Surveys&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;site_id&#39;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<div class="code-sample language-py" title="plugin_sqlmodel.py">
+<div class="language-py" title="plugin_sqlmodel.py">
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Surveys</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Surveys done.&quot;&quot;&quot;</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -265,7 +274,7 @@
     <span class="n">samples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;Samples&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;label_id&#39;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<div class="code-sample language-py" title="plugin_sqlmodel.py">
+<div class="language-py" title="plugin_sqlmodel.py">
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Samples</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Individual samples.&quot;&quot;&quot;</span>
     <span class="n">rowid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -279,7 +288,7 @@
 <ul>
 <li>With this, the <code>read_data</code> function is:</li>
 </ul>
-<div class="code-sample language-py" title="plugin_sqlmodel.py">
+<div class="language-py" title="plugin_sqlmodel.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">dbfile</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Read database and do calculations with SQLModel ORM.&quot;&quot;&quot;</span>
     <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;sqlite:///</span><span class="si">{</span><span class="n">dbfile</span><span class="si">}</span><span class="s1">&#39;</span>
