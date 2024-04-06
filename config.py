@@ -49,16 +49,18 @@ copy = [
     "*.svg",
 ]
 
-# Directories to skip
-exclude = [
+# Files and directories to skip
+exclude = {
     "website/res",
     "website/inc",
     "website/lib",
     "website/src",
     "serve/static",
     "serve/templates",
+    "package/LICENSE.md",
+    "package/README.md",
     "package/invperc",
-]
+}
 
 # Theme information.
 theme = "mccole"

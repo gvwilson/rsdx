@@ -42,32 +42,50 @@
     --spacing-small: 0.25rem;
     --spacing-medium: 0.5rem;
     --spacing-large: 1rem;
+    --spacing-large-negative: -1.1rem;
 
     /* Image properties */
     --splash-width: 80%;
 }
 
-/* Flex grid */
-.row {
+/* Small screen: display rows with one column */
+@media screen {
+    .row {
+	width: 100%
+    }
+}
+
+/* Wide screen: display rows as rows */
+@media screen and (min-width: 60rem) {
+    .row {
+	display: flex;
+	flex-flow: row wrap;
+    }
+}
+
+/* Always display as row */
+.row-always {
+    width: 100%;
     display: flex;
     flex-flow: row wrap;
-    width: 100%
 }
+
+/* Flex grid */
 .row > * {
   flex: 1; /* allow children to grow when space available */
 }
-.col-1 { flex-basis: 8.33%; }
-.col-2 { flex-basis: 16.66%; }
-.col-3 { flex-basis: 25%; }
-.col-4 { flex-basis: 33.33%; }
-.col-5 { flex-basis: 41.66%; }
-.col-6 { flex-basis: 50%; }
-.col-7 { flex-basis: 58.33%; }
-.col-8 { flex-basis: 66.66%; }
-.col-9 { flex-basis: 75%; }
-.col-10 { flex-basis: 83.33%; }
-.col-11 { flex-basis: 91.66%; }
-.col-12 { flex-basis: 100%; }
+.col-1 { flex-basis: calc(100% * 1/12); }
+.col-2 { flex-basis: calc(100% * 2/12); }
+.col-3 { flex-basis: calc(100% * 3/12); }
+.col-4 { flex-basis: calc(100% * 4/12); }
+.col-5 { flex-basis: calc(100% * 5/12); }
+.col-6 { flex-basis: calc(100% * 6/12); }
+.col-7 { flex-basis: calc(100% * 7/12); }
+.col-8 { flex-basis: calc(100% * 8/12); }
+.col-9 { flex-basis: calc(100% * 9/12); }
+.col-10 { flex-basis: calc(100% * 10/12); }
+.col-11 { flex-basis: calc(100% * 11/12); }
+.col-12 { flex-basis: calc(100% * 12/12); }
 
 /* Generic positioning */
 .left {
@@ -113,13 +131,11 @@ div[class*='language'] pre {
     margin-bottom: var(--border-heavy);
 }
 
-/* CSV */
-div.language-csv {
-    border-color: var(--stamp-orange-light);
-}
-
-/* JSON */
-div.language-json {
+/* Data files */
+div.language-csv,
+div.language-json,
+div.language-toml,
+div.language-yml {
     border-color: var(--stamp-orange-light);
 }
 
@@ -146,11 +162,6 @@ div.language-sql {
 /* Transcripts */
 div.language-text {
     border-color: var(--stamp-purple-light);
-}
-
-/* YAML */
-div.language-text {
-    border-color: var(--stamp-orange-light);
 }
 
 /* Bibliography key definitions */
@@ -194,6 +205,17 @@ img.splash {
     width: var(--splash-width);
 }
 
+/* Reduce list indentation */
+li {
+    list-style-type: disc;
+    margin-left: var(--spacing-large-negative);
+}
+
+/* Make navigation controls larger */
+nav {
+    font-size: var(--size-subtitle);
+}
+
 /* Appendix list */
 ol.toc-appendices {
     list-style-type: upper-latin;
@@ -224,6 +246,11 @@ p.table-caption {
     text-align: center;
 }
 
+/* Term definitions */
+p.terms {
+    font-style: italic;
+}
+
 /* Index entry */
 span.ix-entry {
 }
@@ -245,7 +272,7 @@ th, td {
     border: solid var(--border-thin) var(--gray-light);
 }
 
-/* Key points listing at chapter start. */
+/* Key points listing at chapter start */
 ul.keypoints {
     background-color: var(--gray-light);
     border: var(--border-medium) var(--gray-dark) solid;

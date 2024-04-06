@@ -6,11 +6,11 @@ ARTEFACTS := dist docs invperc.egg-info
 
 ## build: create package
 build:
-	python -m build
+	bash build.sh
 
 ## docs: create documentation
 docs:
-	pdoc --docformat google -o ./html invperc
+	bash docs.sh
 
 ## tidy: remove generated artefacts
 tidy:

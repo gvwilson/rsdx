@@ -18,6 +18,12 @@
 
 # B
 
+- key: boilerplate
+  en:
+    term: boilerplate
+    def: >
+      FIXME
+
 - key: boxing
   en:
     term: boxing (a value)
@@ -162,6 +168,12 @@
 
 # S
 
+- key: semver
+  en:
+    term: semantic versioning
+    def: >
+      FIXME
+
 - key: spread
   en:
     term: spread
@@ -170,6 +182,12 @@
       to the parameters of a function.
 
 # T
+
+- key: toml
+  en:
+    term: TOML
+    def: >
+      "Tom's Own Minimal Language" is yet another format for configuration files.
 
 - key: type_annotation
   en:

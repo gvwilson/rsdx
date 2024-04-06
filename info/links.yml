@@ -4,6 +4,10 @@
   url: https://aosabook.org/
   en: "The Architecture of Open Source Applications"
 
+- key: aosa_py_package
+  url: https://aosabook.org/en/v1/packaging.html
+  en: "The Architecture of Open Source Applications: Python Packaging"
+
 - key: ark
   url: https://www.dmulholl.com/docs/ark/main/
   en: "Ark"
@@ -153,6 +157,10 @@
 # O
 
 # P
+
+- key: pdoc_vs_pdoc3
+  url: "https://github.com/mitmproxy/pdoc/blob/main/README.md"
+  en: "Why to use pdoc instead of pdoc3"
 
 - key: pip
   url: "https://pip.pypa.io/"
