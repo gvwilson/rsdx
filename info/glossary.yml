@@ -197,6 +197,15 @@
 
 # T
 
+- key: tf_idf
+  en:
+    term: "term frequency - inverse document frequency"
+    acronym: "TF-IDF"
+    def: >
+      A formula used to rank documents when searching
+      that assigns a score based on how often a word occurs overall
+      and how specific it is to a particular document.
+
 - key: toml
   en:
     term: "TOML"

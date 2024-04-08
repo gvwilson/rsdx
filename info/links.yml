@@ -160,6 +160,10 @@
 
 # O
 
+- key: open_alex
+  url: "https://openalex.org/"
+  title: "OpenAlex"
+
 # P
 
 - key: pdoc_vs_pdoc3
@@ -177,6 +181,10 @@
 - key: profile
   url: "https://docs.python.org/3/library/profile.html"
   en: "Python profile module"
+
+- key: pyalex
+  url: "https://pypi.org/project/pyalex/"
+  en: "Python interface for Alex"
 
 - key: "pybtex"
   url: "https://pypi.org/project/pybtex/"
