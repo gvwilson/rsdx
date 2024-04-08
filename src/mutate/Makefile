@@ -3,7 +3,7 @@
 include ../../examples.mk
 
 LOCAL := ./data
-GENOMES := ${LOCAL}/genomes.csv
+GENOMES := ${LOCAL}/genomes.json
 SAMPLES := ${LOCAL}/samples.csv
 
 ## generate: generate snail genomes and sample data
@@ -11,7 +11,7 @@ generate: ${SAMPLES}
 
 ${SAMPLES}: ${GENOMES}
 	@mkdir -p ${LOCAL}
-	python synthesize_samples.py --genomes ${GENOMES} --mutant 10.0 --normal 1.0 --outfile $@ --paramsdir ${DATA}/params --site COW --seed 1791128
+	python synthesize_samples.py --genomes ${GENOMES} --mutant 10.0 --normal 1.0 --outfile $@ --paramsdir . --site COW --seed 1791128
 
 ${GENOMES}:
 	@mkdir -p ${LOCAL}
@@ -19,7 +19,7 @@ ${GENOMES}:
 
 ## analyze: analyze genome data
 analyze: ${SAMPLES}
-	python analyze.py --infile ${SAMPLES} --plot
+	python analyze.py --infile ${SAMPLES} --save
 
 ## tidy: remove generated data
 tidy:

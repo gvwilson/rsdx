@@ -14,18 +14,19 @@ def main():
     ), "Sequences have different lengths"
 
     pivoted = pivot_dataframe(raw)
-    plot(args, pivoted, "all data")
+    plot(args, pivoted, "all_data")
 
     candidate_locs = select_candidate_locs(raw)
     slimmed = pivoted[pivoted.apply(lambda row: row["loc"] in candidate_locs, axis=1)]
-    plot(args, slimmed, "slimmed data")
+    plot(args, slimmed, "slimmed_data")
 
 
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--infile", type=str, default=None, help="input file")
-    parser.add_argument("--plot", action="store_true", default=False, help="show plots")
+    parser.add_argument("--save", action="store_true", default=False, help="save plots")
+    parser.add_argument("--show", action="store_true", default=False, help="show plots")
     return parser.parse_args()
 
 
@@ -50,8 +51,6 @@ def select_candidate_locs(raw):
 
 def plot(args, df, title):
     """Show standard plots of (subset of) data."""
-    if not args.plot:
-        return
     summarized = df.groupby(["loc", "base"], as_index=False).agg(func="mean")
     fig = px.scatter(
         summarized,
@@ -60,7 +59,10 @@ def plot(args, df, title):
         size="reading",
         title=f"{title}: mean by loc and base",
     )
-    fig.show()
+    if args.show:
+        fig.show()
+    elif args.save:
+        fig.write_image(f"{title}_scatter.svg")
 
     sorted = summarized.sort_values("reading", ascending=False)
     sorted["rank"] = sorted.reset_index().index
@@ -70,7 +72,10 @@ def plot(args, df, title):
         y="reading",
         title=f"{title}: mean by loc and base sorted by rank",
     )
-    fig.show()
+    if args.show:
+        fig.show()
+    elif args.save:
+        fig.write_image(f"{title}_sorted.svg")
 
 
 if __name__ == "__main__":

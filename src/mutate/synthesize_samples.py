@@ -10,12 +10,14 @@ import random
 from geopy.distance import lonlat, distance
 
 
+# [parameters]
 CIRCLE = 360.0
 LON_LAT_PRECISION = 5
 READING_PRECISION = 1
 MIN_SNAIL_SIZE = 0.5
 MAX_SNAIL_SIZE = 5.0
 SNAIL_PRECISION = 1
+# [/parameters]
 
 
 def main():

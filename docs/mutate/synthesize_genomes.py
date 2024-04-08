@@ -128,7 +128,7 @@ def _mutate_snps(reference, genome, loc, bases):
 
 
 def _mutate_other(genome, prob, locations):
-    """Introduce up to `max_num_mutations` at specified locations."""
+    """Introduce other mutations at specified locations."""
     if random.random() > prob:
         return genome
     loc = random.sample(locations, k=1)[0]

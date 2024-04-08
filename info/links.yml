@@ -78,6 +78,10 @@
 
 # F
 
+- key: faker
+  url: "https://faker.readthedocs.io/"
+  en: "Faker"
+
 - key: flask
   url: "https://flask.palletsprojects.com/"
   en: "Flask"
