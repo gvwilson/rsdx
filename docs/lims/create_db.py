@@ -6,6 +6,7 @@ import sqlite3
 from tinydb import TinyDB
 
 
+# [capabilities]
 CAPABILITIES = [
     {"role": "admin", "capability": "view", "scope": "all"},
     {"role": "admin", "capability": "upload", "scope": "own"},
@@ -14,15 +15,53 @@ CAPABILITIES = [
     {"role": "scientist", "capability": "upload", "scope": "own"},
     {"role": "intern", "capability": "view", "scope": "own"},
 ]
+# [/capabilities]
 
 
 def main():
     """Main driver."""
     args = parse_args()
-    con = sqlite3.connect(args.sqlite)
+    people = get_people(args.sqlite)
+    with TinyDB(args.tinydb) as db:
+        db.truncate()
+        create_capabilities(db)
+        create_users(db, people)
+        create_roles(db, people)
+
+
+def create_capabilities(db):
+    """Create capabilities in database."""
+    capabilities = db.table("capabilities")
+    capabilities.truncate()
+    for cap in CAPABILITIES:
+        capabilities.insert(cap)
+
+
+def create_roles(db, people):
+    """Create roles in database."""
+    roles = db.table("roles")
+    roles.truncate()
+    admin, intern, scientists = people[0], people[1], people[2:]
+    roles.insert({"uid": admin["uid"], "role": "admin"})
+    roles.insert({"uid": intern["uid"], "role": "intern"})
+    for person in scientists:
+        roles.insert({"uid": person["uid"], "role": "scientist"})
+
+
+def create_users(db, people):
+    """Create users in database."""
+    users = db.table("users")
+    users.truncate()
+    for person in people:
+        users.insert(person)
+
+
+def get_people(sqlite):
+    """Get people from SQLite database."""
+    con = sqlite3.connect(sqlite)
     con.row_factory = sqlite3.Row
     rows = con.execute("select personal, family from staff").fetchall()
-    rows = [
+    return [
         {
             "uid": f"{r['personal'][0].lower()}.{r['family'].lower()}",
             "personal": r["personal"],
@@ -30,27 +69,6 @@ def main():
         }
         for r in rows
     ]
-
-    with TinyDB(args.tinydb) as db:
-        db.truncate()
-
-        capabilities = db.table("capabilities")
-        capabilities.truncate()
-        for cap in CAPABILITIES:
-            capabilities.insert(cap)
-
-        users = db.table("users")
-        users.truncate()
-        for r in rows:
-            users.insert(r)
-
-        roles = db.table("roles")
-        roles.truncate()
-        admin, intern, scientists = rows[0], rows[1], rows[2:]
-        roles.insert({"uid": admin["uid"], "role": "admin"})
-        roles.insert({"uid": intern["uid"], "role": "intern"})
-        for r in scientists:
-            roles.insert({"uid": r["uid"], "role": "scientist"})
 
 
 def parse_args():

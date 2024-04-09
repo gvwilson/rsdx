@@ -1,0 +1,8 @@
+| Role      | Capability | Scope |
+| --------- | ---------- | ----- |
+| admin     | view       | all   |
+| admin     | upload     | own   |
+| admin     | validate   | all   |
+| scientist | view       | all   |
+| scientist | upload     | own   |
+| intern    | view       | own   |

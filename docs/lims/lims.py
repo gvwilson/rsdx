@@ -1,6 +1,6 @@
 """Implement simple LIMS."""
 
-from datetime import datetime
+from datetime import datetime, UTC
 
 import click
 from click import ClickException
@@ -103,7 +103,7 @@ def upload(db, user, params, design, assay):
 
 def get_timestamp():
     """Get timestamp for action."""
-    return str(datetime.utcnow())
+    return str(datetime.now(UTC))
 
 
 def _get_capability(db, user, kind):

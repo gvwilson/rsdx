@@ -14,7 +14,7 @@
 
 - key: "atkinson"
   url: "https://brailleinstitute.org/freefont"
-  title: "Atkinson Hyperlegible font"
+  en: "Atkinson Hyperlegible font"
 
 # B
 
@@ -30,7 +30,7 @@
 
 - key: "carpentries_git"
   url: "https://swcarpentry.github.io/git-novice/"
-  title: "Software Carpentry lesson on Git"
+  en: "Software Carpentry lesson on Git"
 
 - key: carpentries_python
   url: "https://swcarpentry.github.io/python-novice-inflammation/"
@@ -38,11 +38,15 @@
 
 - key: "carpentries_shell"
   url: "https://swcarpentry.github.io/shell-novice/"
-  title: "Software Carpentry lesson on the Unix shell"
+  en: "Software Carpentry lesson on the Unix shell"
 
 - key: cc_by_nc
   url: "https://creativecommons.org/licenses/by-nc/4.0/"
-  en: CC-BY-NC License
+  en: "CC-BY-NC License"
+
+- key: click
+  url: "https://click.palletsprojects.com/"
+  en: "Click"
 
 - key: coverage
   url: "https://coverage.readthedocs.io/"
@@ -56,7 +60,7 @@
 
 - key: "draw_io"
   url: "https://www.drawio.com/"
-  title: "draw.io"
+  en: "draw.io"
 
 - key: dvc
   url: "https://dvc.org/"
@@ -90,7 +94,7 @@
 
 - key: "ghp"
   url: "https://pages.github.com/"
-  title: "GitHub Pages"
+  en: "GitHub Pages"
 
 - key: git
   url: "https://git-scm.com/"
@@ -112,7 +116,7 @@
 
 - key: "highlight_css"
   url: "https://numist.github.io/highlight-css/"
-  title: "highlight-css"
+  en: "highlight-css"
 
 - key: hippocratic_license
   url: "https://firstdonoharm.dev/"
@@ -120,7 +124,7 @@
 
 - key: "html5validator"
   url: "https://pypi.org/project/html5validator/"
-  title: "html5validator"
+  en: "html5validator"
 
 # I
 
@@ -156,13 +160,13 @@
 
 - key: navarro_danielle
   url: "https://art.djnavarro.net/"
-  title: "Danielle Navarro"
+  en: "Danielle Navarro"
 
 # O
 
 - key: open_alex
   url: "https://openalex.org/"
-  title: "OpenAlex"
+  en: "OpenAlex"
 
 # P
 
@@ -176,7 +180,7 @@
 
 - key: "plausible"
   url: "https://plausible.io/"
-  title: "Plausible"
+  en: "Plausible"
 
 - key: profile
   url: "https://docs.python.org/3/library/profile.html"
@@ -188,7 +192,7 @@
 
 - key: "pybtex"
   url: "https://pypi.org/project/pybtex/"
-  title: "pybtex"
+  en: "pybtex"
 
 - key: pydantic
   url: "https://docs.pydantic.dev/"
@@ -234,7 +238,7 @@
 
 - key: "stamps"
   url: "https://third-bit.com/colophon/"
-  title: "Classic Canadian postage stamps"
+  en: "Classic Canadian postage stamps"
 
 # T
 
@@ -249,6 +253,10 @@
 - key: tf_idf
   url: "https://en.wikipedia.org/wiki/Tf%E2%80%93idf"
   en: "TF-IDF"
+
+- key: tinydb
+  url: "https://tinydb.readthedocs.io/"
+  en: "TinyDB"
 
 # U
 

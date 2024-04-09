@@ -51,6 +51,8 @@ copy = [
 
 # Files and directories to skip
 exclude = {
+    "lims/assays",
+    "lims/designs",
     "website/res",
     "website/inc",
     "website/lib",

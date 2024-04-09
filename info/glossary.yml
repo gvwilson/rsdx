@@ -52,6 +52,12 @@
 
 # D
 
+- key: document_db
+  en:
+    term: "document database"
+    def: >
+      FIXME
+
 # E
 
 - key: error_test
@@ -102,6 +108,13 @@
 
 # L
 
+- key: lims
+  en:
+    term: "Laboratory Information Management System"
+    acronym: "LIMS"
+    def: >
+      FIXME
+
 # M
 
 - key: mock_object
@@ -113,6 +126,12 @@
       simulate databases, web services, and other complex systems.
 
 # N
+
+- key: nosql
+  en:
+    term: "NoSQL database"
+    def: >
+      FIXME
 
 # O
 
@@ -144,6 +163,12 @@
       A test passes if the [actual result](#actual_result) matches the [expected
       result](#expected_result).
 
+- key: permission
+  en:
+    term: "permission"
+    def: >
+      FIXME
+
 - key: plugin_architecture
   en:
     term: "plugin architecture"
@@ -160,9 +185,21 @@
 
 # R
 
+- key: relational_db
+  en:
+    term: "relational database"
+    def: >
+      FIXME
+
 - key: rng_seed
   en:
     term: "random number generation seed"
+    def: >
+      FIXME
+
+- key: role
+  en:
+    term: "role"
     def: >
       FIXME
 
@@ -219,6 +256,13 @@
       FIXME
 
 # U
+
+- key: uid
+  en:
+    term: "user ID"
+    acronym: "UID"
+    def: >
+      FIXME
 
 - key: unboxing
   en:
