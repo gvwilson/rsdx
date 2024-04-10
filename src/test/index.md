@@ -1,6 +1,15 @@
 ---
 title: "Unit Tests"
 tagline: "Use mocks to test programs that rely on pseudo-randomness."
+abstract: >
+    Testing research software is hard:
+    the algorithms are often subtle,
+    and we often don't know what the correct output is supposed to be
+    except in a handful of trivial cases.
+    This lesson introduces several tools that can make the problem tractable,
+    including the use of mock objects to make randomness less random
+    and the use of coverage tools to determine
+    what is and isn't being tested.
 syllabus:
 -   A quick review of pytest.
 -   Deciding what tests to write.

@@ -1,6 +1,13 @@
 ---
 title: "Introduction"
 tagline: "An overview of where we're going and why."
+abstract: >
+    The best way to learn design is to study examples,
+    and the best programs to use as examples
+    are ones like those you want to create.
+    These lessons therefore build small versions
+    of tools that research software engineers build and use every day
+    to show how experienced software designers think.
 syllabus:
 -   Assume you know how to program.
 -   Want to learn how to design pieces of software that are reliable and reusable.

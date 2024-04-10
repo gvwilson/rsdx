@@ -1,6 +1,13 @@
 ---
 title: "Laboratory Information Management System"
 tagline: "Ingest, manage, and summarize experimental data."
+abstract: >
+    Every modern lab uses [Electronic Lab Notebooks][eln] (ELNs)
+    to keep track of procedures, experiments, results, and analyses
+    and a [Laboratory Information Management System][lims] (LIMS)
+    to share information among team members.
+    This lesson shows how a LIMS works by building
+    a command-line application to store, query, update, and invalidate experimental data.
 syllabus:
 -   Check the existence, structure, content, and consistency of data in that order.
 -   Separate quality control checks from reports.

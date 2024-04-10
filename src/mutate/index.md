@@ -1,6 +1,13 @@
 ---
 title: "Synthetic Data"
 tagline: "Analyze snail genomes to see if a single mutation accounts for size differences."
+abstract: >
+    In this lesson we pivot from simulation to data analysis
+    and build a simple pipeline to find out whether
+    a single nucleotide polymorphism can explain differences in
+    the sizes of snails in polluted regions.
+    We also build a synthetic data generator to help us test our analysis pipeline,
+    and use it to show how data analyses can be tested more generally.
 syllabus:
 -   Use a statistical model of single nucleotide polymorphisms (SNPs) to synthesize genomic data.
 -   Use another model to combine that data with geocoded samples to generate snail sizes.

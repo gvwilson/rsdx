@@ -1,6 +1,13 @@
 ---
 title: "Conclusion"
-tag: "What we've covered and where readers might like to go next."
+tagline: "What we've covered and where readers might like to go next."
+abstract: >
+    Software is usually critiqued by asking
+    if it does what it's supposed to do and if it's pleasurable to use.
+    What is often missing is discussion of
+    whether its design makes it easy to manufacture, test, and maintain.
+    We hope these lessons will help you ask and answer that question
+    about the things you build.
 syllabus:
 -   Start where you are, used what you have, help who you can.
 ---

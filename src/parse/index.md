@@ -1,6 +1,14 @@
 ---
 title: "Parse Raw Data"
 tagline: "Turning messy data files into something we can process more easily."
+abstract: >
+    Research data is often stored in idiosyncratic formats,
+    or must be extracted from documents that were written for people to read
+    rather than for machines to process.
+    Our first lesson therefore shows
+    how to build a parser that can handle
+    several variations of a single data format
+    and how to write command-line tools that respect [Taschuk's Rules][taschuk].
 syllabus:
 -   Writing command-line tools that respect Taschuk's Rules.
 -   Creating a data manifest (and why you want one).

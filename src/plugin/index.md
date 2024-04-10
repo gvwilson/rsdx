@@ -1,6 +1,13 @@
 ---
 title: "A Plugin Architecture"
 tagline: "Find the center point of each polluted region and visualize it."
+abstract: >
+    Research data may come from files, databases, websites, and many other sources.
+    Instead of rewriting a program each time a new source becomes available,
+    we can build a plugin architecture that loads data handlers dynamically
+    so that users can extend our program without modifying its internals.
+    Doing this gives us an opportunity to look at how to query a SQL database
+    and at the problem of testing visualizations.
 syllabus:
 -   Using a plugin architecture to load modules dynamically.
 -   Finding, installing, and figuring out how to use open source packages.

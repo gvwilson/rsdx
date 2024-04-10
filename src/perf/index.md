@@ -1,6 +1,13 @@
 ---
 title: "Measure Performance"
 tagline: "Compare the performance of grid implementations empirically."
+abstract: >
+    Some pieces of research software have to be fast in order to be useful.
+    This lesson therefore explores how profiling can help us figure out
+    which parts of our program are worth optimizing.
+    Along the way,
+    it alos looks at how to capture program parameters in reproducible ways
+    and why tuning code can't solve fundamental algorithmic issues.
 syllabus:
 -   Introduce Python type annotations.
 -   Define dataclasses to represent parameters for profiling runs.

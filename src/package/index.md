@@ -1,6 +1,12 @@
 ---
 title: "A Python Package"
 tagline: "Navigating the confusion of creating a simple Python package."
+abstract: >
+    Creating an installable package is the best way to share your code with other people,
+    but Python's packaging tools are a complex mess.
+    This lesson therefore introduces key ideas
+    such as virtual environments and package manifests
+    while avoiding as much of the complexity as it can.
 syllabus:
 -   Creating an installable package is the best way to share your code with other people.
 -   Python's packaging tools are a complex mess.

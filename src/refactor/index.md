@@ -1,6 +1,14 @@
 ---
 title: "Refactor"
 tagline: "Refactor a student-quality script that models the spread of pollution."
+abstract: >
+    Computational notebooks are a great tool for exploratory work,
+    but research software engineers must also be able to create
+    software libraries that can be re-mixed and re-used.
+    This lesson therefore critiques and refactors
+    a script that uses invasion percolation to simulate to model the spread of pollution
+    to show how to break code up into comprehensible chunks
+    and how to validate implementations against one another.
 syllabus:
 -   Break code into comprehensible chunks.
 -   Create classes and class hierarchies.

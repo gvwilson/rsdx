@@ -1,6 +1,13 @@
 ---
 title: "A Static Web Site"
 tagline: "Build a static web site to display research results."
+abstract: >
+    Sharing knowledge is as much a part of research as
+    asking good questions and getting correct answers.
+    This lesson therefore shows how to use a static site generator
+    to create a website that displays research findings,
+    and how to extend such a tool to handle
+    the idiosyncratic needs of a particular research project.
 syllabus:
 -   How page templates are expanded.
 -   Using configuration data in a site.
