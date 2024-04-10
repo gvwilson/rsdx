@@ -53,10 +53,7 @@ copy = [
 exclude = {
     "lims/assays",
     "lims/designs",
-    "website/res",
-    "website/inc",
-    "website/lib",
-    "website/src",
+    "website/site",
     "serve/static",
     "serve/templates",
     "package/LICENSE.md",

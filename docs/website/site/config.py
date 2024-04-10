@@ -1,7 +1,7 @@
 """Ark configuration file."""
 
 title = "Snail Percolation"
-data_dir = "../../data/assays"
+data_dir = "data"
 
 theme = "snails"
 src_dir = "src"

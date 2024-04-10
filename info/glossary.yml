@@ -96,6 +96,12 @@
 
 # I
 
+- key: interpolation
+  en:
+    term: "interpolation"
+    def: >
+      FIXME
+
 - key: inv_perc
   en:
     term: "invasion percolation"
@@ -138,7 +144,7 @@
 - key: orm
   en:
     term: "object-relational mapper"
-    acronym: ORM
+    acronym: "ORM"
     def: >
       FIXME
 
@@ -211,6 +217,12 @@
     def: >
       FIXME
 
+- key: shortcode
+  en:
+    term: "shortcode"
+    def: >
+      FIXME
+
 - key: snp
   en:
     term: "single nucleotide polymorphism"
@@ -224,6 +236,25 @@
     def: >
       To automatically match the values from a list or dictionary supplied by the caller
       to the parameters of a function.
+
+- key: ssg
+  en:
+    term: "static site generator"
+    acronym: "SSG"
+    def: >
+      FIXME
+
+- key: ssg_template
+  en:
+    term: "template (for static site generator)"
+    def: >
+      FIXME
+
+- key: ssg_theme
+  en:
+    term: "theme (for static site generator)"
+    def: >
+      FIXME
 
 - key: synth_data
   en:
