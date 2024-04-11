@@ -16,6 +16,12 @@
       [expected result](#expected_result), the test [passes](#pass_test); if the
       two are different, the test [fails](#fail_test).
 
+- key: attribute
+  en:
+    term: attribute
+    def: >
+      A name-value pair associated with node in a [DOM tree](#dom).
+
 # B
 
 - key: boilerplate
@@ -58,7 +64,25 @@
     def: >
       FIXME
 
+- key: dom
+  en:
+    term: Document Object Model
+    acronym: DOM
+    def: >
+      A standard, in-memory representation of HTML.
+      Each [element](#element) is stored as a node in a tree
+      with a set of named [attributes](#attribute).
+
 # E
+
+- key: element
+  en:
+    term: element (in HTML)
+    def: >
+      A named component in an HTML document.
+      Elements are usually written `<name>`…`</name>`,
+      where "…" represents the content of the element.
+      Elements often have [attributes](#attribute).
 
 - key: error_test
   en:
@@ -309,6 +333,13 @@
       produces [pass](#pass_test), [fail](#fail_test), or [error](#error_test).
 
 # V
+
+- key: visitor
+  en:
+    term: visitor
+    def: >
+      A design pattern in which a recursive function visits each element of a structure
+      and performs some user-defined operation there.
 
 # W
 

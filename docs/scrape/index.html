@@ -53,8 +53,159 @@
 <li>Using Beautiful Soup to parse HTML.</li>
 <li>Using query selectors to find elements in DOM.</li>
 </ul>
-      
-      <p class="fixme">FIXME: write web scraping content</p>
+      <p class="terms">Terms defined: 
+<a class="gl-ref" href="../glossary/#gl:dom" markdown="1">Document Object Model</a>, <a class="gl-ref" href="../glossary/#gl:visitor" markdown="1">visitor</a>
+</p>
+      <h2 id="scrape-dom">Documents as Data</h2>
+<ul>
+<li>Parse an HTML page using <a href="https://beautiful-soup-4.readthedocs.io/">Beautiful Soup</a></li>
+<li>Result is a tree called <a class="gl-ref" href="../glossary/#gl:dom" markdown="1">DOM</a> (Document Object Model)<ul>
+<li>Nodes are HTML elements or text</li>
+<li>Node attributes are properties of objects</li>
+</ul>
+</li>
+<li>Read a page and visit its nodes</li>
+</ul>
+<div class="language-py" title="parse_page.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse page and visit nodes.&quot;&quot;&quot;</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+    <span class="n">visit</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">noblanks</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>The <a class="gl-ref" href="../glossary/#gl:visitor" markdown="1">Visitor</a> function handles different types of nodes<ul>
+<li>If the node is <code>NavigableString</code>, show the text (unless it would be blank and we&rsquo;ve been asked not to)</li>
+<li>If it&rsquo;s a <code>Tag</code>, show name and attributes</li>
+</ul>
+</li>
+</ul>
+<div class="language-py" title="parse_page.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">noblanks</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show nodes in DOM tree.&quot;&quot;&quot;</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;  &#39;</span> <span class="o">*</span> <span class="n">depth</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">NavigableString</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">noblanks</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">text: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">string</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Tag</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">element: </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> with </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">attrs</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+            <span class="n">visit</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">noblanks</span><span class="p">,</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Test on a small page</li>
+</ul>
+<div class="language-html" title="small.html">
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Page Title<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>paragraph<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+</div>
+<div class="language-sh" title="small.sh">
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>parse_page.py<span class="w"> </span>--filename<span class="w"> </span>small.html
+</code></pre></div>
+</div>
+<div class="language-out" title="small.out">
+<div class="highlight"><pre><span></span><code>element: [document] with {}
+  element: html with {}
+    text: &#39;\n&#39;
+    element: h1 with {}
+      text: &#39;Page Title&#39;
+    text: &#39;\n&#39;
+    element: p with {}
+      text: &#39;paragraph&#39;
+    text: &#39;\n&#39;
+  text: &#39;\n&#39;
+</code></pre></div>
+</div>
+<ul>
+<li>Try a larger page but don&rsquo;t show text that is just whitespace (newlines and indentation)</li>
+</ul>
+<div class="language-html" title="medium.html">
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Example Page<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Page Title<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">ul</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;details&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>first point<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>second point<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+</div>
+<div class="language-sh" title="medium.sh">
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>parse_page.py<span class="w"> </span>--filename<span class="w"> </span>medium.html<span class="w"> </span>--noblanks
+</code></pre></div>
+</div>
+<div class="language-out" title="medium.out">
+<div class="highlight"><pre><span></span><code>element: [document] with {}
+  element: html with {}
+    element: head with {}
+      element: title with {}
+        text: &#39;Example Page&#39;
+    element: body with {}
+      element: h1 with {}
+        text: &#39;Page Title&#39;
+      element: ul with {&#39;class&#39;: [&#39;details&#39;]}
+        element: li with {}
+          text: &#39;first point&#39;
+        element: li with {}
+          text: &#39;second point&#39;
+</code></pre></div>
+</div>
+<h2 id="scrape-fetch">Fetching</h2>
+<ul>
+<li>Here&rsquo;s the part we already know</li>
+</ul>
+<div class="language-py" title="scrape.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">homepage</span> <span class="o">=</span> <span class="n">get_page</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">homepage</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">homepage</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_info</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">link</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Here&rsquo;s the part we don&rsquo;t</li>
+</ul>
+<div class="language-py" title="scrape.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_page</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get HTML page as soup.&quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Use the <a href="https://requests.readthedocs.io/">requests</a> library to fetch a page at a URL</li>
+<li><code>response</code> object has many useful properties<ul>
+<li><code>response.text</code> is the result as characters</li>
+<li><code>response.json()</code> (method call) would turn JSON-as-text into JSON-as-objects</li>
+</ul>
+</li>
+<li>And then we pull out information using Beautiful Soup</li>
+</ul>
+<div class="language-py" title="scrape.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">relative</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get info from staff page.&quot;&quot;&quot;</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">get_page</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">homepage</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">relative</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;h1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">string</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">page</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">):</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;th&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">kind</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+</div>
     </main>
     <footer>
   © 2024 <a href="https://third-bit.com/">Greg Wilson</a>

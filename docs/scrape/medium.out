@@ -1,0 +1,13 @@
+element: [document] with {}
+  element: html with {}
+    element: head with {}
+      element: title with {}
+        text: 'Example Page'
+    element: body with {}
+      element: h1 with {}
+        text: 'Page Title'
+      element: ul with {'class': ['details']}
+        element: li with {}
+          text: 'first point'
+        element: li with {}
+          text: 'second point'
