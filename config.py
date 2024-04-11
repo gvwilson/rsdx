@@ -10,6 +10,7 @@ author = {
 }
 lang = "en"
 highlight = "tango.css"
+plausible = "gvwilson.github.io/rsdx"
 
 chapters = [
     "intro",
