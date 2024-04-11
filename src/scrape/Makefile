@@ -15,3 +15,5 @@ medium.out: parse_page.py medium.html medium.sh
 
 small.out: parse_page.py small.html small.sh
 	@bash small.sh > $@
+
+settings: _settings

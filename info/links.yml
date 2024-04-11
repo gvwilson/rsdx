@@ -232,6 +232,10 @@
   url: "https://third-bit.com/sdxpy/"
   en: "Software Design by Example in Python"
 
+- key: sqlite3
+  url: https://docs.python.org/3/library/sqlite3.html
+  en: "SQLite module for Python"
+
 - key: sqlmodel
   url: "https://sqlmodel.tiangolo.com/"
   en: "SQLModel ORM"

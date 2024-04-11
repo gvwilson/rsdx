@@ -53,8 +53,138 @@
 <li>Serving static files (and what that means).</li>
 <li>The difference between data as HTML and data for machine consumption.</li>
 </ul>
-      
-      <p class="fixme">FIXME: Need to talk about authentication.</p>
+      <p class="terms">Terms defined: 
+<a class="gl-ref" href="../glossary/#gl:controller" markdown="1">controller (in model-view-controller)</a>, <a class="gl-ref" href="../glossary/#gl:extend_template" markdown="1">extend (a template)</a>, <a class="gl-ref" href="../glossary/#gl:model" markdown="1">model (in model-view-controller)</a>, <a class="gl-ref" href="../glossary/#gl:mvc" markdown="1">model-view-controller</a>, <a class="gl-ref" href="../glossary/#gl:route" markdown="1">route</a>, <a class="gl-ref" href="../glossary/#gl:view" markdown="1">view (in model-view-controller)</a>
+</p>
+      <h2 id="serve-data">Getting Data</h2>
+<ul>
+<li>Assay database from <a href="../lims/">Chapter&nbsp;12</a><ul>
+<li><code>staff</code></li>
+<li><code>experiment</code></li>
+<li><code>performed</code></li>
+<li><code>plate</code></li>
+<li><code>invalidated</code></li>
+</ul>
+</li>
+<li>Use <a href="https://docs.python.org/3/library/sqlite3.html">sqlite3</a> module directly<ul>
+<li>Exercise: convert to <a href="https://sqlmodel.tiangolo.com/">SQLModel</a></li>
+</ul>
+</li>
+<li><a class="gl-ref" href="../glossary/#gl:mvc" markdown="1">MVC</a> design separates <a class="gl-ref" href="../glossary/#gl:model" markdown="1">model</a>, <a class="gl-ref" href="../glossary/#gl:controller" markdown="1">controller</a>, and <a class="gl-ref" href="../glossary/#gl:view" markdown="1">view</a><ul>
+<li>Model is data storage</li>
+<li>Controller is the verbs</li>
+<li>View is the display</li>
+</ul>
+</li>
+<li>Model functions:<ul>
+<li><code>get_all</code> to get all records (but <em>not</em> 1-1 with database records)</li>
+<li><code>get_count</code> to count records of a particular type</li>
+<li><code>get_plate_filename</code> to turn a plate ID into an assay filename</li>
+</ul>
+</li>
+</ul>
+<div class="language-py" title="model.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_count</span><span class="p">(</span><span class="n">kind</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;How many entries of the given kind?&quot;&quot;&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;RSDX_DB_PATH&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;staff&#39;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;select count(*) from staff&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;experiments&#39;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;select count(*) from experiment&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;plates&#39;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;select count(*) from plate&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Unknown kind </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+</div>
+<h2 id="serve-server">Controller</h2>
+<ul>
+<li>Use <a href="https://flask.palletsprojects.com/">Flask</a><ul>
+<li>Define a function to handle a request to a particular URL</li>
+<li>Use a decorator to <a class="gl-ref" href="../glossary/#gl:route" markdown="1">route</a> appropriate requests to it</li>
+</ul>
+</li>
+</ul>
+<div class="language-py" title="server.py">
+<div class="highlight"><pre><span></span><code><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display data server home page.&quot;&quot;&quot;</span>
+    <span class="n">page_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;site_title&quot;</span><span class="p">:</span> <span class="n">SITE_TITLE</span><span class="p">,</span>
+        <span class="s2">&quot;num_staff&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span><span class="s2">&quot;staff&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;num_experiments&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span><span class="s2">&quot;experiments&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;num_plates&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span><span class="s2">&quot;plates&quot;</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">page_data</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
+<li>Run from the command line</li>
+</ul>
+<div class="language-sh" title="run_server.sh">
+<div class="highlight"><pre><span></span><code><span class="nv">RSDX_DB_PATH</span><span class="o">=</span>../../data/assays.db<span class="w"> </span>flask<span class="w"> </span>--app<span class="w"> </span>server<span class="w"> </span>run
+</code></pre></div>
+</div>
+<div class="language-out" title="run_server.out">
+<div class="highlight"><pre><span></span><code> * Serving Flask app &#39;server&#39;
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment.
+Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+</code></pre></div>
+</div>
+<ul>
+<li>Go to port 5000 (<a class="fig-ref" href="../serve/#serve_home_page">Figure&nbsp;15.1</a>)</li>
+</ul>
+<figure id="serve_home_page">
+<img src="./serve_home_page.svg" alt="screenshot of data server home page"/>
+<figcaption>Figure&nbsp;15.1: Home page of data server</figcaption>
+</figure>
+
+<h2 id="serve-template">Templates</h2>
+<ul>
+<li><code>render_template</code> looks in the <code>templates</code> directory for <code>index.html</code></li>
+</ul>
+<div class="language-html" title="templates/index.html">
+<div class="highlight"><pre><span></span><code>{% extends &quot;base.html&quot; %}
+{% block content %}
+<span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">thead</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">th</span><span class="p">&gt;</span>What<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;&lt;</span><span class="nt">th</span><span class="p">&gt;</span>How Many<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">thead</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tbody</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/staff&quot;</span><span class="p">&gt;</span>Staff:<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>{{ num_staff }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/experiments&quot;</span><span class="p">&gt;</span>Experiments:<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>{{ num_experiments }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/plates&quot;</span><span class="p">&gt;</span>Plates:<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>{{ num_plates }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tbody</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+{% endblock %}
+</code></pre></div>
+</div>
+<ul>
+<li>This template <a class="gl-ref" href="../glossary/#gl:extend_template" markdown="1">extends</a> <code>base.html</code></li>
+</ul>
+<div class="language-html" title="templates/base.html">
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/static/style.css&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>{{ site_title }}{% if page_title %}: {{ page_title }}{% endif %}<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>{{ site_title }}{% if page_title %}: {{ page_title }}{% endif %}<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    {% block content %}
+    {% endblock %}
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+</div>
     </main>
     <footer>
   © 2024 <a href="https://third-bit.com/">Greg Wilson</a>

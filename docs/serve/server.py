@@ -10,9 +10,10 @@ from prettytable import PrettyTable
 import model
 
 SITE_TITLE = "Plate Data Server"
-PLATES_DIR = str(Path(os.getenv("RSDX_DATA"), "assays"))
+PLATES_DIR = os.getenv("RSDX_DATA")
 
 
+# [index]
 app = Flask(__name__)
 
 
@@ -26,7 +27,7 @@ def index():
         "num_plates": model.get_count("plates"),
     }
     return render_template("index.html", **page_data)
-
+# [/index]
 
 @app.route("/staff/")
 def staff_index():

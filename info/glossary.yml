@@ -50,6 +50,12 @@
     def: >
       FIXME
 
+- key: controller
+  en:
+    term: "controller (in model-view-controller)"
+    def: >
+      FIXME
+
 - key: cross_validation
   en:
     term: "cross validation"
@@ -98,6 +104,12 @@
     def: >
       The value that a piece of software is supposed to produce when tested in a
       certain way, or the state in which it is supposed to leave the system.
+
+- key: extend_template
+  en:
+    term: "extend (a template)"
+    def: >
+      FIXME
 
 # F
 
@@ -154,6 +166,19 @@
       A simplified replacement for part of a program whose behavior is easy to
       control and predict. Mock objects are used in [unit tests](#unit_test) to
       simulate databases, web services, and other complex systems.
+
+- key: model
+  en:
+    term: "model (in model-view-controller)"
+    def: >
+      FIXME
+
+- key: mvc
+  en:
+    term: "model-view-controller"
+    acronym: MVC
+    def: >
+      FIXME
 
 # N
 
@@ -230,6 +255,12 @@
 - key: role
   en:
     term: "role"
+    def: >
+      FIXME
+
+- key: route
+  en:
+    term: "route"
     def: >
       FIXME
 
@@ -333,6 +364,12 @@
       produces [pass](#pass_test), [fail](#fail_test), or [error](#error_test).
 
 # V
+
+- key: view
+  en:
+    term: "view (in model-view-controller)"
+    def: >
+      FIXME
 
 - key: visitor
   en:

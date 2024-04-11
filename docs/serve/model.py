@@ -1,113 +1,89 @@
-"""Execute SQL queries using Pony ORM."""
+"""Execute SQL queries."""
 
-from datetime import date
 import os
-from pathlib import Path
-
-from pony import orm
-
-
-DB_FILE = str(Path(os.getenv("RSDX_DATA"), "assays.db"))
-DB = orm.Database()
-
-
-class Staff(DB.Entity):
-    """Staff members."""
-
-    ident = orm.PrimaryKey(int, auto=True)
-    personal = orm.Required(str)
-    family = orm.Required(str)
-    performed = orm.Set("Performed")
-    invalidated = orm.Set("Invalidated")
-
-
-class Experiment(DB.Entity):
-    """Experiments."""
-
-    ident = orm.PrimaryKey(int, auto=True)
-    kind = orm.Required(str)
-    started = orm.Required(date)
-    ended = orm.Optional(date)
-    performed = orm.Set("Performed")
-    plates = orm.Set("Plate")
-
-
-class Performed(DB.Entity):
-    """Who was involved in which experiments."""
-
-    staff = orm.Required(Staff)
-    experiment = orm.Required(Experiment)
-    orm.PrimaryKey(staff, experiment)
-
-
-class Plate(DB.Entity):
-    """Plates used in experiments."""
-
-    ident = orm.PrimaryKey(int, auto=True)
-    experiment = orm.Required(Experiment)
-    upload_date = orm.Required(date)
-    filename = orm.Required(str, unique=True)
-    invalidated = orm.Set("Invalidated")
-
-
-class Invalidated(DB.Entity):
-    """Invalidated plates."""
-
-    plate = orm.Required(Plate)
-    staff = orm.Required(Staff)
-    invalidate_date = orm.Required(date)
-    orm.PrimaryKey(plate, staff)
-
-
-DB.bind("sqlite", DB_FILE, create_db=False)
-DB.generate_mapping(create_tables=False)
+import sqlite3
 
 
 def get_all(kind):
     """Get all entries of particular kind."""
-    with orm.db_session:
-        if kind == "staff":
-            columns = ["ident", "personal", "family"]
-            rows = list(orm.select((s.ident, s.personal, s.family) for s in Staff))
-        elif kind == "experiments":
-            columns = ["ident", "kind", "started", "ended", "num_plates"]
-            rows = list(
-                orm.select(
-                    (e.ident, e.kind, e.started, e.ended, orm.count(e.plates))
-                    for e in Experiment
-                )
+    conn = sqlite3.connect(os.getenv("RSDX_DB_PATH"))
+    if kind == "staff":
+        columns = ["ident", "personal", "family"]
+        rows = conn.execute("""
+            select
+                ident,
+                personal,
+                family
+            from staff
+        """).fetchall()
+    elif kind == "experiments":
+        columns = ["ident", "kind", "started", "ended", "num_plates"]
+        rows = conn.execute("""
+            select
+                experiment.ident,
+                kind,
+                started,
+                ended,
+                count(*) as num_plates
+            from plate join experiment
+            on plate.experiment = experiment.ident
+            group by experiment.ident
+        """).fetchall()
+    elif kind == "plates":
+        columns = ["ident", "experiment", "uploaded", "invalidated"]
+        rows = conn.execute("""
+            with invalidated_plates as (
+                select distinct plate from invalidated
             )
-        elif kind == "plates":
-            columns = ["ident", "experiment", "uploaded", "invalidated"]
-            rows = list(
-                orm.select(
-                    (
-                        p.ident,
-                        p.experiment.ident,
-                        p.upload_date,
-                        orm.exists(p.invalidated),
-                    )
-                    for p in Plate
-                )
-            )
-        else:
-            assert False, f"Unknown kind {kind}"
-        return columns, rows
+            select
+                ident,
+                experiment,
+                upload_date as uploaded,
+                ident in invalidated_plates as invalidated
+            from plate
+        """).fetchall()
+    else:
+        assert False, f"Unknown kind {kind}"
+    conn.close()
+    return columns, rows
 
 
 def get_count(kind):
     """How many entries of the given kind?"""
-    with orm.db_session:
-        if kind == "staff":
-            return orm.count(s for s in Staff)
-        if kind == "experiments":
-            return orm.count(e for e in Experiment)
-        if kind == "plates":
-            return orm.count(p for p in Plate)
-    assert False, f"Unknown kind {kind}"
+    conn = sqlite3.connect(os.getenv("RSDX_DB_PATH"))
+    if kind == "staff":
+        result = conn.execute("select count(*) from staff").fetchone()
+    elif kind == "experiments":
+        result = conn.execute("select count(*) from experiment").fetchone()
+    elif kind == "plates":
+        result = conn.execute("select count(*) from plate").fetchone()
+    else:
+        assert False, f"Unknown kind {kind}"
+    conn.close()
+    return result[0]
 
 
 def get_plate_filename(plate_id):
     """Where is the plate data stored?"""
-    with orm.db_session:
-        return orm.select(p.filename for p in Plate if p.ident == plate_id).first()
+    conn = sqlite3.connect(os.getenv("RSDX_DB_PATH"))
+    result = conn.execute("select filename from plate where ident = ?", (plate_id,)).fetchone()
+    conn.close()
+    return result[0] if result else None
+
+
+if __name__ == "__main__":
+    import sys
+    if sys.argv[1] == "get_all":
+        columns, rows = get_all(sys.argv[2])
+        print(columns)
+        for r in rows:
+            print(r)
+    elif sys.argv[1] == "get_count":
+        count = get_count(sys.argv[2])
+        print(count)
+    elif sys.argv[1] == "get_plate_filename":
+        loc = get_plate_filename(sys.argv[2])
+        print(loc)
+    else:
+        print(f"unknown choice {sys.argv[1]}", file=sys.stderr)
+        sys.exit(1)
