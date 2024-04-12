@@ -42,3 +42,10 @@
     and <a href="https://gvwilson.github.io/sys-tutorial/">The Sudonomicon</a>.
   </em>
 </p>
+
+## Help Wanted
+
+If you would like to help get this tutorial to a usable state,
+please see
+<a href="https://github.com/gvwilson/rsdx/issues?q=is%3Aissue+is%3Aopen+label%3Ahelp-wanted">these issues</a>
+or <a href="mailto:gvwilson@third-bit.com">contact the maintainer</a>.
