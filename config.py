@@ -77,16 +77,6 @@ markdown_settings = {
     ]
 }
 
-# Display values for LaTeX generation.
+# Show theme.
 if __name__ == "__main__":
-    import sys
-
-    assert len(sys.argv) == 2, "Expect exactly one argument"
-    if sys.argv[1] == "--order":
-        print(" ".join(chapters + appendices))
-    elif sys.argv[1] == "--slug":
-        print(slug)
-    elif sys.argv[1] == "--title":
-        print(title)
-    else:
-        assert False, f"Unknown flag {sys.argv[1]}"
+    print(theme)

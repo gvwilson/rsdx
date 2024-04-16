@@ -109,6 +109,11 @@ body {
     max-width: var(--width-page);
 }
 
+/* Caption on table */
+caption {
+    text-align: center;
+}
+
 /* Code fragments */
 code {
     font-family: "Source Code Pro", monospace;
@@ -173,6 +178,11 @@ dl.bibliography dt {
 /* Glossary term definitions */
 dl.glossary dt {
     font-weight: bold;
+}
+
+/* Caption on figure */
+figcaption {
+    text-align: center;
 }
 
 /* Figures */
@@ -240,11 +250,6 @@ p.subtitle {
     font-style: italic;
     margin-top: var(--border-heavy);
     margin-bottom: var(--border-heavy);
-}
-
-/* Caption on table */
-p.table-caption {
-    text-align: center;
 }
 
 /* Term definitions */
