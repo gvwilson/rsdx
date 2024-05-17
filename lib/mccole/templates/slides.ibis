@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include "head.html" %}
+    <script src="@root/slides.js" defer></script>
+    <link rel="stylesheet" href="@root/slides.css">
+  </head>
+  <body>
+<div class="row notex">
+  <div class="col-12 center">
+    <h1>{{ node.title }}</h1>
+    <p class="subtitle">{{ site.title }}</p>
+  </div>
+</div>
+<hr>
+{{ node.html }}
+  </body>
+</html>
