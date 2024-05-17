@@ -1,4 +1,5 @@
 ---
+template: slides
 title: "Parse Raw Data"
 tagline: "Turning messy data files into something we can process more easily."
 abstract: >
@@ -15,8 +16,16 @@ syllabus:
 -   Using regular expressions if you have to, but an out-of-the-box parser if one is available.
 ---
 
--   We are studying the impact of a toxic waste leak on snails on Vancouver Island
+## The Problem
+
+-   We are studying the impact of toxic waste on snails on Vancouver Island
 -   First step is to read data files with snail weight readings from four sample sites
+-   But the files are formatted inconsistently
+
+---
+
+## The Data
+
 -   First file looks like this
 
 [%inc GBY.csv %]
@@ -27,28 +36,53 @@ syllabus:
     -   observation date (we presume) in ISO YYYY-MM-DD format (we hope)
     -   longitude and latitude of the measurement (decimal degrees)
     -   the reading
+
+---
+
+## Just Read It
+
 -   That seems simple
 
 [%inc naive.py %]
 [%inc naive_GBY.out %]
+
+---
+
+## But…
 
 -   Try it on the next file
 
 [%inc naive_YOU.out %]
 
 -   Problem is that the table of readings is indented by one column
+
+---
+
+## And…
+
 -   Next file starts like this:
 
 [%inc COW.csv ellipsis=True %]
 
 -   And another one has *two* blank lines between the header and the data
--   Option 1: edit the data files
+
+---
+
+## Options
+
+1.  Edit the raw data files
     -   Never do this
--   Option 2: copy and edit the files
+2.  Copy and edit the files
     -   But it turns out each field scientist submitted dozens of files
     -   Each person was consistent, but editing them all by hand will be tedious and error-prone
--   Option 3: write a parser
-    -   Follow Taschuk's Rules [%b Taschuk2017 %]
+3.  Write a parser
+    -   Never do this…
+    -   …unless you have to
+
+---
+
+## Overall Structure
+
 -   Main body follows 50-year-old conventions for Unix command-line tools
     -   Get command-line arguments
     -   Read from standard input or a file (processing as we read)
@@ -56,9 +90,17 @@ syllabus:
 
 [%inc parse.py pattern=func:main %]
 
+---
+
+## Parsing Arguments
+
 -   Use `argparse` module to parse arguments
 
 [%inc parse.py pattern=func:parse_args %]
+
+---
+
+## Loading Data
 
 -   To load:
     -   Get all lines
@@ -68,15 +110,23 @@ syllabus:
 
 [%inc parse.py pattern=func:load %]
 
+---
+
+## Finite State Machine
+
 -   Splitting is the hardest part
--   We can be in one of four states
-    -   Reading header
-    -   Searching for body
-    -   Reading body
-    -   Done
+-   Manage complexity with a a [%g fsm "finite state machine" %]
+    1.  Reading header
+    2.  Searching for body
+    3.  Reading body
+    4.  Done
 -   Use an enumeration to keep track of these
 
 [%inc parse.py pattern=class:State %]
+
+---
+
+## Structure
 
 -   As we process each line
     -   Break down cases based on current state
@@ -85,14 +135,24 @@ syllabus:
 -   A structured way to manage complexity as parsing gets more complicated
    -   Could just use strings instead of an enum, but the latter is easy to keep track of
 
+---
+
+## Structure
+
 [%inc parse.py pattern=func:split %]
+
+---
+
+## Normalization
 
 -   To normalize the body, check indentation of first row
     -   Really should confirm indentation of remaining rows
 
 [%inc parse.py pattern=func:normalize %]
 
--   Result
+---
+
+## What We Have Now
 
 [% figure
    slug="parse_call_tree"
@@ -103,7 +163,9 @@ syllabus:
 
 -   Run it on our files and check the results
 
-## Exercises {: #parse-exercises}
+---
+
+## Exercises
 
 1.  Check that all rows of body are indented the same amount.
 

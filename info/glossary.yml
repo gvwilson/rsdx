@@ -120,6 +120,13 @@
       A test fails if the [actual result](#actual_result) does not match the
       [expected result](#expected_result).
 
+- key: fsm
+  en:
+    term: "finite state machine"
+    acronym: FSM
+    def: >
+      FIXME
+
 # G
 
 - key: generator

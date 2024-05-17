@@ -3,6 +3,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap");
 
+:root {
+    --size-code-slides: 70%;
+}
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
@@ -16,6 +20,13 @@
 
 .slide > h2, .slide > h3 {
     margin-top: unset;
+}
+
+.page-number {
+    opacity: .5;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 .dark {
@@ -87,11 +98,5 @@ code {
 pre code {
     display: block;
     overflow-x: auto;
-}
-
-.page-number {
-    opacity: .5;
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    font-size: var(--size-code-slides);
 }

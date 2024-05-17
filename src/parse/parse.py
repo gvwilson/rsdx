@@ -64,8 +64,8 @@ def normalize(rows):
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--infile", type=str, default=None, help="input file")
-    parser.add_argument("--outfile", type=str, default=None, help="output file")
+    parser.add_argument("--infile", type=str, default=None, help="input")
+    parser.add_argument("--outfile", type=str, default=None, help="output")
     return parser.parse_args()
 
 

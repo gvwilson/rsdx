@@ -21,40 +21,26 @@
 </script>
 
 
+    <script src="../slides.js" defer></script>
+    <link rel="stylesheet" href="../slides.css">
   </head>
   <body>
-    <main>
-      <div class="row notex">
+<div class="row notex">
   <div class="col-12 center">
-    
-      <h1>Parse Raw Data</h1>
-    
+    <h1>Parse Raw Data</h1>
+    <p class="subtitle">Research Software Design by Example</p>
   </div>
 </div>
-
-      
-<nav class="row-always notex">
-  <div class="col-1 left">
-    <a href="../intro/" title="previous" class="undecorated">&#8678;</a>
-  </div>
-  <div class="col-10 center">
-    <a href="../" title="home" class="undecorated">&#9737;</a>
-  </div>
-  <div class="col-1 right">
-    <a href="../plugin/" title="next" class="undecorated">&#8680;</a>
-  </div>
-</nav>
-
-
-      <ul class="keypoints">
-<li>Writing command-line tools that respect Taschuk&rsquo;s Rules.</li>
-<li>Creating a data manifest (and why you want one).</li>
-<li>Using regular expressions if you have to, but an out-of-the-box parser if one is available.</li>
-</ul>
-      
-      <ul>
-<li>We are studying the impact of a toxic waste leak on snails on Vancouver Island</li>
+<hr>
+<h2>The Problem</h2>
+<ul>
+<li>We are studying the impact of toxic waste on snails on Vancouver Island</li>
 <li>First step is to read data files with snail weight readings from four sample sites</li>
+<li>But the files are formatted inconsistently</li>
+</ul>
+<hr />
+<h2>The Data</h2>
+<ul>
 <li>First file looks like this</li>
 </ul>
 <div class="language-csv" title="GBY.csv">
@@ -79,6 +65,10 @@ GBY,2023-05-08,-124.45828,48.92066,32.6
 <li>the reading</li>
 </ul>
 </li>
+</ul>
+<hr />
+<h2>Just Read It</h2>
+<ul>
 <li>That seems simple</li>
 </ul>
 <div class="language-py" title="naive.py">
@@ -101,6 +91,8 @@ GBY,2023-05-08,-124.45828,48.92066,32.6
 7  GBY  2023-05-08 -124.45828  48.92066     32.6
 </code></pre></div>
 </div>
+<hr />
+<h2>But…</h2>
 <ul>
 <li>Try it on the next file</li>
 </ul>
@@ -122,6 +114,10 @@ GBY,2023-05-08,-124.45828,48.92066,32.6
 </div>
 <ul>
 <li>Problem is that the table of readings is indented by one column</li>
+</ul>
+<hr />
+<h2>And…</h2>
+<ul>
 <li>Next file starts like this:</li>
 </ul>
 <div class="language-csv" title="COW.csv">
@@ -136,19 +132,28 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </div>
 <ul>
 <li>And another one has <em>two</em> blank lines between the header and the data</li>
-<li>Option 1: edit the data files<ul>
+</ul>
+<hr />
+<h2>Options</h2>
+<ol>
+<li>Edit the raw data files<ul>
 <li>Never do this</li>
 </ul>
 </li>
-<li>Option 2: copy and edit the files<ul>
+<li>Copy and edit the files<ul>
 <li>But it turns out each field scientist submitted dozens of files</li>
 <li>Each person was consistent, but editing them all by hand will be tedious and error-prone</li>
 </ul>
 </li>
-<li>Option 3: write a parser<ul>
-<li>Follow Taschuk&rsquo;s Rules <span class="bib-ref">[<a class="bib-ref" href="../bib/#Taschuk2017">Taschuk2017</a>]</span></li>
+<li>Write a parser<ul>
+<li>Never do this…</li>
+<li>…unless you have to</li>
 </ul>
 </li>
+</ol>
+<hr />
+<h2>Overall Structure</h2>
+<ul>
 <li>Main body follows 50-year-old conventions for Unix command-line tools<ul>
 <li>Get command-line arguments</li>
 <li>Read from standard input or a file (processing as we read)</li>
@@ -172,6 +177,8 @@ COW,2023-04-27,-124.045,48.8216,81.7
         <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Parsing Arguments</h2>
 <ul>
 <li>Use <code>argparse</code> module to parse arguments</li>
 </ul>
@@ -179,11 +186,13 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments.&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--infile&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;input file&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--outfile&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;output file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--infile&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;input&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--outfile&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;output&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Loading Data</h2>
 <ul>
 <li>To load:<ul>
 <li>Get all lines</li>
@@ -203,14 +212,16 @@ COW,2023-04-27,-124.045,48.8216,81.7
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">titles</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Finite State Machine</h2>
 <ul>
 <li>Splitting is the hardest part</li>
-<li>We can be in one of four states<ul>
+<li>Manage complexity with a a <a class="gl-ref" href="../glossary/#gl:fsm" markdown="1">finite state machine</a><ol>
 <li>Reading header</li>
 <li>Searching for body</li>
 <li>Reading body</li>
 <li>Done</li>
-</ul>
+</ol>
 </li>
 <li>Use an enumeration to keep track of these</li>
 </ul>
@@ -223,6 +234,8 @@ COW,2023-04-27,-124.045,48.8216,81.7
     <span class="n">DONE</span> <span class="o">=</span> <span class="s1">&#39;done&#39;</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Structure</h2>
 <ul>
 <li>As we process each line<ul>
 <li>Break down cases based on current state</li>
@@ -233,6 +246,8 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <li>A structured way to manage complexity as parsing gets more complicated</li>
 <li>Could just use strings instead of an enum, but the latter is easy to keep track of</li>
 </ul>
+<hr />
+<h2>Structure</h2>
 <div class="language-py" title="parse.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Split header from body.&quot;&quot;&quot;</span>
@@ -262,6 +277,8 @@ COW,2023-04-27,-124.045,48.8216,81.7
     <span class="k">return</span> <span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Normalization</h2>
 <ul>
 <li>To normalize the body, check indentation of first row<ul>
 <li>Really should confirm indentation of remaining rows</li>
@@ -276,9 +293,8 @@ COW,2023-04-27,-124.045,48.8216,81.7
     <span class="k">return</span> <span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 </code></pre></div>
 </div>
-<ul>
-<li>Result</li>
-</ul>
+<hr />
+<h2>What We Have Now</h2>
 <figure id="parse_call_tree">
 <img src="./call_tree.svg" alt="Call tree of completed parser"/>
 <figcaption>Figure&nbsp;2.1: Parser call tree</figcaption>
@@ -287,7 +303,8 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <ul>
 <li>Run it on our files and check the results</li>
 </ul>
-<h2 id="parse-exercises">Exercises</h2>
+<hr />
+<h2>Exercises</h2>
 <ol>
 <li>
 <p>Check that all rows of body are indented the same amount.</p>
@@ -317,16 +334,5 @@ COW,2023-04-27,-124.045,48.8216,81.7
     How would you use this in testing?</p>
 </li>
 </ol>
-    </main>
-    <footer>
-  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
-  &middot;
-  <a href="../">home</a>
-  &middot;
-  <a href="https://github.com/gvwilson/rsdx">repository</a>
-  &middot;
-  <a href="../license/">license</a>
-</footer>
-
   </body>
 </html>
