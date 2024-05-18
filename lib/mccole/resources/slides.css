@@ -86,6 +86,10 @@ pre, img {
     max-width: 100%;
 }
 
+img {
+    border: 1px solid black;
+}
+
 pre {
     white-space: pre-wrap;
     word-break: break-all;

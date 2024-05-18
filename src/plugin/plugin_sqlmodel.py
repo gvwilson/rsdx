@@ -37,6 +37,7 @@ class Samples(SQLModel, table=True):
     label_id: Surveys | None = Relationship(back_populates="samples")
 
 
+# [read]
 def read_data(dbfile):
     """Read database and do calculations with SQLModel ORM."""
     url = f"sqlite:///{dbfile}"
@@ -47,8 +48,12 @@ def read_data(dbfile):
             (s.label_id.site, s.lon, s.lat, s.reading)
             for s in session.exec(select(Samples))
         )
-        combined = pd.DataFrame(combined, columns=["site", "lon", "lat", "reading"])
+        combined = pd.DataFrame(
+            combined,
+            columns=["site", "lon", "lat", "reading"]
+        )
         return {
             "combined": combined,
             "centers": util.centers_with_pandas(combined)
         }
+# [/read]

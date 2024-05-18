@@ -35,7 +35,7 @@ def check(tables):
             print(f"mis-match in provided tables {ref_key} != {key}")
         else:
             for sub_key in tables[ref_key]:
-                if not len(tables[ref_key][sub_key]) == len(tables[key][sub_key]):
+                if len(tables[ref_key][sub_key]) != len(tables[key][sub_key]):
                     print(f"mis-match in {sub_key}: {ref_key} != {key}")
 
 
