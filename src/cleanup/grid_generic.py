@@ -3,7 +3,6 @@
 # [main]
 from abc import ABC, abstractmethod
 
-
 class GridGeneric(ABC):
     """Represent a generic grid."""
 
@@ -20,6 +19,19 @@ class GridGeneric(ABC):
         self._width = width
         self._height = height
         self._depth = depth
+# [/main]
+
+    def __eq__(self, other):
+        """Compare this grid to another."""
+        if self.width() != other.width():
+            return False
+        if self.height() != other.height():
+            return False
+        for x in range(self.width()):
+            for y in range(self.height()):
+                if self[x, y] != other[x, y]:
+                    return False
+        return True
 
     def width(self):
         """Get width of grid."""
@@ -32,7 +44,6 @@ class GridGeneric(ABC):
     def depth(self):
         """Get depth of grid."""
         return self._depth
-# [/main]
 
     def adjacent(self, x, y):
         """Is (x, y) adjacent to a filled cell?"""

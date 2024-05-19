@@ -1,7 +1,7 @@
 """Represent 2D grid."""
 
+# [main]
 from abc import ABC, abstractmethod
-
 
 class GridGeneric(ABC):
     """Represent a generic grid."""
@@ -19,6 +19,7 @@ class GridGeneric(ABC):
         self._width = width
         self._height = height
         self._depth = depth
+# [/main]
 
     def __eq__(self, other):
         """Compare this grid to another."""

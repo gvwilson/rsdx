@@ -8,6 +8,12 @@
     def: >
       FIXME
 
+- key: abstract_method
+  en:
+    term: "abstract method"
+    def: >
+      FIXME
+
 - key: actual_result
   en:
     term: "actual result (of test)"

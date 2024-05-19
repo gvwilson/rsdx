@@ -1,6 +1,6 @@
 """Invasion percolation in Python."""
 
-import random
+from random import randint, randrange, seed as randseed
 import sys
 
 
@@ -10,7 +10,7 @@ def make_grid(width, height, depth):
     for x in range(width):
         row = []
         for y in range(height):
-            row.append(random.randint(1, depth))
+            row.append(randint(1, depth))
         grid.append(row)
     return grid
 
@@ -67,16 +67,11 @@ def print_grid(grid, width, height, depth, seed, as_numbers=False):
 
 # [main]
 # Grid size and range of fill values.
-width = int(sys.argv[1])
-height = int(sys.argv[2])
-depth = int(sys.argv[3])
+width, height, depth = (int(x) for x in sys.argv[1:4])
 
 # Random number generation.
-if len(sys.argv) > 4:
-    seed = int(sys.argv[4])
-else:
-    seed = random.randrange(sys.maxsize)
-random.seed(seed)
+seed = int(sys.argv[4]) if len(sys.argv) > 4 else randrange(sys.maxsize)
+randseed(seed)
 
 # Create initial grid
 grid = make_grid(width, height, depth)
