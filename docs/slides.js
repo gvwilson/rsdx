@@ -75,7 +75,7 @@
 	slide.setAttribute('id', `slide-${i}`);
     }
 
-    // Log appearance of slide.
+    // Update URL to reflect current slide.
     function addSlideObserver(slide) {
 	function report(entries, observer) {
 	    if (entries[0].isIntersecting) {

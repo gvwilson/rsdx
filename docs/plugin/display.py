@@ -60,8 +60,8 @@ def make_figures(args, combined, centers):
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--figdir", type=str, help="figures directory")
-    parser.add_argument("--plugins", type=str, required=True, help="plugins file")
+    parser.add_argument("--figdir", type=str, help="output dir")
+    parser.add_argument("--plugins", type=str, required=True, help="config")
     return parser.parse_args()
 
 

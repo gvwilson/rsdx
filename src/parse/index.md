@@ -32,10 +32,6 @@ syllabus:
 
 -   First row has only two columns (one of which includes the site ID, which we can check against the file name)
 -   After that we have five nicely-formatted columns
-    -   site ID repeated
-    -   observation date (we presume) in ISO YYYY-MM-DD format (we hope)
-    -   longitude and latitude of the measurement (decimal degrees)
-    -   the reading
 
 ---
 
@@ -54,13 +50,13 @@ syllabus:
 
 [%inc naive_YOU.out %]
 
--   Problem is that the table of readings is indented by one column
+-   Problem is that the readings are indented by one column
 
 ---
 
 ## And…
 
--   Next file starts like this:
+-   Next file has a blank line between header and readings
 
 [%inc COW.csv ellipsis=True %]
 

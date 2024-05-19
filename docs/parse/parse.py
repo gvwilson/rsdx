@@ -71,9 +71,7 @@ def parse_args():
 
 def split(rows):
     """Split header from body."""
-    header = []
-    body = []
-    state = State.HEADER
+    header, body, state = [], [], State.HEADER
     for row in rows:
         if state == State.HEADER:
             if is_empty(row):

@@ -58,13 +58,7 @@ GBY,2023-05-08,-124.45828,48.92066,32.6
 </div>
 <ul>
 <li>First row has only two columns (one of which includes the site ID, which we can check against the file name)</li>
-<li>After that we have five nicely-formatted columns<ul>
-<li>site ID repeated</li>
-<li>observation date (we presume) in ISO YYYY-MM-DD format (we hope)</li>
-<li>longitude and latitude of the measurement (decimal degrees)</li>
-<li>the reading</li>
-</ul>
-</li>
+<li>After that we have five nicely-formatted columns</li>
 </ul>
 <hr />
 <h2>Just Read It</h2>
@@ -113,12 +107,12 @@ GBY,2023-05-08,-124.45828,48.92066,32.6
 </code></pre></div>
 </div>
 <ul>
-<li>Problem is that the table of readings is indented by one column</li>
+<li>Problem is that the readings are indented by one column</li>
 </ul>
 <hr />
 <h2>And…</h2>
 <ul>
-<li>Next file starts like this:</li>
+<li>Next file has a blank line between header and readings</li>
 </ul>
 <div class="language-csv" title="COW.csv">
 <div class="highlight"><pre><span></span><code>Site:,COW
@@ -251,9 +245,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <div class="language-py" title="parse.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Split header from body.&quot;&quot;&quot;</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">body</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="n">HEADER</span>
+    <span class="n">header</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="p">([],</span> <span class="p">[],</span> <span class="n">State</span><span class="o">.</span><span class="n">HEADER</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="n">HEADER</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">is_empty</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>

@@ -240,8 +240,8 @@ img.splash {
     width: var(--splash-width);
 }
 
-/* Reduce list indentation */
-li {
+/* Use solid discs for all unordered lists */
+ul li {
     list-style-type: disc;
 }
 
