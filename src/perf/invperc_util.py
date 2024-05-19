@@ -4,6 +4,7 @@ import json
 import random
 import sys
 
+from grid_lazy import GridLazy
 from grid_list import GridList
 from grid_array import GridArray
 
@@ -18,6 +19,7 @@ def get_params(filename, cls):
 def initialize_grid(params):
     """Prepare grid for simulation."""
     lookup = {
+        "lazy": GridLazy,
         "list": GridList,
         "array": GridArray,
     }

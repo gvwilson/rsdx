@@ -18,7 +18,6 @@ chapters = [
     "plugin",
     "cleanup",
     "perf",
-    "lazy",
     "scale",
     "package",
     "mutate",

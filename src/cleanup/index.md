@@ -253,6 +253,7 @@ syllabus:
     -   `fill_grid` always chooses the first one it encounters in this case
     -   So filling has a bias toward the (0,0) corner of the grid
 -   [%x perf %] will tackle this problem
+-   But first, let's see how fast our code is…
 
 ---
 

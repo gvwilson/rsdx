@@ -6,7 +6,7 @@
 <link rel="icon" href="../logo.svg">
 <link rel="stylesheet" href="../tango.css" type="text/css">
 <link rel="stylesheet" href="../mccole.css" type="text/css">
-<title>Research Software Design by Example &middot; Measure Performance</title>
+<title>Research Software Design by Example &middot; Performance</title>
 <script>
   MathJax = {
     tex: {
@@ -21,57 +21,35 @@
 </script>
 
 
+    <script src="../slides.js" defer></script>
+    <link rel="stylesheet" href="../slides.css">
   </head>
   <body>
-    <main>
-      <div class="row notex">
+<div class="row notex">
   <div class="col-12 center">
-    
-      <h1>Measure Performance</h1>
-    
+    <h1>Performance</h1>
+    <p class="subtitle">Research Software Design by Example</p>
   </div>
 </div>
-
-      
-<nav class="row-always notex">
-  <div class="col-1 left">
-    <a href="../cleanup/" title="previous" class="undecorated">&#8678;</a>
-  </div>
-  <div class="col-10 center">
-    <a href="../" title="home" class="undecorated">&#9737;</a>
-  </div>
-  <div class="col-1 right">
-    <a href="../lazy/" title="next" class="undecorated">&#8680;</a>
-  </div>
-</nav>
-
-
-      <ul class="keypoints">
-<li>Introduce Python type annotations.</li>
-<li>Define dataclasses to represent parameters for profiling runs.</li>
-<li>Using cProfile to determine which parts are expensive.</li>
-<li>Tuning code does not solve algorithmic problems like quadratic growth in runtime.</li>
-</ul>
-      <p class="terms">Terms defined: 
-<a class="gl-ref" href="../glossary/#gl:boxing" markdown="1">boxing (a value)</a>, <a class="gl-ref" href="../glossary/#gl:generator" markdown="1">generator</a>, <a class="gl-ref" href="../glossary/#gl:parameter_sweeping" markdown="1">parameter sweeping</a>, <a class="gl-ref" href="../glossary/#gl:profiler" markdown="1">profiler</a>, <a class="gl-ref" href="../glossary/#gl:spread" markdown="1">spread</a>, <a class="gl-ref" href="../glossary/#gl:unboxing" markdown="1">unboxing (a value)</a>
-</p>
-      <ul>
-<li><span class="bib-ref">[<a class="bib-ref" href="../bib/#Bentley1982">Bentley1982</a>]</span> changed how I see programming<ul>
+<hr>
+<h2>The Problem</h2>
+<ul>
 <li>Speed doesn&rsquo;t always matter, but when it does, it really does</li>
 <li>There are widely-useful techniques for improving performance (e.g., spending memory to save time)</li>
-<li><em>We can and should tackle this experimentally</em></li>
+<li><em>We can and should tackle this experimentally</em><ul>
 <li>If &ldquo;software engineering&rdquo; means anything, it ought to mean this</li>
 </ul>
 </li>
 </ul>
-<h2 id="perf-repro">Reproducibility</h2>
+<hr />
+<h2>Reproducibility</h2>
 <ul>
 <li>Use <code>dataclasses</code> module to create a <code>Params</code> class in <code>params_single.py</code><ul>
 <li>Could use a dictionary or similar instead</li>
 <li>But this is a step toward something larger</li>
 </ul>
 </li>
-<li>Can now save parameters in version control.</li>
+<li>Can now save parameters in version control</li>
 </ul>
 <div class="language-py" title="params_single.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
@@ -84,20 +62,8 @@
     <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>
 </div>
-<ul>
-<li>Modify code in <code>invperc_single.py</code> to use these parameters</li>
-</ul>
-<div class="language-py" title="invperc_single.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ParamsSingle</span><span class="p">)</span>
-    <span class="n">initialize_random</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">initialize_grid</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-    <span class="n">num_filled</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">print_grid</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">num_filled</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
-</code></pre></div>
-</div>
+<hr />
+<h2>Saving Prameters</h2>
 <ul>
 <li>Load parameters from JSON file<ul>
 <li>Could easily use YAML instead</li>
@@ -113,19 +79,33 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">d</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Using Parameters</h2>
 <ul>
-<li>Name the output file based on input parameters<ul>
+<li>Modify code in <code>invperc_single.py</code> to use these parameters</li>
+</ul>
+<div class="language-py" title="invperc_single.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ParamsSingle</span><span class="p">)</span>
+    <span class="n">initialize_random</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">initialize_grid</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">num_filled</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">print_grid</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">num_filled</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<ul>
 <li>Would be nice if there was a standard way to embed parameters in the plot itself</li>
 </ul>
-</li>
-</ul>
-<h2 id="perf-perf">Performance</h2>
+<hr />
+<h2>Performance</h2>
 <ul>
 <li>Application&rsquo;s performance usually depends on what exactly it&rsquo;s doing<ul>
 <li>So we <a class="gl-ref" href="../glossary/#gl:parameter_sweeping" markdown="1">sweep</a> the range of parameters to see how performance changes</li>
 </ul>
 </li>
-<li>Create another dataclass that stores multiple values for interesting parameters</li>
+<li>Create another dataclass to store multiple values for interesting parameters</li>
 </ul>
 <div class="language-py" title="params_sweep.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
@@ -138,8 +118,10 @@
     <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Sweeping Parameter Ranges</h2>
 <ul>
-<li>Then write a new <code>main</code> to try each combination of parameter values</li>
+<li>Next, rewrite <code>main</code> to try each combination of parameter values</li>
 </ul>
 <div class="language-py" title="invperc_sweep.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -157,6 +139,8 @@
     <span class="n">save_results</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Generators</h2>
 <ul>
 <li>Could generate a list of parameter combinations</li>
 <li>Instead, use a <a class="gl-ref" href="../glossary/#gl:generator" markdown="1">generator</a> to produce one at a time</li>
@@ -171,6 +155,8 @@
                     <span class="k">yield</span> <span class="n">ParamsSingle</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Results</h2>
 <ul>
 <li>Save results as CSV and plot</li>
 </ul>
@@ -179,6 +165,8 @@
 <figcaption>Figure&nbsp;5.1: Running times for various depths and sizes.</figcaption>
 </figure>
 
+<hr />
+<h2>That&rsquo;s a Surprise</h2>
 <ul>
 <li>NumPy array is <em>worse</em> than list-of-lists<ul>
 <li>We&rsquo;re constantly <a class="gl-ref" href="../glossary/#gl:boxing" markdown="1">boxing</a> and <a class="gl-ref" href="../glossary/#gl:unboxing" markdown="1">unboxing</a> values</li>
@@ -189,7 +177,8 @@
 </ul>
 </li>
 </ul>
-<h2 id="perf-profile">Profiling</h2>
+<hr />
+<h2>Profiling</h2>
 <ul>
 <li>A <a class="gl-ref" href="../glossary/#gl:profiler" markdown="1">profiler</a> records how much time is spent on each line of code<ul>
 <li>Either by instrumenting it</li>
@@ -198,12 +187,14 @@
 </li>
 <li>Use Python&rsquo;s <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> module</li>
 </ul>
-<div class="language-py" title="run_profile.py">
-<div class="highlight"><pre><span></span><code><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;invperc_single.py&quot;</span><span class="p">,</span> <span class="s2">&quot;profile.json&quot;</span><span class="p">]</span>
+<div class="language-py" title="run_profile_list.py">
+<div class="highlight"><pre><span></span><code><span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;invperc_single.py&quot;</span><span class="p">,</span> <span class="s2">&quot;profile_list.json&quot;</span><span class="p">]</span>
 <span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;main()&quot;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s2">&quot;tottime&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<div class="language-txt" title="profile_head.txt">
+<hr />
+<h2>Where the Time Goes</h2>
+<div class="language-txt" title="profile_list_head.txt">
 <div class="highlight"><pre><span></span><code>         13885219 function calls in 3.169 seconds
 
    Ordered by: internal time
@@ -218,22 +209,159 @@
 </code></pre></div>
 </div>
 <ul>
-<li>We are spending most of our time in adjacency tests</li>
+<li>We are spending most of our time in adjacency tests<ul>
 <li>Most of which are re-checking things we knew before</li>
-<li>If we want to make this faster, this is what we need to fix</li>
 </ul>
-<h2 id="perf-exercises">Exercises</h2>
-<p class="fixme">FIXME: add exercises for performance profiling</p>
-    </main>
-    <footer>
-  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
-  &middot;
-  <a href="../">home</a>
-  &middot;
-  <a href="https://github.com/gvwilson/rsdx">repository</a>
-  &middot;
-  <a href="../license/">license</a>
-</footer>
+</li>
+<li>If we want to make our program faster, this is what we need to fix</li>
+</ul>
+<hr />
+<h2>Better is Possible</h2>
+<ul>
+<li>Start with the punchline and work backward</li>
+</ul>
+<figure id="perf_lazy">
+<img src="././k+lazy+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg" alt="Line graph showing that the lazy algorithm&rsquo;s performance is nearly flat."/>
+<figcaption>Figure&nbsp;5.2: Running times for various depths and sizes.</figcaption>
+</figure>
 
+<hr />
+<h2>Lazy Evaluation</h2>
+<ul>
+<li>We have been searching the entire grid to find the next cell to fill<ul>
+<li>But we only need to look on the border</li>
+<li>And we can keep track of where the border is</li>
+</ul>
+</li>
+<li>Keep a dictionary called <code>candidates</code><ul>
+<li>Key: a value in the grid</li>
+<li>Values: coordinates of cells on the border that have that value</li>
+</ul>
+</li>
+<li>On each step:<ul>
+<li>Find the lowest key</li>
+<li>Choose and fill one of its cells at random (to solve the bias problem of <a href="../cleanup/">Chapter&nbsp;4</a>)</li>
+<li>Add its unfilled neighbors to <code>candidates</code></li>
+</ul>
+</li>
+<li>Trading space for time<ul>
+<li>Storing cell values and coordinates is redundant</li>
+<li>But filling a cell now takes constant time regardless of grid size</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>A Lazy Grid</h2>
+<ul>
+<li><code>GridLazy</code> constructor</li>
+</ul>
+<div class="language-py" title="grid_lazy.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span> <span class="o">=</span> <span class="p">{}</span>
+</code></pre></div>
+</div>
+<hr />
+<h2>Lazy Filling</h2>
+<ul>
+<li>Filling algorithm overrides inherited method<ul>
+<li>Fill the center cell</li>
+<li>Add its neighbors as candidates</li>
+<li>Repeatedly choose a cell to fill (stopping if we&rsquo;ve reached the boundary)</li>
+</ul>
+</li>
+</ul>
+<div class="language-py" title="grid_lazy.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill grid one cell at a time.&quot;&quot;&quot;</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_filled</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_candidates</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose_cell</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">num_filled</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_border</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">num_filled</span>
+</code></pre></div>
+</div>
+<hr />
+<h2>Adding Candidates</h2>
+<div class="language-py" title="grid_lazy.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add candidates around (x, y).&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_one_candidate</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">iy</span> <span class="ow">in</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_one_candidate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">iy</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="language-py" title="grid_lazy.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_one_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add (x, y) if suitable.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()):</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<hr />
+<h2>Choosing a Cell</h2>
+<div class="language-py" title="grid_lazy.py">
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">choose_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Choose the next cell to fill.&quot;&quot;&quot;</span>
+    <span class="n">min_key</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">available</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">min_key</span><span class="p">]))</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">available</span><span class="p">))</span>
+    <span class="n">choice</span> <span class="o">=</span> <span class="n">available</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">del</span> <span class="n">available</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">available</span><span class="p">:</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">min_key</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">min_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">available</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_candidates</span><span class="p">(</span><span class="o">*</span><span class="n">choice</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">choice</span>
+</code></pre></div>
+</div>
+<hr />
+<h2>It&rsquo;s Faster</h2>
+<ul>
+<li>Sweep the same parameter ranges as before</li>
+<li>Performance is much better<ul>
+<li>Searching an \( N{\times}N \) grid is \( N^2 \) operations</li>
+<li>Fill about \( N^{1.5} \) cells (it&rsquo;s a fractal)</li>
+<li>So running time of the naïve approach is proportional to \( N^{3.5} \)</li>
+<li>Which a computer scientist would write \( \mathcal{O}(N^{3.5}) \)</li>
+<li>Running time of lazy approach is just \( \mathcal{O}(N^{1.5}) \)</li>
+</ul>
+</li>
+<li>So it is <em>fundamentally</em> faster</li>
+</ul>
+<hr />
+<h2 id="lazy-exercises">Exercises</h2>
+<ol>
+<li>
+<p><p class="fixme">FIXME: add exercises for performance profiling</p></p>
+</li>
+<li>
+<p>Modify the list and array implementation to collect candidate cells of equal lowest value
+    and select one of those.</p>
+</li>
+<li>
+<p>Does it make sense to pre-populate <code>candidates</code> by adding <em>all</em> cells in the grid
+    at the start of the program?
+    Why or why not?</p>
+</li>
+<li>
+<p><p class="fixme">FIXME: test lazy approach with randomnmess</p></p>
+</li>
+</ol>
   </body>
 </html>
