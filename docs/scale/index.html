@@ -21,40 +21,34 @@
 </script>
 
 
+    <script src="../slides.js" defer></script>
+    <link rel="stylesheet" href="../slides.css">
   </head>
   <body>
-    <main>
-      <div class="row notex">
+<div class="row notex">
   <div class="col-12 center">
-    
-      <h1>Scale Up</h1>
-    
+    <h1>Scale Up</h1>
+    <p class="subtitle">Research Software Design by Example</p>
   </div>
 </div>
-
-      
-<nav class="row-always notex">
-  <div class="col-1 left">
-    <a href="../perf/" title="previous" class="undecorated">&#8678;</a>
-  </div>
-  <div class="col-10 center">
-    <a href="../" title="home" class="undecorated">&#9737;</a>
-  </div>
-  <div class="col-1 right">
-    <a href="../package/" title="next" class="undecorated">&#8680;</a>
-  </div>
-</nav>
-
-
-      <ul class="keypoints">
-<li>Describing workflows as directed acyclic graphs.</li>
-<li>Expressing DAGs in code with Metaflow.</li>
+<hr>
+<h2>The Problem</h2>
+<ul>
+<li>We may need to run hundreds or thousands of simulations to get useful data<ul>
+<li>The fact that we don&rsquo;t know how many indicates the scale of the problem</li>
 </ul>
-      <p class="terms">Terms defined: 
-<a class="gl-ref" href="../glossary/#gl:workflow" markdown="1">workflow</a>
-</p>
-      <ul>
-<li>Reminder: storing parameters as dataclass</li>
+</li>
+<li>Build a <a class="gl-ref" href="../glossary/#gl:workflow" markdown="1">workflow</a> to run parameter sweeps using <a href="https://metaflow.org/">Metaflow</a><ul>
+<li>Define a Python class with methods for workflow stages</li>
+<li>Use decorators to mark steps</li>
+<li>Parameters to methods coordinate dataflow</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>Quick Reminder</h2>
+<ul>
+<li>Store parameters as dataclass</li>
 </ul>
 <div class="language-py" title="params_single.py">
 <div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Parameters for single invasion percolation sweep.&quot;&quot;&quot;</span>
@@ -72,9 +66,6 @@
     <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>
 </div>
-<ul>
-<li>Load from JSON</li>
-</ul>
 <div class="language-json" title="standalone.json">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
@@ -84,33 +75,15 @@
 <span class="p">}</span>
 </code></pre></div>
 </div>
-<ul>
-<li>Build a <a class="gl-ref" href="../glossary/#gl:workflow" markdown="1">workflow</a> to run parameter sweeps using <a href="https://metaflow.org/">Metaflow</a><ul>
-<li>Define a Python class with methods for workflow stages</li>
-<li>Use decorators to mark steps</li>
-<li>Parameters to methods coordinate dataflow</li>
-</ul>
-</li>
-<li>Start</li>
-</ul>
+<hr />
+<h2>Getting Started</h2>
 <div class="language-py" title="flow.py">
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">metaflow</span> <span class="kn">import</span> <span class="n">FlowSpec</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">step</span>
-
-<span class="kn">from</span> <span class="nn">invperc</span> <span class="kn">import</span> <span class="n">invperc</span>
-<span class="kn">from</span> <span class="nn">measure</span> <span class="kn">import</span> <span class="n">collect_density</span><span class="p">,</span> <span class="n">estimate_density</span><span class="p">,</span> <span class="n">measure_dimension</span>
-<span class="kn">from</span> <span class="nn">params_single</span> <span class="kn">import</span> <span class="n">ParamsSingle</span>
-<span class="kn">from</span> <span class="nn">params_sweep</span> <span class="kn">import</span> <span class="n">ParamsSweep</span>
-
-
-<span class="k">class</span> <span class="nc">InvPercFlow</span><span class="p">(</span><span class="n">FlowSpec</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">InvPercFlow</span><span class="p">(</span><span class="n">FlowSpec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Metaflow for invasion percolation.&quot;&quot;&quot;</span>
 
-    <span class="n">sweep</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;sweep&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;sweep parameter file&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">sweep</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;sweep&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;parameter file&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<ul>
-<li>First step loads parameters and creates parameters for each task</li>
-</ul>
 <div class="language-py" title="flow.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@step</span>
 <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -126,6 +99,8 @@
     <span class="k">return</span> <span class="n">ParamsSweep</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Parameterizing Each Task</h2>
 <div class="language-py" title="flow.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_sweeps</span><span class="p">(</span><span class="n">sweeps</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert sweep parameters into individual jobs.&quot;&quot;&quot;</span>
@@ -139,8 +114,10 @@
 </code></pre></div>
 </div>
 <ul>
-<li>Run a single job</li>
+<li>Use nested loops to generate multidmensional &ldquo;cube&rdquo; of parameters</li>
 </ul>
+<hr />
+<h2>Running a Single Job</h2>
 <div class="language-py" title="flow.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@step</span>
 <span class="k">def</span> <span class="nf">run_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -150,9 +127,8 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<ul>
-<li>Combine results from all jobs</li>
-</ul>
+<hr />
+<h2>Combining Results</h2>
 <div class="language-py" title="flow.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@step</span>
 <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
@@ -171,9 +147,8 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<ul>
-<li>Report results</li>
-</ul>
+<hr />
+<h2>Reporting Results</h2>
 <div class="language-py" title="flow.py">
 <div class="highlight"><pre><span></span><code><span class="nd">@step</span>
 <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -186,6 +161,8 @@
     <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">lineterminator</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Running It</h2>
 <ul>
 <li>Run with single-job JSON parameter file shown earlier</li>
 </ul>
@@ -209,16 +186,19 @@
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>flow.py<span class="w"> </span>run<span class="w"> </span>--sweep<span class="w"> </span>sweep.json
 </code></pre></div>
 </div>
-    </main>
-    <footer>
-  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
-  &middot;
-  <a href="../">home</a>
-  &middot;
-  <a href="https://github.com/gvwilson/rsdx">repository</a>
-  &middot;
-  <a href="../license/">license</a>
-</footer>
+<hr />
+<h2>But How Does It Work?</h2>
+<p class="fixme">FIXME: show how to build a simple DAG-based workflow runner</p>
 
+<hr />
+<h2>Exercises</h2>
+<ol>
+<li>
+<p><p class="fixme">FIXME: add exercises for scaling up</p></p>
+</li>
+<li>
+<p>Use recursion to generate parameter sweep for arbitrary number of parameters.</p>
+</li>
+</ol>
   </body>
 </html>

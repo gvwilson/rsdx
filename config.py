@@ -19,7 +19,7 @@ chapters = [
     "cleanup",
     "perf",
     "scale",
-    "package",
+    "production",
     "mutate",
     "search",
     "lims",
