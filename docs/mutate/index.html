@@ -21,40 +21,19 @@
 </script>
 
 
+    <script src="../slides.js" defer></script>
+    <link rel="stylesheet" href="../slides.css">
   </head>
   <body>
-    <main>
-      <div class="row notex">
+<div class="row notex">
   <div class="col-12 center">
-    
-      <h1>Synthetic Data</h1>
-    
+    <h1>Synthetic Data</h1>
+    <p class="subtitle">Research Software Design by Example</p>
   </div>
 </div>
-
-      
-<nav class="row-always notex">
-  <div class="col-1 left">
-    <a href="../production/" title="previous" class="undecorated">&#8678;</a>
-  </div>
-  <div class="col-10 center">
-    <a href="../" title="home" class="undecorated">&#9737;</a>
-  </div>
-  <div class="col-1 right">
-    <a href="../search/" title="next" class="undecorated">&#8680;</a>
-  </div>
-</nav>
-
-
-      <ul class="keypoints">
-<li>Use a statistical model of single nucleotide polymorphisms (SNPs) to synthesize genomic data.</li>
-<li>Use another model to combine that data with geocoded samples to generate snail sizes.</li>
-<li>Build a program to analyze and visualize the synthetic data to test the analysis pipeline.</li>
-</ul>
-      <p class="terms">Terms defined: 
-<a class="gl-ref" href="../glossary/#gl:snp" markdown="1">single nucleotide polymorphism</a>, <a class="gl-ref" href="../glossary/#gl:synth_data" markdown="1">synthetic data generator</a>
-</p>
-      <ul>
+<hr>
+<h2>The Problem</h2>
+<ul>
 <li>How do you test a data analysis pipeline?<ul>
 <li>Unit tests of the kind used for invasion percolation aren&rsquo;t necessarily appropriate</li>
 <li>Problem isn&rsquo;t the control flow of the code but how it interacts with data</li>
@@ -68,7 +47,10 @@
 <li><a href="https://faker.readthedocs.io/">Faker</a> has tools for generating a lot of useful data (we will use it in future chapters)</li>
 <li>But it can&rsquo;t generate genomes, so we&rsquo;ll build our own</li>
 </ul>
-<h2 id="mutate-genome">Synthesizing Genomes</h2>
+<p class="fixme">FIXME: replace pandas with polars</p>
+
+<hr />
+<h2>Synthesizing Genomes</h2>
 <ul>
 <li>Create some short snail genomes with <a class="gl-ref" href="../glossary/#gl:snp" markdown="1">single-nucleotide polymorphisms</a></li>
 <li>Output will have:<ul>
@@ -81,8 +63,9 @@
 </ul>
 </li>
 <li>Since this has multiple fields, store as JSON</li>
-<li>Main driver</li>
 </ul>
+<hr />
+<h2>Main Driver</h2>
 <div class="language-py" title="synthesize_genomes.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
@@ -93,8 +76,9 @@
     <span class="n">save</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">outfile</span><span class="p">,</span> <span class="n">genomes</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Random Genomes</h2>
 <ul>
-<li>Random genomes<ul>
 <li>Create a random base sequence as the reference genome</li>
 <li>Create duplicates for individuals</li>
 <li>Determine where SNPs can occur</li>
@@ -102,8 +86,8 @@
 <li>Introduce other random mutations</li>
 <li>Sort for reproducibility <span class="bib-ref">[<a class="bib-ref" href="../bib/#Taschuk2017">Taschuk2017</a>]</span></li>
 </ul>
-</li>
-</ul>
+<hr />
+<h2>Random Genomes</h2>
 <div class="language-py" title="synthesize_genomes.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">random_genomes</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">num_genomes</span><span class="p">,</span> <span class="n">num_snp</span><span class="p">,</span> <span class="n">prob_other</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a set of genomes with specified number of point mutations.&quot;&quot;&quot;</span>
@@ -122,9 +106,8 @@
     <span class="k">return</span> <span class="n">GenePool</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span> <span class="n">individuals</span><span class="o">=</span><span class="n">individuals</span><span class="p">,</span> <span class="n">locations</span><span class="o">=</span><span class="n">locations</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<ul>
-<li>Random bases and mutations</li>
-</ul>
+<hr />
+<h2>Random Bases and Mutations</h2>
 <div class="language-py" title="synthesize_genomes.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">random_bases</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a random sequence of bases of the specified length.&quot;&quot;&quot;</span>
@@ -150,9 +133,10 @@
     <span class="k">return</span> <span class="n">genome</span>
 </code></pre></div>
 </div>
-<h2 id="mutate-samples">Synthesizing Samples</h2>
+<hr />
+<h2>Synthesizing Samples</h2>
 <ul>
-<li>Snail size depends on:<ul>
+<li>Our model is that snail size depends on:<ul>
 <li>Presence of significant mutation</li>
 <li>Distance from epicenter of pollution</li>
 </ul>
@@ -168,6 +152,10 @@
 <li>Generate a random reading for its size that depends on two factors</li>
 </ul>
 </li>
+</ul>
+<hr />
+<h2>Once More With Feeling</h2>
+<ul>
 <li>Main driver should be starting to look familiar</li>
 </ul>
 <div class="language-py" title="synthesize_samples.py">
@@ -181,11 +169,11 @@
     <span class="n">save</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">samples</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Geography</h2>
 <ul>
-<li>Get geographic parameters from CSV files<ul>
+<li>Get geographic parameters from CSV files</li>
 <li>Need to join tables to get longitude, latitude, and nominal pollution radius</li>
-</ul>
-</li>
 </ul>
 <div class="language-csv" title="sites.csv">
 <div class="highlight"><pre><span></span><code>site,lon,lat
@@ -205,6 +193,8 @@ GBY,-124.4593,48.9209
 1803,GBY,2023-05-08,8,95.0,0.1,0.14
 </code></pre></div>
 </div>
+<hr />
+<h2>Geography</h2>
 <div class="language-py" title="synthesize_samples.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_geo_params</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get geographic parameters.&quot;&quot;&quot;</span>
@@ -215,8 +205,10 @@ GBY,-124.4593,48.9209
     <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="n">filtered</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">],</span> <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="n">filtered</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span> <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">filtered</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]}</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Generate Locations and Sizes</h2>
 <ul>
-<li>Once we have those, generate location and snail size based on genetics and distance</li>
+<li>Generate location and snail size based on genetics and distance</li>
 </ul>
 <div class="language-py" title="synthesize_samples.py">
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">generate_samples</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">genomes</span><span class="p">,</span> <span class="n">geo_params</span><span class="p">):</span>
@@ -238,6 +230,8 @@ GBY,-124.4593,48.9209
     <span class="k">return</span> <span class="n">df</span>
 </code></pre></div>
 </div>
+<hr />
+<h2>Magic Numbers</h2>
 <ul>
 <li>Keep the magic numbers at the top of the file<ul>
 <li>If we wanted to vary these, would store them as JSON or YAML and load</li>
@@ -254,7 +248,8 @@ GBY,-124.4593,48.9209
 <span class="n">SNAIL_PRECISION</span> <span class="o">=</span> <span class="mi">1</span>
 </code></pre></div>
 </div>
-<h2 id="mutate-analyze">Analysis</h2>
+<hr />
+<h2>Analysis</h2>
 <ul>
 <li>Finally ready to write our analysis</li>
 <li>Read the CSV data with locations, genomes, and readings</li>
@@ -265,24 +260,29 @@ GBY,-124.4593,48.9209
 </ul>
 </li>
 </ul>
+<hr />
+<h2>All Our Snails</h2>
 <figure id="mutate_all_scatter">
 <img src="./all_data_scatter.svg" alt="scatterplot of all readings at all locations"/>
 <figcaption>Figure&nbsp;8.1: Reading as a function of location and base (all)</figcaption>
 </figure>
 
+<hr />
+<h2>Snails With Mutations</h2>
 <figure id="mutate_slimmed_scatter">
-<img src="./slimmed_data_scatter.svg" alt="scatterplot of all readings at all locations"/>
-<figcaption>Figure&nbsp;8.2: Reading as a function of location and base (all)</figcaption>
+<img src="./slimmed_data_scatter.svg" alt="scatterplot of readings for snails with mutations"/>
+<figcaption>Figure&nbsp;8.2: Reading as a function of location and base (mutants)</figcaption>
 </figure>
 
-<ul>
-<li>Plot reading versus mutation location in ranked order for interesting locations</li>
-</ul>
+<hr />
+<h2>Rank Order</h2>
 <figure id="mutate_slimmed_sorted">
 <img src="./slimmed_data_sorted.svg" alt="rank plot of readings at mutation locations"/>
 <figcaption>Figure&nbsp;8.3: Reading as a function of location (rank order)</figcaption>
 </figure>
 
+<hr />
+<h2>Conclusions</h2>
 <ul>
 <li>Clearly a winner in this plot…</li>
 <li>…but not nearly as clear in scatter plot…</li>
@@ -290,16 +290,8 @@ GBY,-124.4593,48.9209
 <li>Statistics could tell us if this is what we expect,
     but this isn&rsquo;t a statistics lesson</li>
 </ul>
-    </main>
-    <footer>
-  © 2024 <a href="https://third-bit.com/">Greg Wilson</a>
-  &middot;
-  <a href="../">home</a>
-  &middot;
-  <a href="https://github.com/gvwilson/rsdx">repository</a>
-  &middot;
-  <a href="../license/">license</a>
-</footer>
-
+<hr />
+<h2>Exercises</h2>
+<p class="fixme">FIXME: create exercises for data analysis chapter</p>
   </body>
 </html>

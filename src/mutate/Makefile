@@ -11,15 +11,30 @@ generate: ${SAMPLES}
 
 ${SAMPLES}: ${GENOMES}
 	@mkdir -p ${LOCAL}
-	python synthesize_samples.py --genomes ${GENOMES} --mutant 10.0 --normal 1.0 --outfile $@ --paramsdir . --site COW --seed 1791128
+	python synthesize_samples.py \
+	--genomes ${GENOMES} \
+	--mutant 10.0 \
+	--normal 1.0 \
+	--outfile $@ \
+	--paramsdir . \
+	--site COW \
+	--seed 1791128
 
 ${GENOMES}:
 	@mkdir -p ${LOCAL}
-	python synthesize_genomes.py --outfile $@ --length 40 --num_genomes 100 --num_snp 5 --prob_other 0.01 --seed 102938
+	python synthesize_genomes.py \
+	--outfile $@ \
+	--length 40 \
+	--num_genomes 100 \
+	--num_snp 5 \
+	--prob_other 0.01 \
+	--seed 102938
 
 ## analyze: analyze genome data
 analyze: ${SAMPLES}
-	python analyze.py --infile ${SAMPLES} --save
+	python analyze.py \
+	--infile ${SAMPLES} \
+	--save
 
 ## tidy: remove generated data
 tidy:
