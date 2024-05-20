@@ -84,17 +84,16 @@
 </li>
 </ul>
 <div class="language-py" title="model.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_count</span><span class="p">(</span><span class="n">kind</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;How many entries of the given kind?&quot;&quot;&quot;</span>
-    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;RSDX_DB_PATH&#39;</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;staff&#39;</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;select count(*) from staff&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;experiments&#39;</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;select count(*) from experiment&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;plates&#39;</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;select count(*) from plate&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;How many entries of the given kind?&quot;&quot;&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;RSDX_DB_PATH&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;staff&quot;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from staff&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;experiments&quot;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from experiment&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;plates&quot;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select count(*) from plate&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Unknown kind </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unknown kind </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>

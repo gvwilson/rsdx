@@ -67,11 +67,15 @@
 <hr />
 <h2>Main Driver</h2>
 <div class="language-py" title="synthesize_genomes.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">genomes</span> <span class="o">=</span> <span class="n">random_genomes</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">num_genomes</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">num_snp</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">prob_other</span><span class="p">)</span>
+    <span class="n">genomes</span> <span class="o">=</span> <span class="n">random_genomes</span><span class="p">(</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">length</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">num_genomes</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">num_snp</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">prob_other</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">add_susceptibility</span><span class="p">(</span><span class="n">genomes</span><span class="p">)</span>
     <span class="n">save</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">outfile</span><span class="p">,</span> <span class="n">genomes</span><span class="p">)</span>
 </code></pre></div>
@@ -89,47 +93,57 @@
 <hr />
 <h2>Random Genomes</h2>
 <div class="language-py" title="synthesize_genomes.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">random_genomes</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">num_genomes</span><span class="p">,</span> <span class="n">num_snp</span><span class="p">,</span> <span class="n">prob_other</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a set of genomes with specified number of point mutations.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a set of genomes with specified number of point mutations.&quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">num_snp</span> <span class="o">&lt;=</span> <span class="n">length</span>
+
+    <span class="c1"># Reference genomes and specific genomes to modify.</span>
     <span class="n">reference</span> <span class="o">=</span> <span class="n">random_bases</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
     <span class="n">individuals</span> <span class="o">=</span> <span class="p">[</span><span class="n">reference</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_genomes</span>
+
+    <span class="c1"># Locations for SNPs.</span>
     <span class="n">locations</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">)),</span> <span class="n">num_snp</span><span class="p">)</span>
+
+    <span class="c1"># Introduce significant mutations.</span>
     <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">locations</span><span class="p">:</span>
         <span class="n">candidates</span> <span class="o">=</span> <span class="n">_other_bases</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
         <span class="n">bases</span> <span class="o">=</span> <span class="p">[</span><span class="n">reference</span><span class="p">[</span><span class="n">loc</span><span class="p">]]</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">))</span>
         <span class="n">individuals</span> <span class="o">=</span> <span class="p">[</span><span class="n">_mutate_snps</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">bases</span><span class="p">)</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">individuals</span><span class="p">]</span>
+
+    <span class="c1"># Introduce other random mutations.</span>
     <span class="n">other_locations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">locations</span><span class="p">))</span>
-    <span class="n">individuals</span> <span class="o">=</span> <span class="p">[</span><span class="n">_mutate_other</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">prob_other</span><span class="p">,</span> <span class="n">other_locations</span><span class="p">)</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">individuals</span><span class="p">]</span>
+    <span class="n">individuals</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">_mutate_other</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">prob_other</span><span class="p">,</span> <span class="n">other_locations</span><span class="p">)</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">individuals</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Return structure.</span>
     <span class="n">individuals</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
     <span class="n">locations</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">GenePool</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span> <span class="n">individuals</span><span class="o">=</span><span class="n">individuals</span><span class="p">,</span> <span class="n">locations</span><span class="o">=</span><span class="n">locations</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">GenePool</span><span class="p">(</span>
+        <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span> <span class="n">individuals</span><span class="o">=</span><span class="n">individuals</span><span class="p">,</span> <span class="n">locations</span><span class="o">=</span><span class="n">locations</span>
+    <span class="p">)</span>
 </code></pre></div>
 </div>
 <hr />
 <h2>Random Bases and Mutations</h2>
 <div class="language-py" title="synthesize_genomes.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">random_bases</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a random sequence of bases of the specified length.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a random sequence of bases of the specified length.&quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">length</span>
-    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">DNA</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">length</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">DNA</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">length</span><span class="p">))</span>
 </code></pre></div>
 </div>
 <div class="language-py" title="synthesize_genomes.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_mutate_snps</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">genome</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">bases</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Introduce single nucleotide polymorphisms at the specified location.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Introduce single nucleotide polymorphisms at the specified location.&quot;&quot;&quot;</span>
     <span class="n">choice</span> <span class="o">=</span> <span class="n">_choose_one</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">SNP_PROBS</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">genome</span><span class="p">[:</span><span class="n">loc</span><span class="p">]</span> <span class="o">+</span> <span class="n">choice</span> <span class="o">+</span> <span class="n">genome</span><span class="p">[</span><span class="n">loc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">genome</span><span class="p">[:</span><span class="n">loc</span><span class="p">]</span> <span class="o">+</span> <span class="n">choice</span> <span class="o">+</span> <span class="n">genome</span><span class="p">[</span><span class="n">loc</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>
 </code></pre></div>
 </div>
 <div class="language-py" title="synthesize_genomes.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_mutate_other</span><span class="p">(</span><span class="n">genome</span><span class="p">,</span> <span class="n">prob</span><span class="p">,</span> <span class="n">locations</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Introduce other mutations at specified locations.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Introduce other mutations at specified locations.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">prob</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">genome</span>
     <span class="n">loc</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">base</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">_other_bases</span><span class="p">(</span><span class="n">genome</span><span class="p">,</span> <span class="n">loc</span><span class="p">))</span>
-    <span class="n">genome</span> <span class="o">=</span> <span class="n">genome</span><span class="p">[:</span><span class="n">loc</span><span class="p">]</span> <span class="o">+</span> <span class="n">base</span> <span class="o">+</span> <span class="n">genome</span><span class="p">[</span><span class="n">loc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+    <span class="n">genome</span> <span class="o">=</span> <span class="n">genome</span><span class="p">[:</span><span class="n">loc</span><span class="p">]</span> <span class="o">+</span> <span class="n">base</span> <span class="o">+</span> <span class="n">genome</span><span class="p">[</span><span class="n">loc</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>
     <span class="k">return</span> <span class="n">genome</span>
 </code></pre></div>
 </div>
@@ -159,8 +173,7 @@
 <li>Main driver should be starting to look familiar</li>
 </ul>
 <div class="language-py" title="synthesize_samples.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">genomes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">genomes</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
@@ -196,13 +209,16 @@ GBY,-124.4593,48.9209
 <hr />
 <h2>Geography</h2>
 <div class="language-py" title="synthesize_samples.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_geo_params</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get geographic parameters.&quot;&quot;&quot;</span>
-    <span class="n">sites</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">paramsdir</span><span class="p">,</span> <span class="s1">&#39;sites.csv&#39;</span><span class="p">))</span>
-    <span class="n">surveys</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">paramsdir</span><span class="p">,</span> <span class="s1">&#39;surveys.csv&#39;</span><span class="p">))</span>
-    <span class="n">combined</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">surveys</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;site&#39;</span><span class="p">)</span>
-    <span class="n">filtered</span> <span class="o">=</span> <span class="n">combined</span><span class="p">[</span><span class="n">combined</span><span class="p">[</span><span class="s1">&#39;site&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">args</span><span class="o">.</span><span class="n">site</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="n">filtered</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">],</span> <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="n">filtered</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span> <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">filtered</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]}</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get geographic parameters.&quot;&quot;&quot;</span>
+    <span class="n">sites</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">paramsdir</span><span class="p">,</span> <span class="s2">&quot;sites.csv&quot;</span><span class="p">))</span>
+    <span class="n">surveys</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">paramsdir</span><span class="p">,</span> <span class="s2">&quot;surveys.csv&quot;</span><span class="p">))</span>
+    <span class="n">combined</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">surveys</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;site&quot;</span><span class="p">)</span>
+    <span class="n">filtered</span> <span class="o">=</span> <span class="n">combined</span><span class="p">[</span><span class="n">combined</span><span class="p">[</span><span class="s2">&quot;site&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">args</span><span class="o">.</span><span class="n">site</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">filtered</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">filtered</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="n">filtered</span><span class="p">[</span><span class="s2">&quot;radius&quot;</span><span class="p">],</span>
+    <span class="p">}</span>
 </code></pre></div>
 </div>
 <hr />
@@ -211,22 +227,25 @@ GBY,-124.4593,48.9209
 <li>Generate location and snail size based on genetics and distance</li>
 </ul>
 <div class="language-py" title="synthesize_samples.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">generate_samples</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">genomes</span><span class="p">,</span> <span class="n">geo_params</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate snail samples.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate snail samples.&quot;&quot;&quot;</span>
     <span class="n">samples</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">sequence</span> <span class="ow">in</span> <span class="n">genomes</span><span class="p">[</span><span class="s1">&#39;individuals&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">sequence</span> <span class="ow">in</span> <span class="n">genomes</span><span class="p">[</span><span class="s2">&quot;individuals&quot;</span><span class="p">]:</span>
         <span class="n">point</span><span class="p">,</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">random_geo_point</span><span class="p">(</span><span class="o">**</span><span class="n">geo_params</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">sequence</span><span class="p">[</span><span class="n">genomes</span><span class="p">[</span><span class="s1">&#39;susceptible_loc&#39;</span><span class="p">]]</span> <span class="o">==</span> <span class="n">genomes</span><span class="p">[</span><span class="s1">&#39;susceptible_base&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">sequence</span><span class="p">[</span><span class="n">genomes</span><span class="p">[</span><span class="s2">&quot;susceptible_loc&quot;</span><span class="p">]]</span> <span class="o">==</span> <span class="n">genomes</span><span class="p">[</span><span class="s2">&quot;susceptible_base&quot;</span><span class="p">]:</span>
             <span class="n">limit</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">mutant</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">limit</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">normal</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">limit</span> <span class="o">*</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">geo_params</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
-        <span class="n">reading</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">MIN_SNAIL_SIZE</span><span class="p">,</span> <span class="n">MIN_SNAIL_SIZE</span> <span class="o">+</span> <span class="n">MAX_SNAIL_SIZE</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">limit</span> <span class="o">*</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">geo_params</span><span class="p">[</span><span class="s2">&quot;radius&quot;</span><span class="p">]</span>
+        <span class="n">reading</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+            <span class="n">MIN_SNAIL_SIZE</span><span class="p">,</span> <span class="n">MIN_SNAIL_SIZE</span> <span class="o">+</span> <span class="n">MAX_SNAIL_SIZE</span> <span class="o">*</span> <span class="n">scale</span>
+        <span class="p">)</span>
         <span class="n">samples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">point</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">reading</span><span class="p">))</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;sequence&#39;</span><span class="p">,</span> <span class="s1">&#39;reading&#39;</span><span class="p">))</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LON_LAT_PRECISION</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LON_LAT_PRECISION</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;reading&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;reading&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">SNAIL_PRECISION</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;sequence&quot;</span><span class="p">,</span> <span class="s2">&quot;reading&quot;</span><span class="p">))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LON_LAT_PRECISION</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">LON_LAT_PRECISION</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;reading&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;reading&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">SNAIL_PRECISION</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">df</span>
 </code></pre></div>
 </div>

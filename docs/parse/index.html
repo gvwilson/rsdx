@@ -156,16 +156,17 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </li>
 </ul>
 <div class="language-py" title="parse.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">infile</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">infile</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">infile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">outfile</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">outfile</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
             <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -177,11 +178,10 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <li>Use <code>argparse</code> module to parse arguments</li>
 </ul>
 <div class="language-py" title="parse.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments.&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--infile&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;input&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--outfile&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;output&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--infile&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--outfile&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 </code></pre></div>
 </div>
@@ -197,12 +197,11 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </li>
 </ul>
 <div class="language-py" title="parse.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load messy data.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Load messy data.&quot;&quot;&quot;</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">reader</span><span class="p">)]</span>
     <span class="n">header</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
     <span class="n">titles</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">titles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;site&#39;</span>
+    <span class="k">assert</span> <span class="n">titles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;site&quot;</span>
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">titles</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -220,12 +219,12 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <li>Use an enumeration to keep track of these</li>
 </ul>
 <div class="language-py" title="parse.py">
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">State</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumerate possible parser states.&quot;&quot;&quot;</span>
-    <span class="n">HEADER</span> <span class="o">=</span> <span class="s1">&#39;header&#39;</span>
-    <span class="n">SEARCHING</span> <span class="o">=</span> <span class="s1">&#39;searching&#39;</span>
-    <span class="n">BODY</span> <span class="o">=</span> <span class="s1">&#39;body&#39;</span>
-    <span class="n">DONE</span> <span class="o">=</span> <span class="s1">&#39;done&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumerate possible parser states.&quot;&quot;&quot;</span>
+
+    <span class="n">HEADER</span> <span class="o">=</span> <span class="s2">&quot;header&quot;</span>
+    <span class="n">SEARCHING</span> <span class="o">=</span> <span class="s2">&quot;searching&quot;</span>
+    <span class="n">BODY</span> <span class="o">=</span> <span class="s2">&quot;body&quot;</span>
+    <span class="n">DONE</span> <span class="o">=</span> <span class="s2">&quot;done&quot;</span>
 </code></pre></div>
 </div>
 <hr />
@@ -243,9 +242,8 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <hr />
 <h2>Structure</h2>
 <div class="language-py" title="parse.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split header from body.&quot;&quot;&quot;</span>
-    <span class="n">header</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="p">([],</span> <span class="p">[],</span> <span class="n">State</span><span class="o">.</span><span class="n">HEADER</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Split header from body.&quot;&quot;&quot;</span>
+    <span class="n">header</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="n">State</span><span class="o">.</span><span class="n">HEADER</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="n">HEADER</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">is_empty</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
@@ -255,18 +253,22 @@ COW,2023-04-27,-124.045,48.8216,81.7
                 <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">header</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
         <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="n">SEARCHING</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">is_start_of_body</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
                 <span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="n">BODY</span>
                 <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
         <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="n">BODY</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">is_empty</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
                 <span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="n">DONE</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">state</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="n">DONE</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">header</span><span class="p">,</span> <span class="n">body</span>
 </code></pre></div>
 </div>
 <hr />
@@ -278,11 +280,10 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </li>
 </ul>
 <div class="language-py" title="parse.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove leading spaces from rows if necessary.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove leading spaces from rows if necessary.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span>
-    <span class="k">return</span> <span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 </code></pre></div>
 </div>
 <hr />

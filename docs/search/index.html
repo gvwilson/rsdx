@@ -72,22 +72,31 @@
 <li>Copy, paste, and tweak example</li>
 </ul>
 <div class="language-py" title="fetch_bib_data.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">email</span><span class="p">:</span>
         <span class="n">pyalex</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">email</span>
-    <span class="n">pager</span> <span class="o">=</span> <span class="n">Works</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">concepts</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;wikidata&#39;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">concept</span><span class="p">})</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">pager</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">Works</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">concepts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wikidata&quot;</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">concept</span><span class="p">})</span>
+        <span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;page&quot;</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">pager</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
             <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span>
-            <span class="n">ident</span> <span class="o">=</span> <span class="n">work</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;doi&#39;</span><span class="p">:</span> <span class="n">work</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">],</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="n">work</span><span class="p">[</span><span class="s1">&#39;publication_year&#39;</span><span class="p">],</span> <span class="s1">&#39;abstract&#39;</span><span class="p">:</span> <span class="n">work</span><span class="p">[</span><span class="s1">&#39;abstract&#39;</span><span class="p">]}</span>
+            <span class="n">ident</span> <span class="o">=</span> <span class="n">work</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">work</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">work</span><span class="p">[</span><span class="s2">&quot;publication_year&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;abstract&quot;</span><span class="p">:</span> <span class="n">work</span><span class="p">[</span><span class="s2">&quot;abstract&quot;</span><span class="p">],</span>
+            <span class="p">}</span>
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
-                <span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ident</span><span class="si">}</span><span class="s1">.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+                <span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ident</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="p">)</span>
 </code></pre></div>
 </div>
 <ul>
@@ -98,13 +107,16 @@
 </code></pre></div>
 </div>
 <div class="language-py" title="fetch_bib_data.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments.&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--concept&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">WIKIDATA_LAND_SNAIL</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Wikidata concept URL&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--email&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;user email address&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--outdir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;output directory&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--verbose&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;report progress&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--concept&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">WIKIDATA_LAND_SNAIL</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Wikidata concept URL&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--email&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;user email address&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--outdir&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;output directory&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;report progress&quot;</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 </code></pre></div>
 </div>
@@ -124,11 +136,12 @@
 <li>Usual main driver</li>
 </ul>
 <div class="language-py" title="make_index.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
     <span class="n">abstracts</span> <span class="o">=</span> <span class="n">read_abstracts</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">bibdir</span><span class="p">)</span>
-    <span class="n">words_in_file</span> <span class="o">=</span> <span class="p">{</span><span class="n">filename</span><span class="p">:</span> <span class="n">get_words</span><span class="p">(</span><span class="n">abstract</span><span class="p">)</span> <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">abstract</span> <span class="ow">in</span> <span class="n">abstracts</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">words_in_file</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="n">get_words</span><span class="p">(</span><span class="n">abstract</span><span class="p">)</span> <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">abstract</span> <span class="ow">in</span> <span class="n">abstracts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
     <span class="n">term_freq</span> <span class="o">=</span> <span class="n">calculate_tf</span><span class="p">(</span><span class="n">words_in_file</span><span class="p">)</span>
     <span class="n">inverse_doc_freq</span> <span class="o">=</span> <span class="n">calculate_idf</span><span class="p">(</span><span class="n">words_in_file</span><span class="p">)</span>
     <span class="n">tf_idf</span> <span class="o">=</span> <span class="n">calculate_tf_idf</span><span class="p">(</span><span class="n">term_freq</span><span class="p">,</span> <span class="n">inverse_doc_freq</span><span class="p">)</span>
@@ -139,12 +152,11 @@
 <li>Reading abstracts from JSON is the simple part</li>
 </ul>
 <div class="language-py" title="make_index.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_abstracts</span><span class="p">(</span><span class="n">bibdir</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract abstracts from bibliography entries.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract abstracts from bibliography entries.&quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">bibdir</span><span class="p">)</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
-        <span class="n">result</span><span class="p">[</span><span class="n">filename</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;abstract&#39;</span><span class="p">]</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">filename</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;abstract&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
 </div>
@@ -155,10 +167,9 @@
 </li>
 </ul>
 <div class="language-py" title="make_index.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_words</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get words from text, stripping basic punctuation.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get words from text, stripping basic punctuation.&quot;&quot;&quot;</span>
     <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="s1">&#39;,.</span><span class="se">\&#39;</span><span class="s1">&quot;()%‰!?$‘’&amp;~–—±·&#39;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="s2">&quot;,.&#39;</span><span class="se">\&quot;</span><span class="s2">()%‰!?$‘’&amp;~–—±·&quot;</span><span class="p">:</span>
         <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="n">char</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">w</span><span class="p">]</span>
 </code></pre></div>
@@ -167,14 +178,13 @@
 <li>Calculate term frequency</li>
 </ul>
 <div class="language-py" title="make_index.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_tf</span><span class="p">(</span><span class="n">words_in_file</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate term frequency of each word per document.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate term frequency of each word per document.&quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">wordlist</span> <span class="ow">in</span> <span class="n">words_in_file</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">total_words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wordlist</span><span class="p">)</span>
         <span class="n">counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">wordlist</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">wordlist</span><span class="p">:</span>
-            <span class="n">result</span><span class="p">[</span><span class="n">filename</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">/</span> <span class="n">total_words</span>
+            <span class="n">result</span><span class="p">[(</span><span class="n">filename</span><span class="p">,</span> <span class="n">w</span><span class="p">)]</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">/</span> <span class="n">total_words</span>
     <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
 </div>
@@ -182,13 +192,12 @@
 <li>Calculate inverse document frequency</li>
 </ul>
 <div class="language-py" title="make_index.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_idf</span><span class="p">(</span><span class="n">words_in_file</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate inverse document frequency of each word.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate inverse document frequency of each word.&quot;&quot;&quot;</span>
     <span class="n">num_docs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words_in_file</span><span class="p">)</span>
     <span class="n">word_sets</span> <span class="o">=</span> <span class="p">[</span><span class="nb">set</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="k">for</span> <span class="n">words</span> <span class="ow">in</span> <span class="n">words_in_file</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="n">word_sets</span><span class="p">):</span>
-        <span class="n">result</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="n">num_docs</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">((</span><span class="n">word</span> <span class="ow">in</span> <span class="n">per_doc</span> <span class="k">for</span> <span class="n">per_doc</span> <span class="ow">in</span> <span class="n">word_sets</span><span class="p">)))</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="n">num_docs</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">word</span> <span class="ow">in</span> <span class="n">per_doc</span> <span class="k">for</span> <span class="n">per_doc</span> <span class="ow">in</span> <span class="n">word_sets</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
 </div>
@@ -196,8 +205,7 @@
 <li>Combine values</li>
 </ul>
 <div class="language-py" title="make_index.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_tf_idf</span><span class="p">(</span><span class="n">term_freq</span><span class="p">,</span> <span class="n">inverse_doc_freq</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate overall score for each term in each document.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate overall score for each term in each document.&quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">word</span><span class="p">),</span> <span class="n">tf</span> <span class="ow">in</span> <span class="n">term_freq</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">result</span><span class="p">[</span><span class="n">word</span><span class="p">][</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span> <span class="o">*</span> <span class="n">inverse_doc_freq</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
@@ -208,11 +216,10 @@
 <li>And save as CSV</li>
 </ul>
 <div class="language-py" title="make_index.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">tf_idf</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save results as CSV.&quot;&quot;&quot;</span>
-    <span class="n">outfile</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Save results as CSV.&quot;&quot;&quot;</span>
+    <span class="n">outfile</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
     <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
-    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">((</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="s1">&#39;doc&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">))</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">((</span><span class="s2">&quot;word&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tf_idf</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tf_idf</span><span class="p">[</span><span class="n">word</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">((</span><span class="n">word</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>

@@ -119,7 +119,7 @@ syllabus:
 
 -   The code
 
-[%inc plugin_sql.py mark=read %]
+[%inc plugin_sql.py pattern=func:read_data %]
 
 ---
 
@@ -149,7 +149,7 @@ syllabus:
 
 -   With this, the `read_data` function is:
 
-[%inc plugin_sqlmodel.py mark=read %]
+[%inc plugin_sqlmodel.py pattern=func:read_data %]
 
 ---
 

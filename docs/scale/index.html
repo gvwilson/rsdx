@@ -85,31 +85,34 @@
 </code></pre></div>
 </div>
 <div class="language-py" title="flow.py">
-<div class="highlight"><pre><span></span><code><span class="nd">@step</span>
-<span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect parameters and run jobs.&quot;&quot;&quot;</span>
-    <span class="n">sweep</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sweep</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">make_sweeps</span><span class="p">(</span><span class="n">sweep</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_job</span><span class="p">,</span> <span class="n">foreach</span><span class="o">=</span><span class="s1">&#39;args&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Collect parameters and run jobs.&quot;&quot;&quot;</span>
+        <span class="n">sweep</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sweep</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">make_sweeps</span><span class="p">(</span><span class="n">sweep</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_job</span><span class="p">,</span> <span class="n">foreach</span><span class="o">=</span><span class="s2">&quot;args&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="language-py" title="flow.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_params</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get sweep parameters from file.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get sweep parameters from file.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">ParamsSweep</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
 </code></pre></div>
 </div>
 <hr />
 <h2>Parameterizing Each Task</h2>
 <div class="language-py" title="flow.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_sweeps</span><span class="p">(</span><span class="n">sweeps</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert sweep parameters into individual jobs.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert sweep parameters into individual jobs.&quot;&quot;&quot;</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">sweeps</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">sweeps</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">depth</span> <span class="ow">in</span> <span class="n">sweeps</span><span class="o">.</span><span class="n">depth</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sweeps</span><span class="o">.</span><span class="n">runs</span><span class="p">):</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ParamsSingle</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)))</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">ParamsSingle</span><span class="p">(</span>
+                        <span class="n">width</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+                        <span class="n">height</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+                        <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span>
+                        <span class="n">seed</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
 </div>
@@ -119,46 +122,52 @@
 <hr />
 <h2>Running a Single Job</h2>
 <div class="language-py" title="flow.py">
-<div class="highlight"><pre><span></span><code><span class="nd">@step</span>
-<span class="k">def</span> <span class="nf">run_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run a sweep with one set of parameters.&quot;&quot;&quot;</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">invperc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">grid</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="n">grid</span><span class="o">.</span><span class="n">depth</span><span class="p">(),</span> <span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="n">collect_density</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="s1">&#39;dimension&#39;</span><span class="p">:</span> <span class="n">measure_dimension</span><span class="p">(</span><span class="n">grid</span><span class="p">)}</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a sweep with one set of parameters.&quot;&quot;&quot;</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">invperc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">grid</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span>
+            <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">grid</span><span class="o">.</span><span class="n">depth</span><span class="p">(),</span>
+            <span class="s2">&quot;density&quot;</span><span class="p">:</span> <span class="n">collect_density</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span>
+            <span class="s2">&quot;dimension&quot;</span><span class="p">:</span> <span class="n">measure_dimension</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <hr />
 <h2>Combining Results</h2>
 <div class="language-py" title="flow.py">
-<div class="highlight"><pre><span></span><code><span class="nd">@step</span>
-<span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine results from all sweeps.&quot;&quot;&quot;</span>
-    <span class="n">counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="n">dimensions</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">densities</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">],</span> <span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">])</span>
-        <span class="n">counts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">dimensions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;dimension&#39;</span><span class="p">]</span>
-        <span class="n">densities</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;density&#39;</span><span class="p">])</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">densities</span><span class="p">:</span>
-        <span class="n">densities</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">estimate_density</span><span class="p">(</span><span class="n">densities</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;counts&#39;</span><span class="p">:</span> <span class="n">counts</span><span class="p">,</span> <span class="s1">&#39;dimensions&#39;</span><span class="p">:</span> <span class="n">dimensions</span><span class="p">,</span> <span class="s1">&#39;densities&#39;</span><span class="p">:</span> <span class="n">densities</span><span class="p">}</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Combine results from all sweeps.&quot;&quot;&quot;</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">dimensions</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">densities</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">],</span> <span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">])</span>
+            <span class="n">counts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">dimensions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;dimension&quot;</span><span class="p">]</span>
+            <span class="n">densities</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;density&quot;</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">densities</span><span class="p">:</span>
+            <span class="n">densities</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">estimate_density</span><span class="p">(</span><span class="n">densities</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">counts</span><span class="p">,</span>
+            <span class="s2">&quot;dimensions&quot;</span><span class="p">:</span> <span class="n">dimensions</span><span class="p">,</span>
+            <span class="s2">&quot;densities&quot;</span><span class="p">:</span> <span class="n">densities</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <hr />
 <h2>Reporting Results</h2>
 <div class="language-py" title="flow.py">
-<div class="highlight"><pre><span></span><code><span class="nd">@step</span>
-<span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Report results.&quot;&quot;&quot;</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;dimension&#39;</span><span class="p">,</span> <span class="s1">&#39;density_x&#39;</span><span class="p">,</span> <span class="s1">&#39;density_k&#39;</span><span class="p">)]</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;counts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-        <span class="n">size</span><span class="p">,</span> <span class="n">depth</span> <span class="o">=</span> <span class="n">key</span>
-        <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">/</span> <span class="n">count</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;densities&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]))</span>
-    <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">lineterminator</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Report results.&quot;&quot;&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="s2">&quot;dimension&quot;</span><span class="p">,</span> <span class="s2">&quot;density_x&quot;</span><span class="p">,</span> <span class="s2">&quot;density_k&quot;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">size</span><span class="p">,</span> <span class="n">depth</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;dimensions&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">/</span> <span class="n">count</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;densities&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]))</span>
+        <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">lineterminator</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <hr />

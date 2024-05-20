@@ -87,8 +87,7 @@
 </li>
 </ul>
 <div class="language-py" title="script.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_grid</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a width X height grid.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a width X height grid.&quot;&quot;&quot;</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
         <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
@@ -104,18 +103,17 @@
 <li>Sweep the whole grid</li>
 </ul>
 <div class="language-py" title="script.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">choose_cell</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Choose the next cell to fill in.&quot;&quot;&quot;</span>
-    <span class="n">least</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Choose the next cell to fill in.&quot;&quot;&quot;</span>
+    <span class="n">least</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)):</span>
         <span class="n">row</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)):</span>
             <span class="n">temp</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">adjacent</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">least</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="n">temp</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">temp</span> <span class="o">&lt;</span> <span class="n">least</span><span class="p">):</span>
-                <span class="n">least</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">least</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">((</span><span class="n">temp</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">temp</span> <span class="o">&lt;</span> <span class="n">least</span><span class="p">)):</span>
+                <span class="n">least</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">temp</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+    <span class="k">return</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span>
 </code></pre></div>
 </div>
 <hr />
@@ -124,16 +122,15 @@
 <li>Test adjacency</li>
 </ul>
 <div class="language-py" title="script.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">adjacent</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is (x, y) adjacent to a filled cell?&quot;&quot;&quot;</span>
-    <span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Is (x, y) adjacent to a filled cell?&quot;&quot;&quot;</span>
+    <span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">if</span> <span class="n">x_1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="ow">and</span> <span class="n">grid</span><span class="p">[</span><span class="n">x_1</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x_1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x_1</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">if</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">if</span> <span class="n">y_1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="ow">and</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y_1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">y_1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">]))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y_1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
@@ -144,11 +141,10 @@
 <li>We also need to test if we&rsquo;re on the border</li>
 </ul>
 <div class="language-py" title="script.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_border</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is this cell on the border of the grid?&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">==</span> <span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Is this cell on the border of the grid?&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">==</span> <span class="n">height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div>
@@ -159,17 +155,16 @@
 <li>And finally, show the result</li>
 </ul>
 <div class="language-py" title="script.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">as_numbers</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the result.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the result.&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
     <span class="n">height</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">as_numbers</span><span class="p">:</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1"> &#39;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;X&#39;</span> <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;X&quot;</span> <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <hr />
@@ -186,8 +181,7 @@
 <li>Main function</li>
 </ul>
 <div class="language-py" title="invperc.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">kind</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">seed</span> <span class="o">=</span> <span class="n">setup</span><span class="p">()</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">initialize_grid</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
     <span class="n">grid</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
@@ -203,18 +197,19 @@
 </li>
 </ul>
 <div class="language-py" title="invperc.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get parameters.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get parameters.&quot;&quot;&quot;</span>
     <span class="n">kind</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
     <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
     <span class="n">depth</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
         <span class="n">seed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">seed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">kind</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">seed</span>
 </code></pre></div>
 </div>
 <hr />
@@ -234,9 +229,11 @@
 </li>
 </ul>
 <div class="language-py" title="invperc.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">initialize_grid</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prepare grid for simulation.&quot;&quot;&quot;</span>
-    <span class="n">lookup</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;list&#39;</span><span class="p">:</span> <span class="n">GridList</span><span class="p">,</span> <span class="s1">&#39;array&#39;</span><span class="p">:</span> <span class="n">GridArray</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Prepare grid for simulation.&quot;&quot;&quot;</span>
+    <span class="n">lookup</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;list&quot;</span><span class="p">:</span> <span class="n">GridList</span><span class="p">,</span>
+        <span class="s2">&quot;array&quot;</span><span class="p">:</span> <span class="n">GridArray</span><span class="p">,</span>
+    <span class="p">}</span>
     <span class="k">return</span> <span class="n">lookup</span><span class="p">[</span><span class="n">kind</span><span class="p">](</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -249,18 +246,17 @@
 </li>
 </ul>
 <div class="language-py" title="invperc.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_grid</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the result.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the result.&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">grid</span><span class="o">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">grid</span><span class="o">.</span><span class="n">depth</span><span class="p">(),</span> <span class="n">seed</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">details</span> <span class="o">==</span> <span class="s1">&#39;brief&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">details</span> <span class="o">==</span> <span class="s2">&quot;brief&quot;</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">width</span><span class="p">()):</span>
-            <span class="k">if</span> <span class="n">details</span> <span class="o">==</span> <span class="s1">&#39;numbers&#39;</span><span class="p">:</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">]</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1"> &#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">details</span> <span class="o">==</span> <span class="s2">&quot;numbers&quot;</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">]</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;X&#39;</span> <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;X&quot;</span> <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <hr />
@@ -304,14 +300,13 @@
 <li>E.g. filling</li>
 </ul>
 <div class="language-py" title="grid_generic.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill grid one cell at a time.&quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose_cell</span><span class="p">()</span>
-        <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_border</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-            <span class="k">break</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill grid one cell at a time.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose_cell</span><span class="p">()</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_border</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+                <span class="k">break</span>
 </code></pre></div>
 </div>
 <hr />
@@ -321,24 +316,22 @@
     between grids with different underlying data representations</li>
 </ul>
 <div class="language-py" title="grid_generic.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare this grid to another.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">width</span><span class="p">():</span>
-        <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">height</span><span class="p">():</span>
-        <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()):</span>
-        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">!=</span> <span class="n">other</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">return</span> <span class="kc">True</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare this grid to another.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">width</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">height</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">!=</span> <span class="n">other</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div>
 </div>
 <hr />
 <h2>List-Based Grid</h2>
 <div class="language-py" title="grid_list.py">
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GridList</span><span class="p">(</span><span class="n">GridGeneric</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represent grid as list of lists.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Represent grid as list of lists.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
@@ -367,8 +360,7 @@
 <li>And another that uses a NumPy array</li>
 </ul>
 <div class="language-py" title="grid_array.py">
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GridArray</span><span class="p">(</span><span class="n">GridGeneric</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represent grid as NumPy array.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Represent grid as NumPy array.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
@@ -380,11 +372,11 @@
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get value at location.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span><span class="p">[</span><span class="o">*</span><span class="n">key</span><span class="p">,]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span><span class="p">[</span><span class="o">*</span><span class="n">key</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set value at location.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span><span class="p">[</span><span class="o">*</span><span class="n">key</span><span class="p">,]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span><span class="p">[</span><span class="o">*</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 </code></pre></div>
 </div>
 <hr />
@@ -397,8 +389,7 @@
 </li>
 </ul>
 <div class="language-py" title="test_grid_start.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_array_constructed_correctly</span><span class="p">():</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">GridArray</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code>    <span class="n">g</span> <span class="o">=</span> <span class="n">GridArray</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">depth</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
@@ -408,8 +399,7 @@
 </code></pre></div>
 </div>
 <div class="language-py" title="test_grid_start.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_list_constructed_correctly</span><span class="p">():</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">GridList</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code>    <span class="n">g</span> <span class="o">=</span> <span class="n">GridList</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">depth</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
@@ -427,16 +417,15 @@
 </li>
 </ul>
 <div class="language-py" title="grid_list_randomizer.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">rand</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_rand</span> <span class="o">=</span> <span class="n">rand</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">):</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span><span class="p">):</span>
-            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rand</span> <span class="o">=</span> <span class="n">rand</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">):</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span><span class="p">):</span>
+                <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <hr />
@@ -445,10 +434,9 @@
 <li>Test looks better</li>
 </ul>
 <div class="language-py" title="test_grid_randomizer.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_list_with_randomizer_function</span><span class="p">():</span>
-
-    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">12345</span>
+
     <span class="n">g</span> <span class="o">=</span> <span class="n">GridListRandomizer</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
@@ -471,9 +459,9 @@
     without modifying the grid class</li>
 </ul>
 <div class="language-py" title="test_grid_mock.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_grid_list_patching_randomization</span><span class="p">():</span>
-    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s1">&#39;random.randint&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="mi">12345</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code>    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;random.randint&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="mi">12345</span><span class="p">):</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">GridList</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">depth</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
@@ -488,10 +476,9 @@
 <li><code>test_grid_parametrize.py</code> <a class="gl-ref" href="../glossary/#gl:parameterize_test" markdown="1">parameterizes</a> the test across both classes</li>
 </ul>
 <div class="language-py" title="test_grid_parametrize.py">
-<div class="highlight"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;cls&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">GridArray</span><span class="p">,</span> <span class="n">GridList</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">test_grid_list_parameterizing_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s1">&#39;random.randint&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="mi">12345</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code>    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;random.randint&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="mi">12345</span><span class="p">):</span>
         <span class="n">g</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">depth</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
@@ -506,12 +493,11 @@
 <li><code>grid_filled.py</code> defines <code>GridFilled</code>, which we can populate with whatever data we want</li>
 </ul>
 <div class="language-py" title="grid_filled.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="n">width</span>
-    <span class="k">assert</span> <span class="nb">all</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="o">==</span> <span class="n">height</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">values</span><span class="p">))</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="p">[:]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="n">width</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="o">==</span> <span class="n">height</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="p">[:]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
 </code></pre></div>
 </div>
 <hr />
@@ -520,21 +506,19 @@
 <li><code>test_grid_filled.py</code> starts by testing that filling from specified works correctly</li>
 </ul>
 <div class="language-py" title="test_grid_filled.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_explicit_filling_fills_correctly</span><span class="p">():</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">GridFilled</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<div class="highlight"><pre><span></span><code>    <span class="n">g</span> <span class="o">=</span> <span class="n">GridFilled</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">depth</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()):</span>
-        <span class="k">assert</span> <span class="nb">all</span><span class="p">((</span><span class="n">g</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">height</span><span class="p">())))</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">height</span><span class="p">()))</span>
 </code></pre></div>
 </div>
 <ul>
 <li>Add test for filling grid by creating deterministic filling path</li>
 </ul>
 <div class="language-py" title="test_grid_filled.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_filling_with_straight_run_to_edge</span><span class="p">():</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">GridFilled</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<div class="highlight"><pre><span></span><code>    <span class="n">g</span> <span class="o">=</span> <span class="n">GridFilled</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
     <span class="n">g</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
     <span class="k">assert</span> <span class="n">g</span> <span class="o">==</span> <span class="n">GridFilled</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 </code></pre></div>

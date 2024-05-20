@@ -127,8 +127,7 @@
 <li>Main driver:</li>
 </ul>
 <div class="language-py" title="create_db.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
     <span class="n">people</span> <span class="o">=</span> <span class="n">get_people</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sqlite</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">TinyDB</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tinydb</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
@@ -142,12 +141,18 @@
 <li>Get people from SQL table using a row factory</li>
 </ul>
 <div class="language-py" title="create_db.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_people</span><span class="p">(</span><span class="n">sqlite</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get people from SQLite database.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get people from SQLite database.&quot;&quot;&quot;</span>
     <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">sqlite</span><span class="p">)</span>
     <span class="n">con</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
-    <span class="n">rows</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;select personal, family from staff&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-    <span class="k">return</span> <span class="p">[{</span><span class="s1">&#39;uid&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;personal&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;family&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;personal&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;personal&#39;</span><span class="p">],</span> <span class="s1">&#39;family&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;family&#39;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select personal, family from staff&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;uid&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;personal&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;family&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;personal&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;personal&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;family&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;family&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span>
+    <span class="p">]</span>
 </code></pre></div>
 </div>
 <ul>
@@ -165,9 +170,8 @@
 </code></pre></div>
 </div>
 <div class="language-py" title="create_db.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_capabilities</span><span class="p">(</span><span class="n">db</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create capabilities in database.&quot;&quot;&quot;</span>
-    <span class="n">capabilities</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;capabilities&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create capabilities in database.&quot;&quot;&quot;</span>
+    <span class="n">capabilities</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;capabilities&quot;</span><span class="p">)</span>
     <span class="n">capabilities</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">cap</span> <span class="ow">in</span> <span class="n">CAPABILITIES</span><span class="p">:</span>
         <span class="n">capabilities</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">cap</span><span class="p">)</span>
@@ -230,16 +234,14 @@
 <li>Create a dataclass to represent assay data</li>
 </ul>
 <div class="language-py" title="assay_params.py">
-<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Params</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters for assay data.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters for assay data.&quot;&quot;&quot;</span>
+
     <span class="n">treatment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">controls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="language-py" title="assay_params.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_params</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load parameters from file.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Load parameters from file.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">Params</span><span class="p">(</span><span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
 </code></pre></div>
 </div>
@@ -247,32 +249,27 @@
 <li>Then create a group of commands with click</li>
 </ul>
 <div class="language-py" title="lims.py">
-<div class="highlight"><pre><span></span><code><span class="nd">@click</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">cli</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interact with laboratory data.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Interact with laboratory data.&quot;&quot;&quot;</span>
 </code></pre></div>
 </div>
 <ul>
 <li>Now define a command to upload</li>
 </ul>
 <div class="language-py" title="lims.py">
-<div class="highlight"><pre><span></span><code><span class="nd">@cli</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--db&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Database&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--assay&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Assay filename&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--design&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Design filename&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--params&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Parameters filename&#39;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--user&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;User ID&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">design</span><span class="p">,</span> <span class="n">assay</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Upload design and assay files.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Upload design and assay files.&quot;&quot;&quot;</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">assay_params</span><span class="o">.</span><span class="n">load_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="n">design_data</span> <span class="o">=</span> <span class="n">lint</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
     <span class="n">assay_data</span> <span class="o">=</span> <span class="n">lint</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="n">assay</span><span class="p">)</span>
-    <span class="n">errors</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">lint</span><span class="o">.</span><span class="n">lint_design</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">design</span><span class="p">,</span> <span class="n">design_data</span><span class="p">),</span> <span class="o">*</span><span class="n">lint</span><span class="o">.</span><span class="n">lint_assay</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">assay</span><span class="p">,</span> <span class="n">assay_data</span><span class="p">)]</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="o">*</span><span class="n">lint</span><span class="o">.</span><span class="n">lint_design</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">design</span><span class="p">,</span> <span class="n">design_data</span><span class="p">),</span>
+        <span class="o">*</span><span class="n">lint</span><span class="o">.</span><span class="n">lint_assay</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">assay</span><span class="p">,</span> <span class="n">assay_data</span><span class="p">),</span>
+    <span class="p">]</span>
     <span class="n">_require_no_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+
     <span class="k">with</span> <span class="n">TinyDB</span><span class="p">(</span><span class="n">db</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
-        <span class="n">_require_exists</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-        <span class="n">cap</span> <span class="o">=</span> <span class="n">_get_capability</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="s1">&#39;upload&#39;</span><span class="p">)</span>
-        <span class="n">_require_cap</span><span class="p">(</span><span class="n">cap</span> <span class="o">==</span> <span class="s1">&#39;own&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s1"> cannot upload&#39;</span><span class="p">)</span>
+        <span class="n">_require_exists</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="n">_get_capability</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="s2">&quot;upload&quot;</span><span class="p">)</span>
+        <span class="n">_require_cap</span><span class="p">(</span><span class="n">cap</span> <span class="o">==</span> <span class="s2">&quot;own&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2"> cannot upload&quot;</span><span class="p">)</span>
         <span class="n">assay_id</span> <span class="o">=</span> <span class="n">_upload_data</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">design</span><span class="p">,</span> <span class="n">assay</span><span class="p">)</span>
         <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="n">assay_id</span><span class="p">)</span>
 </code></pre></div>
@@ -300,22 +297,24 @@
 <li>Make sure the user exists</li>
 </ul>
 <div class="language-py" title="lims.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_require_exists</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check existence of something in database.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check existence of something in database.&quot;&quot;&quot;</span>
     <span class="n">q</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
     <span class="k">match</span> <span class="n">kind</span><span class="p">:</span>
-        <span class="k">case</span> <span class="s1">&#39;upload&#39;</span><span class="p">:</span>
-            <span class="n">found</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">doc_id</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;upload&quot;</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;uploads&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">doc_id</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">found</span>
-        <span class="k">case</span> <span class="s1">&#39;user&#39;</span><span class="p">:</span>
-            <span class="n">found</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">case</span> <span class="s2">&quot;user&quot;</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;data integrity error: multiple </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;data integrity error: multiple </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
         <span class="k">case</span> <span class="n">other</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;internal error: unknown kind </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;internal error: unknown kind </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
     <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No such </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">: &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -323,44 +322,51 @@
 <li>Get the user&rsquo;s capabilities</li>
 </ul>
 <div class="language-py" title="lims.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_get_capability</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find capability.&quot;&quot;&quot;</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">user</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Find capability.&quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">user</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;unknown user </span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">roles</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;roles&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">user</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown user </span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">roles</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;roles&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">user</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;user </span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s1"> has no role&#39;</span><span class="p">)</span>
-    <span class="n">role</span> <span class="o">=</span> <span class="n">roles</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;role&#39;</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;user </span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2"> has no role&quot;</span><span class="p">)</span>
+    <span class="n">role</span> <span class="o">=</span> <span class="n">roles</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;role&quot;</span><span class="p">]</span>
+
     <span class="n">q</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span>
-    <span class="n">capabilities</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;capabilities&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">((</span><span class="n">q</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">role</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">capability</span> <span class="o">==</span> <span class="n">kind</span><span class="p">))</span>
+    <span class="n">capabilities</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;capabilities&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">role</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">capability</span> <span class="o">==</span> <span class="n">kind</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">capabilities</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">capabilities</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">caps</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">capabilities</span><span class="p">))</span>
-        <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;duplicate capabilities for user </span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s1"> and kind </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">caps</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">capabilities</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;scope&#39;</span><span class="p">]</span>
+        <span class="n">caps</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">capabilities</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;duplicate capabilities for user </span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2"> and kind </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">caps</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">capabilities</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;scope&quot;</span><span class="p">]</span>
 </code></pre></div>
 </div>
 <ul>
 <li>Check that the user has the required capability</li>
 </ul>
 <div class="language-py" title="lims.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_require_cap</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check condition and raise exception.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check condition and raise exception.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">condition</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;permission error: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ClickException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;permission error: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <ul>
 <li><em>Then</em> upload the data</li>
 </ul>
 <div class="language-py" title="lims.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_upload_data</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">design_file</span><span class="p">,</span> <span class="n">assay_file</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Upload validated data.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Upload validated data.&quot;&quot;&quot;</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">get_timestamp</span><span class="p">()</span>
-    <span class="n">doc_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span> <span class="s1">&#39;uid&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s1">&#39;design&#39;</span><span class="p">:</span> <span class="n">design_file</span><span class="p">,</span> <span class="s1">&#39;assay&#39;</span><span class="p">:</span> <span class="n">assay_file</span><span class="p">})</span>
-    <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">insert</span><span class="p">({</span><span class="s1">&#39;upload&#39;</span><span class="p">:</span> <span class="n">doc_id</span><span class="p">,</span> <span class="s1">&#39;uid&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">})</span>
+    <span class="n">doc_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;uploads&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span> <span class="s2">&quot;uid&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s2">&quot;design&quot;</span><span class="p">:</span> <span class="n">design_file</span><span class="p">,</span> <span class="s2">&quot;assay&quot;</span><span class="p">:</span> <span class="n">assay_file</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;upload&quot;</span><span class="p">:</span> <span class="n">doc_id</span><span class="p">,</span> <span class="s2">&quot;uid&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;created&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">}</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">doc_id</span>
 </code></pre></div>
 </div>
@@ -370,29 +376,25 @@
 <li>First, get the data as a dataframe</li>
 </ul>
 <div class="language-py" title="lint.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load design or assay file as numpy array.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Load design or assay file as numpy array.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <ul>
 <li>Next, build framework for checks</li>
 </ul>
 <div class="language-py" title="lint.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">lint_assay</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run checks on a single assay file.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">lint_single_file</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s1">&#39;_lint_assay_&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Run checks on a single assay file.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">lint_single_file</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;_lint_assay_&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="language-py" title="lint.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">lint_design</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run checks on a single design file.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">lint_single_file</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s1">&#39;_lint_design_&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Run checks on a single design file.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">lint_single_file</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;_lint_design_&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="language-py" title="lint.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">lint_single_file</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do one kind of linting on a single set of files.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Do one kind of linting on a single set of files.&quot;&quot;&quot;</span>
     <span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -407,18 +409,16 @@
 </li>
 </ul>
 <div class="language-py" title="lint.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_lint_assay_data_shape</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check shape of assay data.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check shape of assay data.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">DATA_SHAPE</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;assay file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1"> has wrong shape </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;assay file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> has wrong shape </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="p">[]</span>
 </code></pre></div>
 </div>
 <div class="language-py" title="lint.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_lint_assay_machine_header</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check shape of assay data.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check shape of assay data.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">MACHINE_HEADER</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;assay file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1"> has wrong machine header </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;assay file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> has wrong machine header </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="p">[]</span>
 </code></pre></div>
 </div>

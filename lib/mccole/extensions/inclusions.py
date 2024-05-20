@@ -1,6 +1,6 @@
 """Manage file inclusions."""
 
-from ast import AsyncFunctionDef, ClassDef, FunctionDef, parse, unparse
+from ast import AsyncFunctionDef, ClassDef, FunctionDef, parse
 from pathlib import Path
 import textwrap
 
@@ -85,13 +85,14 @@ def _match(node, filepath, pattern, indent):
     """Match a pattern against the contents of a file."""
     if isinstance(filepath, str):
         filepath = Path(filepath)
-    doc = parse(filepath.read_text())
+    text = filepath.read_text()
+    doc = parse(text)
     matchers = _translate_pattern(pattern)
     node = _match_rec(doc, matchers)
     if not node:
         util.warn(f"Failed to match inclusion pattern in {node.path}: '{filepath}' and '{pattern}'")
         return None
-    result = unparse(node)
+    result = "\n".join(text.split("\n")[node.lineno:(node.end_lineno+1)])
     if indent:
         result = textwrap.indent(result, " " * node.col_offset)
     return result

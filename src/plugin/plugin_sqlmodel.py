@@ -37,7 +37,6 @@ class Samples(SQLModel, table=True):
     label_id: Surveys | None = Relationship(back_populates="samples")
 
 
-# [read]
 def read_data(dbfile):
     """Read database and do calculations with SQLModel ORM."""
     url = f"sqlite:///{dbfile}"
@@ -56,4 +55,3 @@ def read_data(dbfile):
             "combined": combined,
             "centers": util.centers_with_pandas(combined)
         }
-# [/read]

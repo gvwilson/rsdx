@@ -73,17 +73,16 @@
 </li>
 </ul>
 <div class="language-py" title="display.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">plugins</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
     <span class="n">tables</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">plugin_stem</span><span class="p">,</span> <span class="n">plugin_param</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;plugin_</span><span class="si">{</span><span class="n">plugin_stem</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;plugin_</span><span class="si">{</span><span class="n">plugin_stem</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">tables</span><span class="p">[</span><span class="n">plugin_stem</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">read_data</span><span class="p">(</span><span class="n">plugin_param</span><span class="p">)</span>
     <span class="n">check</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
-    <span class="n">make_figures</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;combined&#39;</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;centers&#39;</span><span class="p">])</span>
+    <span class="n">make_figures</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;combined&quot;</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;centers&quot;</span><span class="p">])</span>
 </code></pre></div>
 </div>
 <ul>
@@ -98,11 +97,10 @@
 <li>Parsing command-line arguments is simple</li>
 </ul>
 <div class="language-py" title="display.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command-line arguments.&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--figdir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;output dir&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--plugins&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;config&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--figdir&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;output dir&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--plugins&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 </code></pre></div>
 </div>
@@ -116,19 +114,18 @@
 </li>
 </ul>
 <div class="language-py" title="display.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">tables</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check all tables against each other.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check all tables against each other.&quot;&quot;&quot;</span>
     <span class="n">ref_key</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">ref_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ref_key</span> <span class="o">=</span> <span class="n">key</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="n">ref_key</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;mis-match in provided tables </span><span class="si">{</span><span class="n">ref_key</span><span class="si">}</span><span class="s1"> != </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mis-match in provided tables </span><span class="si">{</span><span class="n">ref_key</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">sub_key</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">[</span><span class="n">ref_key</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="n">ref_key</span><span class="p">][</span><span class="n">sub_key</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">sub_key</span><span class="p">]):</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;mis-match in </span><span class="si">{</span><span class="n">sub_key</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">ref_key</span><span class="si">}</span><span class="s1"> != </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mis-match in </span><span class="si">{</span><span class="n">sub_key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">ref_key</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <hr />
@@ -147,9 +144,8 @@
 </li>
 </ul>
 <div class="language-py" title="plugin_csv.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">csvdir</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read CSV files directly into dataframes.&quot;&quot;&quot;</span>
-    <span class="n">raw</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">csvdir</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.csv&#39;</span><span class="p">)]</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Read CSV files directly into dataframes.&quot;&quot;&quot;</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">csvdir</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.csv&quot;</span><span class="p">)]</span>
     <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">combine_with_pandas</span><span class="p">(</span><span class="o">*</span><span class="n">raw</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -157,11 +153,10 @@
 <li>Concatenate all the tables</li>
 </ul>
 <div class="language-py" title="util.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">combine_with_pandas</span><span class="p">(</span><span class="o">*</span><span class="n">tables</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine tables using Pandas.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine tables using Pandas.&quot;&quot;&quot;</span>
     <span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
     <span class="n">centers</span> <span class="o">=</span> <span class="n">centers_with_pandas</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;combined&#39;</span><span class="p">:</span> <span class="n">combined</span><span class="p">,</span> <span class="s1">&#39;centers&#39;</span><span class="p">:</span> <span class="n">centers</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;combined&quot;</span><span class="p">:</span> <span class="n">combined</span><span class="p">,</span> <span class="s2">&quot;centers&quot;</span><span class="p">:</span> <span class="n">centers</span><span class="p">}</span>
 </code></pre></div>
 </div>
 <hr />
@@ -189,8 +184,7 @@
 <li>The code</li>
 </ul>
 <div class="language-py" title="plugin_sql.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">dbfile</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read tables and do calculations directly in SQL.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Read tables and do calculations directly in SQL.&quot;&quot;&quot;</span>
     <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbfile</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;combined&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">Q_SAMPLES</span><span class="p">,</span> <span class="n">con</span><span class="p">),</span>
@@ -229,22 +223,22 @@
 </li>
 </ul>
 <div class="language-py" title="plugin_sqlmodel.py">
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Sites</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Survey sites.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Survey sites.&quot;&quot;&quot;</span>
+
     <span class="n">site</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">surveys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;Surveys&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;site_id&#39;</span><span class="p">)</span>
+    <span class="n">surveys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s2">&quot;Surveys&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s2">&quot;site_id&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="language-py" title="plugin_sqlmodel.py">
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Surveys</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Surveys done.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Surveys done.&quot;&quot;&quot;</span>
+
     <span class="n">label</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">date</span><span class="p">:</span> <span class="n">date_type</span>
-    <span class="n">site</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">foreign_key</span><span class="o">=</span><span class="s1">&#39;sites.site&#39;</span><span class="p">)</span>
-    <span class="n">site_id</span><span class="p">:</span> <span class="n">Sites</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;surveys&#39;</span><span class="p">)</span>
-    <span class="n">samples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;Samples&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;label_id&#39;</span><span class="p">)</span>
+    <span class="n">site</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">foreign_key</span><span class="o">=</span><span class="s2">&quot;sites.site&quot;</span><span class="p">)</span>
+    <span class="n">site_id</span><span class="p">:</span> <span class="n">Sites</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s2">&quot;surveys&quot;</span><span class="p">)</span>
+    <span class="n">samples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s2">&quot;Samples&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">back_populates</span><span class="o">=</span><span class="s2">&quot;label_id&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <hr />
@@ -253,8 +247,7 @@
 <li>With this, the <code>read_data</code> function is:</li>
 </ul>
 <div class="language-py" title="plugin_sqlmodel.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">dbfile</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read database and do calculations with SQLModel ORM.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Read database and do calculations with SQLModel ORM.&quot;&quot;&quot;</span>
     <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sqlite:///</span><span class="si">{</span><span class="n">dbfile</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>

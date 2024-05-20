@@ -19,7 +19,6 @@ group by surveys.site
 # [/query]
 
 
-# [read]
 def read_data(dbfile):
     """Read tables and do calculations directly in SQL."""
     con = sqlite3.connect(dbfile)
@@ -27,4 +26,3 @@ def read_data(dbfile):
         "combined": pd.read_sql(util.Q_SAMPLES, con),
         "centers": pd.read_sql(Q_CENTERS, con),
     }
-# [/read]

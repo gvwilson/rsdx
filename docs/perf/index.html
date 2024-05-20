@@ -52,9 +52,8 @@
 <li>Can now save parameters in version control</li>
 </ul>
 <div class="language-py" title="params_single.py">
-<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">ParamsSingle</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single set of invasion percolation parameters.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;A single set of invasion percolation parameters.&quot;&quot;&quot;</span>
+
     <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">width</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>
@@ -72,9 +71,8 @@
 </li>
 </ul>
 <div class="language-py" title="invperc_util.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get parameters.&quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get parameters.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">d</span><span class="p">)</span>
 </code></pre></div>
@@ -85,14 +83,13 @@
 <li>Modify code in <code>invperc_single.py</code> to use these parameters</li>
 </ul>
 <div class="language-py" title="invperc_single.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ParamsSingle</span><span class="p">)</span>
     <span class="n">initialize_random</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">initialize_grid</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="n">num_filled</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">print_grid</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">num_filled</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+        <span class="n">print_grid</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">num_filled</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s2">&quot;full&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <ul>
@@ -108,9 +105,8 @@
 <li>Create another dataclass to store multiple values for interesting parameters</li>
 </ul>
 <div class="language-py" title="params_sweep.py">
-<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">ParamsSweep</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A range of invasion percolation parameters.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;A range of invasion percolation parameters.&quot;&quot;&quot;</span>
+
     <span class="n">kind</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">size</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
     <span class="n">depth</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
@@ -124,8 +120,7 @@
 <li>Next, rewrite <code>main</code> to try each combination of parameter values</li>
 </ul>
 <div class="language-py" title="invperc_sweep.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Main driver.&quot;&quot;&quot;</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ParamsSweep</span><span class="p">)</span>
     <span class="n">initialize_random</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
@@ -146,8 +141,7 @@
 <li>Instead, use a <a class="gl-ref" href="../glossary/#gl:generator" markdown="1">generator</a> to produce one at a time</li>
 </ul>
 <div class="language-py" title="invperc_sweep.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">generate_sweep</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate next single parameter object.&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate next single parameter object.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">kind</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">depth</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">depth</span><span class="p">:</span>
@@ -256,10 +250,9 @@
 <li><code>GridLazy</code> constructor</li>
 </ul>
 <div class="language-py" title="grid_lazy.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct and fill.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span> <span class="o">=</span> <span class="p">{}</span>
 </code></pre></div>
 </div>
 <hr />
@@ -273,61 +266,59 @@
 </li>
 </ul>
 <div class="language-py" title="grid_lazy.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fill grid one cell at a time.&quot;&quot;&quot;</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">num_filled</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">add_candidates</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose_cell</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill grid one cell at a time.&quot;&quot;&quot;</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span>
         <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">num_filled</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_border</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-            <span class="k">break</span>
-    <span class="k">return</span> <span class="n">num_filled</span>
+        <span class="n">num_filled</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_candidates</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose_cell</span><span class="p">()</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">num_filled</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_border</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="n">num_filled</span>
 </code></pre></div>
 </div>
 <hr />
 <h2>Adding Candidates</h2>
 <div class="language-py" title="grid_lazy.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add candidates around (x, y).&quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_one_candidate</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">iy</span> <span class="ow">in</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_one_candidate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">iy</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Add candidates around (x, y).&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_one_candidate</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">iy</span> <span class="ow">in</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_one_candidate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">iy</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="language-py" title="grid_lazy.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_one_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add (x, y) if suitable.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()):</span>
-        <span class="k">return</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Add (x, y) if suitable.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">())</span> <span class="ow">or</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 </code></pre></div>
 </div>
 <hr />
 <h2>Choosing a Cell</h2>
 <div class="language-py" title="grid_lazy.py">
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">choose_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Choose the next cell to fill.&quot;&quot;&quot;</span>
-    <span class="n">min_key</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-    <span class="n">available</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">min_key</span><span class="p">]))</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">available</span><span class="p">))</span>
-    <span class="n">choice</span> <span class="o">=</span> <span class="n">available</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="k">del</span> <span class="n">available</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">available</span><span class="p">:</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">min_key</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">min_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">available</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">add_candidates</span><span class="p">(</span><span class="o">*</span><span class="n">choice</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">choice</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="sd">&quot;&quot;&quot;Choose the next cell to fill.&quot;&quot;&quot;</span>
+        <span class="n">min_key</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">min_key</span><span class="p">]))</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">available</span><span class="p">))</span>
+        <span class="n">choice</span> <span class="o">=</span> <span class="n">available</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">available</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">available</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">min_key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_candidates</span><span class="p">[</span><span class="n">min_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">available</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_candidates</span><span class="p">(</span><span class="o">*</span><span class="n">choice</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">choice</span>
 </code></pre></div>
 </div>
 <hr />
