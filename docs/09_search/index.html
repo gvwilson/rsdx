@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Search</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>Search</h1>
+<ul>
+<li>Time to do our literature survey</li>
+<li>Want to search the abstracts of over 2000 papers</li>
+<li>Use [%g tf_idf "term frequency - inverse document frequency" %] (TF-IDF)<ul>
+<li>Term frequency: frequency of each word in each document</li>
+<li>Document frequency: proportion of documents in which a word appears</li>
+<li>Inverse document frequency: one over that (i.e., how specific the word is)</li>
+</ul>
+</li>
+</ul>
+<h2 id="search-fetch">Fetching Data</h2>
+<ul>
+<li>[OpenAlex][open_alex] indexes over 250 million scholarly works</li>
+<li>[PyAlex][pyalex] provides a Python interface</li>
+<li>Copy, paste, and tweak example</li>
+</ul>
+<p>[%inc fetch_bib_data.py pattern=func:main %]</p>
+<ul>
+<li>Additional definitions</li>
+</ul>
+<p>[%inc fetch_bib_data.py mark=const %]
+[%inc fetch_bib_data.py pattern=func:parse_args %]</p>
+<ul>
+<li>Produces 2192 JSON files</li>
+</ul>
+<p>[%inc W962796421.json %]</p>
+<h2>Building Index</h2>
+<ul>
+<li>Usual main driver</li>
+</ul>
+<p>[%inc make_index.py pattern=func:main %]</p>
+<ul>
+<li>Reading abstracts from JSON is the simple part</li>
+</ul>
+<p>[%inc make_index.py pattern=func:read_abstracts %]</p>
+<ul>
+<li>Getting words is a bit of a hack<ul>
+<li>For now, remove punctuation and hope for the best</li>
+</ul>
+</li>
+</ul>
+<p>[%inc make_index.py pattern=func:get_words %]</p>
+<ul>
+<li>Calculate term frequency</li>
+</ul>
+<p>[%inc make_index.py pattern=func:calculate_tf %]</p>
+<ul>
+<li>Calculate inverse document frequency</li>
+</ul>
+<p>[%inc make_index.py pattern=func:calculate_idf %]</p>
+<ul>
+<li>Combine values</li>
+</ul>
+<p>[%inc make_index.py pattern=func:calculate_tf_idf %]</p>
+<ul>
+<li>And save as CSV</li>
+</ul>
+<p>[%inc make_index.py pattern=func:save %]</p>
+<ul>
+<li>258,000 distinct terms (!)<ul>
+<li>Of which several thousand contain non-Latin characters</li>
+</ul>
+</li>
+<li>17 documents contain the word "search"</li>
+<li>Of these, W2026888704.json has the highest score</li>
+</ul>
+<p>[%inc tf_idf_search.csv %]</p>
+<ul>
+<li>Upon inspection, that abstract includes phrases like "Search Dropdown Menu toolbar search search input",
+    which are probably a result of inaccurate web scraping</li>
+<li>The good news is,
+    TF-IDF is exactly the sort of thing we know how to write unit tests for</li>
+</ul>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

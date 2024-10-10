@@ -1,11 +1,3 @@
----
-template: slides
-title: "Production"
-tagline: "Make the application production-ready."
-abstract: >
-    FIXME
-syllabus:
--   FIXME
----
+# Production
 
 [%fixme "show logging and DVC" %]

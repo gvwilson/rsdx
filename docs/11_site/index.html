@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>A Static Web Site</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>A Static Web Site</h1>
+<ul>
+<li>Sharing knowledge is the last and most important step of scientific research</li>
+<li>Journals may require a PDF, but a website will get more readers</li>
+<li>Use a [%g ssg "static site generator" %] to create one</li>
+<li>We will use [Ark][ark] (the same tool used to create this site)</li>
+</ul>
+<h2 id="website-elements">Site Elements</h2>
+<ul>
+<li>Configuration file <code>config.py</code> in root directory<ul>
+<li>Some SSGs use YAML files, then need workarounds for conditionals etc.</li>
+</ul>
+</li>
+</ul>
+<p>[%inc site/config.py %]</p>
+<ul>
+<li>
+<p>[%g ssg_theme "Theme" %] lives in <code>lib/<em>theme</em></code></p>
+<ul>
+<li><code>extensions</code>: Python to add features (discussed below)</li>
+<li><code>resources</code>: CSS and image files copied over as-is</li>
+<li><code>templates</code>: for controlling page layout</li>
+</ul>
+</li>
+<li>
+<p>Markdown files with <code>.md</code> extension are turned into HTML</p>
+</li>
+</ul>
+<p>[%inc site/src/index.md %]</p>
+<ul>
+<li>Transformation relies on a [%g ssg_template "template" %]</li>
+<li>We use [Jinja][jinja]</li>
+</ul>
+<p>[%inc site/lib/snails/templates/node.jinja %]</p>
+<ul>
+<li><code>@root</code> is turned into the path to the root of the generated site</li>
+<li><code>{{<em>variable</em>}}</code> is [%g interpolation "interpolated" %]<ul>
+<li><code>site.<em>name</em></code> picks up variables from site configuration</li>
+<li><code>page.<em>name</em></code> picks up variables from page header</li>
+<li><code>{% if <em>condition</em> %}…{% endif %}</code> is conditional</li>
+</ul>
+</li>
+</ul>
+<p>[%inc site/src/credits.md %]</p>
+<h2 id="website-customize">Customizing</h2>
+<ul>
+<li>SSGs weren't designed with researchers' needs in mind</li>
+<li>Write our own extensions for things we need and register them as [%g shortcode "shortcodes" %]</li>
+<li>What we want:</li>
+</ul>
+<p>[%inc site/src/result.md %]</p>
+<ul>
+<li>Code for the extension</li>
+</ul>
+<p>[%inc site/lib/snails/extensions/codes.py pattern=func:display_csv %]</p>
+<p>[% figure
+   slug="webiste_screenshot"
+   img="website_screenshot.svg"
+   alt="screenshot of generated page"
+   caption="Generated page."
+%]</p>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

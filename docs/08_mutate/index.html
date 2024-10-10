@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Synthetic Data</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>Synthetic Data</h1>
+<h2>The Problem</h2>
+<ul>
+<li>How do you test a data analysis pipeline?<ul>
+<li>Unit tests of the kind used for invasion percolation aren't necessarily appropriate</li>
+<li>Problem isn't the control flow of the code but how it interacts with data</li>
+</ul>
+</li>
+<li>[%b Alexander2023 %]: build a [%g synth_data "synthetic data generator" %]<ul>
+<li>Check the behavior of the pipeline by pushing data with known properties through it</li>
+<li>If it finds something statistically significant in white noise, rethink the pipeline</li>
+</ul>
+</li>
+<li>[Faker][faker] has tools for generating a lot of useful data (we will use it in future chapters)</li>
+<li>But it can't generate genomes, so we'll build our own</li>
+</ul>
+<p>[%fixme "replace pandas with polars" %]</p>
+<hr/>
+<h2>Synthesizing Genomes</h2>
+<ul>
+<li>Create some short snail genomes with [%g snp "single-nucleotide polymorphisms" %]</li>
+<li>Output will have:<ul>
+<li>Length: for now, all sequences the same length)</li>
+<li>Reference sequence: the unmutated original</li>
+<li>Locations: where mutations can occur</li>
+<li>Susceptible location and base: which of those locations is the key to variance,
+    and what mutated base causes the visible mutation</li>
+<li>Individuals: list of generated genomes</li>
+</ul>
+</li>
+<li>Since this has multiple fields, store as JSON</li>
+</ul>
+<hr/>
+<h2>Main Driver</h2>
+<p>[%inc synthesize_genomes.py pattern=func:main %]</p>
+<hr/>
+<h2>Random Genomes</h2>
+<ul>
+<li>Create a random base sequence as the reference genome</li>
+<li>Create duplicates for individuals</li>
+<li>Determine where SNPs can occur</li>
+<li>Introduce significant mutations</li>
+<li>Introduce other random mutations</li>
+<li>Sort for reproducibility [%b Taschuk2017 %]</li>
+</ul>
+<hr/>
+<h2>Random Genomes</h2>
+<p>[%inc synthesize_genomes.py pattern=func:random_genomes %]</p>
+<hr/>
+<h2>Random Bases and Mutations</h2>
+<p>[%inc synthesize_genomes.py pattern=func:random_bases %]
+[%inc synthesize_genomes.py pattern=func:_mutate_snps %]
+[%inc synthesize_genomes.py pattern=func:_mutate_other %]</p>
+<hr/>
+<h2>Synthesizing Samples</h2>
+<ul>
+<li>Our model is that snail size depends on:<ul>
+<li>Presence of significant mutation</li>
+<li>Distance from epicenter of pollution</li>
+</ul>
+</li>
+<li>Building this forces us to be explicit about our model<ul>
+<li>Variance depends on a single nucleotide</li>
+<li>And on linear distance from a center point</li>
+</ul>
+</li>
+<li>So:<ul>
+<li>Load the individuals</li>
+<li>Put each individual somewhere near the spill site</li>
+<li>Generate a random reading for its size that depends on two factors</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2>Once More With Feeling</h2>
+<ul>
+<li>Main driver should be starting to look familiar</li>
+</ul>
+<p>[%inc synthesize_samples.py pattern=func:main %]</p>
+<hr/>
+<h2>Geography</h2>
+<ul>
+<li>Get geographic parameters from CSV files</li>
+<li>Need to join tables to get longitude, latitude, and nominal pollution radius</li>
+</ul>
+<p>[%inc sites.csv %]
+[%inc surveys.csv %]</p>
+<hr/>
+<h2>Geography</h2>
+<p>[%inc synthesize_samples.py pattern=func:get_geo_params %]</p>
+<hr/>
+<h2>Generate Locations and Sizes</h2>
+<ul>
+<li>Generate location and snail size based on genetics and distance</li>
+</ul>
+<p>[%inc synthesize_samples.py pattern=func:generate_samples %]</p>
+<hr/>
+<h2>Magic Numbers</h2>
+<ul>
+<li>Keep the magic numbers at the top of the file<ul>
+<li>If we wanted to vary these, would store them as JSON or YAML and load</li>
+<li>In particular, would do this if we were sweeping parameters as in [%x scale %]</li>
+</ul>
+</li>
+</ul>
+<p>[%inc synthesize_samples.py mark=parameters %]</p>
+<hr/>
+<h2>Analysis</h2>
+<ul>
+<li>Finally ready to write our analysis</li>
+<li>Read the CSV data with locations, genomes, and readings</li>
+<li>Find all candidate locations where sequences don't agree</li>
+<li>Create a scatter plot by location and base<ul>
+<li>One showing all data</li>
+<li>One showing only locations where there are variations</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2>All Our Snails</h2>
+<p>[% figure
+   slug="mutate_all_scatter"
+   img="all_data_scatter.svg"
+   alt="scatterplot of all readings at all locations"
+   caption="Reading as a function of location and base (all)"
+%]</p>
+<hr/>
+<h2>Snails With Mutations</h2>
+<p>[% figure
+   slug="mutate_slimmed_scatter"
+   img="slimmed_data_scatter.svg"
+   alt="scatterplot of readings for snails with mutations"
+   caption="Reading as a function of location and base (mutants)"
+%]</p>
+<hr/>
+<h2>Rank Order</h2>
+<p>[% figure
+   slug="mutate_slimmed_sorted"
+   img="slimmed_data_sorted.svg"
+   alt="rank plot of readings at mutation locations"
+   caption="Reading as a function of location (rank order)"
+%]</p>
+<hr/>
+<h2>Conclusions</h2>
+<ul>
+<li>Clearly a winner in this plot…</li>
+<li>…but not nearly as clear in scatter plot…</li>
+<li>…and the winner has only twice the reading of the next-highest (random) value</li>
+<li>Statistics could tell us if this is what we expect,
+    but this isn't a statistics lesson</li>
+</ul>
+<hr/>
+<h2>Exercises</h2>
+<p>[%fixme "create exercises for data analysis chapter" %]</p>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

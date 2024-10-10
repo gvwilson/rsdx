@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<table>
+  <thead>
+    <tr>
+      {% for c in columns %}<th>{{ c }}</th>{% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in rows %}
+    <tr>
+      {% for data in r %}
+      <td>
+	{% if ident and columns[loop.index0] == "ident" %}
+	{{ ident(data) | safe }}
+	{% else %}
+	{{ data }}
+	{% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,22 +1,4 @@
----
-template: slides
-title: "Performance"
-tagline: "Compare grid implementations empirically."
-abstract: >
-    Some pieces of research software have to be fast in order to be useful.
-    This lesson therefore explores
-    how to capture program parameters in reproducible ways,
-    how profiling can help us figure out which parts of our program are worth optimizing,
-    and how being lazy can make programs faster.
-syllabus:
--   Introduce Python type annotations.
--   Define dataclasses to represent parameters for profiling runs.
--   Using cProfile to determine which parts are expensive.
--   Tuning code does not solve algorithmic problems like quadratic growth in runtime.
--   Estimating algorithm performance with big-oh.
--   Extending a class hierarchy to accommodate new features.
--   Adapting tools written earlier to make all of this simpler to run, test, and document.
----
+# Performance
 
 ## The Problem
 

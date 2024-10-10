@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>A Web Service</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>A Web Service</h1>
+<h2 id="serve-data">Getting Data</h2>
+<ul>
+<li>Assay database from [%x lims %]<ul>
+<li><code>staff</code></li>
+<li><code>experiment</code></li>
+<li><code>performed</code></li>
+<li><code>plate</code></li>
+<li><code>invalidated</code></li>
+</ul>
+</li>
+<li>Use [sqlite3][sqlite3] module directly<ul>
+<li>Exercise: convert to [SQLModel][sqlmodel]</li>
+</ul>
+</li>
+<li>[%g mvc "MVC" %] design separates [%g model "model" %], [%g controller "controller" %], and [%g view "view" %]<ul>
+<li>Model is data storage</li>
+<li>Controller is the verbs</li>
+<li>View is the display</li>
+</ul>
+</li>
+<li>Model functions:<ul>
+<li><code>get_all</code> to get all records (but <em>not</em> 1-1 with database records)</li>
+<li><code>get_count</code> to count records of a particular type</li>
+<li><code>get_plate_filename</code> to turn a plate ID into an assay filename</li>
+</ul>
+</li>
+</ul>
+<p>[%inc model.py pattern=func:get_count %]</p>
+<h2 id="serve-server">Controller</h2>
+<ul>
+<li>Use [Flask][flask]<ul>
+<li>Define a function to handle a request to a particular URL</li>
+<li>Use a decorator to [%g route "route" %] appropriate requests to it</li>
+</ul>
+</li>
+</ul>
+<p>[%inc server.py mark=index %]</p>
+<ul>
+<li>Run from the command line</li>
+</ul>
+<p>[%inc run_server.sh %]
+[%inc run_server.out %]</p>
+<ul>
+<li>Go to port 5000 ([%f serve_home_page %])</li>
+</ul>
+<p>[% figure
+   slug="serve_home_page"
+   img="serve_home_page.svg"
+   alt="screenshot of data server home page"
+   caption="Home page of data server"
+%]</p>
+<h2 id="serve-template">Templates</h2>
+<ul>
+<li><code>render_template</code> looks in the <code>templates</code> directory for <code>index.html</code></li>
+</ul>
+<p>[%inc templates/index.html %]</p>
+<ul>
+<li>This template [%g extend_template "extends" %] <code>base.html</code></li>
+</ul>
+<p>[%inc templates/base.html %]</p>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Parsing Raw Data</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>Parsing Raw Data</h1>
+<h2>The Problem</h2>
+<ul>
+<li>We are studying the impact of toxic waste on snails on Vancouver Island</li>
+<li>First step is to read data files with snail weight readings from four sample sites</li>
+<li>But the files are formatted inconsistently</li>
+</ul>
+<hr/>
+<h2>The Data</h2>
+<ul>
+<li>First file looks like this</li>
+</ul>
+<p>[%inc GBY.csv %]</p>
+<ul>
+<li>First row has only two columns (one of which includes the site ID, which we can check against the file name)</li>
+<li>After that we have five nicely-formatted columns</li>
+</ul>
+<hr/>
+<h2>Just Read It</h2>
+<ul>
+<li>That seems simple</li>
+</ul>
+<p>[%inc naive.py %]
+[%inc naive_GBY.out %]</p>
+<hr/>
+<h2>But…</h2>
+<ul>
+<li>Try it on the next file</li>
+</ul>
+<p>[%inc naive_YOU.out %]</p>
+<ul>
+<li>Problem is that the readings are indented by one column</li>
+</ul>
+<hr/>
+<h2>And…</h2>
+<ul>
+<li>Next file has a blank line between header and readings</li>
+</ul>
+<p>[%inc COW.csv ellipsis=True %]</p>
+<ul>
+<li>And another one has <em>two</em> blank lines between the header and the data</li>
+</ul>
+<hr/>
+<h2>Options</h2>
+<ol>
+<li>Edit the raw data files<ul>
+<li>Never do this</li>
+</ul>
+</li>
+<li>Copy and edit the files<ul>
+<li>But it turns out each field scientist submitted dozens of files</li>
+<li>Each person was consistent, but editing them all by hand will be tedious and error-prone</li>
+</ul>
+</li>
+<li>Write a parser<ul>
+<li>Never do this…</li>
+<li>…unless you have to</li>
+</ul>
+</li>
+</ol>
+<hr/>
+<h2>Overall Structure</h2>
+<ul>
+<li>Main body follows 50-year-old conventions for Unix command-line tools<ul>
+<li>Get command-line arguments</li>
+<li>Read from standard input or a file (processing as we read)</li>
+<li>Write to standard output or a file</li>
+</ul>
+</li>
+</ul>
+<p>[%inc parse.py pattern=func:main %]</p>
+<hr/>
+<h2>Parsing Arguments</h2>
+<ul>
+<li>Use <code>argparse</code> module to parse arguments</li>
+</ul>
+<p>[%inc parse.py pattern=func:parse_args %]</p>
+<hr/>
+<h2>Loading Data</h2>
+<ul>
+<li>To load:<ul>
+<li>Get all lines</li>
+<li>Split into header and body</li>
+<li>Normalize the body (i.e., adjust indentation if necessary)</li>
+<li>Create dataframe</li>
+</ul>
+</li>
+</ul>
+<p>[%inc parse.py pattern=func:load %]</p>
+<hr/>
+<h2>Finite State Machine</h2>
+<ul>
+<li>Splitting is the hardest part</li>
+<li>Manage complexity with a a [%g fsm "finite state machine" %]<ol>
+<li>Reading header</li>
+<li>Searching for body</li>
+<li>Reading body</li>
+<li>Done</li>
+</ol>
+</li>
+<li>Use an enumeration to keep track of these</li>
+</ul>
+<p>[%inc parse.py pattern=class:State %]</p>
+<hr/>
+<h2>Structure</h2>
+<ul>
+<li>As we process each line<ul>
+<li>Break down cases based on current state</li>
+<li>(Possibly) do something with the line</li>
+<li>Decide our next state</li>
+</ul>
+</li>
+<li>A structured way to manage complexity as parsing gets more complicated</li>
+<li>Could just use strings instead of an enum, but the latter is easy to keep track of</li>
+</ul>
+<hr/>
+<h2>Structure</h2>
+<p>[%inc parse.py pattern=func:split %]</p>
+<hr/>
+<h2>Normalization</h2>
+<ul>
+<li>To normalize the body, check indentation of first row<ul>
+<li>Really should confirm indentation of remaining rows</li>
+</ul>
+</li>
+</ul>
+<p>[%inc parse.py pattern=func:normalize %]</p>
+<hr/>
+<h2>What We Have Now</h2>
+<p>[% figure
+   slug="parse_call_tree"
+   img="call_tree.svg"
+   alt="Call tree of completed parser"
+   caption="Parser call tree"
+%]</p>
+<ul>
+<li>Run it on our files and check the results</li>
+</ul>
+<hr/>
+<h2>Exercises</h2>
+<ol>
+<li>
+<p>Check that all rows of body are indented the same amount.</p>
+</li>
+<li>
+<p>Check that all expected columns are there.</p>
+</li>
+<li>
+<p>Check consistency of site name in header with site names on rows.</p>
+</li>
+<li>
+<p>Check longitude and latitude: what are reasonable bounds on these?</p>
+</li>
+<li>
+<p>Check readings: what are reasonable values for these?</p>
+</li>
+<li>
+<p>Were your "reasonable" bounds for the previous two exercises the same as other people's?
+    How can you make them easier to discover?
+    Should they be changeable from the command line?</p>
+</li>
+<li>
+<p>Modify the parser to take an optional filename as an argument.
+    If one is provided,
+    the parser reads a dataframe from that file
+    and compares it to the dataframe loaded from the first file.
+    How would you use this in testing?</p>
+</li>
+</ol>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

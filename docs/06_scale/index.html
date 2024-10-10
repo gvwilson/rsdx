@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Scaling Up</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>Scaling Up</h1>
+<h2>The Problem</h2>
+<ul>
+<li>We may need to run hundreds or thousands of simulations to get useful data<ul>
+<li>The fact that we don't know how many indicates the scale of the problem</li>
+</ul>
+</li>
+<li>Build a [%g workflow "workflow" %] to run parameter sweeps using [Metaflow][metaflow]<ul>
+<li>Define a Python class with methods for workflow stages</li>
+<li>Use decorators to mark steps</li>
+<li>Parameters to methods coordinate dataflow</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2>Quick Reminder</h2>
+<ul>
+<li>Store parameters as dataclass</li>
+</ul>
+<p>[%inc params_single.py %]
+[%inc standalone.json %]</p>
+<hr/>
+<h2>Getting Started</h2>
+<p>[%inc flow.py mark=start %]
+[%inc flow.py pattern="class:InvPercFlow meth:start" %]
+[%inc flow.py pattern="func:load_params" %]</p>
+<hr/>
+<h2>Parameterizing Each Task</h2>
+<p>[%inc flow.py pattern="func:make_sweeps" %]</p>
+<ul>
+<li>Use nested loops to generate multidmensional "cube" of parameters</li>
+</ul>
+<hr/>
+<h2>Running a Single Job</h2>
+<p>[%inc flow.py pattern="class:InvPercFlow meth:run_job" %]</p>
+<hr/>
+<h2>Combining Results</h2>
+<p>[%inc flow.py pattern="class:InvPercFlow meth:join" %]</p>
+<hr/>
+<h2>Reporting Results</h2>
+<p>[%inc flow.py pattern="class:InvPercFlow meth:end" %]</p>
+<hr/>
+<h2>Running It</h2>
+<ul>
+<li>Run with single-job JSON parameter file shown earlier</li>
+</ul>
+<p>[%inc run_standalone.sh %]</p>
+<ul>
+<li>Run full sweep</li>
+</ul>
+<p>[%inc sweep.json %]
+[%inc run_sweep.sh %]</p>
+<hr/>
+<h2>But How Does It Work?</h2>
+<p>[%fixme "show how to build a simple DAG-based workflow runner" %]</p>
+<hr/>
+<h2>Exercises</h2>
+<ol>
+<li>
+<p>[%fixme "add exercises for scaling up" %]</p>
+</li>
+<li>
+<p>Use recursion to generate parameter sweep for arbitrary number of parameters.</p>
+</li>
+</ol>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

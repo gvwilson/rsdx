@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>A Plugin Architecture</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>A Plugin Architecture</h1>
+<h2>The Problem</h2>
+<ul>
+<li>Research data may come from files, databases, websites, and many other sources</li>
+<li>Instead of adding code to a program to handle each one,
+    use a [%g plugin_architecture "plugin architecture" %]
+    to load data handlers dynamically</li>
+<li>Lets users extend the program without modifying its internals</li>
+<li>Work backward from configuration file that defines plugin type and its parameters</li>
+</ul>
+<p>[%inc plugins.json %]</p>
+<hr/>
+<h2>Our Data</h2>
+<p>[% figure
+   slug="plugin_table_structure"
+   img="table_structure.svg"
+   alt="Structure of survey tables"
+   caption="Survey table structure"
+%]</p>
+<ul>
+<li>Each <em>site</em> has a [%g primary_key "primary key" %] and longitude/latitude</li>
+<li>Each <em>survey</em> has a primary key, a site identifier ([%g foreign_key "foreign key" %]) and a date</li>
+<li>Each sample has a site ID foreign key, longitude/latitude, and a reading</li>
+</ul>
+<hr/>
+<h2>Getting Started</h2>
+<ul>
+<li>Write <code>main</code><ul>
+<li>If the file type is X, load <code>plugin_X</code> as a module</li>
+<li>Then call the <code>read_data</code> function in that module</li>
+<li>A [%g contract "contract" %] between the program and its plugins</li>
+</ul>
+</li>
+</ul>
+<p>[%inc display.py pattern=func:main %]</p>
+<ul>
+<li>Result from each <code>read_data</code> is a list of tables<ul>
+<li>Load all available examples to [%g cross_validation "cross validate" %]</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2>Command Line</h2>
+<ul>
+<li>Parsing command-line arguments is simple</li>
+</ul>
+<p>[%inc display.py pattern=func:parse_args %]</p>
+<hr/>
+<h2>Checking</h2>
+<ul>
+<li>Checking tables against each other<ul>
+<li>Do they have the same keys?</li>
+<li>Do they have the same number of values for each key?</li>
+</ul>
+</li>
+</ul>
+<p>[%inc display.py pattern=func:check %]</p>
+<hr/>
+<h2>Display</h2>
+<p>[% figure
+   slug="plugin-example"
+   img="./COW.svg"
+   caption="Sample distribution at COW site."
+   alt="Geographical map of sample distributions around COW site."
+%]</p>
+<hr/>
+<h2>Handling CSV</h2>
+<ul>
+<li>Plugin to handle CSV is the simplest<ul>
+<li>Read all the files in the directory using Pandas</li>
+</ul>
+</li>
+</ul>
+<p>[%inc plugin_csv.py pattern=func:read_data %]</p>
+<ul>
+<li>Concatenate all the tables</li>
+</ul>
+<p>[%inc util.py pattern=func:combine_with_pandas %]</p>
+<hr/>
+<h2>Handling Databases</h2>
+<ul>
+<li>Pandas can read directly given a SQL query</li>
+<li>The simple query</li>
+</ul>
+<p>[%inc util.py mark=query %]</p>
+<hr/>
+<h2>Handling Databases</h2>
+<ul>
+<li>The code</li>
+</ul>
+<p>[%inc plugin_sql.py pattern=func:read_data %]</p>
+<hr/>
+<h2>Finding Centers</h2>
+<ul>
+<li>The query is more complex, but the code to run it is the same</li>
+</ul>
+<p>[%inc plugin_sql.py mark=query %]</p>
+<hr/>
+<h2>Object-Relational Mapper</h2>
+<ul>
+<li>Use [SQLModel][sqlmodel] [%g orm "object-relational mapper" %] (ORM)<ul>
+<li>Define classes using [%g type_annotation "type annotations" %]</li>
+<li>ORM maps these to database columns</li>
+</ul>
+</li>
+<li>Hard (odd) part is inter-table relationships<ul>
+<li>And making sense of error messages</li>
+</ul>
+</li>
+</ul>
+<p>[%inc plugin_sqlmodel.py pattern=class:Sites %]</p>
+<p>[%inc plugin_sqlmodel.py pattern=class:Surveys %]</p>
+<hr/>
+<h2>Reading With an ORM</h2>
+<ul>
+<li>With this, the <code>read_data</code> function is:</li>
+</ul>
+<p>[%inc plugin_sqlmodel.py pattern=func:read_data %]</p>
+<hr/>
+<h2>Exercises</h2>
+<ol>
+<li>Calculate centers using aggregation in ORM.</li>
+</ol>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

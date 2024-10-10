@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<table>
+  <thead>
+    <tr><th>What</th><th>How Many</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><a href="/staff">Staff:</a></td><td>{{ num_staff }}</td></tr>
+    <tr><td><a href="/experiments">Experiments:</a></td><td>{{ num_experiments }}</td></tr>
+    <tr><td><a href="/plates">Plates:</a></td><td>{{ num_plates }}</td></tr>
+  </tbody>
+</table>
+{% endblock %}

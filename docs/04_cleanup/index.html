@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Cleanup</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>Cleanup</h1>
+<h2>The Problem</h2>
+<ul>
+<li>Refactor and test a program that (kind of) works to create something sturdier</li>
+<li>Program models [%g inv_perc "invasion percolation" %]<ul>
+<li>Grid of random numbers</li>
+<li>Fill the center cell</li>
+<li>Repeatedly:<ul>
+<li>Find the cell adjacent to the filled region with the lowest value</li>
+</ul>
+</li>
+<li>Fill it</li>
+<li>Until we reach the edge</li>
+</ul>
+</li>
+<li>Models spread of pollutant through fractured rock (among other things)</li>
+</ul>
+<hr/>
+<h2>Main Body of Original Script</h2>
+<ul>
+<li>Note: [%g rng_seed "random number seed" %] is optional</li>
+</ul>
+<p>[%inc script.py mark=main %]</p>
+<hr/>
+<h2>The Grid</h2>
+<ul>
+<li>Make a grid as a list of lists<ul>
+<li>Has a docstring</li>
+</ul>
+</li>
+</ul>
+<p>[%inc script.py pattern=func:make_grid %]</p>
+<hr/>
+<h2>Choosing the Next Cell</h2>
+<ul>
+<li>Sweep the whole grid</li>
+</ul>
+<p>[%inc script.py pattern=func:choose_cell %]</p>
+<hr/>
+<h2>Helper Functions</h2>
+<ul>
+<li>Test adjacency</li>
+</ul>
+<p>[%inc script.py pattern=func:adjacent %]</p>
+<hr/>
+<h2>Helper Functions</h2>
+<ul>
+<li>We also need to test if we're on the border</li>
+</ul>
+<p>[%inc script.py pattern=func:on_border %]</p>
+<hr/>
+<h2>Display</h2>
+<ul>
+<li>And finally, show the result</li>
+</ul>
+<p>[%inc script.py pattern=func:print_grid %]</p>
+<hr/>
+<h2>Critique</h2>
+<ul>
+<li>What if we want to change the way the grid is implemented?</li>
+<li>Or the way we search for the next cell to fill?</li>
+<li>Most meaningful measure of the quality of software design is,
+    "How easy is it to make a plausible change?"</li>
+</ul>
+<hr/>
+<h2>A Generic Driver</h2>
+<ul>
+<li>Main function</li>
+</ul>
+<p>[%inc invperc.py pattern=func:main %]</p>
+<hr/>
+<h2>Setting Up</h2>
+<ul>
+<li>Relies on a setup function<ul>
+<li>Can easily replace this in future with something that reads parameters from a file</li>
+</ul>
+</li>
+</ul>
+<p>[%inc invperc.py pattern=func:setup %]</p>
+<hr/>
+<h2>Refactoring</h2>
+<ul>
+<li>We're going to build (at least) two grid classes, so import both here</li>
+</ul>
+<p>[%inc invperc.py mark=import %]</p>
+<ul>
+<li>Initialization relies on the grid's constructor<ul>
+<li>All grids take the same parameters in the same order</li>
+</ul>
+</li>
+</ul>
+<p>[%inc invperc.py pattern=func:initialize_grid %]</p>
+<hr/>
+<h2>Printing</h2>
+<ul>
+<li>Keep printing here<ul>
+<li>Could have grids print themselves</li>
+</ul>
+</li>
+</ul>
+<p>[%inc invperc.py pattern=func:print_grid %]</p>
+<hr/>
+<h2>Generic Grids</h2>
+<ul>
+<li>First grid is an [%g abc "abstract base class" %]<ul>
+<li>Defines common behaviors</li>
+<li>Declaring [%g abstract_method "abstract methods" %]
+    forces derived classes to provide a way to get and set item by location</li>
+</ul>
+</li>
+</ul>
+<p>[%inc grid_generic.py mark=main %]</p>
+<hr/>
+<h2>Other Methods</h2>
+<ul>
+<li>All other operations rely on these abstract methods<ul>
+<li>Including the ones the derived classes have to implement</li>
+</ul>
+</li>
+<li>E.g. filling</li>
+</ul>
+<p>[%inc grid_generic.py pattern="class:GridGeneric meth:fill" %]</p>
+<hr/>
+<h2>Equality</h2>
+<ul>
+<li>Relying on interface allows us to implement equality test
+    between grids with different underlying data representations</li>
+</ul>
+<p>[%inc grid_generic.py pattern="class:GridGeneric meth:<strong>eq</strong>" %]</p>
+<hr/>
+<h2>List-Based Grid</h2>
+<p>[%inc grid_list.py pattern="class:GridList" %]</p>
+<hr/>
+<h2>Array-Based Grid</h2>
+<ul>
+<li>And another that uses a NumPy array</li>
+</ul>
+<p>[%inc grid_array.py pattern="class:GridArray" %]</p>
+<hr/>
+<h2>And Now, Testing</h2>
+<ul>
+<li><code>test_grid_start.py</code> tests that grids can be initialized<ul>
+<li>But we don't know if we're getting the actual values from the grid because they're random</li>
+<li>And repeating the test for different classes is error-prone as well as annoying</li>
+</ul>
+</li>
+</ul>
+<p>[%inc test_grid_start.py pattern=func:test_grid_array_constructed_correctly %]
+[%inc test_grid_start.py pattern=func:test_grid_list_constructed_correctly %]</p>
+<hr/>
+<h2>Injecting What We Need</h2>
+<ul>
+<li>Create a new class <code>GridListRandomizer</code> that takes a number generator as a constructor parameter<ul>
+<li>Generate a grid filled with known values for testing</li>
+</ul>
+</li>
+</ul>
+<p>[%inc grid_list_randomizer.py pattern="class:GridListRandomizer meth:<strong>init</strong>" %]</p>
+<hr/>
+<h2>Test Using Injection</h2>
+<ul>
+<li>Test looks better</li>
+</ul>
+<p>[%inc test_grid_randomizer.py pattern="func:test_grid_list_with_randomizer_function" %]</p>
+<ul>
+<li>But we're no longer testing our actual grid class<ul>
+<li>Could add extra arguments for all sorts of things to all our classes, but that's a lot of work</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2>Better Tools: Mock Objects</h2>
+<ul>
+<li><code>test_grid_mock.py</code> replaces the random number generator with a [%g mock_object "mock object" %]
+    without modifying the grid class</li>
+</ul>
+<p>[%inc test_grid_mock.py pattern="func:test_grid_list_patching_randomization" %]</p>
+<hr/>
+<h2>Better Tools: Parameterized Tests</h2>
+<ul>
+<li><code>test_grid_parametrize.py</code> [%g parameterize_test "parameterizes" %] the test across both classes</li>
+</ul>
+<p>[%inc test_grid_parametrize.py pattern="func:test_grid_list_parameterizing_classes" %]</p>
+<hr/>
+<h2>A Testable Grid</h2>
+<ul>
+<li><code>grid_filled.py</code> defines <code>GridFilled</code>, which we can populate with whatever data we want</li>
+</ul>
+<p>[%inc grid_filled.py pattern="class:GridFilled meth:<strong>init</strong>" %]</p>
+<hr/>
+<h2>Using the Testable Grid</h2>
+<ul>
+<li><code>test_grid_filled.py</code> starts by testing that filling from specified works correctly</li>
+</ul>
+<p>[%inc test_grid_filled.py pattern="func:test_explicit_filling_fills_correctly" %]</p>
+<ul>
+<li>Add test for filling grid by creating deterministic filling path</li>
+</ul>
+<p>[%inc test_grid_filled.py pattern="func:test_filling_with_straight_run_to_edge" %]</p>
+<hr/>
+<h2>Oops</h2>
+<ul>
+<li>But suddenly realize: what happens when several fillable cells have the same value?<ul>
+<li><code>fill_grid</code> always chooses the first one it encounters in this case</li>
+<li>So filling has a bias toward the (0,0) corner of the grid</li>
+</ul>
+</li>
+<li>[%x perf %] will tackle this problem</li>
+<li>But first, let's see how fast our code is…</li>
+</ul>
+<hr/>
+<h2>Exercises</h2>
+<ol>
+<li>Refactor grid classes so that we have a patchable method for filling initial values.</li>
+</ol>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

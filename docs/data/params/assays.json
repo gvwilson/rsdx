@@ -1,0 +1,14 @@
+{
+    "startdate": "2023-11-01",
+    "enddate": "2023-11-10",
+    "locale": "en_IN",
+    "experiments": 50,
+    "invalid": 0.1,
+    "staff": 7,
+    "control": 5.0,
+    "treated": 8.0,
+    "seed": 21894712,
+    "stdev": 1.5,
+    "treatment": "CQZ-1718",
+    "controls": ["", "CQA-986", "CQA-940"]
+}

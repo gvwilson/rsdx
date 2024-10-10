@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Performance</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>Performance</h1>
+<h2>The Problem</h2>
+<ul>
+<li>Speed doesn't always matter, but when it does, it really does</li>
+<li>There are widely-useful techniques for improving performance (e.g., spending memory to save time)</li>
+<li><em>We can and should tackle this experimentally</em><ul>
+<li>If "software engineering" means anything, it ought to mean this</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2>Reproducibility</h2>
+<ul>
+<li>Use <code>dataclasses</code> module to create a <code>Params</code> class in <code>params_single.py</code><ul>
+<li>Could use a dictionary or similar instead</li>
+<li>But this is a step toward something larger</li>
+</ul>
+</li>
+<li>Can now save parameters in version control</li>
+</ul>
+<p>[%inc params_single.py pattern=class:ParamsSingle %]</p>
+<hr/>
+<h2>Saving Prameters</h2>
+<ul>
+<li>Load parameters from JSON file<ul>
+<li>Could easily use YAML instead</li>
+<li>[%g spread "Spread" %] values into dataclass constructor</li>
+</ul>
+</li>
+</ul>
+<p>[%inc invperc_util.py pattern=func:get_params %]</p>
+<hr/>
+<h2>Using Parameters</h2>
+<ul>
+<li>Modify code in <code>invperc_single.py</code> to use these parameters</li>
+</ul>
+<p>[%inc invperc_single.py pattern=func:main %]</p>
+<ul>
+<li>Would be nice if there was a standard way to embed parameters in the plot itself</li>
+</ul>
+<hr/>
+<h2>Performance</h2>
+<ul>
+<li>Application's performance usually depends on what exactly it's doing<ul>
+<li>So we [%g parameter_sweeping "sweep" %] the range of parameters to see how performance changes</li>
+</ul>
+</li>
+<li>Create another dataclass to store multiple values for interesting parameters</li>
+</ul>
+<p>[%inc params_sweep.py pattern=class:ParamsSweep %]</p>
+<hr/>
+<h2>Sweeping Parameter Ranges</h2>
+<ul>
+<li>Next, rewrite <code>main</code> to try each combination of parameter values</li>
+</ul>
+<p>[%inc invperc_sweep.py pattern=func:main %]</p>
+<hr/>
+<h2>Generators</h2>
+<ul>
+<li>Could generate a list of parameter combinations</li>
+<li>Instead, use a [%g generator "generator" %] to produce one at a time</li>
+</ul>
+<p>[%inc invperc_sweep.py pattern=func:generate_sweep %]</p>
+<hr/>
+<h2>Results</h2>
+<ul>
+<li>Save results as CSV and plot</li>
+</ul>
+<p>[% figure
+   slug="perf_example"
+   img="./k+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg"
+   caption="Running times for various depths and sizes."
+   alt="Line graph showing that running time increases quadratically with grid size."
+%]</p>
+<hr/>
+<h2>That's a Surprise</h2>
+<ul>
+<li>NumPy array is <em>worse</em> than list-of-lists<ul>
+<li>We're constantly [%g boxing "boxing" %] and [%g unboxing "unboxing" %] values</li>
+</ul>
+</li>
+<li>More important: runtime is growing faster than linear<ul>
+<li>Which makes sense: we are searching \( N^2 \) cells each time we fill one</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2>Profiling</h2>
+<ul>
+<li>A [%g profiler "profiler" %] records how much time is spent on each line of code<ul>
+<li>Either by instrumenting it</li>
+<li>Or by sampling location periodically</li>
+</ul>
+</li>
+<li>Use Python's [<code>cProfile</code>][profile] module</li>
+</ul>
+<p>[%inc run_profile_list.py mark="main" %]</p>
+<hr/>
+<h2>Where the Time Goes</h2>
+<p>[%inc profile_list_head.txt %]</p>
+<ul>
+<li>We are spending most of our time in adjacency tests<ul>
+<li>Most of which are re-checking things we knew before</li>
+</ul>
+</li>
+<li>If we want to make our program faster, this is what we need to fix</li>
+</ul>
+<hr/>
+<h2>Better is Possible</h2>
+<ul>
+<li>Start with the punchline and work backward</li>
+</ul>
+<p>[% figure
+   slug="perf_lazy"
+   img="./k+lazy+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg"
+   caption="Running times for various depths and sizes."
+   alt="Line graph showing that the lazy algorithm's performance is nearly flat."
+%]</p>
+<hr/>
+<h2>Lazy Evaluation</h2>
+<ul>
+<li>We have been searching the entire grid to find the next cell to fill<ul>
+<li>But we only need to look on the border</li>
+<li>And we can keep track of where the border is</li>
+</ul>
+</li>
+<li>Keep a dictionary called <code>candidates</code><ul>
+<li>Key: a value in the grid</li>
+<li>Values: coordinates of cells on the border that have that value</li>
+</ul>
+</li>
+<li>On each step:<ul>
+<li>Find the lowest key</li>
+<li>Choose and fill one of its cells at random (to solve the bias problem of [%x cleanup %])</li>
+<li>Add its unfilled neighbors to <code>candidates</code></li>
+</ul>
+</li>
+<li>Trading space for time<ul>
+<li>Storing cell values and coordinates is redundant</li>
+<li>But filling a cell now takes constant time regardless of grid size</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2>A Lazy Grid</h2>
+<ul>
+<li><code>GridLazy</code> constructor</li>
+</ul>
+<p>[%inc grid_lazy.py pattern="class:GridLazy meth:<strong>init</strong>" %]</p>
+<hr/>
+<h2>Lazy Filling</h2>
+<ul>
+<li>Filling algorithm overrides inherited method<ul>
+<li>Fill the center cell</li>
+<li>Add its neighbors as candidates</li>
+<li>Repeatedly choose a cell to fill (stopping if we've reached the boundary)</li>
+</ul>
+</li>
+</ul>
+<p>[%inc grid_lazy.py pattern="class:GridLazy meth:fill" %]</p>
+<hr/>
+<h2>Adding Candidates</h2>
+<p>[%inc grid_lazy.py pattern="class:GridLazy meth:add_candidates" %]
+[%inc grid_lazy.py pattern="class:GridLazy meth:add_one_candidate" %]</p>
+<hr/>
+<h2>Choosing a Cell</h2>
+<p>[%inc grid_lazy.py pattern="class:GridLazy meth:choose_cell" %]</p>
+<hr/>
+<h2>It's Faster</h2>
+<ul>
+<li>Sweep the same parameter ranges as before</li>
+<li>Performance is much better<ul>
+<li>Searching an \( N{\times}N \) grid is \( N^2 \) operations</li>
+<li>Fill about \( N^{1.5} \) cells (it's a fractal)</li>
+<li>So running time of the naïve approach is proportional to \( N^{3.5} \)</li>
+<li>Which a computer scientist would write \( \mathcal{O}(N^{3.5}) \)</li>
+<li>Running time of lazy approach is just \( \mathcal{O}(N^{1.5}) \)</li>
+</ul>
+</li>
+<li>So it is <em>fundamentally</em> faster</li>
+</ul>
+<hr/>
+<h2 id="lazy-exercises">Exercises</h2>
+<ol>
+<li>
+<p>[%fixme "add exercises for performance profiling" %]</p>
+</li>
+<li>
+<p>Modify the list and array implementation to collect candidate cells of equal lowest value
+    and select one of those.</p>
+</li>
+<li>
+<p>Does it make sense to pre-populate <code>candidates</code> by adding <em>all</em> cells in the grid
+    at the start of the program?
+    Why or why not?</p>
+</li>
+<li>
+<p>[%fixme "test lazy approach with randomnmess" %]</p>
+</li>
+</ol>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

@@ -1,28 +1,4 @@
----
-template: slides
-title: "Cleanup"
-tagline: "Refactor and test a script that models the spread of pollution."
-abstract: >
-    Computational notebooks are great for exploratory work,
-    but research software engineers must also be able to create
-    software libraries that can be re-mixed and re-used.
-    This lesson therefore refactors a script
-    that uses invasion percolation to simulate to model the spread of pollution
-    and introduces several tools that can make testing research software easier,
-    including the use of mock objects to make randomness less random
-    and the use of coverage tools to determine
-    what is and isn't being tested.
-syllabus:
--   Break code into comprehensible chunks.
--   Create classes and class hierarchies.
--   Write docstrings and generating documentation pages.
--   Validate implementations against one another.
--   A quick review of pytest.
--   Deciding what tests to write.
--   Creating and using mock objects.
--   Making "random" reproducible.
--   Using coverage to determine what is and isn't being tested.
----
+# Cleanup
 
 ## The Problem
 

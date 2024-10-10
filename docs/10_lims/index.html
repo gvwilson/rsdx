@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>A Laboratory Information Management System</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>A Laboratory Information Management System</h1>
+<ul>
+<li>[%g relational_db "Relational database" %] stores data in tables<ul>
+<li>Usually access with SQL or some variant of it</li>
+</ul>
+</li>
+<li>But there are also [%g document_db "document databases" %]<ul>
+<li>Sometimes called [%g nosql "NoSQL" %] databases</li>
+</ul>
+</li>
+<li>We will build a (very) simple [%g lims "laboratory information management systems" %] (LIMS)
+    using [TinyDB][tinydb]</li>
+<li>And use [click][click] to build the command-line interface</li>
+</ul>
+<h2 id="lims-perms">Roles and Permissions</h2>
+<ul>
+<li>A user has a [%g uid "UID" %], a personal name, and a family name</li>
+<li>A [%g permission "permission" %] is the right to perform some action<ul>
+<li>Could give permissions directly to users…</li>
+<li>…but experience shows that this becomes unmanageable</li>
+</ul>
+</li>
+<li>Instead, create [%g role "roles" %] that are named collections of permissions and assign roles to users
+    ([%t lims_perms %])</li>
+</ul>
+<p>[%table slug="lims_perms" tbl="lims_perms.tbl" caption="Permissions in LIMS" %]</p>
+<ul>
+<li>Copy data from table of personal and family names</li>
+<li>First person becomes an admin, second an intern, everyone else a scientist</li>
+<li>Main driver:</li>
+</ul>
+<p>[%inc create_db.py pattern=func:main %]</p>
+<ul>
+<li>Get people from SQL table using a row factory</li>
+</ul>
+<p>[%inc create_db.py pattern=func:get_people %]</p>
+<ul>
+<li>Create capabilities in TinyDB</li>
+</ul>
+<p>[%inc create_db.py mark=capabilities %]
+[%inc create_db.py pattern=func:create_capabilities %]</p>
+<ul>
+<li>Resulting JSON<ul>
+<li>Yes, this is really just a rectangular table stored as JSON</li>
+</ul>
+</li>
+</ul>
+<p>[%inc capabilities.json %]</p>
+<ul>
+<li>Similar to create people and roles, e.g.:</li>
+</ul>
+<p>[%inc person.json %]</p>
+<h2 id="lims-actions">Actions</h2>
+<ul>
+<li>Create a dataclass to represent assay data</li>
+</ul>
+<p>[%inc assay_params.py pattern=class:Params %]
+[%inc assay_params.py pattern=func:load_params %]</p>
+<ul>
+<li>Then create a group of commands with click</li>
+</ul>
+<p>[%inc lims.py pattern=func:cli %]</p>
+<ul>
+<li>Now define a command to upload</li>
+</ul>
+<p>[%inc lims.py pattern=func:upload %]</p>
+<ul>
+<li>That's a lot of decorators…</li>
+<li>Each <code>@click.option</code> defines a flag for the <code>upload</code> command</li>
+<li>Run like this</li>
+</ul>
+<p>[%inc upload.sh %]</p>
+<ul>
+<li>Top half of <code>upload</code> loads data and checks for errors<ul>
+<li>Discuss below</li>
+</ul>
+</li>
+<li>Bottom half interacts with database</li>
+<li>Make sure the user exists</li>
+</ul>
+<p>[%inc lims.py pattern=func:_require_exists %]</p>
+<ul>
+<li>Get the user's capabilities</li>
+</ul>
+<p>[%inc lims.py pattern=func:_get_capability %]</p>
+<ul>
+<li>Check that the user has the required capability</li>
+</ul>
+<p>[%inc lims.py pattern=func:_require_cap %]</p>
+<ul>
+<li><em>Then</em> upload the data</li>
+</ul>
+<p>[%inc lims.py pattern=func:_upload_data %]</p>
+<h2 class="lims-lint">Linting</h2>
+<ul>
+<li>Take a closer look at error checking</li>
+<li>First, get the data as a dataframe</li>
+</ul>
+<p>[%inc lint.py pattern=func:load_file %]</p>
+<ul>
+<li>Next, build framework for checks</li>
+</ul>
+<p>[%inc lint.py pattern=func:lint_assay %]
+[%inc lint.py pattern=func:lint_design %]
+[%inc lint.py pattern=func:lint_single_file %]</p>
+<ul>
+<li>Now define functions that do checks<ul>
+<li>Will be picked up automatically</li>
+</ul>
+</li>
+</ul>
+<p>[%inc lint.py pattern=func:_lint_assay_data_shape %]
+[%inc lint.py pattern=func:_lint_assay_machine_header %]</p>
+<h2 class="lims-eval">Evaluation</h2>
+<ul>
+<li>What makes this different from "commit data to version control"<ol>
+<li>Checking the data on the way in</li>
+<li>Checking that people are authorized to add, view, or update data</li>
+</ol>
+</li>
+<li>Is it worth it?<ul>
+<li>For a single person managing a small set of files: no</li>
+<li>For multiple people with many files: absolutely</li>
+</ul>
+</li>
+</ul>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

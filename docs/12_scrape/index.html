@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Scraping Web Data</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>Scraping Web Data</h1>
+<h2 id="scrape-dom">Documents as Data</h2>
+<ul>
+<li>Parse an HTML page using [Beautiful Soup][bs4]</li>
+<li>Result is a tree called [%g dom "DOM" %] (Document Object Model)<ul>
+<li>Nodes are HTML elements or text</li>
+<li>Node attributes are properties of objects</li>
+</ul>
+</li>
+<li>Read a page and visit its nodes</li>
+</ul>
+<p>[%inc parse_page.py pattern=func:main %]</p>
+<ul>
+<li>The [%g visitor "Visitor" %] function handles different types of nodes<ul>
+<li>If the node is <code>NavigableString</code>, show the text (unless it would be blank and we've been asked not to)</li>
+<li>If it's a <code>Tag</code>, show name and attributes</li>
+</ul>
+</li>
+</ul>
+<p>[%inc parse_page.py pattern=func:visit %]</p>
+<ul>
+<li>Test on a small page</li>
+</ul>
+<p>[%inc small.html %]
+[%inc small.sh %]
+[%inc small.out %]</p>
+<ul>
+<li>Try a larger page but don't show text that is just whitespace (newlines and indentation)</li>
+</ul>
+<p>[%inc medium.html %]
+[%inc medium.sh %]
+[%inc medium.out %]</p>
+<h2 id="scrape-fetch">Fetching</h2>
+<ul>
+<li>Here's the part we already know</li>
+</ul>
+<p>[%inc scrape.py pattern=func:main %]</p>
+<ul>
+<li>Here's the part we don't</li>
+</ul>
+<p>[%inc scrape.py pattern=func:get_page %]</p>
+<ul>
+<li>Use the [requests][requests] library to fetch a page at a URL</li>
+<li><code>response</code> object has many useful properties<ul>
+<li><code>response.text</code> is the result as characters</li>
+<li><code>response.json()</code> (method call) would turn JSON-as-text into JSON-as-objects</li>
+</ul>
+</li>
+<li>And then we pull out information using Beautiful Soup</li>
+</ul>
+<p>[%inc scrape.py pattern=func:get_info %]</p>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

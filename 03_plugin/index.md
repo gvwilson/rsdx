@@ -1,26 +1,4 @@
----
-template: slides
-title: "Plugin Architecture"
-tagline: "Find the center point of each polluted region and visualize it."
-abstract: >
-    Research data may come from files, databases, websites, and many other sources.
-    Instead of rewriting a program each time a new source becomes available,
-    we can build a plugin architecture that loads data handlers dynamically
-    so that users can extend our program without modifying its internals.
-    Doing this gives us an opportunity to look at how to query a SQL database
-    and at the problem of testing visualizations.
-syllabus:
--   Using a plugin architecture to load modules dynamically.
--   Finding, installing, and figuring out how to use open source packages.
--   Use geopy to handle geocoded data.
--   Plotting (and the challenge of testing visualization code).
--   Connecting to a database from Python.
--   Embedding SQL queries in Python and reading results.
--   Creating classes with SQLModel ORM to mirror database tables.
--   Writing queries in Python rather than as embedded SQL strings.
--   Cross-validating implementations.
--   Big benefit of ORM is avoiding transposition errors with integer values.
----
+# A Plugin Architecture
 
 ## The Problem
 

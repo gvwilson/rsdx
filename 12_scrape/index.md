@@ -1,20 +1,4 @@
----
-title: "Scrape Web Data"
-tagline: "Pull data from web pages using requests and Beautiful Soup."
-abstract: >
-    Some researchers make their data easy to access and use,
-    but in many other cases,
-    the only way to get information is to scrape it off the web.
-    This lesson therefore explains how the web's basic protocols work,
-    how web pages are represented inside programs,
-    and how to build a tool that can extract information from someone else's HTML.
-syllabus:
--   How HTTP requests work.
--   Using requests to fetch web pages.
--   How HTML is represented as DOM.
--   Using Beautiful Soup to parse HTML.
--   Using query selectors to find elements in DOM.
----
+# Scraping Web Data
 
 ## Documents as Data {: #scrape-dom}
 

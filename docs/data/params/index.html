@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>{{data.title}}</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>{{data.title}}</h1>
+    <ul>
+      {% for person in data.staff.values() %}
+      <li><a href="{{person.page}}">{{person.personal}} {{person.family}}</a></li>
+      {% endfor %}
+    </ul>
+    <footer>
+      <p>
+	{{data.copyright}} {{data.title}}
+      </p>
+    </footer>
+  </body>
+</html>

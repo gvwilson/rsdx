@@ -1,0 +1,7 @@
+{
+    "kind": ["lazy", "list", "array"],
+    "size": [35, 55],
+    "depth": [2, 10],
+    "runs": 2,
+    "seed": 1728394
+}

@@ -1,16 +1,4 @@
----
-template: slides
-title: "Scale Up"
-tagline: "Generate fractals using a workflow runner."
-abstract: >
-    Once we have an algorithm that's worth scaling up,
-    we need to actually scale it up.
-    This lesson shows how to describe a workflow as an acyclic graph,
-    how to express that workflow in code to take advantage of cloud computing.
-syllabus:
--   Describing workflows as directed acyclic graphs.
--   Expressing DAGs in code with Metaflow.
----
+# Scaling Up
 
 ## The Problem
 
