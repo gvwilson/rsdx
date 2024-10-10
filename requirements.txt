@@ -1,4 +1,3 @@
--r lib/mccole/requirements.txt
 build
 click
 coverage
@@ -7,6 +6,7 @@ faker
 flask
 geopy
 kaleido
+mccole
 metaflow
 numpy
 pandas
