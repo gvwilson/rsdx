@@ -29,23 +29,27 @@
 <ul>
 <li>Research data may come from files, databases, websites, and many other sources</li>
 <li>Instead of adding code to a program to handle each one,
-    use a [%g plugin_architecture "plugin architecture" %]
+    use a <a href="../glossary.html#plugin_architecture">plugin</a>hitecture" %]
     to load data handlers dynamically</li>
 <li>Lets users extend the program without modifying its internals</li>
 <li>Work backward from configuration file that defines plugin type and its parameters</li>
 </ul>
-<p>[%inc plugins.json %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">{
+    "csv": "../../data/survey_tidy",
+    "pandas": "../../data/survey.db",
+    "sql": "../../data/survey.db",
+    "sqlmodel": "../../data/survey.db"
+}
+</code></pre>
 <hr/>
 <h2>Our Data</h2>
-<p>[% figure
-   slug="plugin_table_structure"
-   img="table_structure.svg"
-   alt="Structure of survey tables"
-   caption="Survey table structure"
-%]</p>
+<figure id="plugin_table_structure">
+<img alt="Structure of survey tables" src="table_structure.svg"/>
+<figcaption>Survey table structure</figcaption>
+</figure>
 <ul>
-<li>Each <em>site</em> has a [%g primary_key "primary key" %] and longitude/latitude</li>
-<li>Each <em>survey</em> has a primary key, a site identifier ([%g foreign_key "foreign key" %]) and a date</li>
+<li>Each <em>site</em> has a <a href="../glossary.html#primary_key">primary</a>" %] and longitude/latitude</li>
+<li>Each <em>survey</em> has a primary key, a site identifier (<a href="../glossary.html#foreign_key">foreign</a>" %]) and a date</li>
 <li>Each sample has a site ID foreign key, longitude/latitude, and a reading</li>
 </ul>
 <hr/>
@@ -54,14 +58,25 @@
 <li>Write <code>main</code><ul>
 <li>If the file type is X, load <code>plugin_X</code> as a module</li>
 <li>Then call the <code>read_data</code> function in that module</li>
-<li>A [%g contract "contract" %] between the program and its plugins</li>
+<li>A <a href="../glossary.html#contract">contract</a> between the program and its plugins</li>
 </ul>
 </li>
 </ul>
-<p>[%inc display.py pattern=func:main %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def main():
+    """Main driver."""
+    args = parse_args()
+    config = json.loads(Path(args.plugins).read_text())
+    tables = {}
+    for plugin_stem, plugin_param in config.items():
+        module = importlib.import_module(f"plugin_{plugin_stem}")
+        tables[plugin_stem] = module.read_data(plugin_param)
+    check(tables)
+    _, values = tables.popitem()
+    make_figures(args, values["combined"], values["centers"])
+</code></pre>
 <ul>
 <li>Result from each <code>read_data</code> is a list of tables<ul>
-<li>Load all available examples to [%g cross_validation "cross validate" %]</li>
+<li>Load all available examples to <a href="../glossary.html#cross_validation">cross</a>idate" %]</li>
 </ul>
 </li>
 </ul>
@@ -70,7 +85,13 @@
 <ul>
 <li>Parsing command-line arguments is simple</li>
 </ul>
-<p>[%inc display.py pattern=func:parse_args %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def parse_args():
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--figdir", type=str, help="output dir")
+    parser.add_argument("--plugins", type=str, required=True, help="config")
+    return parser.parse_args()
+</code></pre>
 <hr/>
 <h2>Checking</h2>
 <ul>
@@ -80,15 +101,26 @@
 </ul>
 </li>
 </ul>
-<p>[%inc display.py pattern=func:check %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def check(tables):
+    """Check all tables against each other."""
+    ref_key = None
+    for key in tables:
+        if ref_key is None:
+            ref_key = key
+            continue
+        if set(tables[ref_key].keys()) != set(tables[key].keys()):
+            print(f"mis-match in provided tables {ref_key} != {key}")
+        else:
+            for sub_key in tables[ref_key]:
+                if len(tables[ref_key][sub_key]) != len(tables[key][sub_key]):
+                    print(f"mis-match in {sub_key}: {ref_key} != {key}")
+</code></pre>
 <hr/>
 <h2>Display</h2>
-<p>[% figure
-   slug="plugin-example"
-   img="./COW.svg"
-   caption="Sample distribution at COW site."
-   alt="Geographical map of sample distributions around COW site."
-%]</p>
+<figure id="plugin-example">
+<img alt="Geographical map of sample distributions around COW site." src="./COW.svg"/>
+<figcaption>Sample distribution at COW site.</figcaption>
+</figure>
 <hr/>
 <h2>Handling CSV</h2>
 <ul>
@@ -97,35 +129,70 @@
 </ul>
 </li>
 </ul>
-<p>[%inc plugin_csv.py pattern=func:read_data %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def read_data(csvdir):
+    """Read CSV files directly into dataframes."""
+    raw = [pd.read_csv(filename) for filename in Path(csvdir).glob("*.csv")]
+    return util.combine_with_pandas(*raw)
+</code></pre>
 <ul>
 <li>Concatenate all the tables</li>
 </ul>
-<p>[%inc util.py pattern=func:combine_with_pandas %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def combine_with_pandas(*tables):
+    """Combine tables using Pandas."""
+    combined = pd.concat(tables)
+    centers = centers_with_pandas(combined)
+    return {"combined": combined, "centers": centers}
+</code></pre>
 <hr/>
 <h2>Handling Databases</h2>
 <ul>
 <li>Pandas can read directly given a SQL query</li>
 <li>The simple query</li>
 </ul>
-<p>[%inc util.py mark=query %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md"># Query to select all samples from database in normalized form.
+Q_SAMPLES = """
+select
+    surveys.site,
+    samples.lon,
+    samples.lat,
+    samples.reading
+from surveys join samples
+on surveys.label = samples.label
+"""
+</code></pre>
 <hr/>
 <h2>Handling Databases</h2>
 <ul>
 <li>The code</li>
 </ul>
-<p>[%inc plugin_sql.py pattern=func:read_data %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def read_data(dbfile):
+    """Read tables and do calculations directly in SQL."""
+    con = sqlite3.connect(dbfile)
+    return {
+        "combined": pd.read_sql(util.Q_SAMPLES, con),
+        "centers": pd.read_sql(Q_CENTERS, con),
+    }
+</code></pre>
 <hr/>
 <h2>Finding Centers</h2>
 <ul>
 <li>The query is more complex, but the code to run it is the same</li>
 </ul>
-<p>[%inc plugin_sql.py mark=query %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">Q_CENTERS = """
+select
+    surveys.site,
+    sum(samples.lon * samples.reading) / sum(samples.reading) as lon,
+    sum(samples.lat * samples.reading) / sum(samples.reading) as lat
+from surveys join samples
+on surveys.label = samples.label
+group by surveys.site
+"""
+</code></pre>
 <hr/>
 <h2>Object-Relational Mapper</h2>
 <ul>
-<li>Use [SQLModel][sqlmodel] [%g orm "object-relational mapper" %] (ORM)<ul>
-<li>Define classes using [%g type_annotation "type annotations" %]</li>
+<li>Use [SQLModel][sqlmodel] <a href="../glossary.html#orm">object</a>ational mapper" %] (ORM)<ul>
+<li>Define classes using <a href="../glossary.html#type_annotation">type</a>otations" %]</li>
 <li>ORM maps these to database columns</li>
 </ul>
 </li>
@@ -134,14 +201,47 @@
 </ul>
 </li>
 </ul>
-<p>[%inc plugin_sqlmodel.py pattern=class:Sites %]</p>
-<p>[%inc plugin_sqlmodel.py pattern=class:Surveys %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">class Sites(SQLModel, table=True):
+    """Survey sites."""
+
+    site: str | None = Field(default=None, primary_key=True)
+    lon: float
+    lat: float
+    surveys: list["Surveys"] = Relationship(back_populates="site_id")
+</code></pre>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">class Surveys(SQLModel, table=True):
+    """Surveys done."""
+
+    label: int | None = Field(default=None, primary_key=True)
+    date: date_type
+    site: str | None = Field(default=None, foreign_key="sites.site")
+    site_id: Sites | None = Relationship(back_populates="surveys")
+    samples: list["Samples"] = Relationship(back_populates="label_id")
+</code></pre>
 <hr/>
 <h2>Reading With an ORM</h2>
 <ul>
 <li>With this, the <code>read_data</code> function is:</li>
 </ul>
-<p>[%inc plugin_sqlmodel.py pattern=func:read_data %]</p>
+<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def read_data(dbfile):
+    """Read database and do calculations with SQLModel ORM."""
+    url = f"sqlite:///{dbfile}"
+    engine = create_engine(url)
+    SQLModel.metadata.create_all(engine)
+    with Session(engine) as session:
+        combined = list(
+            (s.label_id.site, s.lon, s.lat, s.reading)
+            for s in session.exec(select(Samples))
+        )
+        combined = pd.DataFrame(
+            combined,
+            columns=["site", "lon", "lat", "reading"]
+        )
+        return {
+            "combined": combined,
+            "centers": util.centers_with_pandas(combined)
+        }
+</code></pre>
 <hr/>
 <h2>Exercises</h2>
 <ol>

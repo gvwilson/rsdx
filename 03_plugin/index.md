@@ -4,7 +4,7 @@
 
 -   Research data may come from files, databases, websites, and many other sources
 -   Instead of adding code to a program to handle each one,
-    use a [%g plugin_architecture "plugin architecture" %]
+    use a [plugin](g:plugin_architecture)hitecture" %]
     to load data handlers dynamically
 -   Lets users extend the program without modifying its internals
 -   Work backward from configuration file that defines plugin type and its parameters
@@ -16,14 +16,14 @@
 ## Our Data
 
 [% figure
-   slug="plugin_table_structure"
-   img="table_structure.svg"
+   id="plugin_table_structure"
+   src="table_structure.svg"
    alt="Structure of survey tables"
    caption="Survey table structure"
 %]
 
--   Each *site* has a [%g primary_key "primary key" %] and longitude/latitude
--   Each *survey* has a primary key, a site identifier ([%g foreign_key "foreign key" %]) and a date
+-   Each *site* has a [primary](g:primary_key)" %] and longitude/latitude
+-   Each *survey* has a primary key, a site identifier ([foreign](g:foreign_key)" %]) and a date
 -   Each sample has a site ID foreign key, longitude/latitude, and a reading
 
 ---
@@ -33,12 +33,12 @@
 -   Write `main`
     -   If the file type is X, load `plugin_X` as a module
     -   Then call the `read_data` function in that module
-    -   A [%g contract "contract" %] between the program and its plugins
+    -   A [contract](g:contract) between the program and its plugins
 
-[%inc display.py pattern=func:main %]
+[%inc display.py keep=main %]
 
 -   Result from each `read_data` is a list of tables
-    -   Load all available examples to [%g cross_validation "cross validate" %]
+    -   Load all available examples to [cross](g:cross_validation)idate" %]
 
 ---
 
@@ -46,7 +46,7 @@
 
 -   Parsing command-line arguments is simple
 
-[%inc display.py pattern=func:parse_args %]
+[%inc display.py keep=parse_args %]
 
 ---
 
@@ -56,15 +56,15 @@
     -   Do they have the same keys?
     -   Do they have the same number of values for each key?
 
-[%inc display.py pattern=func:check %]
+[%inc display.py keep=check %]
 
 ---
 
 ## Display
 
 [% figure
-   slug="plugin-example"
-   img="./COW.svg"
+   id="plugin-example"
+   src="./COW.svg"
    caption="Sample distribution at COW site."
    alt="Geographical map of sample distributions around COW site."
 %]
@@ -76,11 +76,11 @@
 -   Plugin to handle CSV is the simplest
     -   Read all the files in the directory using Pandas
 
-[%inc plugin_csv.py pattern=func:read_data %]
+[%inc plugin_csv.py keep=read_data %]
 
 -   Concatenate all the tables
 
-[%inc util.py pattern=func:combine_with_pandas %]
+[%inc util.py keep=combine_with_pandas %]
 
 ---
 
@@ -89,7 +89,7 @@
 -   Pandas can read directly given a SQL query
 -   The simple query
 
-[%inc util.py mark=query %]
+[%inc util.py keep=query %]
 
 ---
 
@@ -97,7 +97,7 @@
 
 -   The code
 
-[%inc plugin_sql.py pattern=func:read_data %]
+[%inc plugin_sql.py keep=read_data %]
 
 ---
 
@@ -105,21 +105,21 @@
 
 -   The query is more complex, but the code to run it is the same
 
-[%inc plugin_sql.py mark=query %]
+[%inc plugin_sql.py keep=query %]
 
 ---
 
 ## Object-Relational Mapper
 
--   Use [SQLModel][sqlmodel] [%g orm "object-relational mapper" %] (ORM)
-    -   Define classes using [%g type_annotation "type annotations" %]
+-   Use [SQLModel][sqlmodel] [object](g:orm)ational mapper" %] (ORM)
+    -   Define classes using [type](g:type_annotation)otations" %]
     -   ORM maps these to database columns
 -   Hard (odd) part is inter-table relationships
     -   And making sense of error messages
 
-[%inc plugin_sqlmodel.py pattern=class:Sites %]
+[%inc plugin_sqlmodel.py keep=sites %]
 
-[%inc plugin_sqlmodel.py pattern=class:Surveys %]
+[%inc plugin_sqlmodel.py keep=surveys %]
 
 ---
 
@@ -127,7 +127,7 @@
 
 -   With this, the `read_data` function is:
 
-[%inc plugin_sqlmodel.py pattern=func:read_data %]
+[%inc plugin_sqlmodel.py keep=read_data %]
 
 ---
 

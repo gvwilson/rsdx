@@ -7,6 +7,7 @@ import sys
 import pandas as pd
 
 
+# [state]
 class State(Enum):
     """Enumerate possible parser states."""
 
@@ -14,8 +15,10 @@ class State(Enum):
     SEARCHING = "searching"
     BODY = "body"
     DONE = "done"
+# [/state]
 
 
+# [main]
 def main():
     """Main driver."""
     args = parse_args()
@@ -31,6 +34,7 @@ def main():
             df.to_csv(writer, index=False)
     else:
         df.to_csv(sys.stdout, index=False)
+# [/main]
 
 
 def is_empty(row):
@@ -45,6 +49,7 @@ def is_start_of_body(row):
     )
 
 
+# [load]
 def load(reader):
     """Load messy data."""
     lines = [row for row in csv.reader(reader)]
@@ -52,23 +57,29 @@ def load(reader):
     titles, data = normalize(body)
     assert titles[0] == "site"
     return pd.DataFrame(data, columns=titles)
+# [/load]
 
 
+# [normalize]
 def normalize(rows):
     """Remove leading spaces from rows if necessary."""
     if rows[0][0] == "":
         rows = [r[1:] for r in rows]
     return [r.lower() for r in rows[0]], rows[1:]
+# [/normalize]
 
 
+# [parse_args]
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--infile", type=str, default=None, help="input")
     parser.add_argument("--outfile", type=str, default=None, help="output")
     return parser.parse_args()
+# [/parse_args]
 
 
+# [split]
 def split(rows):
     """Split header from body."""
     header, body, state = [], [], State.HEADER
@@ -97,6 +108,7 @@ def split(rows):
             assert state == State.DONE
 
     return header, body
+# [/split]
 
 
 if __name__ == "__main__":

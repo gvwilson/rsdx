@@ -27,6 +27,7 @@ class GenePool:
     susceptible_base: str = ""
 
 
+# [main]
 def main():
     """Main driver."""
     args = parse_args()
@@ -39,6 +40,7 @@ def main():
     )
     add_susceptibility(genomes)
     save(args.outfile, genomes)
+# [/main]
 
 
 def add_susceptibility(genomes):
@@ -75,12 +77,15 @@ def parse_args():
     return args
 
 
+# [random_bases]
 def random_bases(length):
     """Generate a random sequence of bases of the specified length."""
     assert 0 < length
     return "".join(random.choices(DNA, k=length))
+# [/random_bases]
 
 
+# [random_genomes]
 def random_genomes(length, num_genomes, num_snp, prob_other):
     """Generate a set of genomes with specified number of point mutations."""
     assert 0 <= num_snp <= length
@@ -110,6 +115,7 @@ def random_genomes(length, num_genomes, num_snp, prob_other):
     return GenePool(
         length=length, reference=reference, individuals=individuals, locations=locations
     )
+# [/random_genomes]
 
 
 def save(outfile, genomes):
@@ -121,12 +127,15 @@ def save(outfile, genomes):
         print(as_text)
 
 
+# [mutate_snps]
 def _mutate_snps(reference, genome, loc, bases):
     """Introduce single nucleotide polymorphisms at the specified location."""
     choice = _choose_one(bases, SNP_PROBS)
     return genome[:loc] + choice + genome[loc + 1 :]
+# [/mutate_snps]
 
 
+# [mutate_other]
 def _mutate_other(genome, prob, locations):
     """Introduce other mutations at specified locations."""
     if random.random() > prob:
@@ -135,6 +144,7 @@ def _mutate_other(genome, prob, locations):
     base = random.choice(_other_bases(genome, loc))
     genome = genome[:loc] + base + genome[loc + 1 :]
     return genome
+# [/mutate_other]
 
 
 def _choose_one(values, weights=None):

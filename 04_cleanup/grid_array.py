@@ -5,6 +5,7 @@ import numpy as np
 from grid_generic import GridGeneric
 
 
+# [gridarray]
 class GridArray(GridGeneric):
     """Represent grid as NumPy array."""
 
@@ -23,3 +24,4 @@ class GridArray(GridGeneric):
     def __setitem__(self, key, value):
         """Set value at location."""
         self._grid[*key] = value
+# [/gridarray]

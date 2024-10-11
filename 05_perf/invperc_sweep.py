@@ -12,6 +12,7 @@ from params_sweep import ParamsSweep
 COLUMNS = ("kind", "width", "height", "depth", "num_filled", "time")
 
 
+# [main]
 def main():
     """Main driver."""
     params = get_params(sys.argv[1], ParamsSweep)
@@ -25,8 +26,10 @@ def main():
         t_elapsed = time.time() - t_start
         results.append(record_result(p, num_filled, t_elapsed))
     save_results(params, results)
+# [/main]
 
 
+# [generate_sweep]
 def generate_sweep(params):
     """Generate next single parameter object."""
     for kind in params.kind:
@@ -34,6 +37,7 @@ def generate_sweep(params):
             for depth in params.depth:
                 for run in range(params.runs):
                     yield ParamsSingle(kind, size, size, depth)
+# [/generate_sweep]
 
 
 def record_result(params, num_filled, elapsed):

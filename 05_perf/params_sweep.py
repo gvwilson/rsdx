@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 
 
+# [paramssweep]
 @dataclass
 class ParamsSweep:
     """A range of invasion percolation parameters."""
@@ -12,3 +13,4 @@ class ParamsSweep:
     depth: list[int]
     runs: int
     seed: int = None
+# [/paramssweep]

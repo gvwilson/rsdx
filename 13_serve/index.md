@@ -2,7 +2,7 @@
 
 ## Getting Data {: #serve-data}
 
--   Assay database from [%x lims %]
+-   Assay database from [the LIMS chapter](../10_lims/index.md)
     -   `staff`
     -   `experiment`
     -   `performed`
@@ -10,7 +10,7 @@
     -   `invalidated`
 -   Use [sqlite3][sqlite3] module directly
     -   Exercise: convert to [SQLModel][sqlmodel]
--   [%g mvc "MVC" %] design separates [%g model "model" %], [%g controller "controller" %], and [%g view "view" %]
+-   [MVC](g:mvc) design separates [model](g:model), [controller](g:controller), and [view](g:view)
     -   Model is data storage
     -   Controller is the verbs
     -   View is the display
@@ -19,26 +19,26 @@
     -   `get_count` to count records of a particular type
     -   `get_plate_filename` to turn a plate ID into an assay filename
 
-[%inc model.py pattern=func:get_count %]
+[%inc model.py keep=get_count %]
 
 ## Controller {: #serve-server}
 
 -   Use [Flask][flask]
     -   Define a function to handle a request to a particular URL
-    -   Use a decorator to [%g route "route" %] appropriate requests to it
+    -   Use a decorator to [route](g:route) appropriate requests to it
 
-[%inc server.py mark=index %]
+[%inc server.py keep=index %]
 
 -   Run from the command line
 
 [%inc run_server.sh %]
 [%inc run_server.out %]
 
--   Go to port 5000 ([%f serve_home_page %])
+-   Go to port 5000
 
 [% figure
-   slug="serve_home_page"
-   img="serve_home_page.svg"
+   id="serve_home_page"
+   src="serve_home_page.svg"
    alt="screenshot of data server home page"
    caption="Home page of data server"
 %]
@@ -49,6 +49,6 @@
 
 [%inc templates/index.html %]
 
--   This template [%g extend_template "extends" %] `base.html`
+-   This template [extends](g:extend_template) `base.html`
 
 [%inc templates/base.html %]

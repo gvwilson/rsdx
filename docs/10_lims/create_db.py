@@ -18,6 +18,7 @@ CAPABILITIES = [
 # [/capabilities]
 
 
+# [main]
 def main():
     """Main driver."""
     args = parse_args()
@@ -27,14 +28,17 @@ def main():
         create_capabilities(db)
         create_users(db, people)
         create_roles(db, people)
+# [/main]
 
 
+# [create_capabilities]
 def create_capabilities(db):
     """Create capabilities in database."""
     capabilities = db.table("capabilities")
     capabilities.truncate()
     for cap in CAPABILITIES:
         capabilities.insert(cap)
+# [/create_capabilities]
 
 
 def create_roles(db, people):
@@ -56,6 +60,7 @@ def create_users(db, people):
         users.insert(person)
 
 
+# [get_people]
 def get_people(sqlite):
     """Get people from SQLite database."""
     con = sqlite3.connect(sqlite)
@@ -69,6 +74,7 @@ def get_people(sqlite):
         }
         for r in rows
     ]
+# [/get_people]
 
 
 def parse_args():

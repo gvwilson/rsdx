@@ -5,6 +5,7 @@ from unittest.mock import patch
 from grid_list import GridList
 
 
+# [list_patching_randomization]
 def test_grid_list_patching_randomization():
     with patch("random.randint", return_value=12345):
         g = GridList(2, 3, 4)
@@ -15,3 +16,4 @@ def test_grid_list_patching_randomization():
     for x in range(g.width()):
         for y in range(g.height()):
             assert g[x, y] == 12345
+# [/list_patching_randomization]

@@ -13,6 +13,7 @@ WIKIDATA_LAND_SNAIL = "https://www.wikidata.org/wiki/Q6484264"
 # [/const]
 
 
+# [main]
 def main():
     """Main driver."""
     args = parse_args()
@@ -39,8 +40,10 @@ def main():
                 Path(args.outdir, f"{ident}.json").write_text(
                     json.dumps(data, ensure_ascii=False)
                 )
+# [/main]
 
 
+# [parse_args]
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
@@ -53,6 +56,7 @@ def parse_args():
         "--verbose", action="store_true", default=False, help="report progress"
     )
     return parser.parse_args()
+# [/parse_args]
 
 
 if __name__ == "__main__":

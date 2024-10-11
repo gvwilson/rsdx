@@ -1,3 +1,3 @@
 # Production
 
-[%fixme "show logging and DVC" %]
+FIXME: show logging and DVC

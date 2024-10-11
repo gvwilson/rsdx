@@ -40,8 +40,10 @@ def centers_with_pandas(combined):
     )
 
 
+# [combine_with_pandas]
 def combine_with_pandas(*tables):
     """Combine tables using Pandas."""
     combined = pd.concat(tables)
     centers = centers_with_pandas(combined)
     return {"combined": combined, "centers": centers}
+# [/combine_with_pandas]

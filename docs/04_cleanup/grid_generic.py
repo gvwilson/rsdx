@@ -21,6 +21,7 @@ class GridGeneric(ABC):
         self._depth = depth
 # [/main]
 
+    # [eq]
     def __eq__(self, other):
         """Compare this grid to another."""
         if self.width() != other.width():
@@ -32,6 +33,7 @@ class GridGeneric(ABC):
                 if self[x, y] != other[x, y]:
                     return False
         return True
+    # [/eq]
 
     def width(self):
         """Get width of grid."""
@@ -70,6 +72,7 @@ class GridGeneric(ABC):
                     least, cx, cy = temp, x, y
         return cx, cy
 
+    # [fill]
     def fill(self):
         """Fill grid one cell at a time."""
         self[self.width() // 2, self.height() // 2] = 0
@@ -78,6 +81,7 @@ class GridGeneric(ABC):
             self[x, y] = 0
             if self.on_border(x, y):
                 break
+    # [/fill]
 
     def on_border(self, x, y):
         """Is this cell on the border of the grid?"""

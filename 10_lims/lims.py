@@ -10,9 +10,11 @@ import assay_params
 import lint
 
 
+# [cli]
 @click.group()
 def cli():
     """Interact with laboratory data."""
+# [/cli]
 
 
 @cli.command()
@@ -76,6 +78,7 @@ def status(db, user, upload):
         click.echo(statuses[-1]["status"])
 
 
+# [upload]
 @cli.command()
 @click.option("--db", type=str, required=True, help="Database")
 @click.option("--assay", type=str, required=True, help="Assay filename")
@@ -99,6 +102,7 @@ def upload(db, user, params, design, assay):
         _require_cap(cap == "own", f"{user} cannot upload")
         assay_id = _upload_data(db, user, design, assay)
         click.echo(assay_id)
+# [/upload]
 
 
 def get_timestamp():
@@ -106,6 +110,7 @@ def get_timestamp():
     return str(datetime.now(UTC))
 
 
+# [get_capability]
 def _get_capability(db, user, kind):
     """Find capability."""
     results = db.table("users").search(Query().uid == user)
@@ -129,14 +134,18 @@ def _get_capability(db, user, kind):
             f"duplicate capabilities for user {user} and kind {kind}: {caps}"
         )
     return capabilities[0]["scope"]
+# [/get_capability]
 
 
+# [require_cap]
 def _require_cap(condition, message):
     """Check condition and raise exception."""
     if not condition:
         raise ClickException(f"permission error: {message}")
+# [/require_cap]
 
 
+# [require_exists]
 def _require_exists(db, kind, value):
     """Check existence of something in database."""
     q = Query()
@@ -157,6 +166,7 @@ def _require_exists(db, kind, value):
             raise ClickException(f"internal error: unknown kind {kind}")
 
     raise ClickException(f"No such {kind}: '{value}'")
+# [/require_exists]
 
 
 def _require_no_errors(errors):
@@ -170,6 +180,7 @@ def _require_no_errors(errors):
     raise ClickException(f"Data validation errors\n{msg}")
 
 
+# [upload_data]
 def _upload_data(db, user, design_file, assay_file):
     """Upload validated data."""
     timestamp = get_timestamp()
@@ -180,6 +191,7 @@ def _upload_data(db, user, design_file, assay_file):
         {"upload": doc_id, "uid": user, "status": "created", "timestamp": timestamp}
     )
     return doc_id
+# [/upload_data]
 
 
 if __name__ == "__main__":

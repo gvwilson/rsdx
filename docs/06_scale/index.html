@@ -31,7 +31,7 @@
 <li>The fact that we don't know how many indicates the scale of the problem</li>
 </ul>
 </li>
-<li>Build a [%g workflow "workflow" %] to run parameter sweeps using [Metaflow][metaflow]<ul>
+<li>Build a <a href="../glossary.html#workflow">workflow</a> to run parameter sweeps using [Metaflow][metaflow]<ul>
 <li>Define a Python class with methods for workflow stages</li>
 <li>Use decorators to mark steps</li>
 <li>Parameters to methods coordinate dataflow</li>
@@ -43,47 +43,145 @@
 <ul>
 <li>Store parameters as dataclass</li>
 </ul>
-<p>[%inc params_single.py %]
-[%inc standalone.json %]</p>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">"""Parameters for single invasion percolation sweep."""
+
+from dataclasses import dataclass
+
+
+@dataclass
+class ParamsSingle:
+    """A single set of invasion percolation parameters."""
+
+    width: int
+    height: int
+    depth: int
+    seed: int = None
+</code></pre>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">{
+    "width": 11,
+    "height": 11,
+    "depth": 10,
+    "seed": 172839
+}
+</code></pre>
 <hr/>
 <h2>Getting Started</h2>
-<p>[%inc flow.py mark=start %]
-[%inc flow.py pattern="class:InvPercFlow meth:start" %]
-[%inc flow.py pattern="func:load_params" %]</p>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">class InvPercFlow(FlowSpec):
+    """Metaflow for invasion percolation."""
+
+    sweep = Parameter("sweep", help="parameter file", type=str, required=True)
+</code></pre>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">    @step
+    def start(self):
+        """Collect parameters and run jobs."""
+        sweep = load_params(self.sweep)
+        self.args = make_sweeps(sweep)
+        self.next(self.run_job, foreach="args")
+</code></pre>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">def load_params(filename):
+    """Get sweep parameters from file."""
+    return ParamsSweep(**json.loads(Path(filename).read_text()))
+</code></pre>
 <hr/>
 <h2>Parameterizing Each Task</h2>
-<p>[%inc flow.py pattern="func:make_sweeps" %]</p>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">def make_sweeps(sweeps):
+    """Convert sweep parameters into individual jobs."""
+    random.seed(sweeps.seed)
+    result = []
+    for size in sweeps.size:
+        for depth in sweeps.depth:
+            for run in range(sweeps.runs):
+                result.append(
+                    ParamsSingle(
+                        width=size,
+                        height=size,
+                        depth=depth,
+                        seed=random.randrange(sys.maxsize),
+                    )
+                )
+    return result
+</code></pre>
 <ul>
 <li>Use nested loops to generate multidmensional "cube" of parameters</li>
 </ul>
 <hr/>
 <h2>Running a Single Job</h2>
-<p>[%inc flow.py pattern="class:InvPercFlow meth:run_job" %]</p>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">    @step
+    def run_job(self):
+        """Run a sweep with one set of parameters."""
+        grid = invperc(self.input)
+        self.result = {
+            "size": grid.width(),
+            "depth": grid.depth(),
+            "density": collect_density(grid),
+            "dimension": measure_dimension(grid),
+        }
+        self.next(self.join)
+</code></pre>
 <hr/>
 <h2>Combining Results</h2>
-<p>[%inc flow.py pattern="class:InvPercFlow meth:join" %]</p>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">    @step
+    def join(self, inputs):
+        """Combine results from all sweeps."""
+        counts = defaultdict(int)
+        dimensions = defaultdict(float)
+        densities = defaultdict(list)
+
+        for i in inputs:
+            key = (i.result["size"], i.result["depth"])
+            counts[key] += 1
+            dimensions[key] += i.result["dimension"]
+            densities[key].extend(i.result["density"])
+
+        for key in densities:
+            densities[key] = estimate_density(densities[key])
+
+        self.results = {
+            "counts": counts,
+            "dimensions": dimensions,
+            "densities": densities,
+        }
+        self.next(self.end)
+</code></pre>
 <hr/>
 <h2>Reporting Results</h2>
-<p>[%inc flow.py pattern="class:InvPercFlow meth:end" %]</p>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">    @step
+    def end(self):
+        """Report results."""
+        table = [("size", "depth", "count", "dimension", "density_x", "density_k")]
+        for key, count in sorted(self.results["counts"].items()):
+            size, depth = key
+            dim = self.results["dimensions"][key] / count
+            table.append((size, depth, count, dim, *self.results["densities"][key]))
+        csv.writer(sys.stdout, lineterminator="\n").writerows(table)
+</code></pre>
 <hr/>
 <h2>Running It</h2>
 <ul>
 <li>Run with single-job JSON parameter file shown earlier</li>
 </ul>
-<p>[%inc run_standalone.sh %]</p>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">python invperc.py standalone.json
+</code></pre>
 <ul>
 <li>Run full sweep</li>
 </ul>
-<p>[%inc sweep.json %]
-[%inc run_sweep.sh %]</p>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">{
+    "size": [75, 95, 105],
+    "depth": [2, 10, 100],
+    "runs": 10,
+    "seed": 556677
+}
+</code></pre>
+<pre class="language-md"><code class="language-md" file="06_scale/index.md">python flow.py run --sweep sweep.json
+</code></pre>
 <hr/>
 <h2>But How Does It Work?</h2>
-<p>[%fixme "show how to build a simple DAG-based workflow runner" %]</p>
+<p>FIXME: show how to build a simple DAG-based workflow runner</p>
 <hr/>
 <h2>Exercises</h2>
 <ol>
 <li>
-<p>[%fixme "add exercises for scaling up" %]</p>
+<p>FIXME: add exercises for scaling up</p>
 </li>
 <li>
 <p>Use recursion to generate parameter sweep for arbitrary number of parameters.</p>

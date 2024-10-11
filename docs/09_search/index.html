@@ -28,7 +28,7 @@
 <ul>
 <li>Time to do our literature survey</li>
 <li>Want to search the abstracts of over 2000 papers</li>
-<li>Use [%g tf_idf "term frequency - inverse document frequency" %] (TF-IDF)<ul>
+<li>Use <a href="../glossary.html#tf_idf">term</a>quency - inverse document frequency" %] (TF-IDF)<ul>
 <li>Term frequency: frequency of each word in each document</li>
 <li>Document frequency: proportion of documents in which a word appears</li>
 <li>Inverse document frequency: one over that (i.e., how specific the word is)</li>
@@ -41,48 +41,148 @@
 <li>[PyAlex][pyalex] provides a Python interface</li>
 <li>Copy, paste, and tweak example</li>
 </ul>
-<p>[%inc fetch_bib_data.py pattern=func:main %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">def main():
+    """Main driver."""
+    args = parse_args()
+    if args.email:
+        pyalex.config.email = args.email
+    pager = (
+        Works()
+        .filter(concepts={"wikidata": args.concept})
+        .paginate(method="page", per_page=200)
+    )
+    counter = 0
+    for page in pager:
+        for work in page:
+            counter += 1
+            if args.verbose:
+                print(counter)
+            ident = work["id"].split("/")[-1]
+            data = {
+                "doi": work["doi"],
+                "year": work["publication_year"],
+                "abstract": work["abstract"],
+            }
+            if all(data.values()):
+                Path(args.outdir, f"{ident}.json").write_text(
+                    json.dumps(data, ensure_ascii=False)
+                )
+</code></pre>
 <ul>
 <li>Additional definitions</li>
 </ul>
-<p>[%inc fetch_bib_data.py mark=const %]
-[%inc fetch_bib_data.py pattern=func:parse_args %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">WIKIDATA_LAND_SNAIL = "https://www.wikidata.org/wiki/Q6484264"
+</code></pre>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">def parse_args():
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--concept", type=str, default=WIKIDATA_LAND_SNAIL, help="Wikidata concept URL"
+    )
+    parser.add_argument("--email", type=str, default=None, help="user email address")
+    parser.add_argument("--outdir", type=str, required=True, help="output directory")
+    parser.add_argument(
+        "--verbose", action="store_true", default=False, help="report progress"
+    )
+    return parser.parse_args()
+</code></pre>
 <ul>
 <li>Produces 2192 JSON files</li>
 </ul>
-<p>[%inc W962796421.json %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">{
+    "doi": "https://doi.org/10.1007/978-94-009-0343-2_40",
+    "year": 1996,
+    "abstract": "Helicid snails are suitable organisms for research…"
+}
+</code></pre>
 <h2>Building Index</h2>
 <ul>
 <li>Usual main driver</li>
 </ul>
-<p>[%inc make_index.py pattern=func:main %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">def main():
+    """Main driver."""
+    args = parse_args()
+    abstracts = read_abstracts(args.bibdir)
+    words_in_file = {
+        filename: get_words(abstract) for filename, abstract in abstracts.items()
+    }
+    term_freq = calculate_tf(words_in_file)
+    inverse_doc_freq = calculate_idf(words_in_file)
+    tf_idf = calculate_tf_idf(term_freq, inverse_doc_freq)
+    save(args.outfile, tf_idf)
+</code></pre>
 <ul>
 <li>Reading abstracts from JSON is the simple part</li>
 </ul>
-<p>[%inc make_index.py pattern=func:read_abstracts %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">def read_abstracts(bibdir):
+    """Extract abstracts from bibliography entries."""
+    result = {}
+    for filename in Path(bibdir).iterdir():
+        data = json.loads(Path(filename).read_text())
+        result[filename.name] = data["abstract"]
+    return result
+</code></pre>
 <ul>
 <li>Getting words is a bit of a hack<ul>
 <li>For now, remove punctuation and hope for the best</li>
 </ul>
 </li>
 </ul>
-<p>[%inc make_index.py pattern=func:get_words %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">def get_words(text):
+    """Get words from text, stripping basic punctuation."""
+    words = text.split()
+    for char in ",.'\"()%‰!?$‘’&amp;~–—±·":
+        words = [w.strip(char) for w in words]
+    return [w for w in words if w]
+</code></pre>
 <ul>
 <li>Calculate term frequency</li>
 </ul>
-<p>[%inc make_index.py pattern=func:calculate_tf %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">def calculate_tf(words_in_file):
+    """Calculate term frequency of each word per document."""
+    result = {}
+    for filename, wordlist in words_in_file.items():
+        total_words = len(wordlist)
+        counts = Counter(wordlist)
+        for w in wordlist:
+            result[(filename, w)] = counts[w] / total_words
+    return result
+</code></pre>
 <ul>
 <li>Calculate inverse document frequency</li>
 </ul>
-<p>[%inc make_index.py pattern=func:calculate_idf %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">def calculate_idf(words_in_file):
+    """Calculate inverse document frequency of each word."""
+    num_docs = len(words_in_file)
+    word_sets = [set(words) for words in words_in_file.values()]
+    result = {}
+    for word in set().union(*word_sets):
+        result[word] = log(num_docs / sum(word in per_doc for per_doc in word_sets))
+    return result
+</code></pre>
 <ul>
 <li>Combine values</li>
 </ul>
-<p>[%inc make_index.py pattern=func:calculate_tf_idf %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">def calculate_tf_idf(term_freq, inverse_doc_freq):
+    """Calculate overall score for each term in each document."""
+    result = defaultdict(dict)
+    for (filename, word), tf in term_freq.items():
+        result[word][filename] = tf * inverse_doc_freq[word]
+    return result
+</code></pre>
 <ul>
 <li>And save as CSV</li>
 </ul>
-<p>[%inc make_index.py pattern=func:save %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">def save(outfile, tf_idf):
+    """Save results as CSV."""
+    outfile = sys.stdout if outfile is None else open(outfile, "w")
+    writer = csv.writer(outfile)
+    writer.writerow(("word", "doc", "score"))
+    for word in sorted(tf_idf):
+        for filename, score in sorted(tf_idf[word].items()):
+            writer.writerow((word, filename, score))
+    outfile.close()
+</code></pre>
 <ul>
 <li>258,000 distinct terms (!)<ul>
 <li>Of which several thousand contain non-Latin characters</li>
@@ -91,7 +191,27 @@
 <li>17 documents contain the word "search"</li>
 <li>Of these, W2026888704.json has the highest score</li>
 </ul>
-<p>[%inc tf_idf_search.csv %]</p>
+<pre class="language-md"><code class="language-md" file="09_search/index.md">word,doc,score
+…,…,…
+search,W1583262424.json,0.017354843942898893
+search,W1790707322.json,0.010208731731116994
+search,W1978369717.json,0.022087983200053132
+search,W1981216857.json,0.04189100262079043
+search,W2011577929.json,0.023030124663562513
+search,W2026888704.json,0.05716889769425517
+search,W2032021174.json,0.022813879361557227
+search,W2082863826.json,0.017734877021940473
+search,W2084509015.json,0.012992931294148902
+search,W2086938190.json,0.020417463462233987
+search,W2101925012.json,0.02466678326909487
+search,W2316979134.json,0.045842984000110276
+search,W2575616999.json,0.047796947252574
+search,W2892782288.json,0.020678111931964636
+search,W4206540709.json,0.028252071534951684
+search,W4304606284.json,0.028584448847127585
+search,W4386532853.json,0.033283262356244445
+…,…,…
+</code></pre>
 <ul>
 <li>Upon inspection, that abstract includes phrases like "Search Dropdown Menu toolbar search search input",
     which are probably a result of inaccurate web scraping</li>

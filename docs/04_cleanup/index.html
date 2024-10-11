@@ -28,7 +28,7 @@
 <h2>The Problem</h2>
 <ul>
 <li>Refactor and test a program that (kind of) works to create something sturdier</li>
-<li>Program models [%g inv_perc "invasion percolation" %]<ul>
+<li>Program models <a href="../glossary.html#inv_perc">invasion</a>colation" %]<ul>
 <li>Grid of random numbers</li>
 <li>Fill the center cell</li>
 <li>Repeatedly:<ul>
@@ -44,9 +44,31 @@
 <hr/>
 <h2>Main Body of Original Script</h2>
 <ul>
-<li>Note: [%g rng_seed "random number seed" %] is optional</li>
+<li>Note: <a href="../glossary.html#rng_seed">random</a>ber seed" %] is optional</li>
 </ul>
-<p>[%inc script.py mark=main %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md"># Grid size and range of fill values.
+width, height, depth = (int(x) for x in sys.argv[1:4])
+
+# Random number generation.
+seed = int(sys.argv[4]) if len(sys.argv) &gt; 4 else randrange(sys.maxsize)
+randseed(seed)
+
+# Create initial grid
+grid = make_grid(width, height, depth)
+
+# Fill central cell.
+grid[width // 2][height // 2] = 0
+
+# Fill other cells.
+while True:
+    x, y = choose_cell(grid)
+    grid[x][y] = 0
+    if on_border(width, height, x, y):
+        break
+
+# Show result.
+print_grid(grid, width, height, depth, seed)
+</code></pre>
 <hr/>
 <h2>The Grid</h2>
 <ul>
@@ -55,31 +77,82 @@
 </ul>
 </li>
 </ul>
-<p>[%inc script.py pattern=func:make_grid %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def make_grid(width, height, depth):
+    """Create a width X height grid."""
+    grid = []
+    for x in range(width):
+        row = []
+        for y in range(height):
+            row.append(randint(1, depth))
+        grid.append(row)
+    return grid
+</code></pre>
 <hr/>
 <h2>Choosing the Next Cell</h2>
 <ul>
 <li>Sweep the whole grid</li>
 </ul>
-<p>[%inc script.py pattern=func:choose_cell %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def choose_cell(grid):
+    """Choose the next cell to fill in."""
+    least, cx, cy = None, None, None
+    for x in range(len(grid)):
+        row = grid[x]
+        for y in range(len(row)):
+            temp = grid[x][y]
+            if not adjacent(grid, x, y):
+                continue
+            if (least is None) or ((temp != 0) and (temp &lt; least)):
+                least, cx, cy = temp, x, y
+    return cx, cy
+</code></pre>
 <hr/>
 <h2>Helper Functions</h2>
 <ul>
 <li>Test adjacency</li>
 </ul>
-<p>[%inc script.py pattern=func:adjacent %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def adjacent(grid, x, y):
+    """Is (x, y) adjacent to a filled cell?"""
+    x_1, y_1 = x + 1, y + 1
+    if (x &gt; 0) and (grid[x - 1][y] == 0):
+        return True
+    if (x_1 &lt; len(grid)) and (grid[x_1][y] == 0):
+        return True
+    if (y &gt; 0) and (grid[x][y - 1] == 0):
+        return True
+    if (y_1 &lt; len(grid[x])) and (grid[x][y_1] == 0):
+        return True
+    return False
+</code></pre>
 <hr/>
 <h2>Helper Functions</h2>
 <ul>
 <li>We also need to test if we're on the border</li>
 </ul>
-<p>[%inc script.py pattern=func:on_border %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def on_border(width, height, x, y):
+    """Is this cell on the border of the grid?"""
+    if (x == 0) or (x == width - 1):
+        return True
+    if (y == 0) or (y == height - 1):
+        return True
+    return False
+</code></pre>
 <hr/>
 <h2>Display</h2>
 <ul>
 <li>And finally, show the result</li>
 </ul>
-<p>[%inc script.py pattern=func:print_grid %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def print_grid(grid, width, height, depth, seed, as_numbers=False):
+    """Show the result."""
+    print(width, height, depth, seed)
+    height = len(grid[0])
+    for y in range(height - 1, -1, -1):
+        for x in range(len(grid)):
+            if as_numbers:
+                sys.stdout.write(f"{grid[x][y]:02d} ")
+            else:
+                sys.stdout.write("X" if grid[x][y] == 0 else ".")
+        sys.stdout.write("\n")
+</code></pre>
 <hr/>
 <h2>Critique</h2>
 <ul>
@@ -93,7 +166,13 @@
 <ul>
 <li>Main function</li>
 </ul>
-<p>[%inc invperc.py pattern=func:main %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def main():
+    """Main driver."""
+    kind, width, height, depth, seed = setup()
+    grid = initialize_grid(kind, width, height, depth)
+    grid.fill()
+    print_grid(kind, grid, seed)
+</code></pre>
 <hr/>
 <h2>Setting Up</h2>
 <ul>
@@ -102,20 +181,43 @@
 </ul>
 </li>
 </ul>
-<p>[%inc invperc.py pattern=func:setup %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def setup():
+    """Get parameters."""
+    kind = sys.argv[1]
+    width = int(sys.argv[2])
+    height = int(sys.argv[3])
+    depth = int(sys.argv[4])
+
+    if len(sys.argv) &gt; 5:
+        seed = int(sys.argv[5])
+    else:
+        seed = random.randrange(sys.maxsize)
+    random.seed(seed)
+
+    return kind, width, height, depth, seed
+</code></pre>
 <hr/>
 <h2>Refactoring</h2>
 <ul>
 <li>We're going to build (at least) two grid classes, so import both here</li>
 </ul>
-<p>[%inc invperc.py mark=import %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">from grid_list import GridList
+from grid_array import GridArray
+</code></pre>
 <ul>
 <li>Initialization relies on the grid's constructor<ul>
 <li>All grids take the same parameters in the same order</li>
 </ul>
 </li>
 </ul>
-<p>[%inc invperc.py pattern=func:initialize_grid %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def initialize_grid(kind, width, height, depth):
+    """Prepare grid for simulation."""
+    lookup = {
+        "list": GridList,
+        "array": GridArray,
+    }
+    return lookup[kind](width, height, depth)
+</code></pre>
 <hr/>
 <h2>Printing</h2>
 <ul>
@@ -124,18 +226,48 @@
 </ul>
 </li>
 </ul>
-<p>[%inc invperc.py pattern=func:print_grid %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def print_grid(kind, grid, seed, details="full"):
+    """Show the result."""
+    print(kind, grid.width(), grid.height(), grid.depth(), seed)
+    if details == "brief":
+        return
+    for y in range(grid.height() - 1, -1, -1):
+        for x in range(grid.width()):
+            if details == "numbers":
+                sys.stdout.write(f"{grid[x, y]:02d} ")
+            else:
+                sys.stdout.write("X" if grid[x, y] == 0 else ".")
+        sys.stdout.write("\n")
+</code></pre>
 <hr/>
 <h2>Generic Grids</h2>
 <ul>
-<li>First grid is an [%g abc "abstract base class" %]<ul>
+<li>First grid is an <a href="../glossary.html#abc">abstract</a>e class" %]<ul>
 <li>Defines common behaviors</li>
-<li>Declaring [%g abstract_method "abstract methods" %]
+<li>Declaring <a href="../glossary.html#abstract_method">abstract</a>hods" %]
     forces derived classes to provide a way to get and set item by location</li>
 </ul>
 </li>
 </ul>
-<p>[%inc grid_generic.py mark=main %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">from abc import ABC, abstractmethod
+
+class GridGeneric(ABC):
+    """Represent a generic grid."""
+
+    @abstractmethod
+    def __getitem__(self, key):
+        """Get value at location."""
+
+    @abstractmethod
+    def __setitem__(self, key, value):
+        """Set value at location."""
+
+    def __init__(self, width, height, depth):
+        """Record shared state."""
+        self._width = width
+        self._height = height
+        self._depth = depth
+</code></pre>
 <hr/>
 <h2>Other Methods</h2>
 <ul>
@@ -145,23 +277,82 @@
 </li>
 <li>E.g. filling</li>
 </ul>
-<p>[%inc grid_generic.py pattern="class:GridGeneric meth:fill" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">    def fill(self):
+        """Fill grid one cell at a time."""
+        self[self.width() // 2, self.height() // 2] = 0
+        while True:
+            x, y = self.choose_cell()
+            self[x, y] = 0
+            if self.on_border(x, y):
+                break
+</code></pre>
 <hr/>
 <h2>Equality</h2>
 <ul>
 <li>Relying on interface allows us to implement equality test
     between grids with different underlying data representations</li>
 </ul>
-<p>[%inc grid_generic.py pattern="class:GridGeneric meth:<strong>eq</strong>" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">    def __eq__(self, other):
+        """Compare this grid to another."""
+        if self.width() != other.width():
+            return False
+        if self.height() != other.height():
+            return False
+        for x in range(self.width()):
+            for y in range(self.height()):
+                if self[x, y] != other[x, y]:
+                    return False
+        return True
+</code></pre>
 <hr/>
 <h2>List-Based Grid</h2>
-<p>[%inc grid_list.py pattern="class:GridList" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">class GridList(GridGeneric):
+    """Represent grid as list of lists."""
+
+    def __init__(self, width, height, depth):
+        """Construct and fill."""
+        super().__init__(width, height, depth)
+        self._grid = []
+        for x in range(self._width):
+            row = []
+            for y in range(self._height):
+                row.append(random.randint(1, depth))
+            self._grid.append(row)
+
+    def __getitem__(self, key):
+        """Get value at location."""
+        x, y = key
+        return self._grid[x][y]
+
+    def __setitem__(self, key, value):
+        """Set value at location."""
+        x, y = key
+        self._grid[x][y] = value
+</code></pre>
 <hr/>
 <h2>Array-Based Grid</h2>
 <ul>
 <li>And another that uses a NumPy array</li>
 </ul>
-<p>[%inc grid_array.py pattern="class:GridArray" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">class GridArray(GridGeneric):
+    """Represent grid as NumPy array."""
+
+    def __init__(self, width, height, depth):
+        """Construct and fill."""
+        super().__init__(width, height, depth)
+        self._grid = np.zeros((width, height), dtype=int)
+        for x in range(self.width()):
+            for y in range(self.height()):
+                self[x, y] = random.randint(1, depth)
+
+    def __getitem__(self, key):
+        """Get value at location."""
+        return self._grid[*key]
+
+    def __setitem__(self, key, value):
+        """Set value at location."""
+        self._grid[*key] = value
+</code></pre>
 <hr/>
 <h2>And Now, Testing</h2>
 <ul>
@@ -171,8 +362,24 @@
 </ul>
 </li>
 </ul>
-<p>[%inc test_grid_start.py pattern=func:test_grid_array_constructed_correctly %]
-[%inc test_grid_start.py pattern=func:test_grid_list_constructed_correctly %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def test_grid_array_constructed_correctly():
+    g = GridArray(2, 3, 4)
+    assert g.width() == 2
+    assert g.height() == 3
+    assert g.depth() == 4
+    for x in range(g.width()):
+        for y in range(g.height()):
+            assert g[x, y] &gt; 0
+</code></pre>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def test_grid_list_constructed_correctly():
+    g = GridList(2, 3, 4)
+    assert g.width() == 2
+    assert g.height() == 3
+    assert g.depth() == 4
+    for x in range(g.width()):
+        for y in range(g.height()):
+            assert g[x, y] &gt; 0
+</code></pre>
 <hr/>
 <h2>Injecting What We Need</h2>
 <ul>
@@ -181,13 +388,34 @@
 </ul>
 </li>
 </ul>
-<p>[%inc grid_list_randomizer.py pattern="class:GridListRandomizer meth:<strong>init</strong>" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">    def __init__(self, width, height, depth, rand=random.randint):
+        """Construct and fill."""
+        super().__init__(width, height, depth)
+        self._rand = rand
+        self._grid = []
+        for x in range(self._width):
+            row = []
+            for y in range(self._height):
+                row.append(self._rand(1, depth))
+            self._grid.append(row)
+</code></pre>
 <hr/>
 <h2>Test Using Injection</h2>
 <ul>
 <li>Test looks better</li>
 </ul>
-<p>[%inc test_grid_randomizer.py pattern="func:test_grid_list_with_randomizer_function" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def test_grid_list_with_randomizer_function():
+    def r(low, high):
+        return 12345
+
+    g = GridListRandomizer(2, 3, 4, r)
+    assert g.width() == 2
+    assert g.height() == 3
+    assert g.depth() == 4
+    for x in range(g.width()):
+        for y in range(g.height()):
+            assert g[x, y] == 12345
+</code></pre>
 <ul>
 <li>But we're no longer testing our actual grid class<ul>
 <li>Could add extra arguments for all sorts of things to all our classes, but that's a lot of work</li>
@@ -197,32 +425,70 @@
 <hr/>
 <h2>Better Tools: Mock Objects</h2>
 <ul>
-<li><code>test_grid_mock.py</code> replaces the random number generator with a [%g mock_object "mock object" %]
+<li><code>test_grid_mock.py</code> replaces the random number generator with a <a href="../glossary.html#mock_object">mock</a>ect" %]
     without modifying the grid class</li>
 </ul>
-<p>[%inc test_grid_mock.py pattern="func:test_grid_list_patching_randomization" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def test_grid_list_patching_randomization():
+    with patch("random.randint", return_value=12345):
+        g = GridList(2, 3, 4)
+
+    assert g.width() == 2
+    assert g.height() == 3
+    assert g.depth() == 4
+    for x in range(g.width()):
+        for y in range(g.height()):
+            assert g[x, y] == 12345
+</code></pre>
 <hr/>
 <h2>Better Tools: Parameterized Tests</h2>
 <ul>
-<li><code>test_grid_parametrize.py</code> [%g parameterize_test "parameterizes" %] the test across both classes</li>
+<li><code>test_grid_parametrize.py</code> <a href="../glossary.html#parameterize_test">parameterizes</a> the test across both classes</li>
 </ul>
-<p>[%inc test_grid_parametrize.py pattern="func:test_grid_list_parameterizing_classes" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">@pytest.mark.parametrize("cls", [GridArray, GridList])
+def test_grid_list_parameterizing_classes(cls):
+    with patch("random.randint", return_value=12345):
+        g = cls(2, 3, 4)
+
+    assert g.width() == 2
+    assert g.height() == 3
+    assert g.depth() == 4
+    for x in range(g.width()):
+        for y in range(g.height()):
+            assert g[x, y] == 12345
+</code></pre>
 <hr/>
 <h2>A Testable Grid</h2>
 <ul>
 <li><code>grid_filled.py</code> defines <code>GridFilled</code>, which we can populate with whatever data we want</li>
 </ul>
-<p>[%inc grid_filled.py pattern="class:GridFilled meth:<strong>init</strong>" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">    def __init__(self, width, height, depth, values):
+        """Construct and fill."""
+        assert len(values) == width
+        assert all(len(col) == height for col in values)
+        super().__init__(width, height, depth)
+        self._grid = [col[:] for col in values]
+</code></pre>
 <hr/>
 <h2>Using the Testable Grid</h2>
 <ul>
 <li><code>test_grid_filled.py</code> starts by testing that filling from specified works correctly</li>
 </ul>
-<p>[%inc test_grid_filled.py pattern="func:test_explicit_filling_fills_correctly" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def test_explicit_filling_fills_correctly():
+    g = GridFilled(3, 3, 4, [[1, 1, 1], [2, 2, 2], [3, 3, 3]])
+    assert g.width() == 3
+    assert g.height() == 3
+    assert g.depth() == 4
+    for x in range(g.width()):
+        assert all(g[x, y] == x + 1 for y in range(g.height()))
+</code></pre>
 <ul>
 <li>Add test for filling grid by creating deterministic filling path</li>
 </ul>
-<p>[%inc test_grid_filled.py pattern="func:test_filling_with_straight_run_to_edge" %]</p>
+<pre class="language-md"><code class="language-md" file="04_cleanup/index.md">def test_filling_with_straight_run_to_edge():
+    g = GridFilled(3, 3, 4, [[4, 1, 4], [4, 4, 4], [4, 4, 4]])
+    g.fill()
+    assert g == GridFilled(3, 3, 4, [[4, 0, 4], [4, 0, 4], [4, 4, 4]])
+</code></pre>
 <hr/>
 <h2>Oops</h2>
 <ul>
@@ -231,7 +497,7 @@
 <li>So filling has a bias toward the (0,0) corner of the grid</li>
 </ul>
 </li>
-<li>[%x perf %] will tackle this problem</li>
+<li><a href="../05_perf/index.html">The next chapter</a> will tackle this problem</li>
 <li>But first, let's see how fast our code is…</li>
 </ul>
 <hr/>

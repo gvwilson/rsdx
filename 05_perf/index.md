@@ -16,7 +16,7 @@
     -   But this is a step toward something larger
 -   Can now save parameters in version control
 
-[%inc params_single.py pattern=class:ParamsSingle %]
+[%inc params_single.py keep=paramssingle %]
 
 ---
 
@@ -24,9 +24,9 @@
 
 -   Load parameters from JSON file
     -   Could easily use YAML instead
-    -   [%g spread "Spread" %] values into dataclass constructor
+    -   [Spread](g:spread) values into dataclass constructor
 
-[%inc invperc_util.py pattern=func:get_params %]
+[%inc invperc_util.py keep=get_params %]
 
 ---
 
@@ -34,7 +34,7 @@
 
 -   Modify code in `invperc_single.py` to use these parameters
 
-[%inc invperc_single.py pattern=func:main %]
+[%inc invperc_single.py keep=main %]
 
 -   Would be nice if there was a standard way to embed parameters in the plot itself
 
@@ -43,10 +43,10 @@
 ## Performance
 
 -   Application's performance usually depends on what exactly it's doing
-    -   So we [%g parameter_sweeping "sweep" %] the range of parameters to see how performance changes
+    -   So we [sweep](g:parameter_sweeping) the range of parameters to see how performance changes
 -   Create another dataclass to store multiple values for interesting parameters
 
-[%inc params_sweep.py pattern=class:ParamsSweep %]
+[%inc params_sweep.py keep=paramssweep %]
 
 ---
 
@@ -54,16 +54,16 @@
 
 -   Next, rewrite `main` to try each combination of parameter values
 
-[%inc invperc_sweep.py pattern=func:main %]
+[%inc invperc_sweep.py keep=main %]
 
 ---
 
 ## Generators
 
 -   Could generate a list of parameter combinations
--   Instead, use a [%g generator "generator" %] to produce one at a time
+-   Instead, use a [generator](g:generator) to produce one at a time
 
-[%inc invperc_sweep.py pattern=func:generate_sweep %]
+[%inc invperc_sweep.py keep=generate_sweep %]
 
 ---
 
@@ -72,8 +72,8 @@
 -   Save results as CSV and plot
 
 [% figure
-   slug="perf_example"
-   img="./k+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg"
+   id="perf_example"
+   src="./k+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg"
    caption="Running times for various depths and sizes."
    alt="Line graph showing that running time increases quadratically with grid size."
 %]
@@ -83,7 +83,7 @@
 ## That's a Surprise
 
 -   NumPy array is *worse* than list-of-lists
-    -   We're constantly [%g boxing "boxing" %] and [%g unboxing "unboxing" %] values
+    -   We're constantly [boxing](g:boxing) and [unboxing](g:unboxing) values
 -   More important: runtime is growing faster than linear
     -   Which makes sense: we are searching \\( N^2 \\) cells each time we fill one
 
@@ -91,12 +91,12 @@
 
 ## Profiling
 
--   A [%g profiler "profiler" %] records how much time is spent on each line of code
+-   A [profiler](g:profiler) records how much time is spent on each line of code
     -   Either by instrumenting it
     -   Or by sampling location periodically
 -   Use Python's [`cProfile`][profile] module
 
-[%inc run_profile_list.py mark="main" %]
+[%inc run_profile_list.py keep=main %]
 
 ---
 
@@ -115,8 +115,8 @@
 -   Start with the punchline and work backward
 
 [% figure
-   slug="perf_lazy"
-   img="./k+lazy+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg"
+   id="perf_lazy"
+   src="./k+lazy+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg"
    caption="Running times for various depths and sizes."
    alt="Line graph showing that the lazy algorithm's performance is nearly flat."
 %]
@@ -133,7 +133,7 @@
     -   Values: coordinates of cells on the border that have that value
 -   On each step:
     -   Find the lowest key
-    -   Choose and fill one of its cells at random (to solve the bias problem of [%x cleanup %])
+    -   Choose and fill of its cells at random to eliminate the bias of [the previous chapter](../04_cleanup/index.md)
     -   Add its unfilled neighbors to `candidates`
 -   Trading space for time
     -   Storing cell values and coordinates is redundant
@@ -145,7 +145,7 @@
 
 -   `GridLazy` constructor
 
-[%inc grid_lazy.py pattern="class:GridLazy meth:__init__" %]
+[%inc grid_lazy.py keep=init %]
 
 ---
 
@@ -156,20 +156,20 @@
     -   Add its neighbors as candidates
     -   Repeatedly choose a cell to fill (stopping if we've reached the boundary)
 
-[%inc grid_lazy.py pattern="class:GridLazy meth:fill" %]
+[%inc grid_lazy.py keep=fill %]
 
 ---
 
 ## Adding Candidates
 
-[%inc grid_lazy.py pattern="class:GridLazy meth:add_candidates" %]
-[%inc grid_lazy.py pattern="class:GridLazy meth:add_one_candidate" %]
+[%inc grid_lazy.py keep=add_candidates %]
+[%inc grid_lazy.py keep=add_one_candidate %]
 
 ---
 
 ## Choosing a Cell
 
-[%inc grid_lazy.py pattern="class:GridLazy meth:choose_cell" %]
+[%inc grid_lazy.py keep=choose_cell %]
 
 ---
 
@@ -188,7 +188,7 @@
 
 ## Exercises {: #lazy-exercises}
 
-1.  [%fixme "add exercises for performance profiling" %]
+1.  FIXME: add exercises for performance profiling
 
 1.  Modify the list and array implementation to collect candidate cells of equal lowest value
     and select one of those.
@@ -197,4 +197,4 @@
     at the start of the program?
     Why or why not?
 
-1.  [%fixme "test lazy approach with randomnmess" %]
+1.  FIXME: test lazy approach with randomnmess

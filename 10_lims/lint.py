@@ -39,16 +39,21 @@ def lint_all(args):
     return messages
 
 
+# [lint_assay]
 def lint_assay(params, filename, data):
     """Run checks on a single assay file."""
     return lint_single_file(params, "_lint_assay_", filename, data)
+# [/lint_assay]
 
 
+# [lint_design]
 def lint_design(params, filename, data):
     """Run checks on a single design file."""
     return lint_single_file(params, "_lint_design_", filename, data)
+# [/lint_design]
 
 
+# [lint_single_file]
 def lint_single_file(params, prefix, filename, data):
     """Do one kind of linting on a single set of files."""
     messages = []
@@ -56,6 +61,7 @@ def lint_single_file(params, prefix, filename, data):
         if name.startswith(prefix) and callable(func):
             messages.extend(func(params, filename, data))
     return messages
+# [/lint_single_file]
 
 
 def load_all_files(dirpath):
@@ -63,9 +69,11 @@ def load_all_files(dirpath):
     return {filename: load_file(filename) for filename in Path(dirpath).iterdir()}
 
 
+# [load_file]
 def load_file(filename):
     """Load design or assay file as numpy array."""
     return np.loadtxt(filename, delimiter=",", dtype="str")
+# [/load_file]
 
 
 def parse_args():
@@ -98,18 +106,22 @@ def _lint_all_match(args):
     return messages
 
 
+# [lint_assay_data_shape]
 def _lint_assay_data_shape(params, filename, data):
     """Check shape of assay data."""
     if data.shape != DATA_SHAPE:
         return [f"assay file {filename} has wrong shape {data.shape}"]
     return []
+# [/lint_assay_data_shape]
 
 
+# [lint_assay_machine_header]
 def _lint_assay_machine_header(params, filename, data):
     """Check shape of assay data."""
     if data[0, 0] != MACHINE_HEADER:
         return [f"assay file {filename} has wrong machine header {data[0, 0]}"]
     return []
+# [/lint_assay_machine_header]
 
 
 def _lint_design_data_contents(params, filename, data):

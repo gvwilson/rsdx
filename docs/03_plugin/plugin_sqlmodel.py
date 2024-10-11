@@ -7,6 +7,7 @@ from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, sele
 import util
 
 
+# [sites]
 class Sites(SQLModel, table=True):
     """Survey sites."""
 
@@ -14,8 +15,10 @@ class Sites(SQLModel, table=True):
     lon: float
     lat: float
     surveys: list["Surveys"] = Relationship(back_populates="site_id")
+# [/sites]
 
 
+# [surveys]
 class Surveys(SQLModel, table=True):
     """Surveys done."""
 
@@ -24,6 +27,7 @@ class Surveys(SQLModel, table=True):
     site: str | None = Field(default=None, foreign_key="sites.site")
     site_id: Sites | None = Relationship(back_populates="surveys")
     samples: list["Samples"] = Relationship(back_populates="label_id")
+# [/surveys]
 
 
 class Samples(SQLModel, table=True):
@@ -37,6 +41,7 @@ class Samples(SQLModel, table=True):
     label_id: Surveys | None = Relationship(back_populates="samples")
 
 
+# [read_data]
 def read_data(dbfile):
     """Read database and do calculations with SQLModel ORM."""
     url = f"sqlite:///{dbfile}"
@@ -55,3 +60,4 @@ def read_data(dbfile):
             "combined": combined,
             "centers": util.centers_with_pandas(combined)
         }
+# [/read_data]

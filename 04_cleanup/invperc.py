@@ -9,14 +9,17 @@ from grid_array import GridArray
 # [/import]
 
 
+# [main]
 def main():
     """Main driver."""
     kind, width, height, depth, seed = setup()
     grid = initialize_grid(kind, width, height, depth)
     grid.fill()
     print_grid(kind, grid, seed)
+# [/main]
 
 
+# [setup]
 def setup():
     """Get parameters."""
     kind = sys.argv[1]
@@ -31,8 +34,10 @@ def setup():
     random.seed(seed)
 
     return kind, width, height, depth, seed
+# [/setup]
 
 
+# [initialize_grid]
 def initialize_grid(kind, width, height, depth):
     """Prepare grid for simulation."""
     lookup = {
@@ -40,8 +45,10 @@ def initialize_grid(kind, width, height, depth):
         "array": GridArray,
     }
     return lookup[kind](width, height, depth)
+# [/initialize_grid]
 
 
+# [print_grid]
 def print_grid(kind, grid, seed, details="full"):
     """Show the result."""
     print(kind, grid.width(), grid.height(), grid.depth(), seed)
@@ -54,6 +61,7 @@ def print_grid(kind, grid, seed, details="full"):
             else:
                 sys.stdout.write("X" if grid[x, y] == 0 else ".")
         sys.stdout.write("\n")
+# [/print_grid]
 
 
 if __name__ == "__main__":

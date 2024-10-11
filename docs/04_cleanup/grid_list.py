@@ -4,6 +4,7 @@ import random
 from grid_generic import GridGeneric
 
 
+# [gridlist]
 class GridList(GridGeneric):
     """Represent grid as list of lists."""
 
@@ -26,3 +27,4 @@ class GridList(GridGeneric):
         """Set value at location."""
         x, y = key
         self._grid[x][y] = value
+# [/gridlist]

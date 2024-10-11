@@ -5,19 +5,19 @@
 -   How do you test a data analysis pipeline?
     -   Unit tests of the kind used for invasion percolation aren't necessarily appropriate
     -   Problem isn't the control flow of the code but how it interacts with data
--   [%b Alexander2023 %]: build a [%g synth_data "synthetic data generator" %]
+-   [Alexander2023](b:Alexander2023): build a [synthetic](g:synth_data)a generator" %]
     -   Check the behavior of the pipeline by pushing data with known properties through it
     -   If it finds something statistically significant in white noise, rethink the pipeline
 -   [Faker][faker] has tools for generating a lot of useful data (we will use it in future chapters)
 -   But it can't generate genomes, so we'll build our own
 
-[%fixme "replace pandas with polars" %]
+FIXME: replace pandas with polars
 
 ---
 
 ## Synthesizing Genomes
 
--   Create some short snail genomes with [%g snp "single-nucleotide polymorphisms" %]
+-   Create some short snail genomes with [single](g:snp)leotide polymorphisms" %]
 -   Output will have:
     -   Length: for now, all sequences the same length)
     -   Reference sequence: the unmutated original
@@ -31,7 +31,7 @@
 
 ## Main Driver
 
-[%inc synthesize_genomes.py pattern=func:main %]
+[%inc synthesize_genomes.py keep=main %]
 
 ---
 
@@ -42,21 +42,21 @@
 -   Determine where SNPs can occur
 -   Introduce significant mutations
 -   Introduce other random mutations
--   Sort for reproducibility [%b Taschuk2017 %]
+-   Sort for reproducibility [Taschuk2017](b:Taschuk2017)
 
 ---
 
 ## Random Genomes
 
-[%inc synthesize_genomes.py pattern=func:random_genomes %]
+[%inc synthesize_genomes.py keep=random_genomes %]
 
 ---
 
 ## Random Bases and Mutations
 
-[%inc synthesize_genomes.py pattern=func:random_bases %]
-[%inc synthesize_genomes.py pattern=func:_mutate_snps %]
-[%inc synthesize_genomes.py pattern=func:_mutate_other %]
+[%inc synthesize_genomes.py keep=random_bases %]
+[%inc synthesize_genomes.py keep=mutate_snps %]
+[%inc synthesize_genomes.py keep=mutate_other %]
 
 ---
 
@@ -79,7 +79,7 @@
 
 -   Main driver should be starting to look familiar
 
-[%inc synthesize_samples.py pattern=func:main %]
+[%inc synthesize_samples.py keep=main %]
 
 ---
 
@@ -95,7 +95,7 @@
 
 ## Geography
 
-[%inc synthesize_samples.py pattern=func:get_geo_params %]
+[%inc synthesize_samples.py keep=get_geo_params %]
 
 ---
 
@@ -103,7 +103,7 @@
 
 -   Generate location and snail size based on genetics and distance
 
-[%inc synthesize_samples.py pattern=func:generate_samples %]
+[%inc synthesize_samples.py keep=generate_samples %]
 
 ---
 
@@ -111,9 +111,9 @@
 
 -   Keep the magic numbers at the top of the file
     -   If we wanted to vary these, would store them as JSON or YAML and load
-    -   In particular, would do this if we were sweeping parameters as in [%x scale %]
+    -   In particular, would do this if we were sweeping parameters as in [the earlier chapter](../06_scale/index.md)
 
-[%inc synthesize_samples.py mark=parameters %]
+[%inc synthesize_samples.py keep=parameters %]
 
 ---
 
@@ -131,8 +131,8 @@
 ## All Our Snails
 
 [% figure
-   slug="mutate_all_scatter"
-   img="all_data_scatter.svg"
+   id="mutate_all_scatter"
+   src="all_data_scatter.svg"
    alt="scatterplot of all readings at all locations"
    caption="Reading as a function of location and base (all)"
 %]
@@ -142,8 +142,8 @@
 ## Snails With Mutations
 
 [% figure
-   slug="mutate_slimmed_scatter"
-   img="slimmed_data_scatter.svg"
+   id="mutate_slimmed_scatter"
+   src="slimmed_data_scatter.svg"
    alt="scatterplot of readings for snails with mutations"
    caption="Reading as a function of location and base (mutants)"
 %]
@@ -153,8 +153,8 @@
 ## Rank Order
 
 [% figure
-   slug="mutate_slimmed_sorted"
-   img="slimmed_data_sorted.svg"
+   id="mutate_slimmed_sorted"
+   src="slimmed_data_sorted.svg"
    alt="rank plot of readings at mutation locations"
    caption="Reading as a function of location (rank order)"
 %]
@@ -173,4 +173,4 @@
 
 ## Exercises
 
-[%fixme "create exercises for data analysis chapter" %]
+FIXME: create exercises for data analysis chapter

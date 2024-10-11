@@ -3,12 +3,14 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from pathlib import Path
 
 
+# [main]
 def main():
     """Parse page and visit nodes."""
     options = parse_args()
     text = Path(options.filename).read_text()
     doc = BeautifulSoup(text, "html.parser")
     visit(doc, options.noblanks)
+# [/main]
 
 
 def parse_args():
@@ -19,6 +21,7 @@ def parse_args():
     return parser.parse_args()
 
 
+# [visit]
 def visit(node, noblanks, depth=0):
     """Show nodes in DOM tree."""
     prefix = "  " * depth
@@ -29,6 +32,7 @@ def visit(node, noblanks, depth=0):
         print(f"{prefix}element: {node.name} with {node.attrs}")
         for child in node:
             visit(child, noblanks, depth+1)
+# [/visit]
 
 
 if __name__ == "__main__":

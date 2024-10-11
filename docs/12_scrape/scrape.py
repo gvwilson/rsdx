@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
+# [main]
 def main():
     """Main driver."""
     args = parse_args()
@@ -14,8 +15,10 @@ def main():
     for link in homepage.find_all("a"):
         result.append(get_info(args, link["href"]))
     print(result)
+# [/main]
 
 
+# [get_info]
 def get_info(args, relative):
     """Get info from staff page."""
     page = get_page(f"{args.homepage}/{relative}")
@@ -25,12 +28,15 @@ def get_info(args, relative):
         count = int(row.find("td").string)
         result[kind] = count
     return result
+# [/get_info]
 
 
+# [get_page]
 def get_page(url):
     """Get HTML page as soup."""
     response = requests.get(url)
     return BeautifulSoup(response.text, "html.parser")
+# [/get_page]
 
 
 def parse_args():

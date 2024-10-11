@@ -7,6 +7,7 @@ from grid_generic import GridGeneric
 class GridListRandomizer(GridGeneric):
     """Represent grid as list of lists."""
 
+    # [init]
     def __init__(self, width, height, depth, rand=random.randint):
         """Construct and fill."""
         super().__init__(width, height, depth)
@@ -17,6 +18,7 @@ class GridListRandomizer(GridGeneric):
             for y in range(self._height):
                 row.append(self._rand(1, depth))
             self._grid.append(row)
+    # [/init]
 
     def __getitem__(self, key):
         """Get value at location."""

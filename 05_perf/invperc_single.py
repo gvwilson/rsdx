@@ -7,6 +7,7 @@ from invperc_util import get_params, initialize_grid, initialize_random
 from params_single import ParamsSingle
 
 
+# [main]
 def main():
     """Main driver."""
     params = get_params(sys.argv[1], ParamsSingle)
@@ -15,6 +16,7 @@ def main():
     num_filled = grid.fill()
     if len(sys.argv) > 2:
         print_grid(params, grid, num_filled, details="full")
+# [/main]
 
 
 def print_grid(params, grid, num_filled, details="brief"):

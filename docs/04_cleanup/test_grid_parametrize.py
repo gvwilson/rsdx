@@ -8,6 +8,7 @@ from grid_array import GridArray
 from grid_list import GridList
 
 
+# [list_parameterizing_classes]
 @pytest.mark.parametrize("cls", [GridArray, GridList])
 def test_grid_list_parameterizing_classes(cls):
     with patch("random.randint", return_value=12345):
@@ -19,3 +20,4 @@ def test_grid_list_parameterizing_classes(cls):
     for x in range(g.width()):
         for y in range(g.height()):
             assert g[x, y] == 12345
+# [/list_parameterizing_classes]

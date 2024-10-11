@@ -28,43 +28,112 @@
 <h2 id="scrape-dom">Documents as Data</h2>
 <ul>
 <li>Parse an HTML page using [Beautiful Soup][bs4]</li>
-<li>Result is a tree called [%g dom "DOM" %] (Document Object Model)<ul>
+<li>Result is a tree called <a href="../glossary.html#dom">DOM</a> (Document Object Model)<ul>
 <li>Nodes are HTML elements or text</li>
 <li>Node attributes are properties of objects</li>
 </ul>
 </li>
 <li>Read a page and visit its nodes</li>
 </ul>
-<p>[%inc parse_page.py pattern=func:main %]</p>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">def main():
+    """Parse page and visit nodes."""
+    options = parse_args()
+    text = Path(options.filename).read_text()
+    doc = BeautifulSoup(text, "html.parser")
+    visit(doc, options.noblanks)
+</code></pre>
 <ul>
-<li>The [%g visitor "Visitor" %] function handles different types of nodes<ul>
+<li>The <a href="../glossary.html#visitor">Visitor</a> function handles different types of nodes<ul>
 <li>If the node is <code>NavigableString</code>, show the text (unless it would be blank and we've been asked not to)</li>
 <li>If it's a <code>Tag</code>, show name and attributes</li>
 </ul>
 </li>
 </ul>
-<p>[%inc parse_page.py pattern=func:visit %]</p>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">def visit(node, noblanks, depth=0):
+    """Show nodes in DOM tree."""
+    prefix = "  " * depth
+    if isinstance(node, NavigableString):
+        if (not noblanks) or node.string.strip():
+            print(f"{prefix}text: {repr(node.string)}")
+    elif isinstance(node, Tag):
+        print(f"{prefix}element: {node.name} with {node.attrs}")
+        for child in node:
+            visit(child, noblanks, depth+1)
+</code></pre>
 <ul>
 <li>Test on a small page</li>
 </ul>
-<p>[%inc small.html %]
-[%inc small.sh %]
-[%inc small.out %]</p>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">&lt;html&gt;
+  &lt;h1&gt;Page Title&lt;/h1&gt;
+  &lt;p&gt;paragraph&lt;/p&gt;
+&lt;/html&gt;
+</code></pre>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">python parse_page.py --filename small.html
+</code></pre>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">element: [document] with {}
+  element: html with {}
+    text: '\n'
+    element: h1 with {}
+      text: 'Page Title'
+    text: '\n'
+    element: p with {}
+      text: 'paragraph'
+    text: '\n'
+  text: '\n'
+</code></pre>
 <ul>
 <li>Try a larger page but don't show text that is just whitespace (newlines and indentation)</li>
 </ul>
-<p>[%inc medium.html %]
-[%inc medium.sh %]
-[%inc medium.out %]</p>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Example Page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Page Title&lt;/h1&gt;
+    &lt;ul class="details"&gt;
+      &lt;li&gt;first point&lt;/li&gt;
+      &lt;li&gt;second point&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">python parse_page.py --filename medium.html --noblanks
+</code></pre>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">element: [document] with {}
+  element: html with {}
+    element: head with {}
+      element: title with {}
+        text: 'Example Page'
+    element: body with {}
+      element: h1 with {}
+        text: 'Page Title'
+      element: ul with {'class': ['details']}
+        element: li with {}
+          text: 'first point'
+        element: li with {}
+          text: 'second point'
+</code></pre>
 <h2 id="scrape-fetch">Fetching</h2>
 <ul>
 <li>Here's the part we already know</li>
 </ul>
-<p>[%inc scrape.py pattern=func:main %]</p>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">def main():
+    """Main driver."""
+    args = parse_args()
+    homepage = get_page(args.homepage)
+    result = []
+    for link in homepage.find_all("a"):
+        result.append(get_info(args, link["href"]))
+    print(result)
+</code></pre>
 <ul>
 <li>Here's the part we don't</li>
 </ul>
-<p>[%inc scrape.py pattern=func:get_page %]</p>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">def get_page(url):
+    """Get HTML page as soup."""
+    response = requests.get(url)
+    return BeautifulSoup(response.text, "html.parser")
+</code></pre>
 <ul>
 <li>Use the [requests][requests] library to fetch a page at a URL</li>
 <li><code>response</code> object has many useful properties<ul>
@@ -74,7 +143,16 @@
 </li>
 <li>And then we pull out information using Beautiful Soup</li>
 </ul>
-<p>[%inc scrape.py pattern=func:get_info %]</p>
+<pre class="language-md"><code class="language-md" file="12_scrape/index.md">def get_info(args, relative):
+    """Get info from staff page."""
+    page = get_page(f"{args.homepage}/{relative}")
+    result = {"name": page.find("h1").string}
+    for row in page.find_all("tr"):
+        kind = row.find("th").string.lower()
+        count = int(row.find("td").string)
+        result[kind] = count
+    return result
+</code></pre>
 </main>
 <footer>
 <a href="../">The Webonomicon</a>

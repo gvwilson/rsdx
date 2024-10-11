@@ -8,11 +8,14 @@ from grid_list import GridList
 class GridLazy(GridList):
     """Only look at cells that might actually be filled next time."""
 
+    # [init]
     def __init__(self, width, height, depth):
         """Construct and fill."""
         super().__init__(width, height, depth)
         self._candidates = {}
+    # [/init]
 
+    # [fill]
     def fill(self):
         """Fill grid one cell at a time."""
         x, y = self.width() // 2, self.height() // 2
@@ -27,7 +30,9 @@ class GridLazy(GridList):
             if self.on_border(x, y):
                 break
         return num_filled
+    # [/fill]
 
+    # [choose_cell]
     def choose_cell(self):
         """Choose the next cell to fill."""
         min_key = min(self._candidates.keys())
@@ -41,14 +46,18 @@ class GridLazy(GridList):
             self._candidates[min_key] = set(available)
         self.add_candidates(*choice)
         return choice
+    # [/choose_cell]
 
+    # [add_candidates]
     def add_candidates(self, x, y):
         """Add candidates around (x, y)."""
         for ix in (x - 1, x + 1):
             self.add_one_candidate(ix, y)
         for iy in (y - 1, y + 1):
             self.add_one_candidate(x, iy)
+    # [/add_candidates]
 
+    # [add_one_candidate]
     def add_one_candidate(self, x, y):
         """Add (x, y) if suitable."""
         if (x < 0) or (x >= self.width()) or (y < 0) or (y >= self.height()):
@@ -60,3 +69,4 @@ class GridLazy(GridList):
         if value not in self._candidates:
             self._candidates[value] = set()
         self._candidates[value].add((x, y))
+    # [/add_one_candidate]

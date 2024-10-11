@@ -8,6 +8,7 @@ from prettytable import PrettyTable
 import shortcodes
 
 
+# [display_csv]
 @shortcodes.register("csv")
 def display_csv(pargs, kwargs, node):
     """Handle [%csv filename %] table inclusion."""
@@ -21,6 +22,7 @@ def display_csv(pargs, kwargs, node):
     tbl = PrettyTable(header=False)
     tbl.add_rows(rows)
     return tbl.get_html_string()
+# [/display_csv]
 
 
 @shortcodes.register("root")

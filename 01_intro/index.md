@@ -9,8 +9,8 @@
 -   Most programming language features exist to manage complexity
 
 [% figure
-   slug="intro-complexity"
-   img="complexity.svg"
+   id="intro-complexity"
+   src="complexity.svg"
    alt="Complexity and size"
    caption="How complexity grows with size."
 %]
@@ -20,8 +20,8 @@
 ## Comprehension
 
 [% figure
-   slug="intro-comprehension"
-   img="comprehension.svg"
+   id="intro-comprehension"
+   src="comprehension.svg"
    alt="Abstract vs. comprehension"
    caption="Abstraction vs. comprehension for novices and experts."
 %]

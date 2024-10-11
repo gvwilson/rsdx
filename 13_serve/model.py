@@ -48,6 +48,7 @@ def get_all(kind):
     return columns, rows
 
 
+# [get_count]
 def get_count(kind):
     """How many entries of the given kind?"""
     conn = sqlite3.connect(os.getenv("RSDX_DB_PATH"))
@@ -61,6 +62,7 @@ def get_count(kind):
         assert False, f"Unknown kind {kind}"
     conn.close()
     return result[0]
+# [/get_count]
 
 
 def get_plate_filename(plate_id):

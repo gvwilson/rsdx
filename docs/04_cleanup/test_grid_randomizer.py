@@ -3,6 +3,7 @@
 from grid_list_randomizer import GridListRandomizer
 
 
+# [list_with_randomizer_function]
 def test_grid_list_with_randomizer_function():
     def r(low, high):
         return 12345
@@ -14,3 +15,4 @@ def test_grid_list_with_randomizer_function():
     for x in range(g.width()):
         for y in range(g.height()):
             assert g[x, y] == 12345
+# [/list_with_randomizer_function]

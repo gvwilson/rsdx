@@ -26,76 +26,229 @@
 <main>
 <h1>A Laboratory Information Management System</h1>
 <ul>
-<li>[%g relational_db "Relational database" %] stores data in tables<ul>
+<li><a href="../glossary.html#relational_db">Relational</a>abase" %] stores data in tables<ul>
 <li>Usually access with SQL or some variant of it</li>
 </ul>
 </li>
-<li>But there are also [%g document_db "document databases" %]<ul>
-<li>Sometimes called [%g nosql "NoSQL" %] databases</li>
+<li>But there are also <a href="../glossary.html#document_db">document</a>abases" %]<ul>
+<li>Sometimes called <a href="../glossary.html#nosql">NoSQL</a> databases</li>
 </ul>
 </li>
-<li>We will build a (very) simple [%g lims "laboratory information management systems" %] (LIMS)
+<li>We will build a (very) simple <a href="../glossary.html#lims">laboratory</a>ormation management systems" %] (LIMS)
     using [TinyDB][tinydb]</li>
 <li>And use [click][click] to build the command-line interface</li>
 </ul>
 <h2 id="lims-perms">Roles and Permissions</h2>
 <ul>
-<li>A user has a [%g uid "UID" %], a personal name, and a family name</li>
-<li>A [%g permission "permission" %] is the right to perform some action<ul>
+<li>A user has a <a href="../glossary.html#uid">UID</a>, a personal name, and a family name</li>
+<li>A <a href="../glossary.html#permission">permission</a> is the right to perform some action<ul>
 <li>Could give permissions directly to users…</li>
 <li>…but experience shows that this becomes unmanageable</li>
 </ul>
 </li>
-<li>Instead, create [%g role "roles" %] that are named collections of permissions and assign roles to users
-    ([%t lims_perms %])</li>
+<li>Instead, create <a href="../glossary.html#role">roles</a> that are named collections of permissions and assign roles to users</li>
 </ul>
-<p>[%table slug="lims_perms" tbl="lims_perms.tbl" caption="Permissions in LIMS" %]</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Capability</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>admin</td>
+<td>view</td>
+<td>all</td>
+</tr>
+<tr>
+<td>admin</td>
+<td>upload</td>
+<td>own</td>
+</tr>
+<tr>
+<td>admin</td>
+<td>validate</td>
+<td>all</td>
+</tr>
+<tr>
+<td>scientist</td>
+<td>view</td>
+<td>all</td>
+</tr>
+<tr>
+<td>scientist</td>
+<td>upload</td>
+<td>own</td>
+</tr>
+<tr>
+<td>intern</td>
+<td>view</td>
+<td>own</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li>Copy data from table of personal and family names</li>
 <li>First person becomes an admin, second an intern, everyone else a scientist</li>
 <li>Main driver:</li>
 </ul>
-<p>[%inc create_db.py pattern=func:main %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def main():
+    """Main driver."""
+    args = parse_args()
+    people = get_people(args.sqlite)
+    with TinyDB(args.tinydb) as db:
+        db.truncate()
+        create_capabilities(db)
+        create_users(db, people)
+        create_roles(db, people)
+</code></pre>
 <ul>
 <li>Get people from SQL table using a row factory</li>
 </ul>
-<p>[%inc create_db.py pattern=func:get_people %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def get_people(sqlite):
+    """Get people from SQLite database."""
+    con = sqlite3.connect(sqlite)
+    con.row_factory = sqlite3.Row
+    rows = con.execute("select personal, family from staff").fetchall()
+    return [
+        {
+            "uid": f"{r['personal'][0].lower()}.{r['family'].lower()}",
+            "personal": r["personal"],
+            "family": r["family"],
+        }
+        for r in rows
+    ]
+</code></pre>
 <ul>
 <li>Create capabilities in TinyDB</li>
 </ul>
-<p>[%inc create_db.py mark=capabilities %]
-[%inc create_db.py pattern=func:create_capabilities %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">CAPABILITIES = [
+    {"role": "admin", "capability": "view", "scope": "all"},
+    {"role": "admin", "capability": "upload", "scope": "own"},
+    {"role": "admin", "capability": "validate", "scope": "all"},
+    {"role": "scientist", "capability": "view", "scope": "all"},
+    {"role": "scientist", "capability": "upload", "scope": "own"},
+    {"role": "intern", "capability": "view", "scope": "own"},
+]
+</code></pre>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def create_capabilities(db):
+    """Create capabilities in database."""
+    capabilities = db.table("capabilities")
+    capabilities.truncate()
+    for cap in CAPABILITIES:
+        capabilities.insert(cap)
+</code></pre>
 <ul>
 <li>Resulting JSON<ul>
 <li>Yes, this is really just a rectangular table stored as JSON</li>
 </ul>
 </li>
 </ul>
-<p>[%inc capabilities.json %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">{
+  "1": {
+    "role": "admin",
+    "capability": "view",
+    "scope": "all"
+  },
+  "2": {
+    "role": "admin",
+    "capability": "upload",
+    "scope": "own"
+  },
+  "3": {
+    "role": "admin",
+    "capability": "validate",
+    "scope": "all"
+  },
+  "4": {
+    "role": "scientist",
+    "capability": "view",
+    "scope": "all"
+  },
+  "5": {
+    "role": "scientist",
+    "capability": "upload",
+    "scope": "own"
+  },
+  "6": {
+    "role": "intern",
+    "capability": "view",
+    "scope": "own"
+  }
+}
+</code></pre>
 <ul>
 <li>Similar to create people and roles, e.g.:</li>
 </ul>
-<p>[%inc person.json %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">{
+  "uid": "n.bhakta",
+  "personal": "Nitya",
+  "family": "Bhakta"
+}
+</code></pre>
 <h2 id="lims-actions">Actions</h2>
 <ul>
 <li>Create a dataclass to represent assay data</li>
 </ul>
-<p>[%inc assay_params.py pattern=class:Params %]
-[%inc assay_params.py pattern=func:load_params %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">@dataclass
+class Params:
+    """Parameters for assay data."""
+
+    treatment: str = None
+    controls: List[str] = field(default_factory=list)
+</code></pre>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def load_params(filename):
+    """Load parameters from file."""
+    return Params(**json.loads(Path(filename).read_text()))
+</code></pre>
 <ul>
 <li>Then create a group of commands with click</li>
 </ul>
-<p>[%inc lims.py pattern=func:cli %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">@click.group()
+def cli():
+    """Interact with laboratory data."""
+</code></pre>
 <ul>
 <li>Now define a command to upload</li>
 </ul>
-<p>[%inc lims.py pattern=func:upload %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">@cli.command()
+@click.option("--db", type=str, required=True, help="Database")
+@click.option("--assay", type=str, required=True, help="Assay filename")
+@click.option("--design", type=str, required=True, help="Design filename")
+@click.option("--params", type=str, required=True, help="Parameters filename")
+@click.option("--user", type=str, required=True, help="User ID")
+def upload(db, user, params, design, assay):
+    """Upload design and assay files."""
+    params = assay_params.load_params(params)
+    design_data = lint.load_file(design)
+    assay_data = lint.load_file(assay)
+    errors = [
+        *lint.lint_design(params, design, design_data),
+        *lint.lint_assay(params, assay, assay_data),
+    ]
+    _require_no_errors(errors)
+
+    with TinyDB(db) as db:
+        _require_exists(db, "user", user)
+        cap = _get_capability(db, user, "upload")
+        _require_cap(cap == "own", f"{user} cannot upload")
+        assay_id = _upload_data(db, user, design, assay)
+        click.echo(assay_id)
+</code></pre>
 <ul>
 <li>That's a lot of decorators…</li>
 <li>Each <code>@click.option</code> defines a flag for the <code>upload</code> command</li>
 <li>Run like this</li>
 </ul>
-<p>[%inc upload.sh %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">python lims.py upload \
+    --db lims.json \
+    --assay ./assays/fff9b2d6.csv \
+    --design ./designs/fff9b2d6.csv \
+    --params assays.json \
+    --user s.bansal
+</code></pre>
 <ul>
 <li>Top half of <code>upload</code> loads data and checks for errors<ul>
 <li>Discuss below</li>
@@ -104,39 +257,122 @@
 <li>Bottom half interacts with database</li>
 <li>Make sure the user exists</li>
 </ul>
-<p>[%inc lims.py pattern=func:_require_exists %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def _require_exists(db, kind, value):
+    """Check existence of something in database."""
+    q = Query()
+    match kind:
+        case "upload":
+            found = db.table("uploads").get(doc_id=value)
+            if found is not None:
+                return found
+
+        case "user":
+            found = db.table("users").search(q.uid == value)
+            if len(found) &gt; 1:
+                raise ClickException(f"data integrity error: multiple {kind}: {value}")
+            if len(found) == 1:
+                return found[0]
+
+        case other:
+            raise ClickException(f"internal error: unknown kind {kind}")
+
+    raise ClickException(f"No such {kind}: '{value}'")
+</code></pre>
 <ul>
 <li>Get the user's capabilities</li>
 </ul>
-<p>[%inc lims.py pattern=func:_get_capability %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def _get_capability(db, user, kind):
+    """Find capability."""
+    results = db.table("users").search(Query().uid == user)
+    if len(results) != 1:
+        raise ClickException(f"unknown user {user}")
+
+    roles = db.table("roles").search(Query().uid == user)
+    if len(results) != 1:
+        raise ClickException(f"user {user} has no role")
+    role = roles[0]["role"]
+
+    q = Query()
+    capabilities = db.table("capabilities").search(
+        (q.role == role) &amp; (q.capability == kind)
+    )
+    if not capabilities:
+        return None
+    if len(capabilities) &gt; 1:
+        caps = ", ".join(str(c) for c in capabilities)
+        raise ClickException(
+            f"duplicate capabilities for user {user} and kind {kind}: {caps}"
+        )
+    return capabilities[0]["scope"]
+</code></pre>
 <ul>
 <li>Check that the user has the required capability</li>
 </ul>
-<p>[%inc lims.py pattern=func:_require_cap %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def _require_cap(condition, message):
+    """Check condition and raise exception."""
+    if not condition:
+        raise ClickException(f"permission error: {message}")
+</code></pre>
 <ul>
 <li><em>Then</em> upload the data</li>
 </ul>
-<p>[%inc lims.py pattern=func:_upload_data %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def _upload_data(db, user, design_file, assay_file):
+    """Upload validated data."""
+    timestamp = get_timestamp()
+    doc_id = db.table("uploads").insert(
+        {"timestamp": timestamp, "uid": user, "design": design_file, "assay": assay_file}
+    )
+    db.table("status").insert(
+        {"upload": doc_id, "uid": user, "status": "created", "timestamp": timestamp}
+    )
+    return doc_id
+</code></pre>
 <h2 class="lims-lint">Linting</h2>
 <ul>
 <li>Take a closer look at error checking</li>
 <li>First, get the data as a dataframe</li>
 </ul>
-<p>[%inc lint.py pattern=func:load_file %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def load_file(filename):
+    """Load design or assay file as numpy array."""
+    return np.loadtxt(filename, delimiter=",", dtype="str")
+</code></pre>
 <ul>
 <li>Next, build framework for checks</li>
 </ul>
-<p>[%inc lint.py pattern=func:lint_assay %]
-[%inc lint.py pattern=func:lint_design %]
-[%inc lint.py pattern=func:lint_single_file %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def lint_assay(params, filename, data):
+    """Run checks on a single assay file."""
+    return lint_single_file(params, "_lint_assay_", filename, data)
+</code></pre>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def lint_design(params, filename, data):
+    """Run checks on a single design file."""
+    return lint_single_file(params, "_lint_design_", filename, data)
+</code></pre>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def lint_single_file(params, prefix, filename, data):
+    """Do one kind of linting on a single set of files."""
+    messages = []
+    for name, func in globals().items():
+        if name.startswith(prefix) and callable(func):
+            messages.extend(func(params, filename, data))
+    return messages
+</code></pre>
 <ul>
 <li>Now define functions that do checks<ul>
 <li>Will be picked up automatically</li>
 </ul>
 </li>
 </ul>
-<p>[%inc lint.py pattern=func:_lint_assay_data_shape %]
-[%inc lint.py pattern=func:_lint_assay_machine_header %]</p>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def _lint_assay_data_shape(params, filename, data):
+    """Check shape of assay data."""
+    if data.shape != DATA_SHAPE:
+        return [f"assay file {filename} has wrong shape {data.shape}"]
+    return []
+</code></pre>
+<pre class="language-md"><code class="language-md" file="10_lims/index.md">def _lint_assay_machine_header(params, filename, data):
+    """Check shape of assay data."""
+    if data[0, 0] != MACHINE_HEADER:
+        return [f"assay file {filename} has wrong machine header {data[0, 0]}"]
+    return []
+</code></pre>
 <h2 class="lims-eval">Evaluation</h2>
 <ul>
 <li>What makes this different from "commit data to version control"<ol>

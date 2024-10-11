@@ -6,12 +6,14 @@ from grid_generic import GridGeneric
 class GridFilled(GridGeneric):
     """Represent grid as list of lists and fill values."""
 
+    # [init]
     def __init__(self, width, height, depth, values):
         """Construct and fill."""
         assert len(values) == width
         assert all(len(col) == height for col in values)
         super().__init__(width, height, depth)
         self._grid = [col[:] for col in values]
+    # [/init]
 
     def __getitem__(self, key):
         """Get value at location."""

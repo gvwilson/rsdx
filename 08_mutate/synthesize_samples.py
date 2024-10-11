@@ -20,6 +20,7 @@ SNAIL_PRECISION = 1
 # [/parameters]
 
 
+# [main]
 def main():
     """Main driver."""
     args = parse_args()
@@ -28,8 +29,10 @@ def main():
     geo_params = get_geo_params(args)
     samples = generate_samples(args, genomes, geo_params)
     save(args, samples)
+# [/main]
 
 
+# [generate_samples]
 def generate_samples(args, genomes, geo_params):
     """Generate snail samples."""
     samples = []
@@ -51,8 +54,10 @@ def generate_samples(args, genomes, geo_params):
     df["reading"] = df["reading"].round(SNAIL_PRECISION)
 
     return df
+# [/generate_samples]
 
 
+# [get_geo_params]
 def get_geo_params(args):
     """Get geographic parameters."""
     sites = pd.read_csv(Path(args.paramsdir, "sites.csv"))
@@ -64,6 +69,7 @@ def get_geo_params(args):
         "lat": filtered["lat"],
         "radius": filtered["radius"],
     }
+# [/get_geo_params]
 
 
 def parse_args():

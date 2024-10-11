@@ -3,7 +3,7 @@
 ## The Problem
 
 -   Refactor and test a program that (kind of) works to create something sturdier
--   Program models [%g inv_perc "invasion percolation" %]
+-   Program models [invasion](g:inv_perc)colation" %]
     -   Grid of random numbers
     -   Fill the center cell
     -   Repeatedly:
@@ -16,9 +16,9 @@
 
 ## Main Body of Original Script
 
--   Note: [%g rng_seed "random number seed" %] is optional
+-   Note: [random](g:rng_seed)ber seed" %] is optional
 
-[%inc script.py mark=main %]
+[%inc script.py keep=main %]
 
 ---
 
@@ -27,7 +27,7 @@
 -   Make a grid as a list of lists
     -   Has a docstring
 
-[%inc script.py pattern=func:make_grid %]
+[%inc script.py keep=make_grid %]
 
 ---
 
@@ -35,7 +35,7 @@
 
 -   Sweep the whole grid
 
-[%inc script.py pattern=func:choose_cell %]
+[%inc script.py keep=choose_cell %]
 
 ---
 
@@ -43,7 +43,7 @@
 
 -   Test adjacency
 
-[%inc script.py pattern=func:adjacent %]
+[%inc script.py keep=adjacent %]
 
 ---
 
@@ -51,7 +51,7 @@
 
 -   We also need to test if we're on the border
 
-[%inc script.py pattern=func:on_border %]
+[%inc script.py keep=on_border %]
 
 ---
 
@@ -59,7 +59,7 @@
 
 -   And finally, show the result
 
-[%inc script.py pattern=func:print_grid %]
+[%inc script.py keep=print_grid %]
 
 ---
 
@@ -76,7 +76,7 @@
 
 -   Main function
 
-[%inc invperc.py pattern=func:main %]
+[%inc invperc.py keep=main %]
 
 ---
 
@@ -85,7 +85,7 @@
 -   Relies on a setup function
     -  Can easily replace this in future with something that reads parameters from a file
 
-[%inc invperc.py pattern=func:setup %]
+[%inc invperc.py keep=setup %]
 
 ---
 
@@ -93,12 +93,12 @@
 
 -   We're going to build (at least) two grid classes, so import both here
 
-[%inc invperc.py mark=import %]
+[%inc invperc.py keep=import %]
 
 -   Initialization relies on the grid's constructor
     -   All grids take the same parameters in the same order
 
-[%inc invperc.py pattern=func:initialize_grid %]
+[%inc invperc.py keep=initialize_grid %]
 
 ---
 
@@ -107,18 +107,18 @@
 -   Keep printing here
     -   Could have grids print themselves
 
-[%inc invperc.py pattern=func:print_grid %]
+[%inc invperc.py keep=print_grid %]
 
 ---
 
 ## Generic Grids
 
--   First grid is an [%g abc "abstract base class" %]
+-   First grid is an [abstract](g:abc)e class" %]
     -   Defines common behaviors
-    -   Declaring [%g abstract_method "abstract methods" %]
+    -   Declaring [abstract](g:abstract_method)hods" %]
         forces derived classes to provide a way to get and set item by location
 
-[%inc grid_generic.py mark=main %]
+[%inc grid_generic.py keep=main %]
 
 ---
 
@@ -128,7 +128,7 @@
     -   Including the ones the derived classes have to implement
 -   E.g. filling
 
-[%inc grid_generic.py pattern="class:GridGeneric meth:fill" %]
+[%inc grid_generic.py keep=fill %]
 
 ---
 
@@ -137,13 +137,13 @@
 -   Relying on interface allows us to implement equality test
     between grids with different underlying data representations
 
-[%inc grid_generic.py pattern="class:GridGeneric meth:__eq__" %]
+[%inc grid_generic.py keep=eq %]
 
 ---
 
 ## List-Based Grid
 
-[%inc grid_list.py pattern="class:GridList" %]
+[%inc grid_list.py keep=gridlist %]
 
 ---
 
@@ -151,7 +151,7 @@
 
 -   And another that uses a NumPy array
 
-[%inc grid_array.py pattern="class:GridArray" %]
+[%inc grid_array.py keep=gridarray %]
 
 ---
 
@@ -161,8 +161,8 @@
     -   But we don't know if we're getting the actual values from the grid because they're random
     -   And repeating the test for different classes is error-prone as well as annoying
 
-[%inc test_grid_start.py pattern=func:test_grid_array_constructed_correctly %]
-[%inc test_grid_start.py pattern=func:test_grid_list_constructed_correctly %]
+[%inc test_grid_start.py keep=array_constructed_correctly %]
+[%inc test_grid_start.py keep=list_constructed_correctly %]
 
 ---
 
@@ -171,7 +171,7 @@
 -   Create a new class `GridListRandomizer` that takes a number generator as a constructor parameter
     -   Generate a grid filled with known values for testing
 
-[%inc grid_list_randomizer.py pattern="class:GridListRandomizer meth:__init__" %]
+[%inc grid_list_randomizer.py keep=init %]
 
 ---
 
@@ -179,7 +179,7 @@
 
 -   Test looks better
 
-[%inc test_grid_randomizer.py pattern="func:test_grid_list_with_randomizer_function" %]
+[%inc test_grid_randomizer.py keep=list_with_randomizer_function %]
 
 -   But we're no longer testing our actual grid class
     -   Could add extra arguments for all sorts of things to all our classes, but that's a lot of work
@@ -188,18 +188,18 @@
 
 ## Better Tools: Mock Objects
 
--   `test_grid_mock.py` replaces the random number generator with a [%g mock_object "mock object" %]
+-   `test_grid_mock.py` replaces the random number generator with a [mock](g:mock_object)ect" %]
     without modifying the grid class
 
-[%inc test_grid_mock.py pattern="func:test_grid_list_patching_randomization" %]
+[%inc test_grid_mock.py keep=list_patching_randomization %]
 
 ---
 
 ## Better Tools: Parameterized Tests
 
--   `test_grid_parametrize.py` [%g parameterize_test "parameterizes" %] the test across both classes
+-   `test_grid_parametrize.py` [parameterizes](g:parameterize_test) the test across both classes
 
-[%inc test_grid_parametrize.py pattern="func:test_grid_list_parameterizing_classes" %]
+[%inc test_grid_parametrize.py keep=list_parameterizing_classes %]
 
 ---
 
@@ -207,7 +207,7 @@
 
 -   `grid_filled.py` defines `GridFilled`, which we can populate with whatever data we want
 
-[%inc grid_filled.py pattern="class:GridFilled meth:__init__" %]
+[%inc grid_filled.py keep=init %]
 
 ---
 
@@ -215,11 +215,11 @@
 
 -   `test_grid_filled.py` starts by testing that filling from specified works correctly
 
-[%inc test_grid_filled.py pattern="func:test_explicit_filling_fills_correctly" %]
+[%inc test_grid_filled.py keep=explicit_filling_fills_correctly %]
 
 -   Add test for filling grid by creating deterministic filling path
 
-[%inc test_grid_filled.py pattern="func:test_filling_with_straight_run_to_edge" %]
+[%inc test_grid_filled.py keep=filling_with_straight_run_to_edge %]
 
 ---
 
@@ -228,7 +228,7 @@
 -   But suddenly realize: what happens when several fillable cells have the same value?
     -   `fill_grid` always chooses the first one it encounters in this case
     -   So filling has a bias toward the (0,0) corner of the grid
--   [%x perf %] will tackle this problem
+-   [The next chapter](../05_perf/index.md) will tackle this problem
 -   But first, let's see how fast our code is…
 
 ---

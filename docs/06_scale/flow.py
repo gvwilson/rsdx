@@ -15,20 +15,23 @@ from params_single import ParamsSingle
 from params_sweep import ParamsSweep
 
 
-# [start]
+# [class]
 class InvPercFlow(FlowSpec):
     """Metaflow for invasion percolation."""
 
     sweep = Parameter("sweep", help="parameter file", type=str, required=True)
-# [/start]
+# [/class]
 
+# [start]
     @step
     def start(self):
         """Collect parameters and run jobs."""
         sweep = load_params(self.sweep)
         self.args = make_sweeps(sweep)
         self.next(self.run_job, foreach="args")
+# [/start]
 
+# [run_job]
     @step
     def run_job(self):
         """Run a sweep with one set of parameters."""
@@ -40,7 +43,9 @@ class InvPercFlow(FlowSpec):
             "dimension": measure_dimension(grid),
         }
         self.next(self.join)
+# [/run_job]
 
+# [join]
     @step
     def join(self, inputs):
         """Combine results from all sweeps."""
@@ -63,7 +68,9 @@ class InvPercFlow(FlowSpec):
             "densities": densities,
         }
         self.next(self.end)
+# [/join]
 
+# [end]
     @step
     def end(self):
         """Report results."""
@@ -73,13 +80,17 @@ class InvPercFlow(FlowSpec):
             dim = self.results["dimensions"][key] / count
             table.append((size, depth, count, dim, *self.results["densities"][key]))
         csv.writer(sys.stdout, lineterminator="\n").writerows(table)
+# [/end]
 
 
+# [load_params]
 def load_params(filename):
     """Get sweep parameters from file."""
     return ParamsSweep(**json.loads(Path(filename).read_text()))
+# [/load_params]
 
 
+# [make_sweeps]
 def make_sweeps(sweeps):
     """Convert sweep parameters into individual jobs."""
     random.seed(sweeps.seed)
@@ -96,6 +107,7 @@ def make_sweeps(sweeps):
                     )
                 )
     return result
+# [/make_sweeps]
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ from random import randint, randrange, seed as randseed
 import sys
 
 
+# [make_grid]
 def make_grid(width, height, depth):
     """Create a width X height grid."""
     grid = []
@@ -13,8 +14,10 @@ def make_grid(width, height, depth):
             row.append(randint(1, depth))
         grid.append(row)
     return grid
+# [/make_grid]
 
 
+# [choose_cell]
 def choose_cell(grid):
     """Choose the next cell to fill in."""
     least, cx, cy = None, None, None
@@ -27,8 +30,10 @@ def choose_cell(grid):
             if (least is None) or ((temp != 0) and (temp < least)):
                 least, cx, cy = temp, x, y
     return cx, cy
+# [/choose_cell]
 
 
+# [adjacent]
 def adjacent(grid, x, y):
     """Is (x, y) adjacent to a filled cell?"""
     x_1, y_1 = x + 1, y + 1
@@ -41,8 +46,10 @@ def adjacent(grid, x, y):
     if (y_1 < len(grid[x])) and (grid[x][y_1] == 0):
         return True
     return False
+# [/adjacent]
 
 
+# [on_border]
 def on_border(width, height, x, y):
     """Is this cell on the border of the grid?"""
     if (x == 0) or (x == width - 1):
@@ -50,8 +57,10 @@ def on_border(width, height, x, y):
     if (y == 0) or (y == height - 1):
         return True
     return False
+# [/on_border]
 
 
+# [print_grid]
 def print_grid(grid, width, height, depth, seed, as_numbers=False):
     """Show the result."""
     print(width, height, depth, seed)
@@ -63,6 +72,7 @@ def print_grid(grid, width, height, depth, seed, as_numbers=False):
             else:
                 sys.stdout.write("X" if grid[x][y] == 0 else ".")
         sys.stdout.write("\n")
+# [/print_grid]
 
 
 # [main]

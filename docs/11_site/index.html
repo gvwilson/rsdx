@@ -28,7 +28,7 @@
 <ul>
 <li>Sharing knowledge is the last and most important step of scientific research</li>
 <li>Journals may require a PDF, but a website will get more readers</li>
-<li>Use a [%g ssg "static site generator" %] to create one</li>
+<li>Use a <a href="../glossary.html#ssg">static</a>e generator" %] to create one</li>
 <li>We will use [Ark][ark] (the same tool used to create this site)</li>
 </ul>
 <h2 id="website-elements">Site Elements</h2>
@@ -38,10 +38,27 @@
 </ul>
 </li>
 </ul>
-<p>[%inc site/config.py %]</p>
+<pre class="language-md"><code class="language-md" file="11_site/index.md">"""Ark configuration file."""
+
+title = "Snail Percolation"
+data_dir = "data"
+
+theme = "snails"
+src_dir = "src"
+out_dir = "docs"
+extension = "/"
+
+markdown_settings = {
+    "extensions": [
+        "markdown.extensions.extra",
+        "markdown.extensions.smarty",
+        "pymdownx.superfences",
+    ]
+}
+</code></pre>
 <ul>
 <li>
-<p>[%g ssg_theme "Theme" %] lives in <code>lib/<em>theme</em></code></p>
+<p><a href="../glossary.html#ssg_theme">Theme</a> lives in <code>lib/<em>theme</em></code></p>
 <ul>
 <li><code>extensions</code>: Python to add features (discussed below)</li>
 <li><code>resources</code>: CSS and image files copied over as-is</li>
@@ -52,39 +69,82 @@
 <p>Markdown files with <code>.md</code> extension are turned into HTML</p>
 </li>
 </ul>
-<p>[%inc site/src/index.md %]</p>
+<pre class="language-md"><code class="language-md" file="11_site/index.md">This is the home page.
+</code></pre>
 <ul>
-<li>Transformation relies on a [%g ssg_template "template" %]</li>
+<li>Transformation relies on a <a href="../glossary.html#ssg_template">template</a></li>
 <li>We use [Jinja][jinja]</li>
 </ul>
-<p>[%inc site/lib/snails/templates/node.jinja %]</p>
+<pre class="language-md"><code class="language-md" file="11_site/index.md">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;link rel="stylesheet" href="@root/style.css"&gt;
+    &lt;title&gt;{{ site.title }}{% if node.title %}: {{ node.title }}{% endif %}&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-11"&gt;
+    &lt;h1&gt;{{ site.title }}{% if node.title %}: {{ node.title }}{% endif %}&lt;/h1&gt;
+    {{ inc.menu }}
+      &lt;/div&gt;
+      &lt;div class="col-1"&gt;
+    &lt;p&gt;
+      &lt;img src="@root/snail.svg" alt="Snail logo" width="80%" /&gt;
+    &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+{{ node.html }}
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 <ul>
 <li><code>@root</code> is turned into the path to the root of the generated site</li>
-<li><code>{{<em>variable</em>}}</code> is [%g interpolation "interpolated" %]<ul>
+<li><code>{{<em>variable</em>}}</code> is <a href="../glossary.html#interpolation">interpolated</a><ul>
 <li><code>site.<em>name</em></code> picks up variables from site configuration</li>
 <li><code>page.<em>name</em></code> picks up variables from page header</li>
 <li><code>{% if <em>condition</em> %}…{% endif %}</code> is conditional</li>
 </ul>
 </li>
 </ul>
-<p>[%inc site/src/credits.md %]</p>
+<pre class="language-md"><code class="language-md" file="11_site/index.md">---
+title: Credits
+---
+
+-   Snail logo by [anarres](https://openclipart.org/artist/anarres)
+</code></pre>
 <h2 id="website-customize">Customizing</h2>
 <ul>
 <li>SSGs weren't designed with researchers' needs in mind</li>
-<li>Write our own extensions for things we need and register them as [%g shortcode "shortcodes" %]</li>
+<li>Write our own extensions for things we need and register them as <a href="../glossary.html#shortcode">shortcodes</a></li>
 <li>What we want:</li>
 </ul>
-<p>[%inc site/src/result.md %]</p>
+<pre class="language-md"><code class="language-md" file="11_site/index.md">---
+title: Analysis Results
+---
+
+[%csv 3fd8cbb7.csv %]
+</code></pre>
 <ul>
 <li>Code for the extension</li>
 </ul>
-<p>[%inc site/lib/snails/extensions/codes.py pattern=func:display_csv %]</p>
-<p>[% figure
-   slug="webiste_screenshot"
-   img="website_screenshot.svg"
-   alt="screenshot of generated page"
-   caption="Generated page."
-%]</p>
+<pre class="language-md"><code class="language-md" file="11_site/index.md">@shortcodes.register("csv")
+def display_csv(pargs, kwargs, node):
+    """Handle [%csv filename %] table inclusion."""
+    assert (len(pargs) == 1) and (
+        not kwargs
+    ), f"Bad 'csv' shortcode with {pargs} and {kwargs} in {node}"
+    filepath = Path(ark.site.config["data_dir"], pargs[0])
+    assert filepath.exists(), f"CSV file {filepath} not found"
+    with open(filepath, "r") as raw:
+        rows = [[val if val else "…" for val in row] for row in csv.reader(raw)]
+    tbl = PrettyTable(header=False)
+    tbl.add_rows(rows)
+    return tbl.get_html_string()
+</code></pre>
+<figure id="webiste_screenshot">
+<img alt="screenshot of generated page" src="website_screenshot.svg"/>
+<figcaption>Generated page.</figcaption>
+</figure>
 </main>
 <footer>
 <a href="../">The Webonomicon</a>

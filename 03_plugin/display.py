@@ -11,6 +11,7 @@ import plotly.express as px
 FIG_SIZE = 600
 
 
+# [main]
 def main():
     """Main driver."""
     args = parse_args()
@@ -22,8 +23,10 @@ def main():
     check(tables)
     _, values = tables.popitem()
     make_figures(args, values["combined"], values["centers"])
+# [/main]
 
 
+# [check]
 def check(tables):
     """Check all tables against each other."""
     ref_key = None
@@ -37,6 +40,7 @@ def check(tables):
             for sub_key in tables[ref_key]:
                 if len(tables[ref_key][sub_key]) != len(tables[key][sub_key]):
                     print(f"mis-match in {sub_key}: {ref_key} != {key}")
+# [/check]
 
 
 def make_figures(args, combined, centers):
@@ -57,12 +61,14 @@ def make_figures(args, combined, centers):
             fig.show()
 
 
+# [parse_args]
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--figdir", type=str, help="output dir")
     parser.add_argument("--plugins", type=str, required=True, help="config")
     return parser.parse_args()
+# [/parse_args]
 
 
 if __name__ == "__main__":

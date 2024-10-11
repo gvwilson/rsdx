@@ -42,7 +42,7 @@
 
 -   Next file has a blank line between header and readings
 
-[%inc COW.csv ellipsis=True %]
+[%inc COW.csv %]
 
 -   And another one has *two* blank lines between the header and the data
 
@@ -68,7 +68,7 @@
     -   Read from standard input or a file (processing as we read)
     -   Write to standard output or a file
 
-[%inc parse.py pattern=func:main %]
+[%inc parse.py keep=main %]
 
 ---
 
@@ -76,7 +76,7 @@
 
 -   Use `argparse` module to parse arguments
 
-[%inc parse.py pattern=func:parse_args %]
+[%inc parse.py keep=parse_args %]
 
 ---
 
@@ -88,21 +88,21 @@
     -   Normalize the body (i.e., adjust indentation if necessary)
     -   Create dataframe
 
-[%inc parse.py pattern=func:load %]
+[%inc parse.py keep=load %]
 
 ---
 
 ## Finite State Machine
 
 -   Splitting is the hardest part
--   Manage complexity with a a [%g fsm "finite state machine" %]
+-   Manage complexity with a a [finite](g:fsm)te machine" %]
     1.  Reading header
     2.  Searching for body
     3.  Reading body
     4.  Done
 -   Use an enumeration to keep track of these
 
-[%inc parse.py pattern=class:State %]
+[%inc parse.py keep=state %]
 
 ---
 
@@ -119,7 +119,7 @@
 
 ## Structure
 
-[%inc parse.py pattern=func:split %]
+[%inc parse.py keep=split %]
 
 ---
 
@@ -128,15 +128,15 @@
 -   To normalize the body, check indentation of first row
     -   Really should confirm indentation of remaining rows
 
-[%inc parse.py pattern=func:normalize %]
+[%inc parse.py keep=normalize %]
 
 ---
 
 ## What We Have Now
 
 [% figure
-   slug="parse_call_tree"
-   img="call_tree.svg"
+   id="parse_call_tree"
+   src="call_tree.svg"
    alt="Call tree of completed parser"
    caption="Parser call tree"
 %]

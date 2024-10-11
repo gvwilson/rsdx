@@ -2,7 +2,7 @@
 
 -   Time to do our literature survey
 -   Want to search the abstracts of over 2000 papers
--   Use [%g tf_idf "term frequency - inverse document frequency" %] (TF-IDF)
+-   Use [term](g:tf_idf)quency - inverse document frequency" %] (TF-IDF)
     -   Term frequency: frequency of each word in each document
     -   Document frequency: proportion of documents in which a word appears
     -   Inverse document frequency: one over that (i.e., how specific the word is)
@@ -13,12 +13,12 @@
 -   [PyAlex][pyalex] provides a Python interface
 -   Copy, paste, and tweak example
 
-[%inc fetch_bib_data.py pattern=func:main %]
+[%inc fetch_bib_data.py keep=main %]
 
 -   Additional definitions
 
-[%inc fetch_bib_data.py mark=const %]
-[%inc fetch_bib_data.py pattern=func:parse_args %]
+[%inc fetch_bib_data.py keep=const %]
+[%inc fetch_bib_data.py keep=parse_args %]
 
 -   Produces 2192 JSON files
 
@@ -28,32 +28,32 @@
 
 -   Usual main driver
 
-[%inc make_index.py pattern=func:main %]
+[%inc make_index.py keep=main %]
 
 -   Reading abstracts from JSON is the simple part
 
-[%inc make_index.py pattern=func:read_abstracts %]
+[%inc make_index.py keep=read_abstracts %]
 
 -   Getting words is a bit of a hack
     -   For now, remove punctuation and hope for the best
 
-[%inc make_index.py pattern=func:get_words %]
+[%inc make_index.py keep=get_words %]
 
 -   Calculate term frequency
 
-[%inc make_index.py pattern=func:calculate_tf %]
+[%inc make_index.py keep=calculate_tf %]
 
 -   Calculate inverse document frequency
 
-[%inc make_index.py pattern=func:calculate_idf %]
+[%inc make_index.py keep=calculate_idf %]
 
 -   Combine values
 
-[%inc make_index.py pattern=func:calculate_tf_idf %]
+[%inc make_index.py keep=calculate_tf_idf %]
 
 -   And save as CSV
 
-[%inc make_index.py pattern=func:save %]
+[%inc make_index.py keep=save %]
 
 -   258,000 distinct terms (!)
     -   Of which several thousand contain non-Latin characters
