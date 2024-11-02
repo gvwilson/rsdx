@@ -18,7 +18,30 @@
 
 -   Note: [random](g:rng_seed)ber seed" %] is optional
 
-[%inc script.py keep=main %]
+```{data-file="script.py:main"}
+# Grid size and range of fill values.
+width, height, depth = (int(x) for x in sys.argv[1:4])
+
+# Random number generation.
+seed = int(sys.argv[4]) if len(sys.argv) > 4 else randrange(sys.maxsize)
+randseed(seed)
+
+# Create initial grid
+grid = make_grid(width, height, depth)
+
+# Fill central cell.
+grid[width // 2][height // 2] = 0
+
+# Fill other cells.
+while True:
+    x, y = choose_cell(grid)
+    grid[x][y] = 0
+    if on_border(width, height, x, y):
+        break
+
+# Show result.
+print_grid(grid, width, height, depth, seed)
+```
 
 ---
 
@@ -27,7 +50,17 @@
 -   Make a grid as a list of lists
     -   Has a docstring
 
-[%inc script.py keep=make_grid %]
+```{data-file="script.py:make_grid"}
+def make_grid(width, height, depth):
+    """Create a width X height grid."""
+    grid = []
+    for x in range(width):
+        row = []
+        for y in range(height):
+            row.append(randint(1, depth))
+        grid.append(row)
+    return grid
+```
 
 ---
 
@@ -35,7 +68,20 @@
 
 -   Sweep the whole grid
 
-[%inc script.py keep=choose_cell %]
+```{data-file="script.py:choose_cell"}
+def choose_cell(grid):
+    """Choose the next cell to fill in."""
+    least, cx, cy = None, None, None
+    for x in range(len(grid)):
+        row = grid[x]
+        for y in range(len(row)):
+            temp = grid[x][y]
+            if not adjacent(grid, x, y):
+                continue
+            if (least is None) or ((temp != 0) and (temp < least)):
+                least, cx, cy = temp, x, y
+    return cx, cy
+```
 
 ---
 
@@ -43,7 +89,20 @@
 
 -   Test adjacency
 
-[%inc script.py keep=adjacent %]
+```{data-file="script.py:adjacent"}
+def adjacent(grid, x, y):
+    """Is (x, y) adjacent to a filled cell?"""
+    x_1, y_1 = x + 1, y + 1
+    if (x > 0) and (grid[x - 1][y] == 0):
+        return True
+    if (x_1 < len(grid)) and (grid[x_1][y] == 0):
+        return True
+    if (y > 0) and (grid[x][y - 1] == 0):
+        return True
+    if (y_1 < len(grid[x])) and (grid[x][y_1] == 0):
+        return True
+    return False
+```
 
 ---
 
@@ -51,7 +110,15 @@
 
 -   We also need to test if we're on the border
 
-[%inc script.py keep=on_border %]
+```{data-file="script.py:on_border"}
+def on_border(width, height, x, y):
+    """Is this cell on the border of the grid?"""
+    if (x == 0) or (x == width - 1):
+        return True
+    if (y == 0) or (y == height - 1):
+        return True
+    return False
+```
 
 ---
 
@@ -59,7 +126,19 @@
 
 -   And finally, show the result
 
-[%inc script.py keep=print_grid %]
+```{data-file="script.py:print_grid"}
+def print_grid(grid, width, height, depth, seed, as_numbers=False):
+    """Show the result."""
+    print(width, height, depth, seed)
+    height = len(grid[0])
+    for y in range(height - 1, -1, -1):
+        for x in range(len(grid)):
+            if as_numbers:
+                sys.stdout.write(f"{grid[x][y]:02d} ")
+            else:
+                sys.stdout.write("X" if grid[x][y] == 0 else ".")
+        sys.stdout.write("\n")
+```
 
 ---
 
@@ -76,7 +155,14 @@
 
 -   Main function
 
-[%inc invperc.py keep=main %]
+```{data-file="invperc.py:main"}
+def main():
+    """Main driver."""
+    kind, width, height, depth, seed = setup()
+    grid = initialize_grid(kind, width, height, depth)
+    grid.fill()
+    print_grid(kind, grid, seed)
+```
 
 ---
 
@@ -85,7 +171,22 @@
 -   Relies on a setup function
     -  Can easily replace this in future with something that reads parameters from a file
 
-[%inc invperc.py keep=setup %]
+```{data-file="invperc.py:setup"}
+def setup():
+    """Get parameters."""
+    kind = sys.argv[1]
+    width = int(sys.argv[2])
+    height = int(sys.argv[3])
+    depth = int(sys.argv[4])
+
+    if len(sys.argv) > 5:
+        seed = int(sys.argv[5])
+    else:
+        seed = random.randrange(sys.maxsize)
+    random.seed(seed)
+
+    return kind, width, height, depth, seed
+```
 
 ---
 
@@ -93,12 +194,23 @@
 
 -   We're going to build (at least) two grid classes, so import both here
 
-[%inc invperc.py keep=import %]
+```{data-file="invperc.py:import"}
+from grid_list import GridList
+from grid_array import GridArray
+```
 
 -   Initialization relies on the grid's constructor
     -   All grids take the same parameters in the same order
 
-[%inc invperc.py keep=initialize_grid %]
+```{data-file="invperc.py:initialize_grid"}
+def initialize_grid(kind, width, height, depth):
+    """Prepare grid for simulation."""
+    lookup = {
+        "list": GridList,
+        "array": GridArray,
+    }
+    return lookup[kind](width, height, depth)
+```
 
 ---
 
@@ -107,7 +219,20 @@
 -   Keep printing here
     -   Could have grids print themselves
 
-[%inc invperc.py keep=print_grid %]
+```{data-file="invperc.py:print_grid"}
+def print_grid(kind, grid, seed, details="full"):
+    """Show the result."""
+    print(kind, grid.width(), grid.height(), grid.depth(), seed)
+    if details == "brief":
+        return
+    for y in range(grid.height() - 1, -1, -1):
+        for x in range(grid.width()):
+            if details == "numbers":
+                sys.stdout.write(f"{grid[x, y]:02d} ")
+            else:
+                sys.stdout.write("X" if grid[x, y] == 0 else ".")
+        sys.stdout.write("\n")
+```
 
 ---
 
@@ -118,7 +243,26 @@
     -   Declaring [abstract](g:abstract_method)hods" %]
         forces derived classes to provide a way to get and set item by location
 
-[%inc grid_generic.py keep=main %]
+```{data-file="grid_generic.py:main"}
+from abc import ABC, abstractmethod
+
+class GridGeneric(ABC):
+    """Represent a generic grid."""
+
+    @abstractmethod
+    def __getitem__(self, key):
+        """Get value at location."""
+
+    @abstractmethod
+    def __setitem__(self, key, value):
+        """Set value at location."""
+
+    def __init__(self, width, height, depth):
+        """Record shared state."""
+        self._width = width
+        self._height = height
+        self._depth = depth
+```
 
 ---
 
@@ -128,41 +272,16 @@
     -   Including the ones the derived classes have to implement
 -   E.g. filling
 
-[%inc grid_generic.py keep=fill %]
-
----
-
-## Equality
-
--   Relying on interface allows us to implement equality test
-    between grids with different underlying data representations
-
-[%inc grid_generic.py keep=eq %]
-
----
-
-## List-Based Grid
-
-[%inc grid_list.py keep=gridlist %]
-
----
-
-## Array-Based Grid
-
--   And another that uses a NumPy array
-
-[%inc grid_array.py keep=gridarray %]
-
----
-
-## And Now, Testing
-
--   `test_grid_start.py` tests that grids can be initialized
-    -   But we don't know if we're getting the actual values from the grid because they're random
-    -   And repeating the test for different classes is error-prone as well as annoying
-
-[%inc test_grid_start.py keep=array_constructed_correctly %]
-[%inc test_grid_start.py keep=list_constructed_correctly %]
+```{data-file="grid_generic.py:fill"}
+    def fill(self):
+        """Fill grid one cell at a time."""
+        self[self.width() // 2, self.height() // 2] = 0
+        while True:
+            x, y = self.choose_cell()
+            self[x, y] = 0
+            if self.on_border(x, y):
+                break
+    ```
 
 ---
 
@@ -171,35 +290,18 @@
 -   Create a new class `GridListRandomizer` that takes a number generator as a constructor parameter
     -   Generate a grid filled with known values for testing
 
-[%inc grid_list_randomizer.py keep=init %]
-
----
-
-## Test Using Injection
-
--   Test looks better
-
-[%inc test_grid_randomizer.py keep=list_with_randomizer_function %]
-
--   But we're no longer testing our actual grid class
-    -   Could add extra arguments for all sorts of things to all our classes, but that's a lot of work
-
----
-
-## Better Tools: Mock Objects
-
--   `test_grid_mock.py` replaces the random number generator with a [mock](g:mock_object)ect" %]
-    without modifying the grid class
-
-[%inc test_grid_mock.py keep=list_patching_randomization %]
-
----
-
-## Better Tools: Parameterized Tests
-
--   `test_grid_parametrize.py` [parameterizes](g:parameterize_test) the test across both classes
-
-[%inc test_grid_parametrize.py keep=list_parameterizing_classes %]
+```{data-file="grid_list_randomizer.py:init"}
+    def __init__(self, width, height, depth, rand=random.randint):
+        """Construct and fill."""
+        super().__init__(width, height, depth)
+        self._rand = rand
+        self._grid = []
+        for x in range(self._width):
+            row = []
+            for y in range(self._height):
+                row.append(self._rand(1, depth))
+            self._grid.append(row)
+    ```
 
 ---
 
@@ -207,19 +309,14 @@
 
 -   `grid_filled.py` defines `GridFilled`, which we can populate with whatever data we want
 
-[%inc grid_filled.py keep=init %]
-
----
-
-## Using the Testable Grid
-
--   `test_grid_filled.py` starts by testing that filling from specified works correctly
-
-[%inc test_grid_filled.py keep=explicit_filling_fills_correctly %]
-
--   Add test for filling grid by creating deterministic filling path
-
-[%inc test_grid_filled.py keep=filling_with_straight_run_to_edge %]
+```{data-file="grid_filled.py:init"}
+    def __init__(self, width, height, depth, values):
+        """Construct and fill."""
+        assert len(values) == width
+        assert all(len(col) == height for col in values)
+        super().__init__(width, height, depth)
+        self._grid = [col[:] for col in values]
+    ```
 
 ---
 

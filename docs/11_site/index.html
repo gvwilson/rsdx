@@ -38,7 +38,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="11_site/index.md">"""Ark configuration file."""
+<pre class="language-py"><code class="language-py" data-file="../example_site/config.py">"""Ark configuration file."""
 
 title = "Snail Percolation"
 data_dir = "data"
@@ -69,13 +69,13 @@ markdown_settings = {
 <p>Markdown files with <code>.md</code> extension are turned into HTML</p>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="11_site/index.md">This is the home page.
+<pre class="language-md"><code class="language-md" data-file="../example_site/src/index.md">This is the home page.
 </code></pre>
 <ul>
 <li>Transformation relies on a <a href="../glossary.html#ssg_template">template</a></li>
 <li>We use [Jinja][jinja]</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="11_site/index.md">&lt;!DOCTYPE html&gt;
+<pre class="language-jinja"><code class="language-jinja" data-file="../example_site/lib/snails/templates/node.jinja">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;link rel="stylesheet" href="@root/style.css"&gt;
@@ -106,7 +106,7 @@ markdown_settings = {
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="11_site/index.md">---
+<pre class="language-md"><code class="language-md" data-file="../example_site/src/credits.md">---
 title: Credits
 ---
 
@@ -118,7 +118,7 @@ title: Credits
 <li>Write our own extensions for things we need and register them as <a href="../glossary.html#shortcode">shortcodes</a></li>
 <li>What we want:</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="11_site/index.md">---
+<pre class="language-md"><code class="language-md" data-file="../example_site/src/result.md">---
 title: Analysis Results
 ---
 
@@ -127,7 +127,7 @@ title: Analysis Results
 <ul>
 <li>Code for the extension</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="11_site/index.md">@shortcodes.register("csv")
+<pre class="language-py"><code class="language-py" data-file="../example_site/lib/snails/extensions/codes.py:display_csv">@shortcodes.register("csv")
 def display_csv(pargs, kwargs, node):
     """Handle [%csv filename %] table inclusion."""
     assert (len(pargs) == 1) and (

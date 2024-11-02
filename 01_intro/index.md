@@ -8,23 +8,19 @@
 -   A large program is more than just a dozen small programs
 -   Most programming language features exist to manage complexity
 
-[% figure
-   id="intro-complexity"
-   src="complexity.svg"
-   alt="Complexity and size"
-   caption="How complexity grows with size."
-%]
+<figure id="intro-complexity">
+  <img src="complexity.svg" alt="Complexity and size"/>
+  <figcaption>How complexity grows with size.</figcaption>
+</figure>
 
 ---
 
 ## Comprehension
 
-[% figure
-   id="intro-comprehension"
-   src="comprehension.svg"
-   alt="Abstract vs. comprehension"
-   caption="Abstraction vs. comprehension for novices and experts."
-%]
+<figure id="intro-comprehension">
+  <img src="comprehension.svg" alt="Abstract vs. comprehension"/>
+  <figcaption>Abstraction vs. comprehension for novices and experts.</figcaption>
+</figure>
 
 -   Experts understand lower and higher abstraction levels than novices
 -   Preferred level shifts with experience

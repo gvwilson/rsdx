@@ -36,7 +36,7 @@
 <ul>
 <li>First file looks like this</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">Site:,GBY
+<pre class="language-csv"><code class="language-csv" data-file="GBY.csv">Site:,GBY
 site,date,lon,lat,reading
 GBY,2023-05-08,-124.45981,48.92163,26.7
 GBY,2023-05-08,-124.45932,48.92091,70.9
@@ -56,13 +56,13 @@ GBY,2023-05-08,-124.45828,48.92066,32.6
 <ul>
 <li>That seems simple</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">import pandas as pd
+<pre class="language-py"><code class="language-py" data-file="naive.py">import pandas as pd
 import sys
 
 df = pd.read_csv(sys.argv[1], skiprows=1)
 print(df)
 </code></pre>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">  site        date        lon       lat  reading
+<pre class="language-out"><code class="language-out" data-file="naive_GBY.out">  site        date        lon       lat  reading
 0  GBY  2023-05-08 -124.45981  48.92163     26.7
 1  GBY  2023-05-08 -124.45932  48.92091     70.9
 2  GBY  2023-05-08 -124.46036  48.92098     38.1
@@ -77,7 +77,7 @@ print(df)
 <ul>
 <li>Try it on the next file</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">    Unnamed: 0 site        date        lon       lat  reading
+<pre class="language-out"><code class="language-out" data-file="naive_YOU.out">    Unnamed: 0 site        date        lon       lat  reading
 0          NaN  YOU  2023-05-01 -124.19699  48.87250     96.6
 1          NaN  YOU  2023-05-01 -124.19707  48.87281     70.0
 2          NaN  YOU  2023-05-01 -124.19808  48.87288     41.7
@@ -99,7 +99,7 @@ print(df)
 <ul>
 <li>Next file has a blank line between header and readings</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">Site:,COW
+<pre class="language-csv"><code class="language-csv" data-file="COW.csv">Site:,COW
 Analyst:,P. Srinath
 
 SITE,DATE,LON,LAT,READING
@@ -137,7 +137,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">def main():
+<pre class="language-py"><code class="language-py" data-file="parse.py:main">def main():
     """Main driver."""
     args = parse_args()
 
@@ -158,7 +158,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <ul>
 <li>Use <code>argparse</code> module to parse arguments</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">def parse_args():
+<pre class="language-py"><code class="language-py" data-file="parse.py:parse_args">def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--infile", type=str, default=None, help="input")
@@ -176,7 +176,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">def load(reader):
+<pre class="language-py"><code class="language-py" data-file="parse.py:load">def load(reader):
     """Load messy data."""
     lines = [row for row in csv.reader(reader)]
     header, body = split(lines)
@@ -197,7 +197,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </li>
 <li>Use an enumeration to keep track of these</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">class State(Enum):
+<pre class="language-py"><code class="language-py" data-file="parse.py:state">class State(Enum):
     """Enumerate possible parser states."""
 
     HEADER = "header"
@@ -219,7 +219,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </ul>
 <hr/>
 <h2>Structure</h2>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">def split(rows):
+<pre class="language-py"><code class="language-py" data-file="parse.py:split">def split(rows):
     """Split header from body."""
     header, body, state = [], [], State.HEADER
     for row in rows:
@@ -256,7 +256,7 @@ COW,2023-04-27,-124.045,48.8216,81.7
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="02_parse/index.md">def normalize(rows):
+<pre class="language-py"><code class="language-py" data-file="parse.py:normalize">def normalize(rows):
     """Remove leading spaces from rows if necessary."""
     if rows[0][0] == "":
         rows = [r[1:] for r in rows]

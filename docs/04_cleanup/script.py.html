@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>04_cleanup/script.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>04_cleanup/script.py</h1>
+<pre><code>"""Invasion percolation in Python."""
+
+from random import randint, randrange, seed as randseed
+import sys
+
+
+# [make_grid]
+def make_grid(width, height, depth):
+    """Create a width X height grid."""
+    grid = []
+    for x in range(width):
+        row = []
+        for y in range(height):
+            row.append(randint(1, depth))
+        grid.append(row)
+    return grid
+# [/make_grid]
+
+
+# [choose_cell]
+def choose_cell(grid):
+    """Choose the next cell to fill in."""
+    least, cx, cy = None, None, None
+    for x in range(len(grid)):
+        row = grid[x]
+        for y in range(len(row)):
+            temp = grid[x][y]
+            if not adjacent(grid, x, y):
+                continue
+            if (least is None) or ((temp != 0) and (temp &lt; least)):
+                least, cx, cy = temp, x, y
+    return cx, cy
+# [/choose_cell]
+
+
+# [adjacent]
+def adjacent(grid, x, y):
+    """Is (x, y) adjacent to a filled cell?"""
+    x_1, y_1 = x + 1, y + 1
+    if (x &gt; 0) and (grid[x - 1][y] == 0):
+        return True
+    if (x_1 &lt; len(grid)) and (grid[x_1][y] == 0):
+        return True
+    if (y &gt; 0) and (grid[x][y - 1] == 0):
+        return True
+    if (y_1 &lt; len(grid[x])) and (grid[x][y_1] == 0):
+        return True
+    return False
+# [/adjacent]
+
+
+# [on_border]
+def on_border(width, height, x, y):
+    """Is this cell on the border of the grid?"""
+    if (x == 0) or (x == width - 1):
+        return True
+    if (y == 0) or (y == height - 1):
+        return True
+    return False
+# [/on_border]
+
+
+# [print_grid]
+def print_grid(grid, width, height, depth, seed, as_numbers=False):
+    """Show the result."""
+    print(width, height, depth, seed)
+    height = len(grid[0])
+    for y in range(height - 1, -1, -1):
+        for x in range(len(grid)):
+            if as_numbers:
+                sys.stdout.write(f"{grid[x][y]:02d} ")
+            else:
+                sys.stdout.write("X" if grid[x][y] == 0 else ".")
+        sys.stdout.write("\n")
+# [/print_grid]
+
+
+# [main]
+# Grid size and range of fill values.
+width, height, depth = (int(x) for x in sys.argv[1:4])
+
+# Random number generation.
+seed = int(sys.argv[4]) if len(sys.argv) &gt; 4 else randrange(sys.maxsize)
+randseed(seed)
+
+# Create initial grid
+grid = make_grid(width, height, depth)
+
+# Fill central cell.
+grid[width // 2][height // 2] = 0
+
+# Fill other cells.
+while True:
+    x, y = choose_cell(grid)
+    grid[x][y] = 0
+    if on_border(width, height, x, y):
+        break
+
+# Show result.
+print_grid(grid, width, height, depth, seed)
+# [/main]
+</code></pre>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>lib/mccole/extensions/rootfile.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../../../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../../../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../../../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../../../license.html">License</a>
+	  ·
+	  <a href="../../../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../../../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>lib/mccole/extensions/rootfile.py</h1>
+<pre><code>"""Ark shortcode to include root Markdown files."""
+
+import ark
+from pathlib import Path
+import re
+import shortcodes
+import util
+
+
+# Level-1 Markdown heading.
+FIRST_H1 = re.compile(r"^#\s+.+$", re.MULTILINE)
+
+
+@shortcodes.register("rootfile")
+def rootfile(pargs, kwargs, node):
+    """Include a file from the root directory.
+
+    Usage: [% rootfile FILE.md %] or [% rootfile FILE.md strip=False %].
+    """
+    util.require(
+        (len(pargs) == 1) and util.allowed(kwargs, {"strip"}),
+        f"Bad 'rootfile' in {node.path}: '{pargs}' and '{kwargs}'"
+    )
+    text = Path(ark.site.home(), pargs[0]).read_text()
+    if kwargs.get("strip", 'True') == 'True' and text.startswith("#"):
+        text = FIRST_H1.sub("", text)
+    return text
+</code></pre>
+</main>
+<footer>
+<a href="../../../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../../../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

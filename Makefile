@@ -2,6 +2,11 @@ include common.mk
 
 all: commands
 
+## build: build HTML
+build:
+	mccole build
+	@touch docs/.nojekyll
+
 ## datasets: re-create snailz parameters and datasets
 datasets:
 	snailz params --outdir params
@@ -14,10 +19,9 @@ lint:
 	@html5validator --root docs --blacklist templates \
 	&& echo "HTML checks passed."
 
-## render: convert to HTML
-render:
-	mccole render
-	@touch docs/.nojekyll
+## refresh: refresh all file inclusions
+refresh:
+	mccole refresh --files *_*/index.md
 
 ## serve: serve generated HTML
 serve:

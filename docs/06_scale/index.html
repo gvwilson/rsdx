@@ -43,7 +43,7 @@
 <ul>
 <li>Store parameters as dataclass</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">"""Parameters for single invasion percolation sweep."""
+<pre class="language-py"><code class="language-py" data-file="params_single.py">"""Parameters for single invasion percolation sweep."""
 
 from dataclasses import dataclass
 
@@ -57,7 +57,7 @@ class ParamsSingle:
     depth: int
     seed: int = None
 </code></pre>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">{
+<pre class="language-json"><code class="language-json" data-file="standalone.json">{
     "width": 11,
     "height": 11,
     "depth": 10,
@@ -66,25 +66,25 @@ class ParamsSingle:
 </code></pre>
 <hr/>
 <h2>Getting Started</h2>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">class InvPercFlow(FlowSpec):
+<pre class="language-py"><code class="language-py" data-file="flow.py:class">class InvPercFlow(FlowSpec):
     """Metaflow for invasion percolation."""
 
     sweep = Parameter("sweep", help="parameter file", type=str, required=True)
 </code></pre>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">    @step
+<pre class="language-py"><code class="language-py" data-file="flow.py:start">    @step
     def start(self):
         """Collect parameters and run jobs."""
         sweep = load_params(self.sweep)
         self.args = make_sweeps(sweep)
         self.next(self.run_job, foreach="args")
 </code></pre>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">def load_params(filename):
+<pre class="language-py"><code class="language-py" data-file="flow.py:load_params">def load_params(filename):
     """Get sweep parameters from file."""
     return ParamsSweep(**json.loads(Path(filename).read_text()))
 </code></pre>
 <hr/>
 <h2>Parameterizing Each Task</h2>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">def make_sweeps(sweeps):
+<pre class="language-py"><code class="language-py" data-file="flow.py:make_sweeps">def make_sweeps(sweeps):
     """Convert sweep parameters into individual jobs."""
     random.seed(sweeps.seed)
     result = []
@@ -106,7 +106,7 @@ class ParamsSingle:
 </ul>
 <hr/>
 <h2>Running a Single Job</h2>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">    @step
+<pre class="language-py"><code class="language-py" data-file="flow.py:run_job">    @step
     def run_job(self):
         """Run a sweep with one set of parameters."""
         grid = invperc(self.input)
@@ -120,7 +120,7 @@ class ParamsSingle:
 </code></pre>
 <hr/>
 <h2>Combining Results</h2>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">    @step
+<pre class="language-py"><code class="language-py" data-file="flow.py:join">    @step
     def join(self, inputs):
         """Combine results from all sweeps."""
         counts = defaultdict(int)
@@ -145,7 +145,7 @@ class ParamsSingle:
 </code></pre>
 <hr/>
 <h2>Reporting Results</h2>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">    @step
+<pre class="language-py"><code class="language-py" data-file="flow.py:end">    @step
     def end(self):
         """Report results."""
         table = [("size", "depth", "count", "dimension", "density_x", "density_k")]
@@ -160,19 +160,19 @@ class ParamsSingle:
 <ul>
 <li>Run with single-job JSON parameter file shown earlier</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">python invperc.py standalone.json
+<pre class="language-sh"><code class="language-sh" data-file="run_standalone.sh">python invperc.py standalone.json
 </code></pre>
 <ul>
 <li>Run full sweep</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">{
+<pre class="language-json"><code class="language-json" data-file="sweep.json">{
     "size": [75, 95, 105],
     "depth": [2, 10, 100],
     "runs": 10,
     "seed": 556677
 }
 </code></pre>
-<pre class="language-md"><code class="language-md" file="06_scale/index.md">python flow.py run --sweep sweep.json
+<pre class="language-sh"><code class="language-sh" data-file="run_sweep.sh">python flow.py run --sweep sweep.json
 </code></pre>
 <hr/>
 <h2>But How Does It Work?</h2>

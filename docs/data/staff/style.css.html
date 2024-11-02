@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>data/staff/style.css</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../../license.html">License</a>
+	  ·
+	  <a href="../../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>data/staff/style.css</h1>
+<pre><code>@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&amp;display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&amp;display=swap");
+
+:root {
+    --gray: #E8E8E8;
+    --blue: #BABDD8;
+    --green: #D7E0D3;
+
+    --border: 1px;
+    --spacing: 0.25rem;
+
+    --page-width: 60rem;
+}
+
+.row {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%
+}
+
+.row &gt; * {
+  flex: 1; /* allow children to grow when space available */
+}
+
+.col-1 { flex-basis: 8.33%; }
+.col-2 { flex-basis: 16.66%; }
+.col-3 { flex-basis: 25%; }
+.col-4 { flex-basis: 33.33%; }
+.col-5 { flex-basis: 41.66%; }
+.col-6 { flex-basis: 50%; }
+.col-7 { flex-basis: 58.33%; }
+.col-8 { flex-basis: 66.66%; }
+.col-9 { flex-basis: 75%; }
+.col-10 { flex-basis: 83.33%; }
+.col-11 { flex-basis: 91.66%; }
+.col-12 { flex-basis: 100%; }
+
+.left { text-align: left; }
+.center { text-align: center; }
+.right { text-align: right; }
+
+html {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+}
+
+body {
+    max-width: var(--page-width);
+}
+
+code {
+    font-family: "Source Code Pro", monospace;
+}
+
+footer {
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    background-color: var(--blue);
+}
+
+h2 {
+    background-color: var(--green);
+}
+
+table {
+    border-collapse: collapse;
+    caption-side: bottom;
+}
+
+th, td {
+    vertical-align: top;
+    padding: var(--spacing);
+    border: solid var(--border) var(--gray);
+}
+
+th {
+    font-weight: bold;
+}
+</code></pre>
+</main>
+<footer>
+<a href="../../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

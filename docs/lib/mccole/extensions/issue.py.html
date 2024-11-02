@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>lib/mccole/extensions/issue.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../../../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../../../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../../../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../../../license.html">License</a>
+	  ·
+	  <a href="../../../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../../../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>lib/mccole/extensions/issue.py</h1>
+<pre><code>"""Shortcode for linking to GitHub issue."""
+
+import ark
+import shortcodes
+import util
+
+
+@shortcodes.register("issue")
+def issue(pargs, kwargs, node):
+    """Insert link to GitHub issue."""
+    util.require(
+        (len(pargs) == 1) and (not kwargs),
+        f"Bad 'issue' in {node.path}: '{pargs}' and '{kwargs}'",
+    )
+    try:
+        number = int(pargs[0])
+    except ValueError:
+        util.fail(f"Bad 'issue' in {node.path}: {pargs[0]} is not a number")
+    try:
+        repo = ark.site.config["repo"]
+    except KeyError:
+        util.fail(f"While processing 'issue' in {node.path}: 'repo' not in config")
+    url = f"{repo}/issues/{number}"
+    return f'&lt;a href="{url}" class="issue"&gt;Issue {number}&lt;/a&gt;'
+</code></pre>
+</main>
+<footer>
+<a href="../../../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../../../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

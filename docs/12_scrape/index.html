@@ -35,7 +35,7 @@
 </li>
 <li>Read a page and visit its nodes</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">def main():
+<pre class="language-py"><code class="language-py" data-file="parse_page.py:main">def main():
     """Parse page and visit nodes."""
     options = parse_args()
     text = Path(options.filename).read_text()
@@ -49,7 +49,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">def visit(node, noblanks, depth=0):
+<pre class="language-py"><code class="language-py" data-file="parse_page.py:visit">def visit(node, noblanks, depth=0):
     """Show nodes in DOM tree."""
     prefix = "  " * depth
     if isinstance(node, NavigableString):
@@ -63,14 +63,15 @@
 <ul>
 <li>Test on a small page</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">&lt;html&gt;
+<pre class="language-html"><code class="language-html" data-file="small.html">&lt;html&gt;
   &lt;h1&gt;Page Title&lt;/h1&gt;
   &lt;p&gt;paragraph&lt;/p&gt;
 &lt;/html&gt;
+
 </code></pre>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">python parse_page.py --filename small.html
+<pre class="language-sh"><code class="language-sh" data-file="small.sh">python parse_page.py --filename small.html
 </code></pre>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">element: [document] with {}
+<pre class="language-out"><code class="language-out" data-file="small.out">element: [document] with {}
   element: html with {}
     text: '\n'
     element: h1 with {}
@@ -84,7 +85,7 @@
 <ul>
 <li>Try a larger page but don't show text that is just whitespace (newlines and indentation)</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">&lt;html&gt;
+<pre class="language-html"><code class="language-html" data-file="medium.html">&lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Example Page&lt;/title&gt;
   &lt;/head&gt;
@@ -97,9 +98,9 @@
   &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">python parse_page.py --filename medium.html --noblanks
+<pre class="language-sh"><code class="language-sh" data-file="medium.sh">python parse_page.py --filename medium.html --noblanks
 </code></pre>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">element: [document] with {}
+<pre class="language-out"><code class="language-out" data-file="medium.out">element: [document] with {}
   element: html with {}
     element: head with {}
       element: title with {}
@@ -117,7 +118,7 @@
 <ul>
 <li>Here's the part we already know</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">def main():
+<pre class="language-py"><code class="language-py" data-file="scrape.py:main">def main():
     """Main driver."""
     args = parse_args()
     homepage = get_page(args.homepage)
@@ -129,7 +130,7 @@
 <ul>
 <li>Here's the part we don't</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">def get_page(url):
+<pre class="language-py"><code class="language-py" data-file="scrape.py:get_page">def get_page(url):
     """Get HTML page as soup."""
     response = requests.get(url)
     return BeautifulSoup(response.text, "html.parser")
@@ -143,7 +144,7 @@
 </li>
 <li>And then we pull out information using Beautiful Soup</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="12_scrape/index.md">def get_info(args, relative):
+<pre class="language-py"><code class="language-py" data-file="scrape.py:get_info">def get_info(args, relative):
     """Get info from staff page."""
     page = get_page(f"{args.homepage}/{relative}")
     result = {"name": page.find("h1").string}

@@ -41,7 +41,7 @@
 <li>[PyAlex][pyalex] provides a Python interface</li>
 <li>Copy, paste, and tweak example</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">def main():
+<pre class="language-py"><code class="language-py" data-file="fetch_bib_data.py:main">def main():
     """Main driver."""
     args = parse_args()
     if args.email:
@@ -71,9 +71,9 @@
 <ul>
 <li>Additional definitions</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">WIKIDATA_LAND_SNAIL = "https://www.wikidata.org/wiki/Q6484264"
+<pre class="language-py"><code class="language-py" data-file="fetch_bib_data.py:const">WIKIDATA_LAND_SNAIL = "https://www.wikidata.org/wiki/Q6484264"
 </code></pre>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">def parse_args():
+<pre class="language-py"><code class="language-py" data-file="fetch_bib_data.py:parse_args">def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -89,7 +89,7 @@
 <ul>
 <li>Produces 2192 JSON files</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">{
+<pre class="language-json"><code class="language-json" data-file="W962796421.json">{
     "doi": "https://doi.org/10.1007/978-94-009-0343-2_40",
     "year": 1996,
     "abstract": "Helicid snails are suitable organisms for research…"
@@ -99,7 +99,7 @@
 <ul>
 <li>Usual main driver</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">def main():
+<pre class="language-py"><code class="language-py" data-file="make_index.py:main">def main():
     """Main driver."""
     args = parse_args()
     abstracts = read_abstracts(args.bibdir)
@@ -114,7 +114,7 @@
 <ul>
 <li>Reading abstracts from JSON is the simple part</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">def read_abstracts(bibdir):
+<pre class="language-py"><code class="language-py" data-file="make_index.py:read_abstracts">def read_abstracts(bibdir):
     """Extract abstracts from bibliography entries."""
     result = {}
     for filename in Path(bibdir).iterdir():
@@ -128,7 +128,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">def get_words(text):
+<pre class="language-py"><code class="language-py" data-file="make_index.py:get_words">def get_words(text):
     """Get words from text, stripping basic punctuation."""
     words = text.split()
     for char in ",.'\"()%‰!?$‘’&amp;~–—±·":
@@ -138,7 +138,7 @@
 <ul>
 <li>Calculate term frequency</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">def calculate_tf(words_in_file):
+<pre class="language-py"><code class="language-py" data-file="make_index.py:calculate_tf">def calculate_tf(words_in_file):
     """Calculate term frequency of each word per document."""
     result = {}
     for filename, wordlist in words_in_file.items():
@@ -151,7 +151,7 @@
 <ul>
 <li>Calculate inverse document frequency</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">def calculate_idf(words_in_file):
+<pre class="language-py"><code class="language-py" data-file="make_index.py:calculate_idf">def calculate_idf(words_in_file):
     """Calculate inverse document frequency of each word."""
     num_docs = len(words_in_file)
     word_sets = [set(words) for words in words_in_file.values()]
@@ -163,7 +163,7 @@
 <ul>
 <li>Combine values</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">def calculate_tf_idf(term_freq, inverse_doc_freq):
+<pre class="language-py"><code class="language-py" data-file="make_index.py:calculate_tf_idf">def calculate_tf_idf(term_freq, inverse_doc_freq):
     """Calculate overall score for each term in each document."""
     result = defaultdict(dict)
     for (filename, word), tf in term_freq.items():
@@ -173,7 +173,7 @@
 <ul>
 <li>And save as CSV</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">def save(outfile, tf_idf):
+<pre class="language-py"><code class="language-py" data-file="make_index.py:save">def save(outfile, tf_idf):
     """Save results as CSV."""
     outfile = sys.stdout if outfile is None else open(outfile, "w")
     writer = csv.writer(outfile)
@@ -191,7 +191,7 @@
 <li>17 documents contain the word "search"</li>
 <li>Of these, W2026888704.json has the highest score</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="09_search/index.md">word,doc,score
+<pre class="language-csv"><code class="language-csv" data-file="tf_idf_search.csv">word,doc,score
 …,…,…
 search,W1583262424.json,0.017354843942898893
 search,W1790707322.json,0.010208731731116994

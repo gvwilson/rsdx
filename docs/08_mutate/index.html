@@ -58,7 +58,7 @@
 </ul>
 <hr/>
 <h2>Main Driver</h2>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">def main():
+<pre class="language-py"><code class="language-py" data-file="synthesize_genomes.py:main">def main():
     """Main driver."""
     args = parse_args()
     random.seed(args.seed)
@@ -83,7 +83,7 @@
 </ul>
 <hr/>
 <h2>Random Genomes</h2>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">def random_genomes(length, num_genomes, num_snp, prob_other):
+<pre class="language-py"><code class="language-py" data-file="synthesize_genomes.py:random_genomes">def random_genomes(length, num_genomes, num_snp, prob_other):
     """Generate a set of genomes with specified number of point mutations."""
     assert 0 &lt;= num_snp &lt;= length
 
@@ -115,17 +115,17 @@
 </code></pre>
 <hr/>
 <h2>Random Bases and Mutations</h2>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">def random_bases(length):
+<pre class="language-py"><code class="language-py" data-file="synthesize_genomes.py:random_bases">def random_bases(length):
     """Generate a random sequence of bases of the specified length."""
     assert 0 &lt; length
     return "".join(random.choices(DNA, k=length))
 </code></pre>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">def _mutate_snps(reference, genome, loc, bases):
+<pre class="language-py"><code class="language-py" data-file="synthesize_genomes.py:mutate_snps">def _mutate_snps(reference, genome, loc, bases):
     """Introduce single nucleotide polymorphisms at the specified location."""
     choice = _choose_one(bases, SNP_PROBS)
     return genome[:loc] + choice + genome[loc + 1 :]
 </code></pre>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">def _mutate_other(genome, prob, locations):
+<pre class="language-py"><code class="language-py" data-file="synthesize_genomes.py:mutate_other">def _mutate_other(genome, prob, locations):
     """Introduce other mutations at specified locations."""
     if random.random() &gt; prob:
         return genome
@@ -159,7 +159,7 @@
 <ul>
 <li>Main driver should be starting to look familiar</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">def main():
+<pre class="language-py"><code class="language-py" data-file="synthesize_samples.py:main">def main():
     """Main driver."""
     args = parse_args()
     random.seed(args.seed)
@@ -174,13 +174,13 @@
 <li>Get geographic parameters from CSV files</li>
 <li>Need to join tables to get longitude, latitude, and nominal pollution radius</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">site,lon,lat
+<pre class="language-csv"><code class="language-csv" data-file="sites.csv">site,lon,lat
 COW,-124.04519,48.82172
 YOU,-124.197,48.87251
 HMB,-124.17555,48.81673
 GBY,-124.4593,48.9209
 </code></pre>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">label,site,date,num,peak,relative_sd,radius
+<pre class="language-csv"><code class="language-csv" data-file="surveys.csv">label,site,date,num,peak,relative_sd,radius
 1748,COW,2023-04-27,23,100.0,0.1,0.1
 1749,COW,2023-04-28,11,100.0,0.1,0.1
 1755,COW,2023-05-13,15,101.0,0.11,0.1
@@ -190,7 +190,7 @@ GBY,-124.4593,48.9209
 </code></pre>
 <hr/>
 <h2>Geography</h2>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">def get_geo_params(args):
+<pre class="language-py"><code class="language-py" data-file="synthesize_samples.py:get_geo_params">def get_geo_params(args):
     """Get geographic parameters."""
     sites = pd.read_csv(Path(args.paramsdir, "sites.csv"))
     surveys = pd.read_csv(Path(args.paramsdir, "surveys.csv"))
@@ -207,7 +207,7 @@ GBY,-124.4593,48.9209
 <ul>
 <li>Generate location and snail size based on genetics and distance</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">def generate_samples(args, genomes, geo_params):
+<pre class="language-py"><code class="language-py" data-file="synthesize_samples.py:generate_samples">def generate_samples(args, genomes, geo_params):
     """Generate snail samples."""
     samples = []
     for sequence in genomes["individuals"]:
@@ -238,7 +238,7 @@ GBY,-124.4593,48.9209
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="08_mutate/index.md">CIRCLE = 360.0
+<pre class="language-py"><code class="language-py" data-file="synthesize_samples.py:parameters">CIRCLE = 360.0
 LON_LAT_PRECISION = 5
 READING_PRECISION = 1
 MIN_SNAIL_SIZE = 0.5

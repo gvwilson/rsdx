@@ -52,7 +52,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="13_serve/index.md">def get_count(kind):
+<pre class="language-py"><code class="language-py" data-file="model.py:get_count">def get_count(kind):
     """How many entries of the given kind?"""
     conn = sqlite3.connect(os.getenv("RSDX_DB_PATH"))
     if kind == "staff":
@@ -74,7 +74,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="13_serve/index.md">app = Flask(__name__)
+<pre class="language-py"><code class="language-py" data-file="server.py:index">app = Flask(__name__)
 
 
 @app.route("/")
@@ -91,9 +91,9 @@ def index():
 <ul>
 <li>Run from the command line</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="13_serve/index.md">RSDX_DB_PATH=../../data/assays.db flask --app server run
+<pre class="language-sh"><code class="language-sh" data-file="run_server.sh">RSDX_DB_PATH=../../data/assays.db flask --app server run
 </code></pre>
-<pre class="language-md"><code class="language-md" file="13_serve/index.md"> * Serving Flask app 'server'
+<pre class="language-out"><code class="language-out" data-file="run_server.out"> * Serving Flask app 'server'
  * Debug mode: off
 WARNING: This is a development server. Do not use it in a production deployment.
 Use a production WSGI server instead.
@@ -111,7 +111,7 @@ Press CTRL+C to quit
 <ul>
 <li><code>render_template</code> looks in the <code>templates</code> directory for <code>index.html</code></li>
 </ul>
-<pre class="language-md"><code class="language-md" file="13_serve/index.md">{% extends "base.html" %}
+<pre class="language-html"><code class="language-html" data-file="templates/index.html">{% extends "base.html" %}
 {% block content %}
 &lt;table&gt;
   &lt;thead&gt;
@@ -128,7 +128,7 @@ Press CTRL+C to quit
 <ul>
 <li>This template <a href="../glossary.html#extend_template">extends</a> <code>base.html</code></li>
 </ul>
-<pre class="language-md"><code class="language-md" file="13_serve/index.md">&lt;!DOCTYPE html&gt;
+<pre class="language-html"><code class="language-html" data-file="templates/base.html">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;link rel="stylesheet" href="/static/style.css"&gt;

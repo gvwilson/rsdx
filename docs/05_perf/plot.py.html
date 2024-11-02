@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>05_perf/plot.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>05_perf/plot.py</h1>
+<pre><code>"""Plot results from sweep."""
+
+from pathlib import Path
+import pandas as pd
+import plotly.express as px
+import sys
+
+infile = Path(sys.argv[1])
+df = pd.read_csv(sys.argv[1]).rename(columns={"width": "size"})
+df["label"] = df["kind"] + "_" + df["depth"].astype(str).str.zfill(3)
+summary = (
+    df[["label", "size", "time"]]
+    .groupby(["label", "size"], as_index=False)
+    .agg(func="mean")
+)
+fig = px.line(summary, x="size", y="time", color="label")
+fig.show()
+fig.write_image(f"{infile.stem}.svg")
+fig.write_image(f"{infile.stem}.pdf")
+</code></pre>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

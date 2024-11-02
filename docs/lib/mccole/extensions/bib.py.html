@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>lib/mccole/extensions/bib.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../../../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../../../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../../../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../../../license.html">License</a>
+	  ·
+	  <a href="../../../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../../../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>lib/mccole/extensions/bib.py</h1>
+<pre><code>"""Ark shortcodes."""
+
+from pathlib import Path
+import ark
+import shortcodes
+
+import util
+
+
+@shortcodes.register("b")
+def bibliography_ref(pargs, kwargs, node):
+    """Handle [%b key1 key2 %] biblography references."""
+    util.require(
+        (len(pargs) &gt; 0) and (not kwargs),
+        f"Bad 'b' in {node.path}: '{pargs}' and '{kwargs}'",
+    )
+    base = "@root/bib"
+    links = [f'&lt;a class="bib-ref" href="{base}/#{k}"&gt;{k}&lt;/a&gt;' for k in pargs]
+    links = ", ".join(links)
+    return f'&lt;span class="bib-ref"&gt;[{links}]&lt;/span&gt;'
+
+
+@shortcodes.register("bibliography")
+def bibliography(pargs, kwargs, node):
+    """Handle [% bibliography %] shortcode."""
+    util.require(
+        (not pargs) and (not kwargs),
+        f"Bad 'bibliography' in {node.path}: '{pargs}' and '{kwargs}'",
+    )
+    return Path(ark.site.home(), "tmp", "bibliography.html").read_text()
+</code></pre>
+</main>
+<footer>
+<a href="../../../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../../../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

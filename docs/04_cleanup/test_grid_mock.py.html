@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>04_cleanup/test_grid_mock.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>04_cleanup/test_grid_mock.py</h1>
+<pre><code>"""Test grid operations."""
+
+from unittest.mock import patch
+
+from grid_list import GridList
+
+
+# [list_patching_randomization]
+def test_grid_list_patching_randomization():
+    with patch("random.randint", return_value=12345):
+        g = GridList(2, 3, 4)
+
+    assert g.width() == 2
+    assert g.height() == 3
+    assert g.depth() == 4
+    for x in range(g.width()):
+        for y in range(g.height()):
+            assert g[x, y] == 12345
+# [/list_patching_randomization]
+</code></pre>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

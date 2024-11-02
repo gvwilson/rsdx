@@ -34,7 +34,7 @@
 <li>Lets users extend the program without modifying its internals</li>
 <li>Work backward from configuration file that defines plugin type and its parameters</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">{
+<pre class="language-json"><code class="language-json" data-file="plugins.json">{
     "csv": "../../data/survey_tidy",
     "pandas": "../../data/survey.db",
     "sql": "../../data/survey.db",
@@ -62,7 +62,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def main():
+<pre class="language-py"><code class="language-py" data-file="display.py:main">def main():
     """Main driver."""
     args = parse_args()
     config = json.loads(Path(args.plugins).read_text())
@@ -85,7 +85,7 @@
 <ul>
 <li>Parsing command-line arguments is simple</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def parse_args():
+<pre class="language-py"><code class="language-py" data-file="display.py:parse_args">def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--figdir", type=str, help="output dir")
@@ -101,7 +101,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def check(tables):
+<pre class="language-py"><code class="language-py" data-file="display.py:check">def check(tables):
     """Check all tables against each other."""
     ref_key = None
     for key in tables:
@@ -118,8 +118,8 @@
 <hr/>
 <h2>Display</h2>
 <figure id="plugin-example">
-<img alt="Geographical map of sample distributions around COW site." src="./COW.svg"/>
-<figcaption>Sample distribution at COW site.</figcaption>
+<img alt="Sample distribution at COW site." src="./COW.svg"/>
+<figcaption>Geographical map of sample distributions around COW site.</figcaption>
 </figure>
 <hr/>
 <h2>Handling CSV</h2>
@@ -129,7 +129,7 @@
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def read_data(csvdir):
+<pre class="language-py"><code class="language-py" data-file="plugin_csv.py:read_data">def read_data(csvdir):
     """Read CSV files directly into dataframes."""
     raw = [pd.read_csv(filename) for filename in Path(csvdir).glob("*.csv")]
     return util.combine_with_pandas(*raw)
@@ -137,7 +137,7 @@
 <ul>
 <li>Concatenate all the tables</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def combine_with_pandas(*tables):
+<pre class="language-py"><code class="language-py" data-file="util.py:combine_with_pandas">def combine_with_pandas(*tables):
     """Combine tables using Pandas."""
     combined = pd.concat(tables)
     centers = centers_with_pandas(combined)
@@ -149,7 +149,7 @@
 <li>Pandas can read directly given a SQL query</li>
 <li>The simple query</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md"># Query to select all samples from database in normalized form.
+<pre class="language-py"><code class="language-py" data-file="util.py:query"># Query to select all samples from database in normalized form.
 Q_SAMPLES = """
 select
     surveys.site,
@@ -165,7 +165,7 @@ on surveys.label = samples.label
 <ul>
 <li>The code</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def read_data(dbfile):
+<pre class="language-py"><code class="language-py" data-file="plugin_sql.py:read_data">def read_data(dbfile):
     """Read tables and do calculations directly in SQL."""
     con = sqlite3.connect(dbfile)
     return {
@@ -178,7 +178,7 @@ on surveys.label = samples.label
 <ul>
 <li>The query is more complex, but the code to run it is the same</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">Q_CENTERS = """
+<pre class="language-py"><code class="language-py" data-file="plugin_sql.py:query">Q_CENTERS = """
 select
     surveys.site,
     sum(samples.lon * samples.reading) / sum(samples.reading) as lon,
@@ -201,7 +201,7 @@ group by surveys.site
 </ul>
 </li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">class Sites(SQLModel, table=True):
+<pre class="language-py"><code class="language-py" data-file="plugin_sqlmodel.py:sites">class Sites(SQLModel, table=True):
     """Survey sites."""
 
     site: str | None = Field(default=None, primary_key=True)
@@ -209,7 +209,7 @@ group by surveys.site
     lat: float
     surveys: list["Surveys"] = Relationship(back_populates="site_id")
 </code></pre>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">class Surveys(SQLModel, table=True):
+<pre class="language-py"><code class="language-py" data-file="plugin_sqlmodel.py:surveys">class Surveys(SQLModel, table=True):
     """Surveys done."""
 
     label: int | None = Field(default=None, primary_key=True)
@@ -223,7 +223,7 @@ group by surveys.site
 <ul>
 <li>With this, the <code>read_data</code> function is:</li>
 </ul>
-<pre class="language-md"><code class="language-md" file="03_plugin/index.md">def read_data(dbfile):
+<pre class="language-py"><code class="language-py" data-file="plugin_sqlmodel.py:read_data">def read_data(dbfile):
     """Read database and do calculations with SQLModel ORM."""
     url = f"sqlite:///{dbfile}"
     engine = create_engine(url)

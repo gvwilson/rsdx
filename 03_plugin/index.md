@@ -9,18 +9,23 @@
 -   Lets users extend the program without modifying its internals
 -   Work backward from configuration file that defines plugin type and its parameters
 
-[%inc plugins.json %]
+```{data-file="plugins.json"}
+{
+    "csv": "../../data/survey_tidy",
+    "pandas": "../../data/survey.db",
+    "sql": "../../data/survey.db",
+    "sqlmodel": "../../data/survey.db"
+}
+```
 
 ---
 
 ## Our Data
 
-[% figure
-   id="plugin_table_structure"
-   src="table_structure.svg"
-   alt="Structure of survey tables"
-   caption="Survey table structure"
-%]
+<figure id="plugin_table_structure">
+  <img src="table_structure.svg" alt="Structure of survey tables"/>
+  <figcaption>Survey table structure</figcaption>
+</figure>
 
 -   Each *site* has a [primary](g:primary_key)" %] and longitude/latitude
 -   Each *survey* has a primary key, a site identifier ([foreign](g:foreign_key)" %]) and a date
@@ -35,7 +40,19 @@
     -   Then call the `read_data` function in that module
     -   A [contract](g:contract) between the program and its plugins
 
-[%inc display.py keep=main %]
+```{data-file="display.py:main"}
+def main():
+    """Main driver."""
+    args = parse_args()
+    config = json.loads(Path(args.plugins).read_text())
+    tables = {}
+    for plugin_stem, plugin_param in config.items():
+        module = importlib.import_module(f"plugin_{plugin_stem}")
+        tables[plugin_stem] = module.read_data(plugin_param)
+    check(tables)
+    _, values = tables.popitem()
+    make_figures(args, values["combined"], values["centers"])
+```
 
 -   Result from each `read_data` is a list of tables
     -   Load all available examples to [cross](g:cross_validation)idate" %]
@@ -46,7 +63,14 @@
 
 -   Parsing command-line arguments is simple
 
-[%inc display.py keep=parse_args %]
+```{data-file="display.py:parse_args"}
+def parse_args():
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--figdir", type=str, help="output dir")
+    parser.add_argument("--plugins", type=str, required=True, help="config")
+    return parser.parse_args()
+```
 
 ---
 
@@ -56,18 +80,30 @@
     -   Do they have the same keys?
     -   Do they have the same number of values for each key?
 
-[%inc display.py keep=check %]
+```{data-file="display.py:check"}
+def check(tables):
+    """Check all tables against each other."""
+    ref_key = None
+    for key in tables:
+        if ref_key is None:
+            ref_key = key
+            continue
+        if set(tables[ref_key].keys()) != set(tables[key].keys()):
+            print(f"mis-match in provided tables {ref_key} != {key}")
+        else:
+            for sub_key in tables[ref_key]:
+                if len(tables[ref_key][sub_key]) != len(tables[key][sub_key]):
+                    print(f"mis-match in {sub_key}: {ref_key} != {key}")
+```
 
 ---
 
 ## Display
 
-[% figure
-   id="plugin-example"
-   src="./COW.svg"
-   caption="Sample distribution at COW site."
-   alt="Geographical map of sample distributions around COW site."
-%]
+<figure id="plugin-example">
+  <img src="./COW.svg" alt="Sample distribution at COW site."/>
+  <figcaption>Geographical map of sample distributions around COW site.</figcaption>
+</figure>
 
 ---
 
@@ -76,11 +112,22 @@
 -   Plugin to handle CSV is the simplest
     -   Read all the files in the directory using Pandas
 
-[%inc plugin_csv.py keep=read_data %]
+```{data-file="plugin_csv.py:read_data"}
+def read_data(csvdir):
+    """Read CSV files directly into dataframes."""
+    raw = [pd.read_csv(filename) for filename in Path(csvdir).glob("*.csv")]
+    return util.combine_with_pandas(*raw)
+```
 
 -   Concatenate all the tables
 
-[%inc util.py keep=combine_with_pandas %]
+```{data-file="util.py:combine_with_pandas"}
+def combine_with_pandas(*tables):
+    """Combine tables using Pandas."""
+    combined = pd.concat(tables)
+    centers = centers_with_pandas(combined)
+    return {"combined": combined, "centers": centers}
+```
 
 ---
 
@@ -89,7 +136,18 @@
 -   Pandas can read directly given a SQL query
 -   The simple query
 
-[%inc util.py keep=query %]
+```{data-file="util.py:query"}
+# Query to select all samples from database in normalized form.
+Q_SAMPLES = """
+select
+    surveys.site,
+    samples.lon,
+    samples.lat,
+    samples.reading
+from surveys join samples
+on surveys.label = samples.label
+"""
+```
 
 ---
 
@@ -97,7 +155,15 @@
 
 -   The code
 
-[%inc plugin_sql.py keep=read_data %]
+```{data-file="plugin_sql.py:read_data"}
+def read_data(dbfile):
+    """Read tables and do calculations directly in SQL."""
+    con = sqlite3.connect(dbfile)
+    return {
+        "combined": pd.read_sql(util.Q_SAMPLES, con),
+        "centers": pd.read_sql(Q_CENTERS, con),
+    }
+```
 
 ---
 
@@ -105,7 +171,17 @@
 
 -   The query is more complex, but the code to run it is the same
 
-[%inc plugin_sql.py keep=query %]
+```{data-file="plugin_sql.py:query"}
+Q_CENTERS = """
+select
+    surveys.site,
+    sum(samples.lon * samples.reading) / sum(samples.reading) as lon,
+    sum(samples.lat * samples.reading) / sum(samples.reading) as lat
+from surveys join samples
+on surveys.label = samples.label
+group by surveys.site
+"""
+```
 
 ---
 
@@ -117,9 +193,26 @@
 -   Hard (odd) part is inter-table relationships
     -   And making sense of error messages
 
-[%inc plugin_sqlmodel.py keep=sites %]
+```{data-file="plugin_sqlmodel.py:sites"}
+class Sites(SQLModel, table=True):
+    """Survey sites."""
 
-[%inc plugin_sqlmodel.py keep=surveys %]
+    site: str | None = Field(default=None, primary_key=True)
+    lon: float
+    lat: float
+    surveys: list["Surveys"] = Relationship(back_populates="site_id")
+```
+
+```{data-file="plugin_sqlmodel.py:surveys"}
+class Surveys(SQLModel, table=True):
+    """Surveys done."""
+
+    label: int | None = Field(default=None, primary_key=True)
+    date: date_type
+    site: str | None = Field(default=None, foreign_key="sites.site")
+    site_id: Sites | None = Relationship(back_populates="surveys")
+    samples: list["Samples"] = Relationship(back_populates="label_id")
+```
 
 ---
 
@@ -127,7 +220,26 @@
 
 -   With this, the `read_data` function is:
 
-[%inc plugin_sqlmodel.py keep=read_data %]
+```{data-file="plugin_sqlmodel.py:read_data"}
+def read_data(dbfile):
+    """Read database and do calculations with SQLModel ORM."""
+    url = f"sqlite:///{dbfile}"
+    engine = create_engine(url)
+    SQLModel.metadata.create_all(engine)
+    with Session(engine) as session:
+        combined = list(
+            (s.label_id.site, s.lon, s.lat, s.reading)
+            for s in session.exec(select(Samples))
+        )
+        combined = pd.DataFrame(
+            combined,
+            columns=["site", "lon", "lat", "reading"]
+        )
+        return {
+            "combined": combined,
+            "centers": util.centers_with_pandas(combined)
+        }
+```
 
 ---
 

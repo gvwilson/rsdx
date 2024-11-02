@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>03_plugin/plugin_sql.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>03_plugin/plugin_sql.py</h1>
+<pre><code>"""Load data from SQLite database using Pandas."""
+
+import pandas as pd
+import sqlite3
+
+import util
+
+
+# [query]
+Q_CENTERS = """
+select
+    surveys.site,
+    sum(samples.lon * samples.reading) / sum(samples.reading) as lon,
+    sum(samples.lat * samples.reading) / sum(samples.reading) as lat
+from surveys join samples
+on surveys.label = samples.label
+group by surveys.site
+"""
+# [/query]
+
+
+# [read_data]
+def read_data(dbfile):
+    """Read tables and do calculations directly in SQL."""
+    con = sqlite3.connect(dbfile)
+    return {
+        "combined": pd.read_sql(util.Q_SAMPLES, con),
+        "centers": pd.read_sql(Q_CENTERS, con),
+    }
+# [/read_data]
+</code></pre>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

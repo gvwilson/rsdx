@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>03_plugin/plugin_pandas.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>03_plugin/plugin_pandas.py</h1>
+<pre><code>"""Load data from database using Pandas."""
+
+import sqlite3
+
+import pandas as pd
+
+import util
+
+
+def read_data(dbfile):
+    """Read database tables into Pandas dataframes and manipulate."""
+    con = sqlite3.connect(dbfile)
+    raw = pd.read_sql(util.Q_SAMPLES, con)
+    return util.combine_with_pandas(raw)
+</code></pre>
+</main>
+<footer>
+<a href="../">The Webonomicon</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>
