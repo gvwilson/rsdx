@@ -1,4 +1,4 @@
-# Cleanup
+# Cleaning Up Code
 
 ## The Problem
 

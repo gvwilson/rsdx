@@ -190,7 +190,7 @@ def _require_exists(db, kind, value):
                 return found[0]
 
         case other:
-            raise ClickException(f"internal error: unknown kind {kind}")
+            raise ClickException(f"internal error: unknown kind {kind}: {other}")
 
     raise ClickException(f"No such {kind}: '{value}'")
 # [/require_exists]
