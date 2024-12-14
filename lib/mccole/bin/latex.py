@@ -166,7 +166,7 @@ def at_figure(info, node, accum, begin):
 def at_h1(info, node, accum, begin):
     """Handle <h1>…</h1>."""
     if begin:
-        accum.append(rf"\chapter{{")
+        accum.append(r"\chapter{{")
     else:
         accum.extend([rf"}}\label{{{info["slug"]}}}", "\n"])
     return True
