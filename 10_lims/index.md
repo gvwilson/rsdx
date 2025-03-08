@@ -334,6 +334,3 @@ def _lint_assay_machine_header(params, filename, data):
 -   Is it worth it?
     -   For a single person managing a small set of files: no
     -   For multiple people with many files: absolutely
-
-[click]: https://click.palletsprojects.com/
-[tinydb]: https://tinydb.readthedocs.io/

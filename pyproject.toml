@@ -32,6 +32,7 @@ dependencies = [
 
 [tool.mccole]
 skips = ["example_site", "templates", "unused", "headers.txt"]
+links = "info/links.yml"
 
 [tool.mccole.renames]
 "CODE_OF_CONDUCT.md" = "code_of_conduct.md"

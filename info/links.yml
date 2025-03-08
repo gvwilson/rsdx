@@ -1,9 +1,5 @@
 # A
 
-- key: anarres
-  url: https://openclipart.org/artist/anarres
-  en: "User anarres on Open Clip Art"
-
 - key: aosa
   url: https://aosabook.org/
   en: "The Architecture of Open Source Applications"
@@ -145,6 +141,14 @@
 - key: latex
   url: "https://www.latex-project.org/"
   en: "LaTeX"
+
+- key: lesson_repo
+  url: https://github.com/lessonomicon/rsdx/
+  en: "Lesson repository"
+
+- key: lesson_site
+  url: https://lessonomicon.github.io/rsdx/
+  en: "Lesson site"
 
 - key: lims
   url: "https://en.wikipedia.org/wiki/Laboratory_information_management_system"

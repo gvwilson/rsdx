@@ -62,8 +62,8 @@
 -   Written material: [Creative Commons - Attribution - NonCommercial 4.0 International license][cc_by_nc]
     (CC-BY-NC-4.0)
 -   Code: [Hippocratic License][hippocratic_license]
--   Source available in [our Git repository][config_repo]
--   Can all be read on [our website][config_website]
+-   Source available in [our Git repository][lesson_repo]
+-   Can all be read on [our website][lesson_site]
 
 ---
 
@@ -74,9 +74,3 @@ has worked in industry and academia for 40 years,
 and is the author, co-author, or editor of over a dozen previous books.
 He was the co-founder and first Executive Director of Software Carpentry
 and received ACM SIGSOFT's Influential Educator Award in 2020.
-
-[cc_by_nc]: https://creativecommons.org/licenses/by-nc/4.0/
-[config_repo]: https://github.com/lessonomicon/rsdx/
-[config_website]: https://lessonomicon.github.io/rsdx/
-[hippocratic_license]: https://firstdonoharm.dev/
-[third_bit]: https://third-bit.com/

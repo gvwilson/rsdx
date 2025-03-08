@@ -118,6 +118,3 @@ def display_csv(pargs, kwargs, node):
   <img src="website_screenshot.svg" alt="screenshot of generated page"/>
   <figcaption>Figure 1: Generated page.</figcaption>
 </figure>
-
-[ark]: https://www.dmulholl.com/docs/ark/main/
-[jinja]: https://jinja.palletsprojects.com/

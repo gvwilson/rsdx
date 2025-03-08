@@ -198,6 +198,3 @@ search,W4386532853.json,0.033283262356244445
     which are probably a result of inaccurate web scraping
 -   The good news is,
     TF-IDF is exactly the sort of thing we know how to write unit tests for
-
-[open_alex]: https://openalex.org/
-[pyalex]: https://pypi.org/project/pyalex/

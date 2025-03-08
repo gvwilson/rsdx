@@ -246,5 +246,3 @@ def read_data(dbfile):
 ## Exercises
 
 1.  Calculate centers using aggregation in ORM.
-
-[sqlmodel]: https://sqlmodel.tiangolo.com/

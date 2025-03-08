@@ -319,5 +319,3 @@ cProfile.run("main()", sort="tottime")
     Why or why not?
 
 1.  FIXME: test lazy approach with randomnmess
-
-[profile]: https://docs.python.org/3/library/profile.html

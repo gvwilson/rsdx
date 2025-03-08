@@ -114,7 +114,3 @@ Press CTRL+C to quit
   </body>
 </html>
 ```
-
-[flask]: https://flask.palletsprojects.com/
-[sqlite3]: https://docs.python.org/3/library/sqlite3.html
-[sqlmodel]: https://sqlmodel.tiangolo.com/

@@ -294,5 +294,3 @@ SNAIL_PRECISION = 1
 ## Exercises
 
 FIXME: create exercises for data analysis chapter
-
-[faker]: https://faker.readthedocs.io/
