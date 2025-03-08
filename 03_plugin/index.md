@@ -4,7 +4,7 @@
 
 -   Research data may come from files, databases, websites, and many other sources
 -   Instead of adding code to a program to handle each one,
-    use a [plugin](g:plugin_architecture)hitecture" %]
+    use a [plugin architecture](g:plugin_architecture)
     to load data handlers dynamically
 -   Lets users extend the program without modifying its internals
 -   Work backward from configuration file that defines plugin type and its parameters
@@ -24,11 +24,11 @@
 
 <figure id="plugin_table_structure">
   <img src="table_structure.svg" alt="Structure of survey tables"/>
-  <figcaption>Survey table structure</figcaption>
+  <figcaption>Figure 1: Survey table structure</figcaption>
 </figure>
 
--   Each *site* has a [primary](g:primary_key)" %] and longitude/latitude
--   Each *survey* has a primary key, a site identifier ([foreign](g:foreign_key)" %]) and a date
+-   Each *site* has a [primary key](g:primary_key) and longitude/latitude
+-   Each *survey* has a primary key, a site identifier ([foreign key](g:foreign_key)) and a date
 -   Each sample has a site ID foreign key, longitude/latitude, and a reading
 
 ---
@@ -55,7 +55,7 @@ def main():
 ```
 
 -   Result from each `read_data` is a list of tables
-    -   Load all available examples to [cross](g:cross_validation)idate" %]
+    -   Load all available examples to [cross validate](g:cross_validation)
 
 ---
 
@@ -102,7 +102,7 @@ def check(tables):
 
 <figure id="plugin-example">
   <img src="./COW.svg" alt="Sample distribution at COW site."/>
-  <figcaption>Geographical map of sample distributions around COW site.</figcaption>
+  <figcaption>Figure 2: Geographical map of sample distributions around COW site.</figcaption>
 </figure>
 
 ---
@@ -187,8 +187,8 @@ group by surveys.site
 
 ## Object-Relational Mapper
 
--   Use [SQLModel][sqlmodel] [object](g:orm)ational mapper" %] (ORM)
-    -   Define classes using [type](g:type_annotation)otations" %]
+-   Use [SQLModel][sqlmodel] [object-relational mapper](g:orm) (ORM)
+    -   Define classes using [type annotation](g:type_annotation)
     -   ORM maps these to database columns
 -   Hard (odd) part is inter-table relationships
     -   And making sense of error messages
@@ -246,3 +246,5 @@ def read_data(dbfile):
 ## Exercises
 
 1.  Calculate centers using aggregation in ORM.
+
+[sqlmodel]: https://sqlmodel.tiangolo.com/

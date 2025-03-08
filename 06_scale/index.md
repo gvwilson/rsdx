@@ -188,3 +188,5 @@ FIXME: show how to build a simple DAG-based workflow runner
 1.  FIXME: add exercises for scaling up
 
 1.  Use recursion to generate parameter sweep for arbitrary number of parameters.
+
+[metaflow]: https://metaflow.org/

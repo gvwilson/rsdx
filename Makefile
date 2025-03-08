@@ -14,7 +14,7 @@ datasets:
 
 ## lint: check code and project
 lint:
-	@ruff check --exclude docs .
+	@ruff check --exclude docs --exclude lib .
 	@mccole lint
 	@html5validator --root docs --blacklist templates \
 	&& echo "HTML checks passed."

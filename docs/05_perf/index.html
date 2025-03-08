@@ -145,7 +145,7 @@ class ParamsSweep:
 </ul>
 <figure id="perf_example">
 <img alt="Running times for various depths and sizes." src="./k+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg"/>
-<figcaption>Line graph showing that running time increases quadratically with grid size.</figcaption>
+<figcaption>Figure 1: Line graph showing that running time increases quadratically with grid size.</figcaption>
 </figure>
 <hr/>
 <h2>That's a Surprise</h2>
@@ -167,7 +167,7 @@ class ParamsSweep:
 <li>Or by sampling location periodically</li>
 </ul>
 </li>
-<li>Use Python's [<code>cProfile</code>][profile] module</li>
+<li>Use Python's <a href="https://docs.python.org/3/library/profile.html"><code>cProfile</code></a> module</li>
 </ul>
 <pre class="language-py"><code class="language-py" data-file="run_profile_list.py:main">sys.argv = ["invperc_single.py", "profile_list.json"]
 cProfile.run("main()", sort="tottime")
@@ -200,7 +200,7 @@ cProfile.run("main()", sort="tottime")
 </ul>
 <figure id="perf_lazy">
 <img alt="Running times for various depths and sizes." src="./k+lazy+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg"/>
-<figcaption>Line graph showing that the lazy algorithm's performance is nearly flat.</figcaption>
+<figcaption>Figure 2: Line graph showing that the lazy algorithm's performance is nearly flat.</figcaption>
 </figure>
 <hr/>
 <h2>Lazy Evaluation</h2>

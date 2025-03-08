@@ -2,7 +2,7 @@
 
 -   Sharing knowledge is the last and most important step of scientific research
 -   Journals may require a PDF, but a website will get more readers
--   Use a [static](g:ssg)e generator" %] to create one
+-   Use a [static site generator](g:ssg) to create one
 -   We will use [Ark][ark] (the same tool used to create this site)
 
 ## Site Elements {: #website-elements}
@@ -101,7 +101,7 @@ title: Analysis Results
 ```{data-file="../example_site/lib/snails/extensions/codes.py:display_csv"}
 @shortcodes.register("csv")
 def display_csv(pargs, kwargs, node):
-    """Handle [%csv filename %] table inclusion."""
+    """Handle CSV table inclusion."""
     assert (len(pargs) == 1) and (
         not kwargs
     ), f"Bad 'csv' shortcode with {pargs} and {kwargs} in {node}"
@@ -116,5 +116,8 @@ def display_csv(pargs, kwargs, node):
 
 <figure id="webiste_screenshot">
   <img src="website_screenshot.svg" alt="screenshot of generated page"/>
-  <figcaption>Generated page.</figcaption>
+  <figcaption>Figure 1: Generated page.</figcaption>
 </figure>
+
+[ark]: https://www.dmulholl.com/docs/ark/main/
+[jinja]: https://jinja.palletsprojects.com/

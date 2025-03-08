@@ -3,7 +3,7 @@
 ## The Problem
 
 -   Refactor and test a program that (kind of) works to create something sturdier
--   Program models [invasion](g:inv_perc)colation" %]
+-   Program models [invasion percolation](g:inv_perc)
     -   Grid of random numbers
     -   Fill the center cell
     -   Repeatedly:
@@ -16,7 +16,7 @@
 
 ## Main Body of Original Script
 
--   Note: [random](g:rng_seed)ber seed" %] is optional
+-   Note: [random number seed](g:rng_seed) is optional
 
 ```{data-file="script.py:main"}
 # Grid size and range of fill values.
@@ -238,9 +238,9 @@ def print_grid(kind, grid, seed, details="full"):
 
 ## Generic Grids
 
--   First grid is an [abstract](g:abc)e class" %]
+-   First grid is an [abstract base class](g:abc)
     -   Defines common behaviors
-    -   Declaring [abstract](g:abstract_method)hods" %]
+    -   Declaring [abstract methods](g:abstract_method)
         forces derived classes to provide a way to get and set item by location
 
 ```{data-file="grid_generic.py:main"}

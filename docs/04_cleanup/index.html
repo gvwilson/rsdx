@@ -28,7 +28,7 @@
 <h2>The Problem</h2>
 <ul>
 <li>Refactor and test a program that (kind of) works to create something sturdier</li>
-<li>Program models <a href="../glossary.html#inv_perc">invasion</a>colation" %]<ul>
+<li>Program models <a href="../glossary.html#inv_perc">invasion percolation</a><ul>
 <li>Grid of random numbers</li>
 <li>Fill the center cell</li>
 <li>Repeatedly:<ul>
@@ -44,7 +44,7 @@
 <hr/>
 <h2>Main Body of Original Script</h2>
 <ul>
-<li>Note: <a href="../glossary.html#rng_seed">random</a>ber seed" %] is optional</li>
+<li>Note: <a href="../glossary.html#rng_seed">random number seed</a> is optional</li>
 </ul>
 <pre class="language-py"><code class="language-py" data-file="script.py:main"># Grid size and range of fill values.
 width, height, depth = (int(x) for x in sys.argv[1:4])
@@ -242,9 +242,9 @@ from grid_array import GridArray
 <hr/>
 <h2>Generic Grids</h2>
 <ul>
-<li>First grid is an <a href="../glossary.html#abc">abstract</a>e class" %]<ul>
+<li>First grid is an <a href="../glossary.html#abc">abstract base class</a><ul>
 <li>Defines common behaviors</li>
-<li>Declaring <a href="../glossary.html#abstract_method">abstract</a>hods" %]
+<li>Declaring <a href="../glossary.html#abstract_method">abstract methods</a>
     forces derived classes to provide a way to get and set item by location</li>
 </ul>
 </li>

@@ -28,8 +28,8 @@
 <ul>
 <li>Sharing knowledge is the last and most important step of scientific research</li>
 <li>Journals may require a PDF, but a website will get more readers</li>
-<li>Use a <a href="../glossary.html#ssg">static</a>e generator" %] to create one</li>
-<li>We will use [Ark][ark] (the same tool used to create this site)</li>
+<li>Use a <a href="../glossary.html#ssg">static site generator</a> to create one</li>
+<li>We will use <a href="https://www.dmulholl.com/docs/ark/main/">Ark</a> (the same tool used to create this site)</li>
 </ul>
 <h2 id="website-elements">Site Elements</h2>
 <ul>
@@ -73,7 +73,7 @@ markdown_settings = {
 </code></pre>
 <ul>
 <li>Transformation relies on a <a href="../glossary.html#ssg_template">template</a></li>
-<li>We use [Jinja][jinja]</li>
+<li>We use <a href="https://jinja.palletsprojects.com/">Jinja</a></li>
 </ul>
 <pre class="language-jinja"><code class="language-jinja" data-file="../example_site/lib/snails/templates/node.jinja">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -129,7 +129,7 @@ title: Analysis Results
 </ul>
 <pre class="language-py"><code class="language-py" data-file="../example_site/lib/snails/extensions/codes.py:display_csv">@shortcodes.register("csv")
 def display_csv(pargs, kwargs, node):
-    """Handle [%csv filename %] table inclusion."""
+    """Handle CSV table inclusion."""
     assert (len(pargs) == 1) and (
         not kwargs
     ), f"Bad 'csv' shortcode with {pargs} and {kwargs} in {node}"
@@ -143,7 +143,7 @@ def display_csv(pargs, kwargs, node):
 </code></pre>
 <figure id="webiste_screenshot">
 <img alt="screenshot of generated page" src="website_screenshot.svg"/>
-<figcaption>Generated page.</figcaption>
+<figcaption>Figure 1: Generated page.</figcaption>
 </figure>
 </main>
 <footer>

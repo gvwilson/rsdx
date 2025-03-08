@@ -1,5 +1,9 @@
 # A
 
+- key: anarres
+  url: https://openclipart.org/artist/anarres
+  en: "User anarres on Open Clip Art"
+
 - key: aosa
   url: https://aosabook.org/
   en: "The Architecture of Open Source Applications"
@@ -257,6 +261,10 @@
 - key: tf_idf
   url: "https://en.wikipedia.org/wiki/Tf%E2%80%93idf"
   en: "TF-IDF"
+
+- key: third_bit
+  url: "https://third-bit.com/"
+  en: "Third Bit"
 
 - key: tinydb
   url: "https://tinydb.readthedocs.io/"

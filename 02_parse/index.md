@@ -174,7 +174,7 @@ def load(reader):
 ## Finite State Machine
 
 -   Splitting is the hardest part
--   Manage complexity with a a [finite](g:fsm)te machine" %]
+-   Manage complexity with a a [finite state machine](g:fsm)
     1.  Reading header
     2.  Searching for body
     3.  Reading body
@@ -258,7 +258,7 @@ def normalize(rows):
 
 <figure id="parse_call_tree">
   <img src="call_tree.svg" alt="Call tree of completed parser"/>
-  <figcaption>Parser call tree</figcaption>
+  <figcaption>Figure 1: Parser call tree</figcaption>
 </figure>
 
 -   Run it on our files and check the results

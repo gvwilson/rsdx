@@ -5,7 +5,7 @@
 -   How do you test a data analysis pipeline?
     -   Unit tests of the kind used for invasion percolation aren't necessarily appropriate
     -   Problem isn't the control flow of the code but how it interacts with data
--   [Alexander2023](b:Alexander2023): build a [synthetic](g:synth_data)a generator" %]
+-   [Alexander2023](b:Alexander2023): build a [synthetic data generator](g:synth_data)
     -   Check the behavior of the pipeline by pushing data with known properties through it
     -   If it finds something statistically significant in white noise, rethink the pipeline
 -   [Faker][faker] has tools for generating a lot of useful data (we will use it in future chapters)
@@ -17,7 +17,7 @@ FIXME: replace pandas with polars
 
 ## Synthesizing Genomes
 
--   Create some short snail genomes with [single](g:snp)leotide polymorphisms" %]
+-   Create some short snail genomes with [single nucleotide polymorphisms](g:snp)
 -   Output will have:
     -   Length: for now, all sequences the same length)
     -   Reference sequence: the unmutated original
@@ -258,7 +258,7 @@ SNAIL_PRECISION = 1
 
 <figure id="mutate_all_scatter">
   <img src="all_data_scatter.svg" alt="scatterplot of all readings at all locations"/>
-  <figcaption>Reading as a function of location and base (all)</figcaption>
+  <figcaption>Figure 1: Reading as a function of location and base (all)</figcaption>
 </figure>
 
 ---
@@ -267,7 +267,7 @@ SNAIL_PRECISION = 1
 
 <figure id="mutate_slimmed_scatter">
   <img src="slimmed_data_scatter.svg" alt="scatterplot of readings for snails with mutations"/>
-  <figcaption>Reading as a function of location and base (mutants)</figcaption>
+  <figcaption>Figure 2: Reading as a function of location and base (mutants)</figcaption>
 </figure>
 
 ---
@@ -276,7 +276,7 @@ SNAIL_PRECISION = 1
 
 <figure id="mutate_slimmed_sorted">
   <img src="slimmed_data_sorted.svg" alt="rank plot of readings at mutation locations"/>
-  <figcaption>Reading as a function of location (rank order)</figcaption>
+  <figcaption>Figure 3: Reading as a function of location (rank order)</figcaption>
 </figure>
 
 ---
@@ -294,3 +294,5 @@ SNAIL_PRECISION = 1
 ## Exercises
 
 FIXME: create exercises for data analysis chapter
+
+[faker]: https://faker.readthedocs.io/

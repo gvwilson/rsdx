@@ -32,19 +32,19 @@
 <li>Problem isn't the control flow of the code but how it interacts with data</li>
 </ul>
 </li>
-<li><a href="../bibliography.html#Alexander2023">Alexander2023</a>: build a <a href="../glossary.html#synth_data">synthetic</a>a generator" %]<ul>
+<li><a href="../bibliography.html#Alexander2023">Alexander2023</a>: build a <a href="../glossary.html#synth_data">synthetic data generator</a><ul>
 <li>Check the behavior of the pipeline by pushing data with known properties through it</li>
 <li>If it finds something statistically significant in white noise, rethink the pipeline</li>
 </ul>
 </li>
-<li>[Faker][faker] has tools for generating a lot of useful data (we will use it in future chapters)</li>
+<li><a href="https://faker.readthedocs.io/">Faker</a> has tools for generating a lot of useful data (we will use it in future chapters)</li>
 <li>But it can't generate genomes, so we'll build our own</li>
 </ul>
 <p>FIXME: replace pandas with polars</p>
 <hr/>
 <h2>Synthesizing Genomes</h2>
 <ul>
-<li>Create some short snail genomes with <a href="../glossary.html#snp">single</a>leotide polymorphisms" %]</li>
+<li>Create some short snail genomes with <a href="../glossary.html#snp">single nucleotide polymorphisms</a></li>
 <li>Output will have:<ul>
 <li>Length: for now, all sequences the same length)</li>
 <li>Reference sequence: the unmutated original</li>
@@ -261,19 +261,19 @@ SNAIL_PRECISION = 1
 <h2>All Our Snails</h2>
 <figure id="mutate_all_scatter">
 <img alt="scatterplot of all readings at all locations" src="all_data_scatter.svg"/>
-<figcaption>Reading as a function of location and base (all)</figcaption>
+<figcaption>Figure 1: Reading as a function of location and base (all)</figcaption>
 </figure>
 <hr/>
 <h2>Snails With Mutations</h2>
 <figure id="mutate_slimmed_scatter">
 <img alt="scatterplot of readings for snails with mutations" src="slimmed_data_scatter.svg"/>
-<figcaption>Reading as a function of location and base (mutants)</figcaption>
+<figcaption>Figure 2: Reading as a function of location and base (mutants)</figcaption>
 </figure>
 <hr/>
 <h2>Rank Order</h2>
 <figure id="mutate_slimmed_sorted">
 <img alt="rank plot of readings at mutation locations" src="slimmed_data_sorted.svg"/>
-<figcaption>Reading as a function of location (rank order)</figcaption>
+<figcaption>Figure 3: Reading as a function of location (rank order)</figcaption>
 </figure>
 <hr/>
 <h2>Conclusions</h2>

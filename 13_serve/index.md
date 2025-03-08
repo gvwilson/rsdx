@@ -75,7 +75,7 @@ Press CTRL+C to quit
 
 <figure id="serve_home_page">
   <img src="serve_home_page.svg" alt="screenshot of data server home page"/>
-  <figcaption>Home page of data server</figcaption>
+  <figcaption>Figure 1: Home page of data server</figcaption>
 </figure>
 
 ## Templates {: #serve-template}
@@ -114,3 +114,7 @@ Press CTRL+C to quit
   </body>
 </html>
 ```
+
+[flask]: https://flask.palletsprojects.com/
+[sqlite3]: https://docs.python.org/3/library/sqlite3.html
+[sqlmodel]: https://sqlmodel.tiangolo.com/

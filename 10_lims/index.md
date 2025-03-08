@@ -1,10 +1,10 @@
 # A Laboratory Information Management System
 
--   [Relational](g:relational_db)abase" %] stores data in tables
+-   [Relational database](g:relational_db) stores data in tables
     -   Usually access with SQL or some variant of it
--   But there are also [document](g:document_db)abases" %]
-    -   Sometimes called [NoSQL](g:nosql) databases
--   We will build a (very) simple [laboratory](g:lims)ormation management systems" %] (LIMS)
+-   But there are also [document databases](g:document_db)
+    -   Sometimes called [NoSQL databases](g:nosql)
+-   We will build a (very) simple [laboratory information management system](g:lims) (LIMS)
     using [TinyDB][tinydb]
 -   And use [click][click] to build the command-line interface
 
@@ -334,3 +334,6 @@ def _lint_assay_machine_header(params, filename, data):
 -   Is it worth it?
     -   For a single person managing a small set of files: no
     -   For multiple people with many files: absolutely
+
+[click]: https://click.palletsprojects.com/
+[tinydb]: https://tinydb.readthedocs.io/

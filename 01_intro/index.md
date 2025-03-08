@@ -10,7 +10,7 @@
 
 <figure id="intro-complexity">
   <img src="complexity.svg" alt="Complexity and size"/>
-  <figcaption>How complexity grows with size.</figcaption>
+  <figcaption>Figure 1: How complexity grows with size.</figcaption>
 </figure>
 
 ---
@@ -19,7 +19,7 @@
 
 <figure id="intro-comprehension">
   <img src="comprehension.svg" alt="Abstract vs. comprehension"/>
-  <figcaption>Abstraction vs. comprehension for novices and experts.</figcaption>
+  <figcaption>Figure 2: Abstraction vs. comprehension for novices and experts.</figcaption>
 </figure>
 
 -   Experts understand lower and higher abstraction levels than novices
@@ -69,8 +69,14 @@
 
 ## The Author
 
-[**Greg Wilson**](https://third-bit.com/)
+[**Greg Wilson**][third_bit]
 has worked in industry and academia for 40 years,
 and is the author, co-author, or editor of over a dozen previous books.
 He was the co-founder and first Executive Director of Software Carpentry
 and received ACM SIGSOFT's Influential Educator Award in 2020.
+
+[cc_by_nc]: https://creativecommons.org/licenses/by-nc/4.0/
+[config_repo]: https://github.com/lessonomicon/rsdx/
+[config_website]: https://lessonomicon.github.io/rsdx/
+[hippocratic_license]: https://firstdonoharm.dev/
+[third_bit]: https://third-bit.com/

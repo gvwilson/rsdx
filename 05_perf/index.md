@@ -130,7 +130,7 @@ def generate_sweep(params):
 
 <figure id="perf_example">
   <img src="./k+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg" alt="Running times for various depths and sizes."/>
-  <figcaption>Line graph showing that running time increases quadratically with grid size.</figcaption>
+  <figcaption>Figure 1: Line graph showing that running time increases quadratically with grid size.</figcaption>
 </figure>
 
 ---
@@ -186,7 +186,7 @@ cProfile.run("main()", sort="tottime")
 
 <figure id="perf_lazy">
   <img src="./k+lazy+list+array_z+35+55+75+95+115_d+2+10+100_r+50_s+556677.svg" alt="Running times for various depths and sizes."/>
-  <figcaption>Line graph showing that the lazy algorithm's performance is nearly flat.</figcaption>
+  <figcaption>Figure 2: Line graph showing that the lazy algorithm's performance is nearly flat.</figcaption>
 </figure>
 
 ---
@@ -319,3 +319,5 @@ cProfile.run("main()", sort="tottime")
     Why or why not?
 
 1.  FIXME: test lazy approach with randomnmess
+
+[profile]: https://docs.python.org/3/library/profile.html

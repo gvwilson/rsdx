@@ -2,7 +2,7 @@
 
 -   Time to do our literature survey
 -   Want to search the abstracts of over 2000 papers
--   Use [term](g:tf_idf)quency - inverse document frequency" %] (TF-IDF)
+-   Use [term frequency-inverse document frequency](g:tf_idf) (TF-IDF)
     -   Term frequency: frequency of each word in each document
     -   Document frequency: proportion of documents in which a word appears
     -   Inverse document frequency: one over that (i.e., how specific the word is)
@@ -198,3 +198,6 @@ search,W4386532853.json,0.033283262356244445
     which are probably a result of inaccurate web scraping
 -   The good news is,
     TF-IDF is exactly the sort of thing we know how to write unit tests for
+
+[open_alex]: https://openalex.org/
+[pyalex]: https://pypi.org/project/pyalex/

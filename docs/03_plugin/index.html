@@ -29,7 +29,7 @@
 <ul>
 <li>Research data may come from files, databases, websites, and many other sources</li>
 <li>Instead of adding code to a program to handle each one,
-    use a <a href="../glossary.html#plugin_architecture">plugin</a>hitecture" %]
+    use a <a href="../glossary.html#plugin_architecture">plugin architecture</a>
     to load data handlers dynamically</li>
 <li>Lets users extend the program without modifying its internals</li>
 <li>Work backward from configuration file that defines plugin type and its parameters</li>
@@ -45,11 +45,11 @@
 <h2>Our Data</h2>
 <figure id="plugin_table_structure">
 <img alt="Structure of survey tables" src="table_structure.svg"/>
-<figcaption>Survey table structure</figcaption>
+<figcaption>Figure 1: Survey table structure</figcaption>
 </figure>
 <ul>
-<li>Each <em>site</em> has a <a href="../glossary.html#primary_key">primary</a>" %] and longitude/latitude</li>
-<li>Each <em>survey</em> has a primary key, a site identifier (<a href="../glossary.html#foreign_key">foreign</a>" %]) and a date</li>
+<li>Each <em>site</em> has a <a href="../glossary.html#primary_key">primary key</a> and longitude/latitude</li>
+<li>Each <em>survey</em> has a primary key, a site identifier (<a href="../glossary.html#foreign_key">foreign key</a>) and a date</li>
 <li>Each sample has a site ID foreign key, longitude/latitude, and a reading</li>
 </ul>
 <hr/>
@@ -76,7 +76,7 @@
 </code></pre>
 <ul>
 <li>Result from each <code>read_data</code> is a list of tables<ul>
-<li>Load all available examples to <a href="../glossary.html#cross_validation">cross</a>idate" %]</li>
+<li>Load all available examples to <a href="../glossary.html#cross_validation">cross validate</a></li>
 </ul>
 </li>
 </ul>
@@ -119,7 +119,7 @@
 <h2>Display</h2>
 <figure id="plugin-example">
 <img alt="Sample distribution at COW site." src="./COW.svg"/>
-<figcaption>Geographical map of sample distributions around COW site.</figcaption>
+<figcaption>Figure 2: Geographical map of sample distributions around COW site.</figcaption>
 </figure>
 <hr/>
 <h2>Handling CSV</h2>
@@ -191,8 +191,8 @@ group by surveys.site
 <hr/>
 <h2>Object-Relational Mapper</h2>
 <ul>
-<li>Use [SQLModel][sqlmodel] <a href="../glossary.html#orm">object</a>ational mapper" %] (ORM)<ul>
-<li>Define classes using <a href="../glossary.html#type_annotation">type</a>otations" %]</li>
+<li>Use <a href="https://sqlmodel.tiangolo.com/">SQLModel</a> <a href="../glossary.html#orm">object-relational mapper</a> (ORM)<ul>
+<li>Define classes using <a href="../glossary.html#type_annotation">type annotation</a></li>
 <li>ORM maps these to database columns</li>
 </ul>
 </li>

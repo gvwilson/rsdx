@@ -135,3 +135,6 @@ def get_info(args, relative):
         result[kind] = count
     return result
 ```
+
+[bs4]: https://beautiful-soup-4.readthedocs.io/
+[requests]: https://requests.readthedocs.io/
