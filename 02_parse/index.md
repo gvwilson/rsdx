@@ -174,10 +174,10 @@ def load(reader):
 ## Finite State Machine
 
 -   Splitting is the hardest part
--   Manage complexity with a a [finite state machine](g:fsm)
-    1.  Reading header
-    2.  Searching for body
-    3.  Reading body
+-   Manage complexity with a [finite state machine](g:fsm)
+    1.  Read header
+    2.  Search for body
+    3.  Read body
     4.  Done
 -   Use an enumeration to keep track of these
 
@@ -196,9 +196,9 @@ class State(Enum):
 ## Structure
 
 -   As we process each line
-    -   Break down cases based on current state
-    -   (Possibly) do something with the line
-    -   Decide our next state
+    1.  Break down cases based on current state
+    2.  (Possibly) do something with the line
+    3.  Decide our next state
 -   A structured way to manage complexity as parsing gets more complicated
    -   Could just use strings instead of an enum, but the latter is easy to keep track of
 

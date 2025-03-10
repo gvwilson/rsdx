@@ -188,10 +188,10 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <h2>Finite State Machine</h2>
 <ul>
 <li>Splitting is the hardest part</li>
-<li>Manage complexity with a a <a href="../glossary.html#fsm">finite state machine</a><ol>
-<li>Reading header</li>
-<li>Searching for body</li>
-<li>Reading body</li>
+<li>Manage complexity with a <a href="../glossary.html#fsm">finite state machine</a><ol>
+<li>Read header</li>
+<li>Search for body</li>
+<li>Read body</li>
 <li>Done</li>
 </ol>
 </li>
@@ -208,11 +208,11 @@ COW,2023-04-27,-124.045,48.8216,81.7
 <hr/>
 <h2>Structure</h2>
 <ul>
-<li>As we process each line<ul>
+<li>As we process each line<ol>
 <li>Break down cases based on current state</li>
 <li>(Possibly) do something with the line</li>
 <li>Decide our next state</li>
-</ul>
+</ol>
 </li>
 <li>A structured way to manage complexity as parsing gets more complicated</li>
 <li>Could just use strings instead of an enum, but the latter is easy to keep track of</li>
