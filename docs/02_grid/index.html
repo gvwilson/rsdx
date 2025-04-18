@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>The Grid</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>The Grid</h1>
+<h2>The Problem</h2>
+<ul>
+<li>First step in synthesizing data is to model spread of pollution<ul>
+<li>Doesn't <em>have</em> to first, but we have to start somewhere…</li>
+</ul>
+</li>
+<li>Factors<ul>
+<li>Survey areas will be marked off in meter-by-meter squares,
+    so we can use a discrete grid</li>
+<li>Survey grids are anywhere from 8x8 to 100x100 meters<ul>
+<li>Not guaranteed to be square, but all the old grids were</li>
+</ul>
+</li>
+<li>Pollution spreads from a central point,
+    so we want connected regions</li>
+<li>Pollution decreases with distance from the dumping site,
+    but may pool in low-lying or porous areas</li>
+</ul>
+</li>
+</ul>
+<h2>The Plan</h2>
+<ul>
+<li>Throw together something simple and then <a href="../glossary.html#refactor">refactor</a> it<ul>
+<li>Creates opportunities to explain why we do things certain ways</li>
+<li>It's how most of us build software in real life</li>
+</ul>
+</li>
+</ul>
+<h2>The First Version</h2>
+<p><a href="./grid_01.py.html"><code>grid_01.py</code></a></p>
+<ul>
+<li>Store the grid as a list of lists<ul>
+<li>Could use <a href="https://numpy.org/">NumPy</a> array</li>
+</ul>
+</li>
+<li>Use a <a href="../glossary.html#random_walk">random walk</a> to set cells' values<ul>
+<li>Add one to the cell each time the walker visits it</li>
+<li>Produces 2D normal distribution in the limit</li>
+</ul>
+</li>
+<li>Store a list of possibly moves</li>
+<li>Repeatedly select one at random</li>
+<li>Stop when the walker reaches the edge of the grid</li>
+<li>Print as <a href="../glossary.html#csv">CSV</a></li>
+</ul>
+<h2>Critique</h2>
+<ul>
+<li>Everything is <a href="../glossary.html#coupling">coupled</a> to the grid representation<ul>
+<li>If we <em>did</em> switch to a NumPy array,
+    we'd have to rewrite all the low-level details</li>
+</ul>
+</li>
+<li>Not <a href="../glossary.html#reproducibility">reproducible</a><ul>
+<li>Different sequence of random numbers each time we run it</li>
+</ul>
+</li>
+<li>Have to edit the script to change the grid size</li>
+<li>Result is printed to the screen<ul>
+<li>We can redirect to a file using <code>&gt;</code> in the shell</li>
+</ul>
+</li>
+</ul>
+<h2>Tidying Up</h2>
+<p><a href="./grid_02.py.html"><code>grid_02.py</code></a></p>
+<ul>
+<li>Operation is in a function that we can call from other code</li>
+<li><a href="../glossary.html#seed">Seed</a> the random number generator for reproducibility</li>
+<li>Use a <a href="../glossary.html#list_comprehension">list comprehension</a> to create the grid<ul>
+<li>Could shorten the code further with a <a href="../glossary.html#nested_comprehension">nested comprehension</a></li>
+</ul>
+</li>
+<li>Use a condition in the <code>while</code> loop instead of <code>break</code></li>
+<li>But data representation still shows through</li>
+</ul>
+<h2>Use a Class</h2>
+<p><a href="./grid_03.py.html"><code>grid_03.py</code></a></p>
+<ul>
+<li>Hide data representation in a class<ul>
+<li>Exercise: replace list of lists with NumPy array</li>
+</ul>
+</li>
+<li>Provide <a href="s:getter">getter</a> and <a href="s:setter">setter</a> methods</li>
+<li><code>fill</code> is a separate function<ul>
+<li><code>Grid</code> class might be used for other things</li>
+</ul>
+</li>
+<li>Use <a href="../glossary.html#string_io">string I/O</a> to build CSV representation</li>
+</ul>
+<h2>Command-Line Parameters</h2>
+<p><a href="./grid_04.py.html"><code>grid_04.py</code></a></p>
+<ul>
+<li>Use <code>argparse</code> module to turn command-line arguments into an object with named values</li>
+<li>Saves us from mixing up seeds and sizes</li>
+<li>Makes <a href="../glossary.html#shell_script">shell scripts</a> easier to read</li>
+<li>And gives us a <code>--help</code> option that's guaranteed to be up to date</li>
+</ul>
+</main>
+<footer>
+<a href="../">Research Software Design by Example</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

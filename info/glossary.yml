@@ -265,6 +265,12 @@
 
 # R
 
+- key: refactor
+  en:
+    term: "refactor"
+    def: >
+      FIXME
+
 - key: relational_db
   en:
     term: "relational database"

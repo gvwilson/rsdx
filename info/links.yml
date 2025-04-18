@@ -170,6 +170,10 @@
   url: "https://art.djnavarro.net/"
   en: "Danielle Navarro"
 
+- key: numpy
+  url: "https://numpy.org/"
+  en: "NumPy"
+
 # O
 
 - key: open_alex

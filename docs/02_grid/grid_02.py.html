@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>02_grid/grid_02.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>02_grid/grid_02.py</h1>
+<pre><code>import csv
+import random
+import sys
+
+
+def make_grid(size):
+    """Create and fill a square of the specified size."""
+
+    # Make an empty grid
+    grid = []
+    for i in range(size):
+        grid.append([0 for _ in range(size)])
+
+    # Prep
+    center = size // 2
+    size_1 = size - 1
+    moves = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+
+    # Move and fill until we reach the edge
+    x, y = center, center
+    while (x != 0) and (y != 0) and (x != size_1) and (y != size_1):
+        grid[x][y] += 1
+        m = random.choice(moves)
+        x += m[0]
+        y += m[1]
+
+    return grid
+
+
+if __name__ == "__main__":
+    size = int(sys.argv[1])
+    seed = int(sys.argv[2])
+    random.seed(seed)
+    grid = make_grid(size)
+    csv.writer(sys.stdout).writerows(grid)
+</code></pre>
+</main>
+<footer>
+<a href="../">Research Software Design by Example</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>
