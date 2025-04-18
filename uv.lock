@@ -525,12 +525,14 @@ name = "rsdx"
 version = "0.1.28"
 source = { virtual = "." }
 dependencies = [
+    { name = "html5validator" },
     { name = "mccole" },
     { name = "snailz" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "html5validator" },
     { name = "mccole" },
     { name = "snailz" },
 ]
@@ -571,7 +573,7 @@ wheels = [
 
 [[package]]
 name = "snailz"
-version = "1.4.0"
+version = "1.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -579,9 +581,9 @@ dependencies = [
     { name = "pillow" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ec/fb/224da84d928c5d33d3ed1301790e260074f99a831378dbf0594bd757f64c/snailz-1.4.0.tar.gz", hash = "sha256:253d68b2244cf33ae2da6857066808df036de04b652046cac7e46d9a2876a2aa", size = 830389 }
+sdist = { url = "https://files.pythonhosted.org/packages/e5/64/72754ee11d2e1d9b6efb78ea1cfe92d9d2e60adb2b091f141108b8583ca6/snailz-1.4.1.tar.gz", hash = "sha256:45579312c25efa435c232976f9c00525ac386b237fd22868a9c234c9ab85ece1", size = 831093 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8e/58/9d96c8854a42fec2ecf6bac8e54a62108041ecec75f8f4a16a1a58b8a8d1/snailz-1.4.0-py3-none-any.whl", hash = "sha256:788ffd0ce05fd204a6fe047fadce3cd79f3c912e96efb09259d3108803526ba7", size = 30484 },
+    { url = "https://files.pythonhosted.org/packages/fb/a0/e97b5c65b092e594520a3362b8792762e9d005c428da7e4099bf2d88def9/snailz-1.4.1-py3-none-any.whl", hash = "sha256:f3e2af9cd21a3ec3786443fab6df0516d8b20ca370f350aded0e0144c6f05f08", size = 30549 },
 ]
 
 [[package]]

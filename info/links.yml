@@ -143,11 +143,11 @@
   en: "LaTeX"
 
 - key: lesson_repo
-  url: https://github.com/lessonomicon/rsdx/
+  url: https://github.com/gvwilson/rsdx/
   en: "Lesson repository"
 
 - key: lesson_site
-  url: https://lessonomicon.github.io/rsdx/
+  url: https://gvwilson.github.io/rsdx/
   en: "Lesson site"
 
 - key: lims

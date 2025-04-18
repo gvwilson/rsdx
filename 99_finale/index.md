@@ -1,7 +1,6 @@
 # Conclusion
 
 Think about your favorite piece of research software.
-You may ask:
 
 - Does it do what it's supposed to?
 
@@ -9,13 +8,13 @@ You may ask:
 
 We should also ask:
 
-- Did its design facilitate its manufacture and maintenance?
+- Did its design make it easy to build and maintain?
 
-We don't have a shared vocabulary and a suite of canonical examples
-that would let us critique the design of research software
-the way we can the design of a chair or a stapler.
-We use words like "elegant",
+We use words like "elegant" when talking about software,
 but quickly run out of meaning when asked to explain what that means.
+We don't have the shared vocabulary
+that would let us critique its design
+the way we can the design of a chair or a stapler.
 
 I hope this book will help us do better.
 I hope that some day we'll be able to talk meaningfully about the beauty of software

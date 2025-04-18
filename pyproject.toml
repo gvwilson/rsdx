@@ -1,7 +1,9 @@
 [project]
 name = "rsdx"
 version = "0.1.28"
+requires-python = ">=3.12"
 dependencies = [
+    "html5validator",
     "mccole",
     "snailz"
 ]
@@ -18,3 +20,6 @@ links = "info/links.yml"
 "CONTRIBUTING.md" = "contributing.md"
 "LICENSE.md" = "license.md"
 "README.md" = "index.md"
+
+[tool.uv.workspace]
+members = ["rsdx"]
