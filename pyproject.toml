@@ -2,36 +2,15 @@
 name = "rsdx"
 version = "0.1.28"
 dependencies = [
-    "build",
-    "click",
-    "coverage",
-    "dvc",
-    "faker",
-    "flask",
-    "geopy",
-    "kaleido",
     "mccole",
-    "metaflow",
-    "numpy",
-    "pandas",
-    "pdoc",
-    "plotly.express",
-    "pony",
-    "prettytable",
-    "pyalex",
-    "pytest",
-    "python-dotenv",
-    "requests",
-    "snailz",
-    "sqlmodel",
-    "tinydb"
+    "snailz"
 ]
 
 [tool.ruff.lint.extend-per-file-ignores]
 "**/test_*.py" = ["F401", "F811"] # ignore complaints about unused imports for fixtures
 
 [tool.mccole]
-skips = ["example_site", "templates", "unused", "headers.txt"]
+skips = ["headers.txt", "info", "old", "templates", "unused", ]
 links = "info/links.yml"
 
 [tool.mccole.renames]

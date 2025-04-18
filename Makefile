@@ -2,31 +2,36 @@ include common.mk
 
 all: commands
 
+DATA=data
+PARAMS=${DATA}/params.json
+PYTHON_M=uv run python -m
+MCCOLE=mccole
+SNAILZ=snailz
+
 ## build: build HTML
 build:
-	mccole build
+	${MCCOLE} build
 	@touch docs/.nojekyll
 
-## datasets: re-create snailz parameters and datasets
-datasets:
-	snailz params --outdir params
-	snailz everything --paramsdir params --datadir data
+## data: re-create snailz parameters and datasets
+.PHONY: data
+data:
+	@rm -rf ${DATA}
+	@mkdir -p ${DATA}
+	${SNAILZ} params --output ${PARAMS}
+	${SNAILZ} data --params ${PARAMS} --output ${DATA}
 
 ## lint: check code and project
 lint:
-	@ruff check --exclude docs --exclude lib .
-	@mccole lint
+	@${PYTHON_M} ruff check --exclude docs --exclude lib .
+	@${MCCOLE} lint
 	@html5validator --root docs --blacklist templates \
 	&& echo "HTML checks passed."
 
-## refresh: refresh all file inclusions
-refresh:
-	mccole refresh --files *_*/index.md
-
 ## serve: serve generated HTML
 serve:
-	@python -m http.server -d docs 8000
+	@${PYTHON_M} http.server -d docs 8000
 
 ## stats: basic site statistics
 stats:
-	@mccole stats
+	@${MCCOLE} stats

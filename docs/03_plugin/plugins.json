@@ -1,6 +1,0 @@
-{
-    "csv": "../../data/survey_tidy",
-    "pandas": "../../data/survey.db",
-    "sql": "../../data/survey.db",
-    "sqlmodel": "../../data/survey.db"
-}
