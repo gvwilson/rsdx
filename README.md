@@ -45,7 +45,8 @@ in less time and with less pain.
 <div class="chapters" markdown="1">
 
 1.  [Introduction](./01_intro/index.md)
-1.  [The Grid](./02_grid/index.md)
+1.  [Making Grids](./02_grid/index.md)
+1.  [Parsing Messy Data](./03_parse/index.md)
 1.  [Conclusion](./99_finale/index.md)
 
 </div>

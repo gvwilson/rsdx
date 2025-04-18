@@ -2,7 +2,6 @@ import argparse
 import csv
 import io
 import random
-import sys
 
 
 class Grid:
@@ -31,6 +30,15 @@ class Grid:
         return output.getvalue()
 
 
+def cmdline_args():
+    """Parse command-line arguments."""
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--seed", type=int, required=True, help="RNG seed")
+    parser.add_argument("--size", type=int, required=True, help="grid size")
+    return parser.parse_args()
+
+
 def fill_grid(grid):
     """Fill in a grid."""
 
@@ -45,17 +53,8 @@ def fill_grid(grid):
         y += m[1]
 
 
-def parse_args():
-    """Parse command-line arguments."""
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--seed", type=int, required=True, help="RNG seed")
-    parser.add_argument("--size", type=int, required=True, help="grid size")
-    return parser.parse_args()
-
-
 if __name__ == "__main__":
-    args = parse_args()
+    args = cmdline_args()
     random.seed(args.seed)
     grid = Grid(args.size)
     fill_grid(grid)

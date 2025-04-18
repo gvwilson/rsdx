@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Parsing Messy Data</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>Parsing Messy Data</h1>
+<h2>The Problem</h2>
+<ul>
+<li>Our analysis pipeline is going to process data from microplates<ul>
+<li>Rectangular arrangements of tiny wells in inert plastic</li>
+<li>Each well contains a sample or a control</li>
+<li>Treat with chemicals, wait, photograph, and measure brightness of each well</li>
+</ul>
+</li>
+<li>All of our lab machines are supposed to generate files with the same format</li>
+<li>But some don't match the spec</li>
+</ul>
+<h2>Expected</h2>
+<ul>
+<li><a href="003805_readings.csv"><code>003805_readings.csv</code></a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Row</th>
+<th>Field</th>
+<th>Purpose</th>
+<th>Type</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td><code>id</code></td>
+<td>assay ID</td>
+<td>integer</td>
+<td>003805</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td><code>specimen</code></td>
+<td>specimen ID</td>
+<td>text</td>
+<td>VPVCOP</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td><code>date</code></td>
+<td>assay date</td>
+<td>date</td>
+<td>2024-03-13</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td><code>by</code></td>
+<td>scientist ID</td>
+<td>text</td>
+<td>nk3892</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td><code>machine</code></td>
+<td>machine ID</td>
+<td>text</td>
+<td>M0004</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>And then a table of readings with alphabetically labeled columns
+    and numerically labeled rows</li>
+<li>Hm: are the leading 0's in the assay ID significant?</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">A</th>
+<th style="text-align: right;">B</th>
+<th style="text-align: right;">C</th>
+<th style="text-align: right;">D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.94</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.61</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">0.04</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.74</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">0.01</td>
+</tr>
+</tbody>
+</table>
+<h2>Problems We've Seen</h2>
+<ul>
+<li><code>id</code> is wrapped in quotes to make it a string instead of a number</li>
+<li>Table of readings is indented one column</li>
+<li><code>by</code> is a name rather than a person ID</li>
+</ul>
+<h2>Strategy</h2>
+<ul>
+<li>Easy then hard<ul>
+<li>Write a parser for the good case</li>
+<li>Then modify it for the other cases</li>
+<li>And then write tests</li>
+</ul>
+</li>
+<li>Result?<ul>
+<li>For now, a dictionary with keys for the header values
+    and a [Polars][polars] dataframe for the body</li>
+</ul>
+</li>
+</ul>
+<h2>Header First</h2>
+<p><a href="./parse_01.py.html"><code>parse_01.py</code></a></p>
+<ul>
+<li><code>HEADER</code> is a table of expected keys and conversion functions<ul>
+<li>Functions are just another kind of data</li>
+</ul>
+</li>
+<li>Read all the rows with a list comprehension</li>
+<li>Loop over the header and check the keys</li>
+<li>Convert the values</li>
+</ul>
+<h2>The Table</h2>
+<ul>
+<li>Options<ol>
+<li>Re-read the file with Polars, telling it to skip header rows</li>
+<li>Make the dataframe from the rows we have in memory</li>
+</ol>
+</li>
+<li>The second option might be more efficient, but that's <em>not</em> a good reason to choose it<ul>
+<li>The difference will be miniscule for small data like ours</li>
+<li>And we know we're going to have to handle malformed data</li>
+</ul>
+</li>
+</ul>
+<h2>The Table (cont.)</h2>
+<p><a href="./parse_02.py.html"><code>parse_02.py</code></a></p>
+<ul>
+<li>Refactor parser to call one <a href="../glossary.html#helper_function">helper function</a> for the head
+    and another for the body<ul>
+<li>Name these with a leading underscore to signal that they're for internal use</li>
+</ul>
+</li>
+<li>Create a <a href="../glossary.html#schema">schema</a> to tell Polars what to call the columns</li>
+<li>And the <a href="../glossary.html#cast">cast</a> the strings to integers and floating-point numbers</li>
+</ul>
+</main>
+<footer>
+<a href="../">Research Software Design by Example</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

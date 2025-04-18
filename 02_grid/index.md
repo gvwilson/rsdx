@@ -1,4 +1,4 @@
-# The Grid
+# Making Grids
 
 ## The Problem
 
@@ -62,7 +62,7 @@
 
 -   Hide data representation in a class
     -   Exercise: replace list of lists with NumPy array
--   Provide [getter](s:getter) and [setter](s:setter) methods
+-   Provide [getter](g:getter) and [setter](g:setter) methods
 -   `fill` is a separate function
     -   `Grid` class might be used for other things
 -   Use [string I/O](g:string_io) to build CSV representation
