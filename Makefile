@@ -21,9 +21,13 @@ data:
 	${SNAILZ} params --output ${PARAMS}
 	${SNAILZ} data --params ${PARAMS} --output ${DATA}
 
+## format: reformat code
+format:
+	@uv run ruff format --exclude docs --exclude old .
+
 ## lint: check code and project
 lint:
-	@${PYTHON_M} ruff check --exclude docs --exclude lib .
+	@${PYTHON_M} ruff check --exclude docs --exclude old .
 	@${MCCOLE} lint
 	@html5validator --root docs --blacklist templates \
 	&& echo "HTML checks passed."

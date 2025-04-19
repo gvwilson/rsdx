@@ -1,4 +1,31 @@
-import argparse
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>03_parse/parse_03.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>03_parse/parse_03.py</h1>
+<pre><code>import argparse
 import csv
 from datetime import date
 
@@ -22,7 +49,7 @@ def parse_assay(filename, people):
     with open(filename, "r") as reader:
         rows = [r for r in csv.reader(reader)]
     consumed, result = _parse_header(rows, people)
-    result["data"] = _parse_body(filename, rows[consumed:])
+    result["data"] = _parse_body(rows)
     return result
 
 
@@ -49,8 +76,6 @@ def _convert_date(value, extra=None):
 def _convert_by(value, extra):
     """Convert person ID or name."""
 
-    if value in extra:
-        return extra[value]
     return value
 
 
@@ -60,12 +85,12 @@ def _convert_machine(value, extra=None):
     return value
 
 
-def _parse_body(filename, rows):
+def _parse_body(rows):
     """Parse the body."""
 
-    schema = rows[0]
+    schema = rows[HEADER_LEN]
     schema[0] = "row"
-    df = pl.DataFrame(rows[1:], orient="row", schema=schema)
+    df = pl.DataFrame(rows[HEADER_LEN + 1 :], orient="row", schema=schema)
     return df.with_columns(
         pl.col("row").cast(pl.Int64), pl.col("*").exclude("row").cast(pl.Float64)
     )
@@ -101,3 +126,12 @@ if __name__ == "__main__":
     for filename in args.files:
         assay = parse_assay(filename, people)
         print(assay)
+</code></pre>
+</main>
+<footer>
+<a href="../">Research Software Design by Example</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

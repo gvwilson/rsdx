@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>05_synth/synth_01.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>05_synth/synth_01.py</h1>
+<pre><code>from pydantic import BaseModel, Field, model_validator
+
+
+class SpecimenParams(BaseModel):
+    """Parameters for specimen generation."""
+
+    mean_mass: float = Field(default=10.0, gt=0, description="Mean mass")
+    genome_length: int = Field(default=20, gt=0, description="Length of genomes")
+    mut_mass_scale: float = Field(
+        default=2.0, description="Scaling for mutant snail mass"
+    )
+    mass_rel_sd: float = Field(
+        default=0.5, gt=0, description="Relative standard deviation in mass"
+    )
+    p_mutation: float = Field(
+        default=0.05, ge=0, description="Probability of point mutation"
+    )
+
+    @model_validator(mode="after")
+    def validate_model(self):
+        """Validate fields."""
+
+        if self.mut_mass_scale &lt; 1.0:
+            raise ValueError(f"invalid mass scale factor {self.mut_mass_scale}")
+
+        if self.p_mutation &gt;= 1.0:
+            raise ValueError(f"invalid probability of mutation {self.p_mutation}")
+
+        return self
+</code></pre>
+</main>
+<footer>
+<a href="../">Research Software Design by Example</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

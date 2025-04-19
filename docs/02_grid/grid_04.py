@@ -2,7 +2,6 @@ import argparse
 import csv
 import io
 import random
-import sys
 
 
 class Grid:

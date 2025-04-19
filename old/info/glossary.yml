@@ -24,7 +24,7 @@
 
 - key: attribute
   en:
-    term: attribute
+    term: "attribute"
     def: >
       A name-value pair associated with node in a [DOM tree](#dom).
 
@@ -44,6 +44,12 @@
 
 # C
 
+- key: cast
+  en:
+    term: "cast"
+    def: >
+      FIXME
+
 - key: cognitive_load
   en:
     term: "cognitive load"
@@ -62,13 +68,37 @@
     def: >
       FIXME
 
+- key: coupling
+  en:
+    term: "coupling"
+    def: >
+      FIXME
+
 - key: cross_validation
   en:
     term: "cross validation"
     def: >
       FIXME
 
+- key: csv
+  en:
+    term: "csv"
+    def: >
+      FIXME
+
 # D
+
+- key: dataclass
+  en:
+    term: "dataclass"
+    def: >
+      FIXME
+
+- key: dedent
+  en:
+    term: "dedent"
+    def: >
+      FIXME
 
 - key: document_db
   en:
@@ -78,7 +108,7 @@
 
 - key: dom
   en:
-    term: Document Object Model
+    term: "Document Object Model"
     acronym: DOM
     def: >
       A standard, in-memory representation of HTML.
@@ -89,7 +119,7 @@
 
 - key: element
   en:
-    term: element (in HTML)
+    term: "element"
     def: >
       A named component in an HTML document.
       Elements are usually written `<name>`…`</name>`,
@@ -126,6 +156,12 @@
       A test fails if the [actual result](#actual_result) does not match the
       [expected result](#expected_result).
 
+- key: field
+  en:
+    term: "field"
+    def: >
+      FIXME
+
 - key: foreign_key
   en:
     term: "foreign key"
@@ -147,7 +183,19 @@
     def: >
       FIXME
 
+- key: getter
+  en:
+    term: "getter"
+    def: >
+      FIXME
+
 # H
+
+- key: helper_function
+  en:
+    term: "helper function"
+    def: >
+      FIXME
 
 # I
 
@@ -176,6 +224,12 @@
     def: >
       FIXME
 
+- key: list_comprehension
+  en:
+    term: "list comprehension"
+    def: >
+      FIXME
+
 # M
 
 - key: mock_object
@@ -200,6 +254,12 @@
       FIXME
 
 # N
+
+- key: nested_comprehension
+  en:
+    term: "nested comprehension"
+    def: >
+      FIXME
 
 - key: nosql
   en:
@@ -265,6 +325,12 @@
 
 # R
 
+- key: random_walk
+  en:
+    term: "random walk"
+    def: >
+      FIXME
+
 - key: refactor
   en:
     term: "refactor"
@@ -274,6 +340,12 @@
 - key: relational_db
   en:
     term: "relational database"
+    def: >
+      FIXME
+
+- key: reproducibility
+  en:
+    term: "reproducibility"
     def: >
       FIXME
 
@@ -297,9 +369,33 @@
 
 # S
 
+- key: schema
+  en:
+    term: "schema"
+    def: >
+      FIXME
+
+- key: seed
+  en:
+    term: "seed"
+    def: >
+      FIXME
+
 - key: semver
   en:
     term: "semantic versioning"
+    def: >
+      FIXME
+
+- key: setter
+  en:
+    term: "setter"
+    def: >
+      FIXME
+
+- key: shell_script
+  en:
+    term: "shell script"
     def: >
       FIXME
 
@@ -339,6 +435,12 @@
 - key: ssg_theme
   en:
     term: "theme (for static site generator)"
+    def: >
+      FIXME
+
+- key: string_io
+  en:
+    term: "string I/O"
     def: >
       FIXME
 
@@ -396,6 +498,12 @@
 
 # V
 
+- key: validation
+  en:
+    term: "validation"
+    def: >
+      FIXME
+
 - key: view
   en:
     term: "view (in model-view-controller)"
@@ -404,7 +512,7 @@
 
 - key: visitor
   en:
-    term: visitor
+    term: "visitor"
     def: >
       A design pattern in which a recursive function visits each element of a structure
       and performs some user-defined operation there.

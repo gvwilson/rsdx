@@ -38,10 +38,9 @@ def _parse_body(rows):
     header_len = len(HEADER)
     schema = rows[header_len]
     schema[0] = "row"
-    df = pl.DataFrame(rows[header_len + 1:], orient="row", schema=schema)
+    df = pl.DataFrame(rows[header_len + 1 :], orient="row", schema=schema)
     return df.with_columns(
-        pl.col("row").cast(pl.Int64),
-        pl.col("*").exclude("row").cast(pl.Float64)
+        pl.col("row").cast(pl.Int64), pl.col("*").exclude("row").cast(pl.Float64)
     )
 
 

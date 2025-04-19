@@ -1,4 +1,31 @@
-import argparse
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>03_parse/parse_05.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>03_parse/parse_05.py</h1>
+<pre><code>import argparse
 import csv
 from datetime import date
 
@@ -63,6 +90,10 @@ def _convert_machine(value, extra=None):
 def _parse_body(filename, rows):
     """Parse the body."""
 
+    if rows[0][1] == "":
+        assert all(r[0] == "" for r in rows), f"Badly indented table in {filename}"
+        rows = [r[1:] for r in rows]
+
     schema = rows[0]
     schema[0] = "row"
     df = pl.DataFrame(rows[1:], orient="row", schema=schema)
@@ -101,3 +132,12 @@ if __name__ == "__main__":
     for filename in args.files:
         assay = parse_assay(filename, people)
         print(assay)
+</code></pre>
+</main>
+<footer>
+<a href="../">Research Software Design by Example</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

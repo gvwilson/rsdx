@@ -7,6 +7,7 @@ dependencies = [
     "mccole",
     "numpy",
     "polars",
+    "pytest",
     "snailz"
 ]
 
@@ -15,7 +16,7 @@ dependencies = [
 
 [tool.mccole]
 skips = ["headers.txt", "info", "old", "templates", "unused", ]
-links = "info/links.yml"
+links = "links.md"
 
 [tool.mccole.renames]
 "CODE_OF_CONDUCT.md" = "code_of_conduct.md"

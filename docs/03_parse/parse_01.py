@@ -1,7 +1,6 @@
 import argparse
 import csv
 from datetime import date
-import sys
 
 
 HEADER = (

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Synthesizing Data</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>Synthesizing Data</h1>
+<h2>The Problem</h2>
+<ul>
+<li>Synthesize some snails for analysis<ul>
+<li>Genome: single fixed-length chromosome with a few mutations (for now)</li>
+<li>Mass: may depend on mutations</li>
+<li>Location: amount of pollution may affect mass as well</li>
+</ul>
+</li>
+<li>Want to control statistical properties of specimens to test analysis pipeline</li>
+</ul>
+<h2>Introducing Pydantic</h2>
+<ul>
+<li>We mostly don't bother to add type annotations to our code<ul>
+<li>If we wanted to write Java, we'd write Java…</li>
+</ul>
+</li>
+<li>But they <em>can</em> be very helpful</li>
+<li><a href="https://docs.pydantic.dev/">Pydantic</a> lets us define <a href="../glossary.html#dataclass">dataclasses</a> with <a href="../glossary.html#validation">validation</a></li>
+</ul>
+<h2>Synthesis Parameters</h2>
+<p><a href="./synth_01.py.html"><code>synth_01.py</code></a></p>
+<ul>
+<li>Each <a href="../glossary.html#field">field</a> has a name and a type</li>
+<li>Pydantic will raise an error during construction if a value is not of the right type</li>
+<li>And provide a description</li>
+<li>Can also specify constraints like "greater than zero"</li>
+<li>And define methods to check specialized constraints</li>
+</ul>
+<h2>Tests</h2>
+<p><a href="./test_01.py.html"><code>test_01.py</code></a></p>
+<ul>
+<li>Build an object and check its fields</li>
+<li>Use the defaults and check against the class definition<ul>
+<li>Don't have to rewrite this test if field definitions change</li>
+</ul>
+</li>
+<li>Use a <a href="../glossary.html#parameterize_test">parameterized test</a> to check invalid values</li>
+<li>In practice, trust Pydantic enough to skip most of these<ul>
+<li>But always check the hand-crafted validations</li>
+</ul>
+</li>
+</ul>
+</main>
+<footer>
+<a href="../">Research Software Design by Example</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

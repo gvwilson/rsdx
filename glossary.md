@@ -26,8 +26,14 @@
 
 # C
 
+<span id="cast">cast</span>
+:   FIXME
+
 <span id="cognitive_load">cognitive load</span>
 :   The mental effort required to solve a problem.
+
+<span id="csv">comma-separated values (CSV)</span>
+:   FIXME
 
 <span id="contract">contract</span>
 :   FIXME
@@ -35,10 +41,19 @@
 <span id="controller">controller (in model-view-controller)</span>
 :   FIXME
 
+<span id="coupling">coupling</span>
+:   FIXME
+
 <span id="cross_validation">cross validation</span>
 :   FIXME
 
 # D
+
+<span id="dataclass">dataclass</span>
+:   FIXME
+
+<span id="dedent">dedent</span>
+:   FIXME
 
 <span id="document_db">document database</span>
 :   FIXME
@@ -74,6 +89,9 @@
 :   A test fails if the [actual result](g:actual_result) does not match the
     [expected result](g:expected_result).
 
+<span id="field">field</span>
+:   FIXME
+
 <span id="foreign_key">foreign key</span>
 :   FIXME
 
@@ -85,7 +103,13 @@
 <span id="generator">generator</span>
 :   FIXME
 
+<span id="getter">getter</span>
+:   FIXME
+
 # H
+
+<span id="helper_function">helper function</span>
+:   FIXME
 
 # I
 
@@ -104,6 +128,9 @@
 <span id="lims">Laboratory Information Management System (LIMS)</span>
 :   FIXME
 
+<span id="list_comprehension">list comprehension</span>
+:   FIXME
+
 # M
 
 <span id="mock_object">mock object</span>
@@ -118,6 +145,9 @@
 :   FIXME
 
 # N
+
+<span id="nested_comprehension">nested comprehension</span>
+:   FIXME
 
 <span id="nosql">NoSQL database</span>
 :   FIXME
@@ -155,7 +185,16 @@
 
 # R
 
+<span id="random_walk">random walk</span>
+:   FIXME
+
+<span id="refactor">refactor</span>
+:   FIXME
+
 <span id="relational_db">relational database</span>
+:   FIXME
+
+<span id="reproducibility">reproducibility</span>
 :   FIXME
 
 <span id="rng_seed">random number generation seed</span>
@@ -169,7 +208,19 @@
 
 # S
 
+<span id="schema">schema</span>
+:   FIXME
+
+<span id="seed">seed</span>
+:   FIXME
+
 <span id="semver">semantic versioning</span>
+:   FIXME
+
+<span id="setter">setter</span>
+:   FIXME
+
+<span id="shell_script">shell script</span>
 :   FIXME
 
 <span id="shortcode">shortcode</span>
@@ -190,6 +241,9 @@
 :   FIXME
 
 <span id="ssg_theme">theme (for static site generator)</span>
+:   FIXME
+
+<span id="string_io">string I/O</span>
 :   FIXME
 
 <span id="synth_data">synthetic data generator</span>
@@ -222,6 +276,9 @@
     produces [pass](g:pass_test), [fail](g:fail_test), or [error](g:error_test).
 
 # V
+
+<span id="validation">validation</span>
+:   FIXME
 
 <span id="view">view (in model-view-controller)</span>
 :   FIXME

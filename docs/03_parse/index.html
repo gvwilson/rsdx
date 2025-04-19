@@ -150,7 +150,7 @@
 </li>
 <li>Result?<ul>
 <li>For now, a dictionary with keys for the header values
-    and a [Polars][polars] dataframe for the body</li>
+    and a <a href="https://pola.rs/">Polars</a> dataframe for the body</li>
 </ul>
 </li>
 </ul>
@@ -188,6 +188,41 @@
 </li>
 <li>Create a <a href="../glossary.html#schema">schema</a> to tell Polars what to call the columns</li>
 <li>And the <a href="../glossary.html#cast">cast</a> the strings to integers and floating-point numbers</li>
+</ul>
+<h2>Handling Problems</h2>
+<ul>
+<li>We need a lookup table of person names to person IDs<ul>
+<li>Worry later about where we'll get the data</li>
+</ul>
+</li>
+<li>Which means we need to pass an extra argument to the conversion functions</li>
+<li>So write our own wrappers</li>
+<li>And move the table into <code>_parse_header</code> because the functions need to be defined<ul>
+<li>Add an <code>assert</code> to check our coding</li>
+</ul>
+</li>
+<li>Test it out by stripping quotes from assay IDs and looking up names</li>
+</ul>
+<p><a href="./parse_03.py.html"><code>parse_03.py</code></a></p>
+<h2>Machines</h2>
+<p><a href="./parse_04.py.html"><code>parse_04.py</code></a></p>
+<ul>
+<li>Loop over available header keys, incrementing count as we find a match<ul>
+<li>Store <code>None</code> for missing values</li>
+<li>Probably cause headaches down the line</li>
+</ul>
+</li>
+<li>Modifiy <code>parse_header</code> to return the number of rows processed
+    so that we can pass the right rows to <code>parse_body</code></li>
+</ul>
+<h2>Indented Body</h2>
+<p><a href="./parse_05.py.html"><code>parse_05.py</code></a></p>
+<ul>
+<li>If the first row of the body starts with two blank columns:<ol>
+<li>Check that all the rest start with one blank column</li>
+<li><a href="../glossary.html#dedent">Dedent</a> the data</li>
+</ol>
+</li>
 </ul>
 </main>
 <footer>
