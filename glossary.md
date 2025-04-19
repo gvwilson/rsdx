@@ -29,6 +29,9 @@
 <span id="cast">cast</span>
 :   FIXME
 
+<span id="class_variable">class variable</span>
+:   FIXME
+
 <span id="cognitive_load">cognitive load</span>
 :   The mental effort required to solve a problem.
 
@@ -125,6 +128,8 @@
 
 # L
 
+<span id="legacy_code">legacy code</span>
+:   FIXME
 <span id="lims">Laboratory Information Management System (LIMS)</span>
 :   FIXME
 
@@ -226,6 +231,9 @@
 <span id="shortcode">shortcode</span>
 :   FIXME
 
+<span id="silent_failure">silent failure</span>
+:   FIXME
+
 <span id="snp">single nucleotide polymorphism</span>
 :   The replacement of the usual or standard base at one location in a gene sequence
     with another base.
@@ -237,10 +245,7 @@
 <span id="ssg">static site generator (SSG)</span>
 :   FIXME
 
-<span id="ssg_template">template (for static site generator)</span>
-:   FIXME
-
-<span id="ssg_theme">theme (for static site generator)</span>
+<span id="static_method">static method</span>
 :   FIXME
 
 <span id="string_io">string I/O</span>
@@ -252,10 +257,16 @@
 
 # T
 
+<span id="ssg_template">template (for static site generator)</span>
+:   FIXME
+
 <span id="tf_idf">term frequency - inverse document frequency (TF-IDF)</span>
 :   A formula used to rank documents when searching
     that assigns a score based on how often a word occurs overall
     and how specific it is to a particular document.
+
+<span id="ssg_theme">theme (for static site generator)</span>
+:   FIXME
 
 <span id="toml">TOML</span>
 :   "Tom's Own Minimal Language" is yet another format for configuration files.

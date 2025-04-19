@@ -1,4 +1,31 @@
-import math
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>05_synth/specimens_02.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>05_synth/specimens_02.py</h1>
+<pre><code>import math
 import random
 from typing import ClassVar
 
@@ -39,7 +66,7 @@ class Snail(BaseModel):
 
         genome = [
             random.choice(OTHERS[b])
-            if random.uniform(0.0, 1.0) < params.mut_prob
+            if random.uniform(0.0, 1.0) &lt; params.mut_prob
             else b
             for i, b in enumerate(ref_genome)
         ]
@@ -49,12 +76,7 @@ class Snail(BaseModel):
             genome[susc_locus] = susc_base
             mass *= params.mut_mass_scale
 
-        return Snail(
-            id=next(Snail._id_generator),
-            genome="".join(genome),
-            is_mutant=is_mutant,
-            mass=mass,
-        )
+        return Snail(id=next(Snail._id_generator), genome="".join(genome), is_mutant=is_mutant, mass=mass)
 
 
 class AllSnails(BaseModel):
@@ -70,21 +92,16 @@ class AllSnails(BaseModel):
     def generate(params, num):
         """Generate snails."""
 
-        if num <= 0:
+        if num &lt;= 0:
             raise ValueError(f"invalid number of snails {num}")
 
         ref_genome = "".join(random.choices(BASES, k=params.genome_length))
         susc_locus = random.choice(list(range(len(ref_genome))))
         susc_base = random.choice(OTHERS[ref_genome[susc_locus]])
 
-        mutant_ids = set(
-            random.choices(list(range(num)), k=math.ceil(params.mut_frac * num))
-        )
+        mutant_ids = set(random.choices(list(range(num)), k=math.ceil(params.mut_frac * num)))
 
-        samples = [
-            Snail.generate(params, ref_genome, i in mutant_ids, susc_locus, susc_base)
-            for i in range(num)
-        ]
+        samples = [Snail.generate(params, ref_genome, i in mutant_ids, susc_locus, susc_base) for i in range(num)]
 
         return AllSnails(
             params=params,
@@ -102,3 +119,12 @@ if __name__ == "__main__":
     second = AllSnails.generate(params, 5)
     print("first", first.samples)
     print("second", second.samples)
+</code></pre>
+</main>
+<footer>
+<a href="../">Research Software Design by Example</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

@@ -79,7 +79,9 @@ def _parse_header(rows, people):
         ("by", _convert_by),
         ("machine", _convert_machine),
     )
-    assert len(converters) == HEADER_LEN, "mis-match in converter table and header length"
+    assert len(converters) == HEADER_LEN, (
+        "mis-match in converter table and header length"
+    )
 
     result = {}
     i = 0

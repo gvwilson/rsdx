@@ -1,4 +1,31 @@
-import random
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>05_synth/specimens_01.py</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="../static/page.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<nav>
+<div class="row">
+<div class="col-2 left">
+<a href="../">Home</a>
+</div>
+<div class="col-10 right">
+<a href="../license.html">License</a>
+	  ·
+	  <a href="../bibliography.html">Bibliography</a>
+	  ·
+	  <a href="../glossary.html">Glossary</a>
+</div>
+</div>
+</nav>
+<main>
+<h1>05_synth/specimens_01.py</h1>
+<pre><code>import random
 
 from pydantic import BaseModel, Field
 
@@ -30,7 +57,7 @@ class Snail(BaseModel):
         SNAIL_ID += 1
         genome = "".join(
             random.choice(OTHERS[b])
-            if random.uniform(0.0, 1.0) < params.mut_prob
+            if random.uniform(0.0, 1.0) &lt; params.mut_prob
             else b
             for i, b in enumerate(ref_genome)
         )
@@ -49,7 +76,7 @@ class AllSnails(BaseModel):
     def generate(params, num):
         """Generate snails."""
 
-        if num <= 0:
+        if num &lt;= 0:
             raise ValueError(f"invalid number of snails {num}")
 
         ref_genome = "".join(random.choices(BASES, k=num))
@@ -67,3 +94,12 @@ if __name__ == "__main__":
     second = AllSnails.generate(params, 5)
     print("first", first)
     print("second", second)
+</code></pre>
+</main>
+<footer>
+<a href="../">Research Software Design by Example</a>
+      copyright © 2024
+      <a href="../contributing.html#contributors">the authors</a>
+</footer>
+</body>
+</html>

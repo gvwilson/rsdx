@@ -50,7 +50,48 @@
 
 ## Header First
 
-[`parse_01.py`](./parse_01.py)
+```{data-file="parse_01.py"}
+import argparse
+import csv
+from datetime import date
+
+
+HEADER = (
+    ("id", int),
+    ("specimen", str),
+    ("date", date.fromisoformat),
+    ("by", str),
+    ("machine", str),
+)
+
+
+def cmdline_args():
+    """Parse command-line arguments."""
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--files", nargs="+", required=True, help="filenames")
+    return parser.parse_args()
+
+
+def parse_assay(filename):
+    """Parse specified assay file."""
+
+    with open(filename, "r") as reader:
+        rows = [r for r in csv.reader(reader)]
+    result = {}
+    for i, (key, converter) in enumerate(HEADER):
+        if rows[i][0] != key:
+            raise ValueError(f"row {i} of {filename}: expected {key} got {rows[i][0]}")
+        result[key] = converter(rows[i][1])
+    return result
+
+
+if __name__ == "__main__":
+    args = cmdline_args()
+    for filename in args.files:
+        assay = parse_assay(filename)
+        print(assay)
+```
 
 -   `HEADER` is a table of expected keys and conversion functions
     -   Functions are just another kind of data
@@ -69,7 +110,42 @@
 
 ## The Table (cont.)
 
-[`parse_02.py`](./parse_02.py)
+```{data-file="parse_02.py"}
+import polars as pl
+
+
+def parse_assay(filename):
+    """Parse specified assay file."""
+
+    with open(filename, "r") as reader:
+        rows = [r for r in csv.reader(reader)]
+    result = _parse_header(rows)
+    result["data"] = _parse_body(rows)
+    return result
+
+
+def _parse_body(rows):
+    """Parse the body."""
+
+    header_len = len(HEADER)
+    schema = rows[header_len]
+    schema[0] = "row"
+    df = pl.DataFrame(rows[header_len + 1 :], orient="row", schema=schema)
+    return df.with_columns(
+        pl.col("row").cast(pl.Int64), pl.col("*").exclude("row").cast(pl.Float64)
+    )
+
+
+def _parse_header(rows):
+    """Parse the header."""
+
+    result = {}
+    for i, (key, converter) in enumerate(HEADER):
+        if rows[i][0] != key:
+            raise ValueError(f"row {i} of {filename}: expected {key} got {rows[i][0]}")
+        result[key] = converter(rows[i][1])
+    return result
+```
 
 -   Refactor parser to call one [helper function](g:helper_function) for the head
     and another for the body
@@ -87,11 +163,107 @@
     -   Add an `assert` to check our coding
 -   Test it out by stripping quotes from assay IDs and looking up names
 
-[`parse_03.py`](./parse_03.py)
+```{data-file="parse_03.py"}
+def parse_assay(filename, people):
+    """Parse specified assay file."""
+
+    with open(filename, "r") as reader:
+        rows = [r for r in csv.reader(reader)]
+    consumed, result = _parse_header(rows, people)
+    result["data"] = _parse_body(rows)
+    return result
+
+
+def _convert_id(value, extra=None):
+    """Convert assay ID that might be quoted."""
+
+    if value.startswith('"') and value.endswith('"'):
+        value = value[1:-1]
+    return int(value)
+
+
+def _convert_specimen(value, extra=None):
+    """Convert specimen ID."""
+
+    return value
+
+
+def _convert_date(value, extra=None):
+    """Convert ISO formatted date."""
+
+    return date.fromisoformat(value)
+
+
+def _convert_by(value, extra):
+    """Convert person ID or name."""
+
+    return value
+
+
+def _convert_machine(value, extra=None):
+    """Convert machine ID."""
+
+    return value
+
+
+def _parse_header(rows, people):
+    """Parse the header."""
+
+    converters = (
+        ("id", _convert_id),
+        ("specimen", _convert_specimen),
+        ("date", _convert_date),
+        ("by", _convert_by),
+        ("machine", _convert_machine),
+    )
+    assert len(converters) == HEADER_LEN, "mis-match in converter table and header length"
+
+    result = {}
+    i = 0
+    for key, converter in converters:
+        if rows[i][0] != key:
+            result[key] = None
+        else:
+            result[key] = converter(rows[i][1], people)
+            i += 1
+
+    return i, result
+
+
+if __name__ == "__main__":
+    args = cmdline_args()
+    people = {"Kristi Nõmmik": "nk3892"}
+    for filename in args.files:
+        assay = parse_assay(filename, people)
+        print(assay)
+```
 
 ## Machines
 
-[`parse_04.py`](./parse_04.py)
+```{data-file="parse_04.py"}
+def _parse_header(rows, people):
+    """Parse the header."""
+
+    converters = (
+        ("id", _convert_id),
+        ("specimen", _convert_specimen),
+        ("date", _convert_date),
+        ("by", _convert_by),
+        ("machine", _convert_machine),
+    )
+    assert len(converters) == HEADER_LEN, "mis-match in converter table and header length"
+
+    result = {}
+    i = 0
+    for key, converter in converters:
+        if rows[i][0] != key:
+            result[key] = None
+        else:
+            result[key] = converter(rows[i][1], people)
+            i += 1
+
+    return i, result
+```
 
 -   Loop over available header keys, incrementing count as we find a match
     -   Store `None` for missing values
@@ -101,7 +273,21 @@
 
 ## Indented Body
 
-[`parse_05.py`](./parse_05.py)
+```{data-file="parse_05.py"}
+def _parse_body(filename, rows):
+    """Parse the body."""
+
+    if rows[0][1] == "":
+        assert all(r[0] == "" for r in rows), f"Badly indented table in {filename}"
+        rows = [r[1:] for r in rows]
+
+    schema = rows[0]
+    schema[0] = "row"
+    df = pl.DataFrame(rows[1:], orient="row", schema=schema)
+    return df.with_columns(
+        pl.col("row").cast(pl.Int64), pl.col("*").exclude("row").cast(pl.Float64)
+    )
+```
 
 -   If the first row of the body starts with two blank columns:
     1.  Check that all the rest start with one blank column

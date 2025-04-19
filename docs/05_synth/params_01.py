@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class SpecimenParams(BaseModel):
@@ -12,11 +12,15 @@ class SpecimenParams(BaseModel):
     mut_mass_scale: float = Field(
         default=2.0, description="Scaling for mutant snail mass"
     )
-    mut_frac: float = Field(
-        default=0.2, ge=0.0, le=1.0, description="Fraction of significant mutants"
-    )
     mut_prob: float = Field(
-        default=0.05, ge=0.0, le=1.0, description="Probability of point mutation"
+        default=0.05, ge=0, description="Probability of point mutation"
     )
 
-    model_config = {"extra": "forbid"}
+    @model_validator(mode="after")
+    def validate_model(self):
+        """Validate fields."""
+
+        if self.mut_prob >= 1.0:
+            raise ValueError(f"invalid mutation probability {self.mut_prob}")
+
+        return self
