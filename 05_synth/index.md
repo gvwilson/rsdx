@@ -142,7 +142,7 @@ def test_defaults():
 ## New Parameters
 
 ```{data-file="params_02.py"}
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field
 
 
 class SpecimenParams(BaseModel):
@@ -179,7 +179,7 @@ import math
 import random
 from typing import ClassVar
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field
 
 from params_02 import SpecimenParams
 
@@ -226,7 +226,12 @@ class Snail(BaseModel):
             genome[susc_locus] = susc_base
             mass *= params.mut_mass_scale
 
-        return Snail(id=next(Snail._id_generator), genome="".join(genome), is_mutant=is_mutant, mass=mass)
+        return Snail(
+            id=next(Snail._id_generator),
+            genome="".join(genome),
+            is_mutant=is_mutant,
+            mass=mass,
+        )
 
 
 class AllSnails(BaseModel):
@@ -249,9 +254,14 @@ class AllSnails(BaseModel):
         susc_locus = random.choice(list(range(len(ref_genome))))
         susc_base = random.choice(OTHERS[ref_genome[susc_locus]])
 
-        mutant_ids = set(random.choices(list(range(num)), k=math.ceil(params.mut_frac * num)))
+        mutant_ids = set(
+            random.choices(list(range(num)), k=math.ceil(params.mut_frac * num))
+        )
 
-        samples = [Snail.generate(params, ref_genome, i in mutant_ids, susc_locus, susc_base) for i in range(num)]
+        samples = [
+            Snail.generate(params, ref_genome, i in mutant_ids, susc_locus, susc_base)
+            for i in range(num)
+        ]
 
         return AllSnails(
             params=params,
@@ -260,6 +270,15 @@ class AllSnails(BaseModel):
             susc_base=susc_base,
             samples=samples,
         )
+
+
+if __name__ == "__main__":
+    random.seed(4217309)
+    params = SpecimenParams()
+    first = AllSnails.generate(params, 3)
+    second = AllSnails.generate(params, 5)
+    print("first", first.samples)
+    print("second", second.samples)
 ```
 
 -   Introduce a [generator](g:generator) for specimen IDs
