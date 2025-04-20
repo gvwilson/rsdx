@@ -21,6 +21,6 @@ def test_statistical_properties():
     ave_num = total_num / num_trials
     ave_center = total_center / num_trials
 
-    assert ave_num == pytest.approx(size ** 2 / 4, rel=0.2)
+    assert ave_num == pytest.approx(size**2 / 4, rel=0.2)
     with pytest.raises(AssertionError):
         assert ave_center == pytest.approx(1 + math.pi / math.log(size), rel=0.2)

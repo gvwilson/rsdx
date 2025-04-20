@@ -49,6 +49,7 @@ in less time and with less pain.
 1.  [Testing](./03_test/index.md)
 1.  [Parsing Messy Data](./04_parse/index.md)
 1.  [Synthesizing Data](./05_synth/index.md)
+1.  [A Complete Scenario](./06_scenario/index.md)
 1.  [Conclusion](./99_finale/index.md)
 
 </div>

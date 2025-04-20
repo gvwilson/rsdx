@@ -10,10 +10,10 @@ OTHERS = {
     "G": "ACT",
     "T": "CGT",
 }
-SNAIL_ID = 0
+SPECIMEN_ID = 0
 
 
-class Snail(BaseModel):
+class Specimen(BaseModel):
     """Store a single snail specimen."""
 
     id: str = Field(description="unique ID")
@@ -22,10 +22,10 @@ class Snail(BaseModel):
 
     @staticmethod
     def generate(params, ref_genome):
-        """Generate a single snail."""
+        """Generate a single specimen."""
 
-        global SNAIL_ID
-        SNAIL_ID += 1
+        global SPECIMEN_ID
+        SPECIMEN_ID += 1
         genome = "".join(
             random.choice(OTHERS[b])
             if random.uniform(0.0, 1.0) < params.mut_prob
@@ -33,35 +33,35 @@ class Snail(BaseModel):
             for i, b in enumerate(ref_genome)
         )
         mass = abs(random.gauss(params.mass_mean, params.mass_sd))
-        return Snail(id=f"S{SNAIL_ID:06d}", genome=genome, mass=mass)
+        return Specimen(id=f"S{SPECIMEN_ID:06d}", genome=genome, mass=mass)
 
 
-class AllSnails(BaseModel):
-    """Store a set of snails."""
+class AllSpecimens(BaseModel):
+    """Store a set of specimens."""
 
     params: SpecimenParams = Field(description="generation parameters")
     ref_genome: str = Field(description="reference genome")
-    samples: list[Snail] = Field(description="snails")
+    samples: list[Specimen] = Field(description="specimens")
 
     @staticmethod
     def generate(params, num):
-        """Generate snails."""
+        """Generate specimens."""
 
         if num <= 0:
-            raise ValueError(f"invalid number of snails {num}")
+            raise ValueError(f"invalid number of specimens {num}")
 
         ref_genome = "".join(random.choices(BASES, k=num))
-        return AllSnails(
+        return AllSpecimens(
             params=params,
             ref_genome=ref_genome,
-            samples=[Snail.generate(params, ref_genome) for _ in range(num)],
+            samples=[Specimen.generate(params, ref_genome) for _ in range(num)],
         )
 
 
 if __name__ == "__main__":
     random.seed(4217309)
     params = SpecimenParams()
-    first = AllSnails.generate(params, 3)
-    second = AllSnails.generate(params, 5)
+    first = AllSpecimens.generate(params, 3)
+    second = AllSpecimens.generate(params, 5)
     print("first", first)
     print("second", second)

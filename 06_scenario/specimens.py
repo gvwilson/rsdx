@@ -2,7 +2,8 @@ import math
 import random
 from typing import ClassVar
 from pydantic import BaseModel, Field
-from params_02 import SpecimenParams
+from params import SpecimenParams
+from utils import PRECISION, generic_id_generator
 
 
 BASES = "ACGT"
@@ -14,13 +15,6 @@ OTHERS = {
 }
 
 
-def _specimen_id_generator():
-    current = 0
-    while True:
-        current += 1
-        yield f"S{current:06d}"
-
-
 class Specimen(BaseModel):
     """Store a single specimen specimen."""
 
@@ -29,7 +23,7 @@ class Specimen(BaseModel):
     is_mutant: bool = Field(description="is this a mutant?")
     mass: float = Field(gt=0, description="mass (g)")
 
-    _id_generator: ClassVar = _specimen_id_generator()
+    _id_generator: ClassVar = generic_id_generator(lambda i: f"S{i:04d}")
 
     @staticmethod
     def generate(params, ref_genome, is_mutant, susc_locus, susc_base):
@@ -93,10 +87,7 @@ class AllSpecimens(BaseModel):
         )
 
 
-if __name__ == "__main__":
-    random.seed(4217309)
-    params = SpecimenParams()
-    first = AllSpecimens.generate(params, 3)
-    second = AllSpecimens.generate(params, 5)
-    print("first", first.samples)
-    print("second", second.samples)
+    def to_csv(self, writer):
+        """Save specimens as CSV."""
+        writer.writerow(["id", "genome", "mass"])
+        writer.writerows([s.id, s.genome, round(s.mass, PRECISION)] for s in self.samples)
