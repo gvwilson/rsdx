@@ -22,7 +22,7 @@ def parse_assay(filename, people):
     with open(filename, "r") as reader:
         rows = [r for r in csv.reader(reader)]
     consumed, result = _parse_header(rows, people)
-    result["data"] = _parse_body(rows)
+    result["data"] = _parse_body(filename, rows[consumed:])
     return result
 
 
@@ -49,6 +49,8 @@ def _convert_date(value, extra=None):
 def _convert_by(value, extra):
     """Convert person ID or name."""
 
+    if value in extra:
+        return extra[value]
     return value
 
 
@@ -58,12 +60,12 @@ def _convert_machine(value, extra=None):
     return value
 
 
-def _parse_body(rows):
+def _parse_body(filename, rows):
     """Parse the body."""
 
-    schema = rows[HEADER_LEN]
+    schema = rows[0]
     schema[0] = "row"
-    df = pl.DataFrame(rows[HEADER_LEN + 1 :], orient="row", schema=schema)
+    df = pl.DataFrame(rows[1:], orient="row", schema=schema)
     return df.with_columns(
         pl.col("row").cast(pl.Int64), pl.col("*").exclude("row").cast(pl.Float64)
     )
@@ -79,7 +81,9 @@ def _parse_header(rows, people):
         ("by", _convert_by),
         ("machine", _convert_machine),
     )
-    assert len(converters) == HEADER_LEN, "mis-match in converter table and header length"
+    assert len(converters) == HEADER_LEN, (
+        "mis-match in converter table and header length"
+    )
 
     result = {}
     i = 0

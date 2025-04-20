@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>03_parse/parse_04.py</title>
+<title>04_parse/parse_05.py</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
@@ -24,7 +24,7 @@
 </div>
 </nav>
 <main>
-<h1>03_parse/parse_04.py</h1>
+<h1>04_parse/parse_05.py</h1>
 <pre><code>import argparse
 import csv
 from datetime import date
@@ -90,6 +90,10 @@ def _convert_machine(value, extra=None):
 def _parse_body(filename, rows):
     """Parse the body."""
 
+    if rows[0][1] == "":
+        assert all(r[0] == "" for r in rows), f"Badly indented table in {filename}"
+        rows = [r[1:] for r in rows]
+
     schema = rows[0]
     schema[0] = "row"
     df = pl.DataFrame(rows[1:], orient="row", schema=schema)
@@ -108,7 +112,9 @@ def _parse_header(rows, people):
         ("by", _convert_by),
         ("machine", _convert_machine),
     )
-    assert len(converters) == HEADER_LEN, "mis-match in converter table and header length"
+    assert len(converters) == HEADER_LEN, (
+        "mis-match in converter table and header length"
+    )
 
     result = {}
     i = 0
