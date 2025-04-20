@@ -1,5 +1,4 @@
 import pytest
-
 from params_01 import SpecimenParams
 
 

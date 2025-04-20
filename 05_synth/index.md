@@ -99,7 +99,7 @@ def test_invalid(name, value):
 -   Build an object and check its fields
 -   Use the defaults and check against the class definition
     -   Don't have to rewrite this test if field definitions change
--   Use a [parameterized test](g:parameterize_test) to check invalid values
+-   Use a parameterized test to check invalid values
 -   In practice, trust Pydantic enough to skip most of these
     -   But always check the hand-crafted validations
 

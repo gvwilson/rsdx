@@ -1,7 +1,5 @@
 import random
-
 from pydantic import BaseModel, Field
-
 from params_01 import SpecimenParams
 
 

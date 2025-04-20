@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>05_synth/test_specimens_01.py</title>
+<title>03_test/test_02.py</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
@@ -24,17 +24,21 @@
 </div>
 </nav>
 <main>
-<h1>05_synth/test_specimens_01.py</h1>
-<pre><code>import pytest
-from params_01 import SpecimenParams
-from specimens_01 import AllSnails
+<h1>03_test/test_02.py</h1>
+<pre><code>import random
+import pytest
+from grid import Grid, fill_grid
 
 
-@pytest.mark.xfail
-def test_defaults():
-    params = SpecimenParams()
-    fixture = AllSnails.generate(params, 3)
-    assert all(len(s.genome) == params.genome_length for s in fixture.samples)
+@pytest.mark.parametrize("seed", [123, 1234, 12345, 123456, 1234567])
+def test_edges_unfilled(seed):
+    random.seed(seed)
+    fixture = Grid(5)
+    fill_grid(fixture)
+    for p in (0, 4):
+        for q in range(5):
+            assert fixture[p, q] == 0
+            assert fixture[q, p] == 0
 </code></pre>
 </main>
 <footer>

@@ -1,9 +1,7 @@
 import math
 import random
 from typing import ClassVar
-
 from pydantic import BaseModel, Field
-
 from params_02 import SpecimenParams
 
 

@@ -174,6 +174,9 @@
 :   A test passes if the [actual result](g:actual_result) matches the [expected
     result](g:expected_result).
 
+<span id="patch">patch (a test)</span>
+:   FIXME
+
 <span id="permission">permission</span>
 :   FIXME
 

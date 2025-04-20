@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>05_synth/test_specimens_01.py</title>
+<title>03_test/test_03.py</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
@@ -24,17 +24,23 @@
 </div>
 </nav>
 <main>
-<h1>05_synth/test_specimens_01.py</h1>
-<pre><code>import pytest
-from params_01 import SpecimenParams
-from specimens_01 import AllSnails
+<h1>03_test/test_03.py</h1>
+<pre><code>import random
+from unittest.mock import patch
+from grid import Grid, fill_grid
 
 
-@pytest.mark.xfail
-def test_defaults():
-    params = SpecimenParams()
-    fixture = AllSnails.generate(params, 3)
-    assert all(len(s.genome) == params.genome_length for s in fixture.samples)
+def test_move_in_one_direction():
+    fixture = Grid(5)
+    with patch("random.choice", return_value=[-1, 0]):
+        fill_grid(fixture)
+    expected = {(1, 2), (2, 2)}
+    for x in range(5):
+        for y in range(5):
+            if (x, y) in expected:
+                assert fixture[x, y] == 1
+            else:
+                assert fixture[x, y] == 0
 </code></pre>
 </main>
 <footer>
