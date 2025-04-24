@@ -8,7 +8,7 @@ PYTHON=uv run python
 PYTHON_M=${PYTHON} -m
 MCCOLE=mccole
 SNAILZ=snailz
-DB=temp.db
+DB=98_viewer/temp.db
 
 ## build: build HTML
 build:
@@ -22,7 +22,7 @@ data:
 	@mkdir -p ${DATA}
 	${SNAILZ} params --output ${PARAMS}
 	${SNAILZ} data --params ${PARAMS} --output ${DATA}
-	${PYTHON} 07_db/make_db.py --source ${DATA} --db ${DB}
+	${PYTHON} 97_db/make_db.py --source ${DATA} --db ${DB}
 
 ## format: reformat code
 format:
@@ -42,3 +42,7 @@ serve:
 ## stats: basic site statistics
 stats:
 	@${MCCOLE} stats
+
+## viewer: run the viewer app
+viewer:
+	${PYTHON} 98_viewer/app.py --db ${DB}

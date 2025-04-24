@@ -3,12 +3,15 @@ name = "rsdx"
 version = "0.1.28"
 requires-python = ">=3.12"
 dependencies = [
+    "fastapi",
     "html5validator",
+    "jinja2",
     "mccole",
     "numpy",
     "polars",
     "pytest",
-    "snailz"
+    "snailz",
+    "uvicorn"
 ]
 
 [tool.ruff.lint.extend-per-file-ignores]

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ table_name|title }} - Research Data Viewer</title>
+    <link rel="stylesheet" href="/static/snailz.css">
+  </head>
+  <body>
+    <h1>{{ table_name|title }}</h1>
+    
+    {% if rows %}
+    <table>
+      <thead>
+		<tr>
+          {% for column in columns %}
+          <th>{{ column }}</th>
+          {% endfor %}
+		</tr>
+      </thead>
+      <tbody>
+		{% for row in rows %}
+		<tr>
+          {% for column in columns %}
+          <td>{{ row[column] }}</td>
+          {% endfor %}
+		</tr>
+		{% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No data available in this table.</p>
+    {% endif %}
+
+    <div>
+      <a href="/">Back to Home</a>
+    </div>
+  </body>
+</html>

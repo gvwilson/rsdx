@@ -1,0 +1,53 @@
+/* Snailz CSS - Simplified for the viewer app */
+:root {
+    --border-thin: solid 1px;
+    --color-border: gray;
+    --color-background: white;
+    --color-background-code: whitesmoke;
+    --color-link: #000060;
+    --color-text: black;
+}
+
+/* Page body */
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+    max-width: 90rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Hyperlinks */
+a {
+    color: var(--color-link);
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 2rem 0;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: var(--border-thin) #ddd;
+}
+
+th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Level-1 heading */
+h1 {
+    border-bottom: var(--border-thin) var(--color-border);
+    padding-bottom: 0.5rem;
+}
