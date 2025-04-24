@@ -74,7 +74,9 @@ class AllSpecimens(BaseModel):
         )
 
         samples = [
-            Specimen.generate(params, ref_genome, i in mutant_ids, susc_locus, susc_base)
+            Specimen.generate(
+                params, ref_genome, i in mutant_ids, susc_locus, susc_base
+            )
             for i in range(num)
         ]
 
@@ -86,8 +88,9 @@ class AllSpecimens(BaseModel):
             samples=samples,
         )
 
-
     def to_csv(self, writer):
         """Save specimens as CSV."""
         writer.writerow(["id", "genome", "mass"])
-        writer.writerows([s.id, s.genome, round(s.mass, PRECISION)] for s in self.samples)
+        writer.writerows(
+            [s.id, s.genome, round(s.mass, PRECISION)] for s in self.samples
+        )

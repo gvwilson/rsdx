@@ -80,7 +80,9 @@ class AllSpecimens(BaseModel):
         )
 
         samples = [
-            Specimen.generate(params, ref_genome, i in mutant_ids, susc_locus, susc_base)
+            Specimen.generate(
+                params, ref_genome, i in mutant_ids, susc_locus, susc_base
+            )
             for i in range(num)
         ]
 

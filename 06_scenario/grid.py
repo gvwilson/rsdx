@@ -1,4 +1,3 @@
-import argparse
 from typing import ClassVar
 import csv
 import io
@@ -54,7 +53,6 @@ class Grid(BaseModel):
             y += m[1]
 
         return grid
-
 
     @staticmethod
     def to_csv(writer, grid):

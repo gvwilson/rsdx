@@ -4,39 +4,46 @@ from pathlib import Path
 import sqlite3
 
 DETAILS = (
-    ("assay_summary.csv", "summary", (
-        ("ident", "text primary key"),
-        ("specimen", "text not null"),
-        ("person", "text"),
-        ("performed", "date"),
-        ("machine", "text"),
-    )),
-    ("assays.csv", "assays", (
-        ("ident", "text not null"),
-        ("specimen", "text not null"),
-        ("col", "text not null"),
-        ("row", "integer not null"),
-        ("treatment", "text not null"),
-        ("reading", "real not null"),
-    )),
-    ("machines.csv", "machines", (
-        ("ident", "text primary key"),
-        ("name", "text not null"),
-    )),
-    ("persons.csv", "persons", (
-        ("ident", "text primary key"),
-        ("personal", "text"),
-        ("family", "text"),
-    )),
-    ("specimens.csv", "specimens", (
-        ("ident", "text primary key"),
-        ("survey", "text not null"),
-        ("x", "integer"),
-        ("y", "integer"),
-        ("collected", "date"),
-        ("genome", "text"),
-        ("mass", "real not null"),
-    )),
+    (
+        "assays.csv",
+        "assays",
+        (
+            ("id", "text not null"),
+            ("specimen", "text not null"),
+            ("machine", "text"),
+            ("person", "text"),
+            ("row", "integer not null"),
+            ("col", "text not null"),
+            ("treatment", "text not null"),
+            ("reading", "real not null"),
+        ),
+    ),
+    (
+        "machines.csv",
+        "machines",
+        (
+            ("id", "text primary key"),
+            ("name", "text not null"),
+        ),
+    ),
+    (
+        "persons.csv",
+        "persons",
+        (
+            ("id", "text primary key"),
+            ("family", "text"),
+            ("personal", "text"),
+        ),
+    ),
+    (
+        "specimens.csv",
+        "specimens",
+        (
+            ("id", "text primary key"),
+            ("genome", "text"),
+            ("mass", "real not null"),
+        ),
+    ),
 )
 
 

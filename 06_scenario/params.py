@@ -9,8 +9,12 @@ class AssayParams(BaseModel):
 
     plate_size: int = Field(default=4, gt=0, description="plate size")
     mean_control: float = Field(default=0.0, ge=0.0, description="mean control reading")
-    mean_normal: float = Field(default=2.0, ge=0.0, description="mean normal specimen reading")
-    mean_mutant: float = Field(default=5.0, ge=0.0, description="mean mutant specimen reading")
+    mean_normal: float = Field(
+        default=2.0, ge=0.0, description="mean normal specimen reading"
+    )
+    mean_mutant: float = Field(
+        default=5.0, ge=0.0, description="mean mutant specimen reading"
+    )
     noise: float = Field(default=0.5, ge=0.0, description="standard deviation of noise")
 
 

@@ -1,6 +1,5 @@
 """Utilities."""
 
-
 # Floating point decimals for output
 PRECISION = 2
 

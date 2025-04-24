@@ -3,7 +3,6 @@
 import csv
 import random
 from pathlib import Path
-from typing import ClassVar
 import sys
 from pydantic import BaseModel, Field
 from params import AssayParams, SpecimenParams, ScenarioParams
@@ -11,8 +10,7 @@ from assays import Assay
 from grid import Grid
 from machines import Machine
 from persons import Person
-from specimens import Specimen, AllSpecimens
-from utils import generic_id_generator
+from specimens import AllSpecimens
 
 
 class Scenario(BaseModel):
@@ -41,7 +39,14 @@ class Scenario(BaseModel):
         assays = []
         for s in specimens.samples:
             for i in range(params.assays_per_specimen):
-                assays.append(Assay.generate(params.assay_params, s, random.choice(machines), random.choice(persons)))
+                assays.append(
+                    Assay.generate(
+                        params.assay_params,
+                        s,
+                        random.choice(machines),
+                        random.choice(persons),
+                    )
+                )
 
         return Scenario(
             params=params,
@@ -50,7 +55,7 @@ class Scenario(BaseModel):
             sampled=Scenario.sample(params.grid_size, grids, specimens.samples),
             machines=Machine.generate(params.num_machines),
             persons=Person.generate(params.locale, params.num_persons),
-            assays=assays
+            assays=assays,
         )
 
     @staticmethod
@@ -67,7 +72,6 @@ class Scenario(BaseModel):
             result[s.id] = (gid, coords[gid][loc])
             del coords[gid][loc]
         return result
-
 
     def to_csv(self, root):
         """Write to multi-CSV."""
@@ -93,6 +97,8 @@ class Scenario(BaseModel):
 
 
 if __name__ == "__main__":
-    params = ScenarioParams(rng_seed=91827364, specimen_params=SpecimenParams(), assay_params=AssayParams())
+    params = ScenarioParams(
+        rng_seed=91827364, specimen_params=SpecimenParams(), assay_params=AssayParams()
+    )
     scenario = Scenario.generate(params)
     scenario.to_csv(sys.argv[1])

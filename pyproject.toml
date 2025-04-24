@@ -3,6 +3,7 @@ name = "rsdx"
 version = "0.1.28"
 requires-python = ">=3.12"
 dependencies = [
+    "faker",
     "fastapi",
     "html5validator",
     "jinja2",
@@ -10,9 +11,12 @@ dependencies = [
     "numpy",
     "polars",
     "pytest",
-    "snailz",
+    "ruff",
     "uvicorn"
 ]
+
+[tool.ruff.lint]
+ignore = ["E731"]
 
 [tool.ruff.lint.extend-per-file-ignores]
 "**/test_*.py" = ["F401", "F811"] # ignore complaints about unused imports for fixtures

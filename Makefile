@@ -3,11 +3,9 @@ include common.mk
 all: commands
 
 DATA=data
-PARAMS=${DATA}/params.json
 PYTHON=uv run python
 PYTHON_M=${PYTHON} -m
 MCCOLE=mccole
-SNAILZ=snailz
 DB=98_viewer/temp.db
 
 ## build: build HTML
@@ -20,8 +18,7 @@ build:
 data:
 	@rm -rf ${DATA} ${DB}
 	@mkdir -p ${DATA}
-	${SNAILZ} params --output ${PARAMS}
-	${SNAILZ} data --params ${PARAMS} --output ${DATA}
+	${PYTHON} 06_scenario/scenario.py ${DATA}
 	${PYTHON} 97_db/make_db.py --source ${DATA} --db ${DB}
 
 ## format: reformat code

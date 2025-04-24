@@ -25,7 +25,11 @@ class Person(BaseModel):
         fake = faker.Faker(locale)
         fake.seed_instance(random.randint(0, 1_000_000))
         return [
-            Person(id=next(Person._id_generator), family=fake.last_name(), personal=fake.first_name())
+            Person(
+                id=next(Person._id_generator),
+                family=fake.last_name(),
+                personal=fake.first_name(),
+            )
             for _ in range(num)
         ]
 

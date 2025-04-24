@@ -43,7 +43,6 @@ class Assay(BaseModel):
 
         return grid
 
-
     @staticmethod
     def _make_readings(params, specimen, treatments):
         """Make grid of readings."""
@@ -63,20 +62,42 @@ class Assay(BaseModel):
     @staticmethod
     def all_csv(writer, assays):
         """Write all assays as a single CSV."""
-        writer.writerow(["id", "specimen", "machine", "person", "row", "col", "treatment", "reading"])
+        writer.writerow(
+            [
+                "id",
+                "specimen",
+                "machine",
+                "person",
+                "row",
+                "col",
+                "treatment",
+                "reading",
+            ]
+        )
         for a in assays:
             for x in range(a.readings.size):
                 for y in range(a.readings.size):
-                    writer.writerow([a.id, a.specimen_id, a.machine_id, a.person_id, y+1, chr(ord("A") + x), a.treatments[x, y], round(a.readings[x, y], PRECISION)])
+                    writer.writerow(
+                        [
+                            a.id,
+                            a.specimen_id,
+                            a.machine_id,
+                            a.person_id,
+                            y + 1,
+                            chr(ord("A") + x),
+                            a.treatments[x, y],
+                            round(a.readings[x, y], PRECISION),
+                        ]
+                    )
 
     def to_csv(self, writer, write_treatments):
         """Save as CSV."""
         padding = [""] * (self.treatments.size - 4)
         for name, value in (
-                ("id", self.id),
-                ("specimen", self.specimen_id),
-                ("machine", self.machine_id),
-                ("person", self.person_id)
+            ("id", self.id),
+            ("specimen", self.specimen_id),
+            ("machine", self.machine_id),
+            ("person", self.person_id),
         ):
             writer.writerow([name, value] + padding)
 
