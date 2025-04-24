@@ -1,4 +1,5 @@
 *.bkp
+*.db
 *.dtmp
 *.egg-info
 *~

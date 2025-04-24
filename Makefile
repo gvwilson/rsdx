@@ -4,9 +4,11 @@ all: commands
 
 DATA=data
 PARAMS=${DATA}/params.json
-PYTHON_M=uv run python -m
+PYTHON=uv run python
+PYTHON_M=${PYTHON} -m
 MCCOLE=mccole
 SNAILZ=snailz
+DB=temp.db
 
 ## build: build HTML
 build:
@@ -16,10 +18,11 @@ build:
 ## data: re-create snailz parameters and datasets
 .PHONY: data
 data:
-	@rm -rf ${DATA}
+	@rm -rf ${DATA} ${DB}
 	@mkdir -p ${DATA}
 	${SNAILZ} params --output ${PARAMS}
 	${SNAILZ} data --params ${PARAMS} --output ${DATA}
+	${PYTHON} 07_db/make_db.py --source ${DATA} --db ${DB}
 
 ## format: reformat code
 format:
