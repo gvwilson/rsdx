@@ -1,36 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>{{ table_name|title }} - Research Data Viewer</title>
+    <title>{% block title %}Snailz{% endblock %}</title>
     <link rel="stylesheet" href="/static/snailz.css">
   </head>
   <body>
-    <h1>{{ table_name|title }}</h1>
-    
+    <h1>{% block heading %}Snailz{% endblock %}</h1>
+
+    {% block content %}
     {% if rows %}
     <table>
       <thead>
-		<tr>
+	<tr>
           {% for column in columns %}
           <th>{{ column }}</th>
           {% endfor %}
-		</tr>
+	</tr>
       </thead>
       <tbody>
-		{% for row in rows %}
-		<tr>
+	{% for row in rows %}
+	<tr>
           {% for column in columns %}
           <td>{{ row[column] }}</td>
           {% endfor %}
-		</tr>
-		{% endfor %}
+	</tr>
+	{% endfor %}
       </tbody>
     </table>
     {% else %}
-    <p>No data available in this table.</p>
+    <p>No data available in the specimens table.</p>
     {% endif %}
+    {% endblock %}
 
-    <div>
+    <div class="footer">
       <a href="/">Back to Home</a>
     </div>
   </body>

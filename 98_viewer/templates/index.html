@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Research Data Viewer</title>
-    <link rel="stylesheet" href="/static/snailz.css">
-  </head>
-  <body>
-    <h1>Research Data Viewer</h1>
-    <p>Welcome to the Research Data Viewer. Select a table to view:</p>
+{% extends "base.html" %}
+
+{% block content %}
+  <ul>
     {% for table in tables %}
-    <p><a href="/{{ table }}">{{ table|title }}</a></p>
+    <li><a href="/{{ table }}">{{ table|title }}</a></li>
     {% endfor %}
-  </body>
-</html>
+  </ul>
+{% endblock %}
