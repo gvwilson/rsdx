@@ -57,3 +57,9 @@ class Machine(BaseModel):
             Machine(id=f"M{i:02d}", name=f"{p} {s}")
             for i, (p, s) in enumerate(random.sample(pairs, k=num))
         ]
+
+    @staticmethod
+    def to_csv(writer, machines):
+        """Produce CSV"""
+        writer.writerow(["id", "name"])
+        writer.writerows([m.id, m.name] for m in machines)

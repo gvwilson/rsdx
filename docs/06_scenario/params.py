@@ -4,6 +4,20 @@ from pydantic import BaseModel, Field
 DEFAULT_LOCALE = "et_EE"
 
 
+class AssayParams(BaseModel):
+    """Parameters for assay generation."""
+
+    plate_size: int = Field(default=4, gt=0, description="plate size")
+    mean_control: float = Field(default=0.0, ge=0.0, description="mean control reading")
+    mean_normal: float = Field(
+        default=2.0, ge=0.0, description="mean normal specimen reading"
+    )
+    mean_mutant: float = Field(
+        default=5.0, ge=0.0, description="mean mutant specimen reading"
+    )
+    noise: float = Field(default=0.5, ge=0.0, description="standard deviation of noise")
+
+
 class SpecimenParams(BaseModel):
     """Parameters for specimen generation."""
 
@@ -34,9 +48,11 @@ class ScenarioParams(BaseModel):
     num_specimens: int = Field(
         default=10, gt=0, description="total number of specimens"
     )
-    specimen_params: SpecimenParams = Field(
-        description="specimen generation parameters"
-    )
     num_machines: int = Field(default=5, gt=0, description="number of lab machines")
     num_persons: int = Field(default=5, gt=0, description="number of lab staff")
     locale: str = Field(default=DEFAULT_LOCALE, description="name generation locale")
+    assays_per_specimen: int = Field(default=2, gt=0, description="assays per specimen")
+    specimen_params: SpecimenParams = Field(
+        description="specimen generation parameters"
+    )
+    assay_params: AssayParams = Field(description="assay generation parameters")

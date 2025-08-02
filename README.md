@@ -1,11 +1,5 @@
 # Research Software Design by Example
 
-<div class="row" markdown="1">
-  <div class="col-4 center">
-    <img src="./static/advent_04_202.png" alt="Advent 202 by Danielle Navarro" style="width: 80%">
-  </div>
-  <div class="col-8" markdown="1">
-
 When I first began working with scientists
 I was puzzled by how little they knew about programming.
 I soon realized that they knew far more about it
@@ -27,10 +21,7 @@ This tutorial is my latest attempt to teach
 a few of the things that I <em>am</em> sure are useful.
 All material is available under [open licenses](./LICENSE.md);
 if you have suggestions or would like to contribute,
-please [get in touch](./CONTRIBUTING.md).
-
-  </div>
-</div>
+please get in touch.
 
 ## Learner Persona
 
@@ -42,27 +33,17 @@ in less time and with less pain.
 
 ## Syllabus
 
-<div class="chapters" markdown="1">
-
-1.  [Introduction](./01_intro/index.md)
-1.  [Making Grids](./02_grid/index.md)
-1.  [Testing](./03_test/index.md)
-1.  [Parsing Messy Data](./04_parse/index.md)
-1.  [Synthesizing Data](./05_synth/index.md)
-1.  [A Complete Scenario](./06_scenario/index.md)
-1.  [Conclusion](./99_finale/index.md)
-
-</div>
+1.  [Introduction](./01_intro/)
+1.  [Making Grids](./02_grid/)
+1.  [Testing](./03_test/)
+1.  [Parsing Messy Data](./04_parse/)
+1.  [Synthesizing Data](./05_synth/)
+1.  [A Complete Scenario](./06_scenario/)
+1.  [Conclusion](./99_finale/)
 
 ##  Appendices
 
-<div class="appendices" markdown="1">
-
 1.  [License](./LICENSE.md)
 1.  [Code of Conduct](./CODE_OF_CONDUCT.md)
-1.  [Contributing](./CONTRIBUTING.md)
 1.  [Bibliography](./bibliography.md)
 1.  [Glossary](./glossary.md)
-1.  [Links](./links.md)
-
-</div>

@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Conclusion</title>
+<title>Research Data Viewer</title>
 <link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
 <link href="../static/page.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -36,34 +36,19 @@
 </span>
 </nav>
 <main>
-<h1>Conclusion</h1>
-<p>Think about your favorite piece of research software.</p>
-<ul>
-<li>
-<p>Does it do what it's supposed to?</p>
-</li>
-<li>
-<p>Is it comfortable to use?</p>
-</li>
-</ul>
-<p>We should also ask:</p>
-<ul>
-<li>Did its design make it easy to build and maintain?</li>
-</ul>
-<p>We use words like "elegant" when talking about software,
-but quickly run out of meaning when asked to explain what that means.
-We don't have the shared vocabulary
-that would let us critique its design
-the way we can the design of a chair or a stapler.</p>
-<p>I hope this book will help us do better.
-I hope that some day we'll be able to talk meaningfully about the beauty of software
-because it <em>is</em> beautiful and we deserve to have ways to say that.
-Until then:</p>
-<div class="center">
-<p>Start where you are.</p>
-<p>Use what you have.</p>
-<p>Help who you can.</p>
-</div>
+<h1>Research Data Viewer</h1>
+<p>A FastAPI web application for viewing tables in the research database.</p>
+<h2>Usage</h2>
+<pre><code class="language-bash"># Run with default settings (uses temp.db in current directory)
+python app.py
+
+# Run with a specific database file
+python app.py --db /path/to/database.db
+
+# Specify host and port
+python app.py --host 0.0.0.0 --port 8080
+</code></pre>
+<p>Once running, visit http://localhost:8000 in your browser.</p>
 </main>
 <footer>
 <a href="../">Research Software Design by Example</a>

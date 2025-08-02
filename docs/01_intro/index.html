@@ -2,26 +2,38 @@
 
 <html>
 <head>
-<title>Introduction</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Introduction</title>
 <link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
 <link href="../static/page.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <nav>
-<div class="row">
-<div class="col-2 left">
 <a href="../">Home</a>
-</div>
-<div class="col-10 right">
-<a href="../license.html">License</a>
-	  ·
-	  <a href="../bibliography.html">Bibliography</a>
-	  ·
-	  <a href="../glossary.html">Glossary</a>
-</div>
-</div>
+      ·
+      <span class="dropdown">
+<a href="#">Lessons</a>
+<span class="dropdown-content">
+<a href="../01_intro/">Introduction</a>
+<a href="../02_grid/">Making Grids</a>
+<a href="../03_test/">Testing</a>
+<a href="../04_parse/">Parsing Messy Data</a>
+<a href="../05_synth/">Synthesizing Data</a>
+<a href="../06_scenario/">A Complete Scenario</a>
+<a href="../99_finale/">Conclusion</a>
+</span>
+</span>
+      ·
+      <span class="dropdown">
+<a href="#">Extras</a>
+<span class="dropdown-content">
+<a href="../license/">License</a>
+<a href="../conduct/">Code of Conduct</a>
+<a href="../bibliography/">Bibliography</a>
+<a href="../glossary/">Glossary</a>
+</span>
+</span>
 </nav>
 <main>
 <h1>Introduction</h1>
@@ -51,7 +63,7 @@
 </ul>
 <h2>How to Learn Design</h2>
 <ul>
-<li>Best way to learn design is from examples (<a href="../bibliography.html#Petre2016">Petre2016</a>]</li>
+<li>Best way to learn design is from examples (<a href="../bibliography/#Petre2016">Petre2016</a>]</li>
 <li>These lessons use small versions of common research problems<ul>
 <li>Generally accessible to people who are programming</li>
 <li>Introduce some fundamental ideas in computer science</li>
@@ -66,7 +78,7 @@
     some of the tree snails in the region began growing unusually large</li>
 <li>Your team is going to collect and analyze specimens from affected regions
     to determine if a mutant gene makes snails more susceptible to the pollution</li>
-<li>Your task is to build a <a href="../glossary.html#synth_data">synthetic data generator</a> [<a href="../bibliography.html#Alexander2023">Alexander2023</a>]
+<li>Your task is to build a <a href="../glossary/#synth_data">synthetic data generator</a> [<a href="../bibliography/#Alexander2023">Alexander2023</a>]
     so that the data scientists can start building and validating analysis pipelines</li>
 </ul>
 <h2>Who You Are</h2>
@@ -89,22 +101,22 @@
 </ul>
 <h2>Details</h2>
 <ul>
-<li>Written material: <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons - Attribution - NonCommercial</a> license</li>
-<li>Code: <a href="https://firstdonoharm.dev/">Hippocratic License</a></li>
-<li>Source available in <a href="https://github.com/gvwilson/rsdx/">Git repository</a></li>
-<li>Can all be read <a href="https://gvwilson.github.io/rsdx/">online</a></li>
+<li>Written material: [Creative Commons - Attribution - NonCommercial][cc_by_nc] license</li>
+<li>Code: [Hippocratic License][hippocratic_license]</li>
+<li>Source available in [Git repository][lesson_repo]</li>
+<li>Can all be read [online][lesson_site]</li>
 </ul>
 <h2>The Author</h2>
-<p><a href="https://third-bit.com/"><strong>Greg Wilson</strong></a>
+<p>[<strong>Greg Wilson</strong>][third_bit]
 has worked in industry and academia for 40 years,
 and is the author, co-author, or editor of over a dozen previous books.
-He was the co-founder and first Executive Director of <a href="https://carpentries.org/">Software Carpentry</a>
+He was the co-founder and first Executive Director of [Software Carpentry][carpentries]
 and received ACM SIGSOFT's Influential Educator Award in 2020.</p>
 </main>
 <footer>
 <a href="../">Research Software Design by Example</a>
-      copyright © 2024
-      <a href="../contributing.html#contributors">the authors</a>
+      copyright © 2025
+      <a href="../01_intro/#acknowledgments">the authors</a>
 </footer>
 </body>
 </html>

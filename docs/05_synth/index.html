@@ -2,26 +2,38 @@
 
 <html>
 <head>
-<title>Synthesizing Data</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Synthesizing Data</title>
 <link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
 <link href="../static/page.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <nav>
-<div class="row">
-<div class="col-2 left">
 <a href="../">Home</a>
-</div>
-<div class="col-10 right">
-<a href="../license.html">License</a>
-	  ·
-	  <a href="../bibliography.html">Bibliography</a>
-	  ·
-	  <a href="../glossary.html">Glossary</a>
-</div>
-</div>
+      ·
+      <span class="dropdown">
+<a href="#">Lessons</a>
+<span class="dropdown-content">
+<a href="../01_intro/">Introduction</a>
+<a href="../02_grid/">Making Grids</a>
+<a href="../03_test/">Testing</a>
+<a href="../04_parse/">Parsing Messy Data</a>
+<a href="../05_synth/">Synthesizing Data</a>
+<a href="../06_scenario/">A Complete Scenario</a>
+<a href="../99_finale/">Conclusion</a>
+</span>
+</span>
+      ·
+      <span class="dropdown">
+<a href="#">Extras</a>
+<span class="dropdown-content">
+<a href="../license/">License</a>
+<a href="../conduct/">Code of Conduct</a>
+<a href="../bibliography/">Bibliography</a>
+<a href="../glossary/">Glossary</a>
+</span>
+</span>
 </nav>
 <main>
 <h1>Synthesizing Data</h1>
@@ -42,7 +54,7 @@
 </ul>
 </li>
 <li>But they <em>can</em> be very helpful</li>
-<li><a href="https://docs.pydantic.dev/">Pydantic</a> lets us define <a href="../glossary.html#dataclass">dataclasses</a> with <a href="../glossary.html#validation">validation</a></li>
+<li>[Pydantic][pydantic] lets us define <a href="../glossary/#dataclass">dataclasses</a> with <a href="../glossary/#validation">validation</a></li>
 </ul>
 <h2>Synthesis Parameters</h2>
 <pre class="language-py"><code class="language-py" data-file="params_01.py">from pydantic import BaseModel, Field, model_validator
@@ -73,7 +85,7 @@ class SpecimenParams(BaseModel):
         return self
 </code></pre>
 <ul>
-<li>Each <a href="../glossary.html#field">field</a> has a name and a type</li>
+<li>Each <a href="../glossary/#field">field</a> has a name and a type</li>
 <li>Pydantic will raise an error during construction if a value is not of the right type</li>
 <li>And provide a description</li>
 <li>Can also specify constraints like "greater than zero"</li>
@@ -136,7 +148,7 @@ def test_invalid(name, value):
 <ul>
 <li>One Pydantic class to represent specimens</li>
 <li>Another to represent a collection of specimens and the parameters used to generate them</li>
-<li>Define <a href="../glossary.html#static_method">static methods</a> to construct values<ul>
+<li>Define <a href="../glossary/#static_method">static methods</a> to construct values<ul>
 <li>Exercise: use a post-construction method</li>
 </ul>
 </li>
@@ -205,7 +217,7 @@ class SpecimenParams(BaseModel):
 </ul>
 </li>
 <li>Add configuration to prevent people accidentally adding more fields<ul>
-<li>In particular, to prevent <a href="../glossary.html#legacy_code">legacy code</a> <a href="../glossary.html#silent_failure">failing silently</a></li>
+<li>In particular, to prevent <a href="../glossary/#legacy_code">legacy code</a> <a href="../glossary/#silent_failure">failing silently</a></li>
 </ul>
 </li>
 </ul>
@@ -316,8 +328,8 @@ if __name__ == "__main__":
     print("second", second.samples)
 </code></pre>
 <ul>
-<li>Introduce a <a href="../glossary.html#generator">generator</a> for specimen IDs<ul>
-<li>Declare that it's a <a href="../glossary.html#class_variable">class variable</a> so that Pydantic knows not to include it in instances</li>
+<li>Introduce a <a href="../glossary/#generator">generator</a> for specimen IDs<ul>
+<li>Declare that it's a <a href="../glossary/#class_variable">class variable</a> so that Pydantic knows not to include it in instances</li>
 </ul>
 </li>
 <li>Pick the mutants at the all-specimens level<ul>
@@ -331,8 +343,8 @@ if __name__ == "__main__":
 </main>
 <footer>
 <a href="../">Research Software Design by Example</a>
-      copyright © 2024
-      <a href="../contributing.html#contributors">the authors</a>
+      copyright © 2025
+      <a href="../01_intro/#acknowledgments">the authors</a>
 </footer>
 </body>
 </html>

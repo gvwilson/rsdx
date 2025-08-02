@@ -14,26 +14,26 @@ OTHERS = {
 }
 
 
-def _snail_id_generator():
+def _specimen_id_generator():
     current = 0
     while True:
         current += 1
         yield f"S{current:06d}"
 
 
-class Snail(BaseModel):
-    """Store a single snail specimen."""
+class Specimen(BaseModel):
+    """Store a single specimen specimen."""
 
     id: str = Field(description="unique ID")
     genome: str = Field(min_length=1, description="genome")
     is_mutant: bool = Field(description="is this a mutant?")
     mass: float = Field(gt=0, description="mass (g)")
 
-    _id_generator: ClassVar = _snail_id_generator()
+    _id_generator: ClassVar = _specimen_id_generator()
 
     @staticmethod
     def generate(params, ref_genome, is_mutant, susc_locus, susc_base):
-        """Generate a single snail."""
+        """Generate a single specimen."""
 
         genome = [
             random.choice(OTHERS[b])
@@ -47,29 +47,29 @@ class Snail(BaseModel):
             genome[susc_locus] = susc_base
             mass *= params.mut_mass_scale
 
-        return Snail(
-            id=next(Snail._id_generator),
+        return Specimen(
+            id=next(Specimen._id_generator),
             genome="".join(genome),
             is_mutant=is_mutant,
             mass=mass,
         )
 
 
-class AllSnails(BaseModel):
-    """Store a set of snails."""
+class AllSpecimens(BaseModel):
+    """Store a set of specimens."""
 
     params: SpecimenParams = Field(description="generation parameters")
     ref_genome: str = Field(description="reference genome")
     susc_locus: int = Field(description="susceptible locus")
     susc_base: str = Field(description="susceptible mutation")
-    samples: list[Snail] = Field(description="snails")
+    samples: list[Specimen] = Field(description="specimens")
 
     @staticmethod
     def generate(params, num):
-        """Generate snails."""
+        """Generate specimens."""
 
         if num <= 0:
-            raise ValueError(f"invalid number of snails {num}")
+            raise ValueError(f"invalid number of specimens {num}")
 
         ref_genome = "".join(random.choices(BASES, k=params.genome_length))
         susc_locus = random.choice(list(range(len(ref_genome))))
@@ -80,11 +80,13 @@ class AllSnails(BaseModel):
         )
 
         samples = [
-            Snail.generate(params, ref_genome, i in mutant_ids, susc_locus, susc_base)
+            Specimen.generate(
+                params, ref_genome, i in mutant_ids, susc_locus, susc_base
+            )
             for i in range(num)
         ]
 
-        return AllSnails(
+        return AllSpecimens(
             params=params,
             ref_genome=ref_genome,
             susc_locus=susc_locus,
@@ -96,7 +98,7 @@ class AllSnails(BaseModel):
 if __name__ == "__main__":
     random.seed(4217309)
     params = SpecimenParams()
-    first = AllSnails.generate(params, 3)
-    second = AllSnails.generate(params, 5)
+    first = AllSpecimens.generate(params, 3)
+    second = AllSpecimens.generate(params, 5)
     print("first", first.samples)
     print("second", second.samples)

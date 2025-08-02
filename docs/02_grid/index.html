@@ -2,26 +2,38 @@
 
 <html>
 <head>
-<title>Making Grids</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Making Grids</title>
 <link href="../static/favicon.ico" rel="icon" type="image/x-icon"/>
 <link href="../static/page.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <nav>
-<div class="row">
-<div class="col-2 left">
 <a href="../">Home</a>
-</div>
-<div class="col-10 right">
-<a href="../license.html">License</a>
-	  ·
-	  <a href="../bibliography.html">Bibliography</a>
-	  ·
-	  <a href="../glossary.html">Glossary</a>
-</div>
-</div>
+      ·
+      <span class="dropdown">
+<a href="#">Lessons</a>
+<span class="dropdown-content">
+<a href="../01_intro/">Introduction</a>
+<a href="../02_grid/">Making Grids</a>
+<a href="../03_test/">Testing</a>
+<a href="../04_parse/">Parsing Messy Data</a>
+<a href="../05_synth/">Synthesizing Data</a>
+<a href="../06_scenario/">A Complete Scenario</a>
+<a href="../99_finale/">Conclusion</a>
+</span>
+</span>
+      ·
+      <span class="dropdown">
+<a href="#">Extras</a>
+<span class="dropdown-content">
+<a href="../license/">License</a>
+<a href="../conduct/">Code of Conduct</a>
+<a href="../bibliography/">Bibliography</a>
+<a href="../glossary/">Glossary</a>
+</span>
+</span>
 </nav>
 <main>
 <h1>Making Grids</h1>
@@ -47,7 +59,7 @@
 </ul>
 <h2>The Plan</h2>
 <ul>
-<li>Throw together something simple and then <a href="../glossary.html#refactor">refactor</a> it<ul>
+<li>Throw together something simple and then <a href="../glossary/#refactor">refactor</a> it<ul>
 <li>Creates opportunities to explain why we do things certain ways</li>
 <li>It's how most of us build software in real life</li>
 </ul>
@@ -91,10 +103,10 @@ for y in range(size):
 </code></pre>
 <ul>
 <li>Store the grid as a list of lists<ul>
-<li>Could use <a href="https://numpy.org/">NumPy</a> array</li>
+<li>Could use [NumPy][numpy] array</li>
 </ul>
 </li>
-<li>Use a <a href="../glossary.html#random_walk">random walk</a> to set cells' values<ul>
+<li>Use a <a href="../glossary/#random_walk">random walk</a> to set cells' values<ul>
 <li>Add one to the cell each time the walker visits it</li>
 <li>Produces 2D normal distribution in the limit</li>
 </ul>
@@ -102,16 +114,16 @@ for y in range(size):
 <li>Store a list of possibly moves</li>
 <li>Repeatedly select one at random</li>
 <li>Stop when the walker reaches the edge of the grid</li>
-<li>Print as <a href="../glossary.html#csv">CSV</a></li>
+<li>Print as <a href="../glossary/#csv">CSV</a></li>
 </ul>
 <h2>Critique</h2>
 <ul>
-<li>Everything is <a href="../glossary.html#coupling">coupled</a> to the grid representation<ul>
+<li>Everything is <a href="../glossary/#coupling">coupled</a> to the grid representation<ul>
 <li>If we <em>did</em> switch to a NumPy array,
     we'd have to rewrite all the low-level details</li>
 </ul>
 </li>
-<li>Not <a href="../glossary.html#reproducibility">reproducible</a><ul>
+<li>Not <a href="../glossary/#reproducibility">reproducible</a><ul>
 <li>Different sequence of random numbers each time we run it</li>
 </ul>
 </li>
@@ -160,9 +172,9 @@ if __name__ == "__main__":
 </code></pre>
 <ul>
 <li>Operation is in a function that we can call from other code</li>
-<li><a href="../glossary.html#seed">Seed</a> the random number generator for reproducibility</li>
-<li>Use a <a href="../glossary.html#list_comprehension">list comprehension</a> to create the grid<ul>
-<li>Could shorten the code further with a <a href="../glossary.html#nested_comprehension">nested comprehension</a></li>
+<li><a href="../glossary/#seed">Seed</a> the random number generator for reproducibility</li>
+<li>Use a <a href="../glossary/#list_comprehension">list comprehension</a> to create the grid<ul>
+<li>Could shorten the code further with a <a href="../glossary/#nested_comprehension">nested comprehension</a></li>
 </ul>
 </li>
 <li>Use a condition in the <code>while</code> loop instead of <code>break</code></li>
@@ -228,12 +240,12 @@ if __name__ == "__main__":
 <li>Exercise: replace list of lists with NumPy array</li>
 </ul>
 </li>
-<li>Provide <a href="../glossary.html#getter">getter</a> and <a href="../glossary.html#setter">setter</a> methods</li>
+<li>Provide <a href="../glossary/#getter">getter</a> and <a href="../glossary/#setter">setter</a> methods</li>
 <li><code>fill</code> is a separate function<ul>
 <li><code>Grid</code> class might be used for other things</li>
 </ul>
 </li>
-<li>Use <a href="../glossary.html#string_io">string I/O</a> to build CSV representation</li>
+<li>Use <a href="../glossary/#string_io">string I/O</a> to build CSV representation</li>
 </ul>
 <h2>Command-Line Parameters</h2>
 <pre class="language-py"><code class="language-py" data-file="grid_04.py">import argparse
@@ -301,14 +313,14 @@ if __name__ == "__main__":
 <ul>
 <li>Use <code>argparse</code> module to turn command-line arguments into an object with named values</li>
 <li>Saves us from mixing up seeds and sizes</li>
-<li>Makes <a href="../glossary.html#shell_script">shell scripts</a> easier to read</li>
+<li>Makes <a href="../glossary/#shell_script">shell scripts</a> easier to read</li>
 <li>And gives us a <code>--help</code> option that's guaranteed to be up to date</li>
 </ul>
 </main>
 <footer>
 <a href="../">Research Software Design by Example</a>
-      copyright © 2024
-      <a href="../contributing.html#contributors">the authors</a>
+      copyright © 2025
+      <a href="../01_intro/#acknowledgments">the authors</a>
 </footer>
 </body>
 </html>

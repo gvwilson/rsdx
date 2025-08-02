@@ -1,5 +1,8 @@
 """Utilities."""
 
+# Floating point decimals for output
+PRECISION = 2
+
 
 def generic_id_generator(id_func):
     """Parameterized ID generator."""
