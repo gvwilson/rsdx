@@ -33,6 +33,8 @@ in less time and with less pain.
 
 ## Syllabus
 
+<div id="syllabus" markdown="1">
+
 1.  [Introduction](./01_intro/)
 1.  [Making Grids](./02_grid/)
 1.  [Testing](./03_test/)
@@ -41,9 +43,25 @@ in less time and with less pain.
 1.  [A Complete Scenario](./06_scenario/)
 1.  [Conclusion](./99_finale/)
 
+</div>
+
 ##  Appendices
+
+<div id="appendices" markdown="1">
 
 1.  [License](./LICENSE.md)
 1.  [Code of Conduct](./CODE_OF_CONDUCT.md)
 1.  [Bibliography](./bibliography.md)
 1.  [Glossary](./glossary.md)
+
+</div>
+
+<p class="center">
+  <em>
+    Start where you are
+    <br/>
+    Use what you have
+    <br/>
+    Help who you can
+  </em>
+</p>
