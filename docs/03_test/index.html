@@ -46,7 +46,7 @@
 <ul>
 <li>Border should always be zero</li>
 </ul>
-<pre class="language-py"><code class="language-py" data-file="test_01.py">import random
+<pre class=""><code data-file="test_01.py">import random
 from grid import Grid, fill_grid
 
 
@@ -63,7 +63,7 @@ def test_edges_unfilled():
 <li>But that's just one possible grid</li>
 </ul>
 <h2>Parameterize Tests</h2>
-<pre class="language-py"><code class="language-py" data-file="test_02.py">import random
+<pre class=""><code data-file="test_02.py">import random
 import pytest
 from grid import Grid, fill_grid
 
@@ -83,7 +83,7 @@ def test_edges_unfilled(seed):
 <li>So it's better, but there are still a lot of other possible grids</li>
 </ul>
 <h2>Force a Grid</h2>
-<pre class="language-py"><code class="language-py" data-file="test_03.py">import random
+<pre class=""><code data-file="test_03.py">import random
 from unittest.mock import patch
 from grid import Grid, fill_grid
 
@@ -112,7 +112,7 @@ def test_move_in_one_direction():
 <li>Total of grid values should be the number of moves</li>
 <li>So modify <code>fill_grid</code> to return that</li>
 </ul>
-<pre class="language-py"><code class="language-py" data-file="test_04.py">import random
+<pre class=""><code data-file="test_04.py">import random
 import pytest
 from grid import Grid, fill_grid
 
@@ -128,7 +128,7 @@ def test_sum_cell_values(seed):
     assert expected == actual
 </code></pre>
 <h2>Force Filling the Whole Grid</h2>
-<pre class="language-py"><code class="language-py" data-file="test_05.py">import random
+<pre class=""><code data-file="test_05.py">import random
 from unittest.mock import patch
 from grid import Grid, fill_grid
 
@@ -152,7 +152,7 @@ def test_exact_grid():
 <li>So strip off the last one and split to compare</li>
 </ul>
 <h2>Statistical Properties</h2>
-<pre class="language-py"><code class="language-py" data-file="test_06.py">import math
+<pre class=""><code data-file="test_06.py">import math
 import random
 import pytest
 from grid import Grid, fill_grid

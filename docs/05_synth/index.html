@@ -57,7 +57,7 @@
 <li>[Pydantic][pydantic] lets us define <a href="../glossary/#dataclass">dataclasses</a> with <a href="../glossary/#validation">validation</a></li>
 </ul>
 <h2>Synthesis Parameters</h2>
-<pre class="language-py"><code class="language-py" data-file="params_01.py">from pydantic import BaseModel, Field, model_validator
+<pre class=""><code data-file="params_01.py">from pydantic import BaseModel, Field, model_validator
 
 
 class SpecimenParams(BaseModel):
@@ -92,7 +92,7 @@ class SpecimenParams(BaseModel):
 <li>And define methods to check specialized constraints</li>
 </ul>
 <h2>Tests</h2>
-<pre class="language-py"><code class="language-py" data-file="test_params_01.py">import pytest
+<pre class=""><code data-file="test_params_01.py">import pytest
 
 from params_01 import SpecimenParams
 
@@ -162,7 +162,7 @@ def test_invalid(name, value):
 <li><em>This</em> is why we test…</li>
 <li>Mark this test as "expected to fail" because we're not fixing the problem for pedagogical purposes</li>
 </ul>
-<pre class="language-py"><code class="language-py" data-file="test_specimens_01.py">import pytest
+<pre class=""><code data-file="test_specimens_01.py">import pytest
 
 from params_01 import SpecimenParams
 from specimens_01 import AllSnails
@@ -187,7 +187,7 @@ def test_defaults():
 <li>Can still have populations with no mutants if we want them</li>
 </ul>
 <h2>New Parameters</h2>
-<pre class="language-py"><code class="language-py" data-file="params_02.py">from pydantic import BaseModel, Field
+<pre class=""><code data-file="params_02.py">from pydantic import BaseModel, Field
 
 
 class SpecimenParams(BaseModel):
@@ -222,7 +222,7 @@ class SpecimenParams(BaseModel):
 </li>
 </ul>
 <h2>Generating Mutants</h2>
-<pre class="language-py"><code class="language-py" data-file="specimens_02.py">import math
+<pre class=""><code data-file="specimens_02.py">import math
 import random
 from typing import ClassVar
 

@@ -22,14 +22,13 @@ ignore = ["E731"]
 "**/test_*.py" = ["F401", "F811"] # ignore complaints about unused imports for fixtures
 
 [tool.mccole]
-skips = ["CONTRIBUTING.md", "old", "templates"]
+skips = ["common.mk", "old", "templates", "uv.lock"]
 
 [tool.mccole.renames]
 "README.md" = ""
 "CODE_OF_CONDUCT.md" = "conduct"
+"CONTRIBUTING.md" = "contrib"
 "LICENSE.md" = "license"
-"bibliography.md" = "bibliography"
-"glossary.md" = "glossary"
 
 [tool.uv.workspace]
 members = ["rsdx"]
