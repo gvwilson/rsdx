@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -14,7 +14,7 @@
       ·
       <span class="dropdown">
 <a href="#">Lessons</a>
-<span class="dropdown-content">
+<span class="dropdown-content" id="nav-lessons">
 <a href="../01_intro/">Introduction</a>
 <a href="../02_grid/">Making Grids</a>
 <a href="../03_test/">Testing</a>
@@ -27,9 +27,10 @@
       ·
       <span class="dropdown">
 <a href="#">Extras</a>
-<span class="dropdown-content">
+<span class="dropdown-content" id="nav-extras">
 <a href="../license/">License</a>
 <a href="../conduct/">Code of Conduct</a>
+<a href="../contrib/">Contributing</a>
 <a href="../bibliography/">Bibliography</a>
 <a href="../glossary/">Glossary</a>
 </span>
@@ -37,7 +38,7 @@
 </nav>
 <main>
 <h1>Glossary</h1>
-<h1>A</h1>
+<h2>A</h2>
 <dl>
 <dt><span id="abc">abstract base class</span></dt>
 <dd>FIXME</dd>
@@ -50,14 +51,14 @@ two are different, the test <a href="../glossary/#fail_test">fails</a>.</dd>
 <dt><span id="attribute">ttribut</span></dt>
 <dd>A name-value pair associated with node in a <a href="../glossary/#dom">DOM tree</a>.</dd>
 </dl>
-<h1>B</h1>
+<h2>B</h2>
 <dl>
 <dt><span id="boilerplate">boilerplate</span></dt>
 <dd>FIXME</dd>
 <dt><span id="boxing">boxing (a value)</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>C</h1>
+<h2>C</h2>
 <dl>
 <dt><span id="cast">cast</span></dt>
 <dd>FIXME</dd>
@@ -76,7 +77,7 @@ two are different, the test <a href="../glossary/#fail_test">fails</a>.</dd>
 <dt><span id="cross_validation">cross validation</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>D</h1>
+<h2>D</h2>
 <dl>
 <dt><span id="dataclass">dataclass</span></dt>
 <dd>FIXME</dd>
@@ -89,7 +90,7 @@ two are different, the test <a href="../glossary/#fail_test">fails</a>.</dd>
 Each <a href="../glossary/#element">element</a> is stored as a node in a tree
 with a set of named <a href="../glossary/#attribute">attributes</a>.</dd>
 </dl>
-<h1>E</h1>
+<h2>E</h2>
 <dl>
 <dt><span id="element">lement (in HTML</span></dt>
 <dd>A named component in an HTML document.
@@ -106,7 +107,7 @@ certain way, or the state in which it is supposed to leave the system.</dd>
 <dt><span id="extend_template">extend (a template)</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>F</h1>
+<h2>F</h2>
 <dl>
 <dt><span id="fail_test">failure (result of test)</span></dt>
 <dd>A test fails if the <a href="../glossary/#actual_result">actual result</a> does not match the
@@ -118,28 +119,28 @@ certain way, or the state in which it is supposed to leave the system.</dd>
 <dt><span id="fsm">finite state machine (FSM)</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>G</h1>
+<h2>G</h2>
 <dl>
 <dt><span id="generator">generator</span></dt>
 <dd>FIXME</dd>
 <dt><span id="getter">getter</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>H</h1>
+<h2>H</h2>
 <dl>
 <dt><span id="helper_function">helper function</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>I</h1>
+<h2>I</h2>
 <dl>
 <dt><span id="interpolation">interpolation</span></dt>
 <dd>FIXME</dd>
 <dt><span id="inv_perc">invasion percolation</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>J</h1>
-<h1>K</h1>
-<h1>L</h1>
+<h2>J</h2>
+<h2>K</h2>
+<h2>L</h2>
 <dl>
 <dt><span id="legacy_code">legacy code</span></dt>
 <dd>
@@ -152,7 +153,7 @@ certain way, or the state in which it is supposed to leave the system.</dd>
 <dt><span id="list_comprehension">list comprehension</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>M</h1>
+<h2>M</h2>
 <dl>
 <dt><span id="mock_object">mock object</span></dt>
 <dd>A simplified replacement for part of a program whose behavior is easy to
@@ -163,19 +164,19 @@ simulate databases, web services, and other complex systems.</dd>
 <dt><span id="mvc">model-view-controller (MVC)</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>N</h1>
+<h2>N</h2>
 <dl>
 <dt><span id="nested_comprehension">nested comprehension</span></dt>
 <dd>FIXME</dd>
 <dt><span id="nosql">NoSQL database</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>O</h1>
+<h2>O</h2>
 <dl>
 <dt><span id="orm">object-relational mapper (ORM)</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>P</h1>
+<h2>P</h2>
 <dl>
 <dt><span id="parameter_sweeping">parameter sweeping</span></dt>
 <dd>FIXME</dd>
@@ -195,8 +196,8 @@ result</a>.</dd>
 <dt><span id="profiler">profiler</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>Q</h1>
-<h1>R</h1>
+<h2>Q</h2>
+<h2>R</h2>
 <dl>
 <dt><span id="random_walk">random walk</span></dt>
 <dd>FIXME</dd>
@@ -213,7 +214,7 @@ result</a>.</dd>
 <dt><span id="route">route</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>S</h1>
+<h2>S</h2>
 <dl>
 <dt><span id="schema">schema</span></dt>
 <dd>FIXME</dd>
@@ -245,7 +246,7 @@ to the parameters of a function.</dd>
 <dd>A tool that creates data with the same properties as real data,
 usually for testing purposes.</dd>
 </dl>
-<h1>T</h1>
+<h2>T</h2>
 <dl>
 <dt><span id="ssg_template">template (for static site generator)</span></dt>
 <dd>FIXME</dd>
@@ -260,7 +261,7 @@ and how specific it is to a particular document.</dd>
 <dt><span id="type_annotation">type annotation</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>U</h1>
+<h2>U</h2>
 <dl>
 <dt><span id="uid">user ID (UID)</span></dt>
 <dd>FIXME</dd>
@@ -270,7 +271,7 @@ and how specific it is to a particular document.</dd>
 <dd>A test that exercises one function or feature of a piece of software and
 produces <a href="../glossary/#pass_test">pass</a>, <a href="../glossary/#fail_test">fail</a>, or <a href="../glossary/#error_test">error</a>.</dd>
 </dl>
-<h1>V</h1>
+<h2>V</h2>
 <dl>
 <dt><span id="validation">validation</span></dt>
 <dd>FIXME</dd>
@@ -280,14 +281,14 @@ produces <a href="../glossary/#pass_test">pass</a>, <a href="../glossary/#fail_t
 <dd>A design pattern in which a recursive function visits each element of a structure
 and performs some user-defined operation there.</dd>
 </dl>
-<h1>W</h1>
+<h2>W</h2>
 <dl>
 <dt><span id="workflow">workflow</span></dt>
 <dd>FIXME</dd>
 </dl>
-<h1>X</h1>
-<h1>Y</h1>
-<h1>Z</h1>
+<h2>X</h2>
+<h2>Y</h2>
+<h2>Z</h2>
 </main>
 <footer>
 <a href="../">Research Software Design by Example</a>

@@ -1,6 +1,6 @@
 # Glossary
 
-# A
+## A
 
 <span id="abc">abstract base class</span>
 :   FIXME
@@ -16,7 +16,7 @@
 <span id="attribute">ttribut</span>
 :   A name-value pair associated with node in a [DOM tree](g:dom).
 
-# B
+## B
 
 <span id="boilerplate">boilerplate</span>
 :   FIXME
@@ -24,7 +24,7 @@
 <span id="boxing">boxing (a value)</span>
 :   FIXME
 
-# C
+## C
 
 <span id="cast">cast</span>
 :   FIXME
@@ -50,7 +50,7 @@
 <span id="cross_validation">cross validation</span>
 :   FIXME
 
-# D
+## D
 
 <span id="dataclass">dataclass</span>
 :   FIXME
@@ -66,7 +66,7 @@
     Each [element](g:element) is stored as a node in a tree
     with a set of named [attributes](g:attribute).
 
-# E
+## E
 
 <span id="element">lement (in HTML</span>
 :   A named component in an HTML document.
@@ -86,7 +86,7 @@
 <span id="extend_template">extend (a template)</span>
 :   FIXME
 
-# F
+## F
 
 <span id="fail_test">failure (result of test)</span>
 :   A test fails if the [actual result](g:actual_result) does not match the
@@ -101,7 +101,7 @@
 <span id="fsm">finite state machine (FSM)</span>
 :   FIXME
 
-# G
+## G
 
 <span id="generator">generator</span>
 :   FIXME
@@ -109,12 +109,12 @@
 <span id="getter">getter</span>
 :   FIXME
 
-# H
+## H
 
 <span id="helper_function">helper function</span>
 :   FIXME
 
-# I
+## I
 
 <span id="interpolation">interpolation</span>
 :   FIXME
@@ -122,11 +122,11 @@
 <span id="inv_perc">invasion percolation</span>
 :   FIXME
 
-# J
+## J
 
-# K
+## K
 
-# L
+## L
 
 <span id="legacy_code">legacy code</span>
 :   FIXME
@@ -136,7 +136,7 @@
 <span id="list_comprehension">list comprehension</span>
 :   FIXME
 
-# M
+## M
 
 <span id="mock_object">mock object</span>
 :   A simplified replacement for part of a program whose behavior is easy to
@@ -149,7 +149,7 @@
 <span id="mvc">model-view-controller (MVC)</span>
 :   FIXME
 
-# N
+## N
 
 <span id="nested_comprehension">nested comprehension</span>
 :   FIXME
@@ -157,12 +157,12 @@
 <span id="nosql">NoSQL database</span>
 :   FIXME
 
-# O
+## O
 
 <span id="orm">object-relational mapper (ORM)</span>
 :   FIXME
 
-# P
+## P
 
 <span id="parameter_sweeping">parameter sweeping</span>
 :   FIXME
@@ -189,9 +189,9 @@
 <span id="profiler">profiler</span>
 :   FIXME
 
-# Q
+## Q
 
-# R
+## R
 
 <span id="random_walk">random walk</span>
 :   FIXME
@@ -214,7 +214,7 @@
 <span id="route">route</span>
 :   FIXME
 
-# S
+## S
 
 <span id="schema">schema</span>
 :   FIXME
@@ -258,7 +258,7 @@
 :   A tool that creates data with the same properties as real data,
     usually for testing purposes.
 
-# T
+## T
 
 <span id="ssg_template">template (for static site generator)</span>
 :   FIXME
@@ -277,7 +277,7 @@
 <span id="type_annotation">type annotation</span>
 :   FIXME
 
-# U
+## U
 
 <span id="uid">user ID (UID)</span>
 :   FIXME
@@ -289,7 +289,7 @@
 :   A test that exercises one function or feature of a piece of software and
     produces [pass](g:pass_test), [fail](g:fail_test), or [error](g:error_test).
 
-# V
+## V
 
 <span id="validation">validation</span>
 :   FIXME
@@ -301,13 +301,13 @@
 :   A design pattern in which a recursive function visits each element of a structure
     and performs some user-defined operation there.
 
-# W
+## W
 
 <span id="workflow">workflow</span>
 :   FIXME
 
-# X
+## X
 
-# Y
+## Y
 
-# Z
+## Z
