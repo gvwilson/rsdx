@@ -22,7 +22,21 @@ ignore = ["E731"]
 "**/test_*.py" = ["F401", "F811"] # ignore complaints about unused imports for fixtures
 
 [tool.mccole]
-skips = ["common.mk", "old", "templates", "uv.lock"]
+skips = [
+    "98_viewer/.gitignore",
+    "98_viewer/static/*",
+    "98_viewer/templates/*",
+    "*.csv",
+    "*.db",
+    "*.mk",
+    "*.out",
+    "*.py",
+    "*.sh",
+    "*.txt",
+    "*.yml",
+    "old/**",
+    "uv.lock"
+]
 
 [tool.mccole.renames]
 "README.md" = ""

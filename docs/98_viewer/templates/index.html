@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-
-{% block content %}
-  <ul>
-    {% for table in tables %}
-    <li><a href="/{{ table }}">{{ table|title }}</a></li>
-    {% endfor %}
-  </ul>
-{% endblock %}
