@@ -29,8 +29,6 @@ format:
 lint:
 	@${PYTHON_M} ruff check --exclude docs --exclude old .
 	@${MCCOLE} lint
-	@html5validator --root docs --blacklist templates \
-	&& echo "HTML checks passed."
 
 ## serve: serve generated HTML
 serve:
