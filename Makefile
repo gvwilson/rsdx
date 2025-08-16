@@ -34,9 +34,9 @@ lint:
 serve:
 	@${PYTHON_M} http.server -d docs 8000
 
-## stats: basic site statistics
-stats:
-	@${MCCOLE} stats
+## spelling: check for unknown words
+spelling:
+	@cat *.md */*.md | aspell list | sort | uniq | diff - extras/words.txt
 
 ## viewer: run the viewer app
 viewer:

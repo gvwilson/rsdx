@@ -24,6 +24,7 @@ ignore = ["E731"]
 
 [tool.mccole]
 skips = [
+    "*~",
     "98_viewer/.gitignore",
     "98_viewer/static/*",
     "98_viewer/templates/*",
@@ -35,6 +36,7 @@ skips = [
     "*.sh",
     "*.txt",
     "*.yml",
+    "extras/**",
     "old/**",
     "uv.lock"
 ]

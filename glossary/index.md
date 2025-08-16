@@ -13,7 +13,7 @@
     [expected result](g:expected_result), the test [passes](g:pass_test); if the
     two are different, the test [fails](g:fail_test).
 
-<span id="attribute">ttribut</span>
+<span id="attribute">attribute</span>
 :   A name-value pair associated with node in a [DOM tree](g:dom).
 
 ## B
@@ -61,14 +61,14 @@
 <span id="document_db">document database</span>
 :   FIXME
 
-<span id="dom">ocument Object Mode (DOM)</span>
+<span id="dom">document Object Mode (DOM)</span>
 :   A standard, in-memory representation of HTML.
     Each [element](g:element) is stored as a node in a tree
     with a set of named [attributes](g:attribute).
 
 ## E
 
-<span id="element">lement (in HTML</span>
+<span id="element">element (in HTML)</span>
 :   A named component in an HTML document.
     Elements are usually written `<name>`…`</name>`,
     where "…" represents the content of the element.
@@ -297,7 +297,7 @@
 <span id="view">view (in model-view-controller)</span>
 :   FIXME
 
-<span id="visitor">isito</span>
+<span id="visitor">visitor</span>
 :   A design pattern in which a recursive function visits each element of a structure
     and performs some user-defined operation there.
 
