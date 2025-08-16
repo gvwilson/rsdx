@@ -1,5 +1,5 @@
 [project]
-name = "rsdx"'
+name = "rsdx"
 description = "software design for self-taught research programmers"
 version = "0.1.28"
 requires-python = ">=3.12"
