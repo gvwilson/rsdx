@@ -1,5 +1,7 @@
 include common.mk
 
+SLUG=rsdx
+
 all: commands
 
 DATA=data
@@ -24,6 +26,10 @@ data:
 ## format: reformat code
 format:
 	@uv run ruff format --exclude docs --exclude old .
+
+## links: check links in published site
+links:
+	linkchecker -F text https://gvwilson.github.io/${SLUG}/
 
 ## lint: check code and project
 lint:
