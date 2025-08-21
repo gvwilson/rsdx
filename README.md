@@ -31,9 +31,9 @@ but is struggling to write code other people can use.
 These lessons will teach her how to design, build, and test large programs
 in less time and with less pain.
 
-## Syllabus
+## Lessons
 
-<div id="syllabus" markdown="1">
+<div id="lessons" markdown="1">
 
 1.  [Introduction](./01_intro/)
 1.  [Making Grids](./02_grid/)

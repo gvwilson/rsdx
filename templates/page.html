@@ -14,24 +14,18 @@
       <span class="dropdown">
 	<a href="#">Lessons</a>
 	<span id="nav-lessons" class="dropdown-content">
-          <a href="@/01_intro/">Introduction</a>
-          <a href="@/02_grid/">Making Grids</a>
-          <a href="@/03_test/">Testing</a>
-          <a href="@/04_parse/">Parsing Messy Data</a>
-          <a href="@/05_synth/">Synthesizing Data</a>
-          <a href="@/06_scenario/">A Complete Scenario</a>
-          <a href="@/99_finale/">Conclusion</a>
+{% for key in lessons %}
+          <a href="{{key}}">{{lessons[key]}}</a>
+{% endfor %}
 	</span>
       </span>
       &middot;
       <span class="dropdown">
         <a href="#">Extras</a>
         <span id="nav-extras" class="dropdown-content">
-	  <a href="@/license/">License</a>
-	  <a href="@/conduct/">Code of Conduct</a>
-	  <a href="@/contrib/">Contributing</a>
-	  <a href="@/bibliography/">Bibliography</a>
-	  <a href="@/glossary/">Glossary</a>
+{% for key in appendices %}
+          <a href="{{key}}">{{appendices[key]}}</a>
+{% endfor %}
         </span>
       </span>
     </nav>
@@ -39,7 +33,7 @@
 {{content}}
     </main>
     <footer>
-      <a href="@/">Research Software Design by Example</a>
+      <a href="@/">{{title}}</a>
       copyright &copy; 2025
       <a href="@/#acknowledgments">the authors</a>
     </footer>
